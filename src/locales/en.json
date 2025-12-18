@@ -1,0 +1,53 @@
+{
+    "navbar": {
+        "brand": "Engineering Association",
+        "home": "Home",
+        "about": "About",
+        "initiatives": "Initiatives",
+        "news": "News",
+        "forms": "Forms",
+        "login": "Login",
+        "language": "العربية"
+    },
+    "home": {
+        "hero": {
+            "title": "Engineering Student Association",
+            "subtitle": "Empowering future engineers through innovation and collaboration.",
+            "cta": "Learn More"
+        },
+        "about": {
+            "title": "About Us",
+            "description": "The Engineering Student Association (ESA) is dedicated to fostering a community of innovation, learning, and professional growth for all engineering students. We provide resources, organize events, and advocate for student interests."
+        },
+        "initiatives": {
+            "title": "Our Initiatives",
+            "description": "We run various initiatives to support students, including mentorship programs, hackathons, and industry networking events."
+        },
+        "news": {
+            "title": "Latest News",
+            "readMore": "Read More"
+        },
+        "faq": {
+            "title": "Frequently Asked Questions",
+            "q1": "How can I join the ESA?",
+            "a1": "You can join by registering on our website or visiting our office in the Engineering Building.",
+            "q2": "What events do you organize?",
+            "a2": "We organize workshops, guest lectures, social events, and the annual Engineering Innovation Fair.",
+            "q3": "How can I contact the ESA?",
+            "a3": "You can email us at contact@esa-university.edu or use the contact form on our website."
+        }
+    },
+    "about": {
+        "title": "About ESA",
+        "mission": "Our Mission",
+        "missionText": "To empower engineering students by providing opportunities for professional development, academic support, and social engagement.",
+        "vision": "Our Vision",
+        "visionText": "To be the leading student organization that inspires the next generation of engineers to solve global challenges.",
+        "team": "Our Team"
+    },
+    "footer": {
+        "contact": "Contact Us",
+        "follow": "Follow Us",
+        "rights": "All rights reserved."
+    }
+}
