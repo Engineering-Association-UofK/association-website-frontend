@@ -1,0 +1,16 @@
+.sidebar {
+    width: 200;
+    height: 100vh;
+    background: var(--bg-color-1);
+    color: var(--primary-color);
+    padding: 1rem;
+    position: fixed;
+    inset-inline-start: 0;
+}
+.link {
+    display: block;
+    margin-top: 1rem;
+    text-align: start;
+    color: var(--primary-color);
+    text-decoration: none;
+}
