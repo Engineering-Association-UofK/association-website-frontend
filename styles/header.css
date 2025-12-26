@@ -1,0 +1,129 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white; 
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 60px;
+  border-bottom: 2px solid rgb(217, 217, 219);
+  flex-shrink: 0;
+  white-space: nowrap;
+  flex-wrap: nowrap;
+  gap: 2rem;
+  padding-left: 60px;
+  padding-right: 60px;
+}
+
+.right-section{
+ 
+   flex: 1;
+
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   margin-left: 80px;
+   flex-shrink: 0;
+   gap: 2rem;
+   min-width: 100px;
+   max-width: 600px;
+}
+
+
+.left-section{
+  width: 200px;
+  height: 100%;
+  padding-right: 0px;
+}
+
+.logo {
+  width: 100%;
+  height: 100%;
+  max-height: 120px;
+  
+}
+
+.header-link {
+  color: rgb(87, 85, 86);
+  text-decoration: none;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+}
+
+.En-section {
+  display: flex;
+  justify-content: center;
+  margin-left: 40px;
+  min-width: 0px;
+  flex-shrink: 0;
+  flex-basis: 80px;
+ 
+}
+  
+  
+
+.En-button {
+  color: white;
+  background-color: rgb(106, 102, 102);
+  height: 40px;
+  width: 40px;
+  border-radius: 4px;
+  border: none;
+  flex: 0 0 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nav-item{
+  display: flex;
+  justify-content: center;
+  align-items: center  ;
+  position: relative;
+  height: 60px;
+ 
+}
+
+.nav-item a::after {
+  position: absolute;
+  content: "";
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background-color: rgb(18, 120, 216);
+  transition: width 0.3s ease;
+}
+
+.nav-item:hover a::after{
+  width: 100%;
+}
+
+.tool-tip {
+  position: absolute;
+  bottom: -9px;
+  background-color: rgba(73, 158, 255, 0.8);
+  color: white;
+  border-radius: 4px;
+  padding: 2px 4px;
+  opacity: 0;
+  transition: opacity 0.6s;
+  pointer-events: none;
+  font-size: 12px;
+  font: bold;
+  font-family: Arial, Helvetica, sans-serif;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.30);
+}
+
+.nav-item:hover .tool-tip {
+  opacity:1;
+
+} 
+
+
+
+
+
