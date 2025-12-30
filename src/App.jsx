@@ -4,6 +4,11 @@ import NavBar from './components/NavBar';
 import Footer from './components/Footer';
 import Home from './pages/Home/Home';
 import About from './pages/About/About';
+import AdminLayout from './pages/Admin/AdminLayout';
+import BlogsDashboard from './pages/Blogs/BlogsDashboard';
+import BlogsEntry from './pages/Blogs/BlogsEntry';
+import FAQsDashboard from './pages/FAQs/FAQsDashboard';
+import GalleryDashboard from './pages/Gallery/GalleryDashboard';
 import './App.css';
 
 function App() {
@@ -19,7 +24,14 @@ function App() {
               {/* Add other routes as placeholders for now */}
               <Route path="/initiatives" element={<div className="container mt-5"><h2>Initiatives Page</h2></div>} />
               <Route path="/news" element={<div className="container mt-5"><h2>News Page</h2></div>} />
-              <Route path="/forms" element={<div className="container mt-5"><h2>Forms Page</h2></div>} />
+              {/* <Route path="/forms" element={<div className="container mt-5"><h2>Forms Page</h2></div>} /> */}
+              <Route path="/admin" element={<AdminLayout />} >
+                <Route index element={<h1>Dashboard</h1>} />
+                <Route path="blogs" element={<BlogsDashboard />} />
+                <Route path="blogs/:id" element={<BlogsEntry />} />
+                <Route path="faqs" element={<FAQsDashboard />} />
+                <Route path="gallery" element={<GalleryDashboard />} />
+              </Route>
               <Route path="/login" element={<div className="container mt-5"><h2>Login Page</h2></div>} />
             </Routes>
           </main>
