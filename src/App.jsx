@@ -4,6 +4,7 @@ import NavBar from './components/NavBar';
 import Footer from './components/Footer';
 import Home from './pages/Home/Home';
 import About from './pages/About/About';
+import Admin from './components/admin/Admin';
 import './App.css';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
               <Route path="/news" element={<div className="container mt-5"><h2>News Page</h2></div>} />
               <Route path="/forms" element={<div className="container mt-5"><h2>Forms Page</h2></div>} />
               <Route path="/login" element={<div className="container mt-5"><h2>Login Page</h2></div>} />
+              <Route path="/admin" element={<Admin />} />
             </Routes>
           </main>
           <Footer />

@@ -11,38 +11,41 @@ const NavigationBar = () => {
     };
 
     return (
-        <Navbar bg="white" expand="lg" className="shadow-sm py-3 sticky-top">
+        <Navbar variant="dark" expand="lg" className="shadow-sm py-3 sticky-top" style={{ backgroundColor: '#003366' }}>
             <Container>
-                <Navbar.Brand as={Link} to="/" className="fw-bold text-primary fs-3 d-flex align-items-center">
-                    <div className="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2" style={{ width: '40px', height: '40px' }}>
-                        SEA
-                    </div>
+                <Navbar.Brand as={Link} to="/" className="fw-bold text-white fs-3 d-flex align-items-center">
+                    <img
+                        src="/favicon.ico"
+                        alt="Logo"
+                        className="me-2 rounded-circle bg-white p-1"
+                        style={{ width: '40px', height: '40px' }}
+                    />
                     {translations.navbar.brand}
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ms-auto align-items-center">
-                        <Nav.Link as={NavLink} to="/" end className="mx-2 fw-medium">
+                        <Nav.Link as={NavLink} to="/" end className="mx-2 fw-medium text-white">
                             {translations.navbar.home}
                         </Nav.Link>
-                        <Nav.Link as={NavLink} to="/about" className="mx-2 fw-medium">
+                        <Nav.Link as={NavLink} to="/about" className="mx-2 fw-medium text-white">
                             {translations.navbar.about}
                         </Nav.Link>
-                        <Nav.Link as={NavLink} to="/initiatives" className="mx-2 fw-medium">
+                        <Nav.Link as={NavLink} to="/initiatives" className="mx-2 fw-medium text-white">
                             {translations.navbar.initiatives}
                         </Nav.Link>
-                        <Nav.Link as={NavLink} to="/news" className="mx-2 fw-medium">
+                        <Nav.Link as={NavLink} to="/news" className="mx-2 fw-medium text-white">
                             {translations.navbar.news}
                         </Nav.Link>
-                        <Nav.Link as={NavLink} to="/forms" className="mx-2 fw-medium">
+                        <Nav.Link as={NavLink} to="/forms" className="mx-2 fw-medium text-white">
                             {translations.navbar.forms}
                         </Nav.Link>
-                        <Nav.Link as={NavLink} to="/login" className="mx-2 fw-medium">
+                        <Nav.Link as={NavLink} to="/login" className="mx-2 fw-medium text-white">
                             {translations.navbar.login}
                         </Nav.Link>
                         <Button
-                            variant="primary"
-                            className="ms-lg-3 mt-3 mt-lg-0 rounded-pill px-4 fw-bold shadow-sm"
+                            variant="light"
+                            className="ms-lg-3 mt-3 mt-lg-0 rounded-pill px-4 fw-bold shadow-sm text-primary"
                             onClick={handleLanguageToggle}
                         >
                             {translations.navbar.language}
