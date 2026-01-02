@@ -1,4 +1,4 @@
-export const API_BASE_URL = 'https://cd80.duckdns.org';
+export const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 const getAuthHeaders = () => {
     const token = localStorage.getItem('authToken');

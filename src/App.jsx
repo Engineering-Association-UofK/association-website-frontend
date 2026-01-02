@@ -18,7 +18,6 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
               {/* Add other routes as placeholders for now */}
-              <Route path="/initiatives" element={<div className="container mt-5"><h2>Initiatives Page</h2></div>} />
               <Route path="/news" element={<div className="container mt-5"><h2>News Page</h2></div>} />
               <Route path="/forms" element={<div className="container mt-5"><h2>Forms Page</h2></div>} />
               <Route path="/login" element={<div className="container mt-5"><h2>Login Page</h2></div>} />

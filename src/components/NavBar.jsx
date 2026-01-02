@@ -31,15 +31,6 @@ const NavigationBar = () => {
                         <Nav.Link as={NavLink} to="/about" className="mx-2 fw-medium text-white">
                             {translations.navbar.about}
                         </Nav.Link>
-                        <Nav.Link as={NavLink} to="/initiatives" className="mx-2 fw-medium text-white">
-                            {translations.navbar.initiatives}
-                        </Nav.Link>
-                        <Nav.Link as={NavLink} to="/news" className="mx-2 fw-medium text-white">
-                            {translations.navbar.news}
-                        </Nav.Link>
-                        <Nav.Link as={NavLink} to="/forms" className="mx-2 fw-medium text-white">
-                            {translations.navbar.forms}
-                        </Nav.Link>
                         <Nav.Link as={NavLink} to="/login" className="mx-2 fw-medium text-white">
                             {translations.navbar.login}
                         </Nav.Link>
