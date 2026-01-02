@@ -37,6 +37,9 @@ const NavigationBar = () => {
                         <Nav.Link as={NavLink} to="/forms" className="mx-2 fw-medium">
                             {translations.navbar.forms}
                         </Nav.Link>
+                        <Nav.Link as={NavLink} to="/admin" className="mx-2 fw-medium">
+                            {translations.navbar.admin}
+                        </Nav.Link>
                         <Nav.Link as={NavLink} to="/login" className="mx-2 fw-medium">
                             {translations.navbar.login}
                         </Nav.Link>
