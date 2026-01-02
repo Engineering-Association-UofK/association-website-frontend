@@ -4,6 +4,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import headerImg from '../../utils/images/home-page-header.jpg';
 import './Home.css';
 import NewsFeed from "../../components/NewsFeed.jsx";
+import FAQsList from "../../components/FAQsList.jsx";
 
 const Home = () => {
     const { translations, language } = useLanguage();
@@ -75,33 +76,7 @@ const Home = () => {
 
             {/* FAQ Section */}
             <section className="py-5 bg-light">
-                <Container>
-                    <h2 className="text-center mb-5 text-primary fw-bold">{translations.home.faq.title}</h2>
-                    <Row className="justify-content-center">
-                        <Col lg={8}>
-                            <Accordion defaultActiveKey="0" flush>
-                                <Accordion.Item eventKey="0">
-                                    <Accordion.Header>{translations.home.faq.q1}</Accordion.Header>
-                                    <Accordion.Body>
-                                        {translations.home.faq.a1}
-                                    </Accordion.Body>
-                                </Accordion.Item>
-                                <Accordion.Item eventKey="1">
-                                    <Accordion.Header>{translations.home.faq.q2}</Accordion.Header>
-                                    <Accordion.Body>
-                                        {translations.home.faq.a2}
-                                    </Accordion.Body>
-                                </Accordion.Item>
-                                <Accordion.Item eventKey="2">
-                                    <Accordion.Header>{translations.home.faq.q3}</Accordion.Header>
-                                    <Accordion.Body>
-                                        {translations.home.faq.a3}
-                                    </Accordion.Body>
-                                </Accordion.Item>
-                            </Accordion>
-                        </Col>
-                    </Row>
-                </Container>
+                <FAQsList />
             </section>
         </div>
     );

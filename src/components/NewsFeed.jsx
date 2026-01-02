@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Spinner, Alert } from 'react-bootstrap';
 import {useLanguage} from "../context/LanguageContext.jsx";
 import {Link} from "react-router-dom";
+import {CONFIG} from "../config/index.js";
 
 const NewsFeed = ({ start = 0, end = 3, card = true }) => {
     const { translations, language } = useLanguage();
@@ -12,7 +13,7 @@ const NewsFeed = ({ start = 0, end = 3, card = true }) => {
     useEffect(() => {
         const fetchNews = async () => {
             try {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/blogs`);
+                const response = await fetch(`${CONFIG.API_BASE_URL}/blogs`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch news feed');
                 }
