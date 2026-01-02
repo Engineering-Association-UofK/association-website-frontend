@@ -47,7 +47,6 @@ h6 {
 
 .nav-link {
   position: relative;
-  color: #333 !important;
 }
 
 .nav-link::after {
@@ -67,7 +66,8 @@ h6 {
 }
 
 .nav-link.active {
-  color: var(--primary-color) !important;
+  color: #fff !important;
+  font-weight: 700;
 }
 
 /* RTL Support */

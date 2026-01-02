@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Button, Card, Accordion } from 'react-bootstrap';
 import { useLanguage } from '../../context/LanguageContext';
 import headerImg from '../../utils/images/home-page-header.jpg';
 import './Home.css';
+import NewsFeed from "../../components/NewsFeed.jsx";
 
 const Home = () => {
     const { translations, language } = useLanguage();
@@ -69,28 +70,7 @@ const Home = () => {
 
             {/* News Snippet */}
             <section className="py-5">
-                <Container>
-                    <h2 className="text-center mb-5 text-primary fw-bold">{translations.home.news.title}</h2>
-                    <Row>
-                        {[1, 2, 3].map((item) => (
-                            <Col md={4} key={item} className="mb-4">
-                                <Card className="h-100 shadow-sm border-0">
-                                    <div className="bg-secondary" style={{ height: '200px' }}></div>
-                                    <Card.Body>
-                                        <small className="text-muted d-block mb-2">Oct 24, 2024</small>
-                                        <Card.Title className="fw-bold">Engineering Innovation Fair 2024</Card.Title>
-                                        <Card.Text className="text-muted">
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum.
-                                        </Card.Text>
-                                        <a href="#" className="text-primary text-decoration-none fw-bold">
-                                            {translations.home.news.readMore} &rarr;
-                                        </a>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-                        ))}
-                    </Row>
-                </Container>
+                <NewsFeed />
             </section>
 
             {/* FAQ Section */}
