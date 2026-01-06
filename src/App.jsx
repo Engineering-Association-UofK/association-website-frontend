@@ -10,6 +10,8 @@ import BlogsEntry from './pages/Blogs/BlogsEntry';
 import FAQsDashboard from './pages/FAQs/FAQsDashboard';
 import GalleryDashboard from './pages/Gallery/GalleryDashboard';
 import './App.css';
+import RegisterForm from "./components/RegisterForm.jsx";
+import LoginForm from "./components/LoginForm.jsx";
 
 function App() {
   return (
@@ -32,7 +34,8 @@ function App() {
                 <Route path="faqs" element={<FAQsDashboard />} />
                 <Route path="gallery" element={<GalleryDashboard />} />
               </Route>
-              <Route path="/login" element={<div className="container mt-5"><h2>Login Page</h2></div>} />
+              <Route path="/login" element={<LoginForm/>} />
+              <Route path="/register" element={<RegisterForm />} />
             </Routes>
           </main>
           <Footer />

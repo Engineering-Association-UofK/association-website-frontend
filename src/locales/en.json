@@ -46,6 +46,32 @@
         "visionText": "To be the leading student organization that inspires the next generation of engineers to solve global challenges.",
         "team": "Our Team"
     },
+    "login": {
+        "title": "Login",
+        "username": "Username",
+        "password": "Password",
+        "remember": "Remember Me",
+        "forgotPassword": "Forgot Password?",
+        "login": "Login",
+        "loading": "Logging in...",
+        "dontHaveAccount": "Don't have an account?",
+        "register": "Register",
+        "error": "Login failed. Please check your credentials."
+    },
+    "register": {
+      "title": "Register",
+      "username": "Username",
+      "email": "Email Address",
+      "emailExample": "name@example.com",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "remember": "Remember Me",
+      "forgotPassword": "Forgot Password?",
+      "register": "Register",
+      "loading": "Registering...",
+      "haveAccount": "Already have an account?",
+      "login": "Login"
+    },
     "footer": {
         "contact": "Contact Us",
         "follow": "Follow Us",
