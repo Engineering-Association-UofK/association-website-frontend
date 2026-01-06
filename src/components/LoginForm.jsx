@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import {useLanguage} from "../context/LanguageContext.jsx";
@@ -17,8 +17,21 @@ const LoginForm = () => {
     const [loading, setLoading] = useState(false);
     const [isVerifying, setIsVerifying] = useState(false);
     const [verificationCode, setVerificationCode] = useState('');
+    const [resendTimer, setResendTimer] = useState(0);
+
+    useEffect(() => {
+        let interval;
+        if (resendTimer > 0) {
+            interval = setInterval(() => {
+                setResendTimer((prev) => prev - 1);
+            }, 1000);
+        }
+        return () => clearInterval(interval);
+    }, [resendTimer]);
 
     const sendVerificationCode = async () => {
+        if (resendTimer > 0) return;
+        setResendTimer(60);
         try {
             await fetch(`${CONFIG.API_BASE_URL_RAW}/admin/send-code`, {
                 method: 'POST',
@@ -27,6 +40,7 @@ const LoginForm = () => {
             });
         } catch (err) {
             setError('Failed to send verification code. Please try resending.');
+            setResendTimer(0);
         }
     };
 
@@ -144,7 +158,14 @@ const LoginForm = () => {
                                         {loading ? 'Verifying...' : 'Verify'}
                                     </Button>
                                     <div className="text-center mt-3">
-                                        <Button variant="link" className="text-decoration-none" onClick={sendVerificationCode}>Resend Code</Button>
+                                        <Button 
+                                            variant="link" 
+                                            className="text-decoration-none" 
+                                            onClick={sendVerificationCode}
+                                            disabled={resendTimer > 0}
+                                        >
+                                            {resendTimer > 0 ? `Resend Code (${resendTimer}s)` : 'Resend Code'}
+                                        </Button>
                                     </div>
                                 </Form>
                             ) : (
