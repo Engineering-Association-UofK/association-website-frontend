@@ -60,3 +60,15 @@ export const deleteNews = async (id) => {
         throw error;
     }
 };
+
+export const fetchGallery = async () => {
+    try {
+        // Assuming the endpoint is /api/gallery based on convention
+        const response = await fetch(`${API_BASE_URL}/api/gallery`);
+        if (!response.ok) throw new Error('Failed to fetch gallery images');
+        return await response.json();
+    } catch (error) {
+        console.error("Error fetching gallery:", error);
+        return [];
+    }
+};
