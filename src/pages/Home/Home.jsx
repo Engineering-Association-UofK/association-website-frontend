@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Button, Card, Accordion } from 'react-bootstrap';
 import { useLanguage } from '../../context/LanguageContext';
 import headerImg from '../../utils/images/home-page-header.jpg';
 import './Home.css';
+import NewsFeed from "../../components/NewsFeed.jsx";
+import FAQsList from "../../components/FAQsList.jsx";
 
 const Home = () => {
     const { translations, language } = useLanguage();
@@ -69,59 +71,12 @@ const Home = () => {
 
             {/* News Snippet */}
             <section className="py-5">
-                <Container>
-                    <h2 className="text-center mb-5 text-primary fw-bold">{translations.home.news.title}</h2>
-                    <Row>
-                        {[1, 2, 3].map((item) => (
-                            <Col md={4} key={item} className="mb-4">
-                                <Card className="h-100 shadow-sm border-0">
-                                    <div className="bg-secondary" style={{ height: '200px' }}></div>
-                                    <Card.Body>
-                                        <small className="text-muted d-block mb-2">Oct 24, 2024</small>
-                                        <Card.Title className="fw-bold">Engineering Innovation Fair 2024</Card.Title>
-                                        <Card.Text className="text-muted">
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum.
-                                        </Card.Text>
-                                        <a href="#" className="text-primary text-decoration-none fw-bold">
-                                            {translations.home.news.readMore} &rarr;
-                                        </a>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-                        ))}
-                    </Row>
-                </Container>
+                <NewsFeed />
             </section>
 
             {/* FAQ Section */}
             <section className="py-5 bg-light">
-                <Container>
-                    <h2 className="text-center mb-5 text-primary fw-bold">{translations.home.faq.title}</h2>
-                    <Row className="justify-content-center">
-                        <Col lg={8}>
-                            <Accordion defaultActiveKey="0" flush>
-                                <Accordion.Item eventKey="0">
-                                    <Accordion.Header>{translations.home.faq.q1}</Accordion.Header>
-                                    <Accordion.Body>
-                                        {translations.home.faq.a1}
-                                    </Accordion.Body>
-                                </Accordion.Item>
-                                <Accordion.Item eventKey="1">
-                                    <Accordion.Header>{translations.home.faq.q2}</Accordion.Header>
-                                    <Accordion.Body>
-                                        {translations.home.faq.a2}
-                                    </Accordion.Body>
-                                </Accordion.Item>
-                                <Accordion.Item eventKey="2">
-                                    <Accordion.Header>{translations.home.faq.q3}</Accordion.Header>
-                                    <Accordion.Body>
-                                        {translations.home.faq.a3}
-                                    </Accordion.Body>
-                                </Accordion.Item>
-                            </Accordion>
-                        </Col>
-                    </Row>
-                </Container>
+                <FAQsList />
             </section>
         </div>
     );
