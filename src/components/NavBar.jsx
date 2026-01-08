@@ -31,7 +31,19 @@ const NavigationBar = () => {
                         <Nav.Link as={NavLink} to="/about" className="mx-2 fw-medium text-white">
                             {translations.navbar.about}
                         </Nav.Link>
-                        <Nav.Link as={NavLink} to="/login" className="mx-2 fw-medium text-white">
+                        <Nav.Link as={NavLink} to="/initiatives" className="mx-2 fw-medium">
+                            {translations.navbar.initiatives}
+                        </Nav.Link>
+                        <Nav.Link as={NavLink} to="/news" className="mx-2 fw-medium">
+                            {translations.navbar.news}
+                        </Nav.Link>
+                        <Nav.Link as={NavLink} to="/forms" className="mx-2 fw-medium">
+                            {translations.navbar.forms}
+                        </Nav.Link>
+                        <Nav.Link as={NavLink} to="/admin" className="mx-2 fw-medium">
+                            {translations.navbar.admin}
+                        </Nav.Link>
+                        <Nav.Link as={NavLink} to="/login" className="mx-2 fw-medium">
                             {translations.navbar.login}
                         </Nav.Link>
                         <Button
