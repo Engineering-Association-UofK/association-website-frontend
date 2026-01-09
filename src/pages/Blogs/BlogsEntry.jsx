@@ -6,6 +6,7 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner';
 import { useCreateBlog, useUpdateBlog, useBlog } from '../../features/blogs/hooks/useBlogs';
+import ImageUpload from '../../components/ImageUpload';
 import './BlogsDashboard.css'
 
 const BlogsEntry = () => {
@@ -36,6 +37,7 @@ const BlogsEntry = () => {
         content: "",
         authorId: 1,
         status: "draft",
+        imageLink: "",
         createdAt: new Date(),
         updatedAt: new Date(),
     });
@@ -51,6 +53,7 @@ const BlogsEntry = () => {
             content: fetchedBlog.content || '',
             authorId: fetchedBlog.authorId,
             status: fetchedBlog.status || 'draft',
+            imageLink: fetchedBlog.imageLink || '',
             // Ensure date is formatted for <input type="date"> (YYYY-MM-DD)
             createdAt: fetchedBlog.createdAt ? new Date(fetchedBlog.createdAt) : '', 
             updatedAt: fetchedBlog.updatedAt ? new Date(fetchedBlog.updatedAt) : '', 
@@ -85,17 +88,6 @@ const BlogsEntry = () => {
                 onError: (err) => console.error("Create failed", err)
             });
         }
-
-        // createBlog(formData, {
-        //     onSuccess: () => {
-        //     // Navigate back to the list only if successful
-        //     navigate('/blogs');
-        //     },
-        //     onError: (err) => {
-        //     console.error("Failed to create blog:", err);
-        //     // React Query handles the error state automatically (isError becomes true)
-        //     }
-        // });
     };
 
     // Show Loading screen while fetching initial data for Edit
@@ -151,57 +143,67 @@ const BlogsEntry = () => {
                     </Button>
                 </div>
             </div>
-            <Form.Group className="mb-3" controlId="formGridTitle">
-                <Form.Label>Title</Form.Label>
-                <Form.Control 
-                    name="title"
-                    type="text" 
-                    placeholder="Enter title" 
-                    value={formData.title}
-                    onChange={handleChange}
-                    disabled={isPending}
-                />
-            </Form.Group>
-            <Row className="mb-3">
-                {/* <Form.Group as={Col} controlId="formGridDate">
-                <Form.Label>Date</Form.Label>
-                <Form.Control
-                    name="createdAt" 
-                    type="date" 
-                    value={formData.createdAt}
-                    onChange={handleChange}
-                    disabled={isPending}
-                />
-                </Form.Group> */}
-
-                <Form.Group as={Col} controlId="formGridStatus">
-                <Form.Label>Status</Form.Label>
-                <Form.Select
-                    name="status"
-                    value={formData.status}
-                    onChange={handleChange}
-                    disabled={isPending}
-                >
-                    <option value="draft">Draft</option>
-                    <option value="published">Published</option>
-                    <option value="archived">Archived</option>
-                </Form.Select>
+            <div className="scrollable-container">
+                <Row className="mb-3">
+                    <Col md={12}>
+                        <ImageUpload 
+                            value={formData.imageLink} 
+                            onChange={(url) => setFormData({ ...formData, imageLink: url })} 
+                        />
+                    </Col>
+                </Row>
+                <Form.Group className="mb-3" controlId="formGridTitle">
+                    <Form.Label>Title</Form.Label>
+                    <Form.Control 
+                        name="title"
+                        type="text" 
+                        placeholder="Enter title" 
+                        value={formData.title}
+                        onChange={handleChange}
+                        disabled={isPending}
+                    />
                 </Form.Group>
-            </Row>
+                <Row className="mb-3">
+                    {/* <Form.Group as={Col} controlId="formGridDate">
+                    <Form.Label>Date</Form.Label>
+                    <Form.Control
+                        name="createdAt" 
+                        type="date" 
+                        value={formData.createdAt}
+                        onChange={handleChange}
+                        disabled={isPending}
+                    />
+                    </Form.Group> */}
 
-            <Form.Group className="mb-3" controlId="formGridContent">
-                <Form.Label>Content</Form.Label>
-                <textarea
-                    name="content" 
-                    className="form-control" 
-                    id="exampleFormControlTextarea1" 
-                    rows="3" 
-                    placeholder="Enter content"
-                    value={formData.content}
-                    onChange={handleChange}
-                    disabled={isPending}
-                />
-            </Form.Group>
+                    <Form.Group as={Col} controlId="formGridStatus">
+                    <Form.Label>Status</Form.Label>
+                    <Form.Select
+                        name="status"
+                        value={formData.status}
+                        onChange={handleChange}
+                        disabled={isPending}
+                    >
+                        <option value="draft">Draft</option>
+                        <option value="published">Published</option>
+                        <option value="archived">Archived</option>
+                    </Form.Select>
+                    </Form.Group>
+                </Row>
+
+                <Form.Group className="mb-3" controlId="formGridContent">
+                    <Form.Label>Content</Form.Label>
+                    <textarea
+                        name="content" 
+                        className="form-control" 
+                        id="exampleFormControlTextarea1" 
+                        rows="3" 
+                        placeholder="Enter content"
+                        value={formData.content}
+                        onChange={handleChange}
+                        disabled={isPending}
+                    />
+                </Form.Group>
+            </div>
         </Form>
     </>
   )

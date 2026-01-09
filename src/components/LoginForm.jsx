@@ -3,18 +3,20 @@ import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom';
 import {useLanguage} from "../context/LanguageContext.jsx";
 import {CONFIG} from "../config/index.js";
+import {useAuth} from "../context/AuthContext.jsx";
 
 
 const LoginForm = () => {
     const { translations } = useLanguage();
     const navigate = useNavigate();
+    const { login, sendCode, verifyCode, loading } = useAuth();
 
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [isAdmin, setIsAdmin] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
     const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false);
+    
     const [isVerifying, setIsVerifying] = useState(false);
     const [verificationCode, setVerificationCode] = useState('');
     const [resendTimer, setResendTimer] = useState(0);
@@ -29,17 +31,13 @@ const LoginForm = () => {
         return () => clearInterval(interval);
     }, [resendTimer]);
 
-    const sendVerificationCode = async () => {
+    const handleSendCode = async () => {
         if (resendTimer > 0) return;
         setResendTimer(60);
         try {
-            await fetch(`${CONFIG.API_BASE_URL_RAW}/admin/send-code`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name })
-            });
+            await sendCode(name);
         } catch (err) {
-            setError('Failed to send verification code. Please try resending.');
+            setError('Failed to send verification code.');
             setResendTimer(0);
         }
     };
@@ -47,81 +45,29 @@ const LoginForm = () => {
     const handleSubmit = async (e) => {
         if (e) e.preventDefault();
         setError('');
-        setLoading(true);
 
-        const endpoint = isAdmin ? `${CONFIG.API_BASE_URL_RAW}/admin/login` : `${CONFIG.API_BASE_URL_RAW}/login`;
+        const result = await login({ name, password, isAdmin, rememberMe });
 
-        try {
-            const response = await fetch(endpoint, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, password }),
-            });
-
-            const text = await response.text();
-            let data = {};
-            try {
-                data = JSON.parse(text);
-            } catch (err) {
-                // If parsing fails, we will rely on 'text' below.
-            }
-
-            const responseMessage = data.message || text;
-            if (response.status === 401 && responseMessage === "Account not verified") {
-                setIsVerifying(true);
-                setLoading(false);
-                await sendVerificationCode();
-                return;
-            }
-
-            if (!response.ok) {
-                throw new Error(responseMessage || translations.login.error);
-            }
-
-            const token = data.token || (typeof data === 'string' ? data : text);
-
-            const storage = rememberMe ? localStorage : sessionStorage;
-            storage.setItem('sea-token', token);
-            storage.setItem('role', isAdmin ? 'admin' : 'student');
-
+        if (result.success) {
             navigate(isAdmin ? '/admin' : '/');
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
+        } else if (result.status === 'verification_needed') {
+            setIsVerifying(true);
+            await handleSendCode();
+        } else {
+            setError(result.message);
         }
     };
 
     const handleVerify = async (e) => {
         e.preventDefault();
         setError('');
-        setLoading(true);
 
         try {
-            const response = await fetch(`${CONFIG.API_BASE_URL_RAW}/admin/verify`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, code: verificationCode })
-            });
-
-            const text = await response.text();
-
-            if (!response.ok) {
-                let errorMessage = 'Verification failed';
-                try {
-                    const data = JSON.parse(text);
-                    errorMessage = data.message || errorMessage;
-                } catch (e) {
-                    errorMessage = text || errorMessage;
-                }
-                throw new Error(errorMessage);
-            }
-
-            // Retry login after successful verification
-            await handleSubmit(null);
+            await verifyCode({ name, code: verificationCode });
+            // If verify works, try logging in again automatically
+            await handleSubmit(null); 
         } catch (err) {
-            setError(err.message);
-            setLoading(false);
+            setError(err.response?.data?.message || 'Verification failed');
         }
     };
 
@@ -161,7 +107,7 @@ const LoginForm = () => {
                                         <Button 
                                             variant="link" 
                                             className="text-decoration-none" 
-                                            onClick={sendVerificationCode}
+                                            onClick={handleSendCode}
                                             disabled={resendTimer > 0}
                                         >
                                             {resendTimer > 0 ? `Resend Code (${resendTimer}s)` : 'Resend Code'}
