@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Carousel, Alert, Spinner } from 'react-bootstrap';
-import { fetchGallery } from '../../utils/api';
-import { useLanguage } from '../../context/LanguageContext';
+import { useLanguage } from '../context/LanguageContext.jsx';
+import { CONFIG } from '../config/index.js';
 
 const Gallery = () => {
     const { translations } = useLanguage();
@@ -12,7 +12,11 @@ const Gallery = () => {
     useEffect(() => {
         const loadGallery = async () => {
             try {
-                const data = await fetchGallery();
+                const response = await fetch(`${CONFIG.API_BASE_URL}/gallery`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch gallery');
+                }
+                const data = await response.json();
                 setImages(data);
             } catch (err) {
                 setError('Failed to load gallery images.');
@@ -52,14 +56,13 @@ const Gallery = () => {
                         <Carousel.Item key={img.id || index} style={{ maxHeight: '600px' }}>
                             <img
                                 className="d-block w-100"
-                                src={img.url || img.imageUrl} // Adjust based on API response structure
-                                alt={img.caption || `Slide ${index + 1}`}
+                                src={img.imageLink}
+                                alt={img.title || `Slide ${index + 1}`}
                                 style={{ objectFit: 'cover', height: '600px', width: '100%' }}
                             />
-                            {img.caption && (
+                            {img.title && (
                                 <Carousel.Caption>
                                     <h3>{img.title}</h3>
-                                    <p>{img.caption}</p>
                                 </Carousel.Caption>
                             )}
                         </Carousel.Item>

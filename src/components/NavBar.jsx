@@ -57,10 +57,6 @@ const NavigationBar = () => {
                             {translations.navbar.news}
                         </Nav.Link>
 
-                        <Nav.Link as={NavLink} to="/gallery" className="mx-2 fw-medium">
-                            {translations.navbar.gallery}
-                        </Nav.Link>
-
                         <Nav.Link as={NavLink} to="/admin" className="mx-2 fw-medium">
                             {translations.navbar.admin}
                         </Nav.Link>

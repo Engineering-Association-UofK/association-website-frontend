@@ -7,7 +7,7 @@ import BlogsDashboard from './pages/Blogs/BlogsDashboard';
 import BlogsEntry from './pages/Blogs/BlogsEntry';
 import FAQsDashboard from './pages/FAQs/FAQsDashboard';
 import GalleryDashboard from './pages/Gallery/GalleryDashboard';
-import Gallery from './pages/Gallery/Gallery';
+import Gallery from './components/Gallery.jsx';
 import MainLayout from './layouts/MainLayout';
 import StandaloneLayout from './layouts/StandaloneLayout';
 import './App.css';
@@ -25,7 +25,6 @@ function App() {
             <Route path="/about" element={<About />} />
             {/* Add other public routes here */}
             <Route path="/news" element={<div className="container mt-5"><h2>News Page</h2></div>} />
-            <Route path="/gallery" element={<Gallery />} />
           </Route>
 
           {/* Standalone Layout containing only Back to Home button */}

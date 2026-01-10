@@ -5,6 +5,7 @@ import headerImg from '../../utils/images/home-page-header.jpg';
 import './Home.css';
 import NewsFeed from "../../components/NewsFeed.jsx";
 import FAQsList from "../../components/FAQsList.jsx";
+import Gallery from "../../components/Gallery.jsx";
 
 const Home = () => {
     const { translations, language } = useLanguage();
@@ -44,6 +45,8 @@ const Home = () => {
                     </Row>
                 </Container>
             </section>
+
+            <Gallery />
 
             {/* Initiatives Snippet */}
             <section className="py-5 bg-light">
