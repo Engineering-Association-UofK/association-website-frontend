@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Spinner, Alert } from 'react-bootstrap';
-import {useLanguage} from "../context/LanguageContext.jsx";
+import {useLanguage} from "../../context/LanguageContext.jsx";
 import {Link} from "react-router-dom";
-import {CONFIG} from "../config/index.js";
+import {CONFIG} from "../../config/index.js";
 
 const NewsFeed = ({ start = 0, end = 3, card = true }) => {
     const { translations, language } = useLanguage();
@@ -32,12 +32,13 @@ const NewsFeed = ({ start = 0, end = 3, card = true }) => {
     if (loading) return <div className="text-center py-5"><Spinner animation="border" variant="primary" /></div>;
     if (error) return <Container className="py-3"><Alert variant="danger">Error loading news: {error}</Alert></Container>;
 
-    // For card view
-    if (card) {
-        return (
+    return (
+        <section className="py-5">
             <Container>
                 <h2 className="text-center mb-5 text-primary fw-bold">{translations.home.news.title}</h2>
-                <Row>
+                
+                {/* Desktop View: Grid of Cards (Hidden on small screens) */}
+                <Row className="d-none d-md-flex">
                     {newsItems.length > 0 ? (
                         newsItems.map((item) => (
                             <Col md={4} key={item.id} className="mb-4">
@@ -73,19 +74,51 @@ const NewsFeed = ({ start = 0, end = 3, card = true }) => {
                         </Col>
                     )}
                 </Row>
+
+                {/* Mobile View: List & Thumbnail (Hidden on medium+ screens) */}
+                <div className="d-md-none d-flex flex-column gap-3">
+                    {newsItems.length > 0 ? (
+                        newsItems.map((item) => (
+                            <Card key={item.id} className="shadow-sm border-0 overflow-hidden">
+                                <Row className="g-0 align-items-center">
+                                    <Col xs={4}>
+                                        <div 
+                                            style={{
+                                                height: '100%',
+                                                minHeight: '120px',
+                                                backgroundImage: item.imageLink ? `url(${item.imageLink})` : 'none',
+                                                backgroundSize: 'cover',
+                                                backgroundPosition: 'center',
+                                                backgroundColor: item.imageLink ? 'transparent' : '#6c757d'
+                                            }}
+                                        />
+                                    </Col>
+                                    <Col xs={8}>
+                                        <Card.Body className="py-2 pe-3 ps-2">
+                                            <small className="text-muted d-block mb-1" style={{fontSize: '0.8rem'}}>
+                                                {new Date(item.updatedAt).toLocaleDateString()}
+                                            </small>
+                                            <Card.Title className="fw-bold mb-1" style={{fontSize: '1rem'}}>
+                                                {item.title}
+                                            </Card.Title>
+                                            <Card.Text className="text-muted text-truncate mb-2" style={{ fontSize: '0.9rem' }}>
+                                                {item.content}
+                                            </Card.Text>
+                                            <Link to={`blogs/${item.id}`} className="text-primary text-decoration-none fw-bold small">
+                                                {translations.home.news.readMore} &rarr;
+                                            </Link>
+                                        </Card.Body>
+                                    </Col>
+                                </Row>
+                            </Card>
+                        ))
+                    ) : (
+                        <p className="text-center text-muted">No news right now</p>
+                    )}
+                </div>
             </Container>
-        );
-    }
-    else {
-        return (
-            <Container>
-                <h2 className="text-center mb-5 text-primary fw-bold">{translations.home.news.title}</h2>
-                <Row>
-                    // TODO: Make a "List & Thumbnail" version with proper styling for mobile screens responsivity
-                </Row>
-            </Container>
-        );
-    }
+        </section>
+    );
 
 };
 

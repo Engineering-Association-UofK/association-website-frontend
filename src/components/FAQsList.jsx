@@ -34,29 +34,31 @@ const FAQsList = () => {
     if (error) return <Container className="py-3"><Alert variant="danger">Error loading FAQ list: {error}</Alert></Container>;
 
     return (
-        <Container>
-            <h2 className="text-center mb-5 text-primary fw-bold">{translations.home.faq.title}</h2>
-            <Row className="justify-content-center">
-                <Col lg={8}>
-                    <Accordion defaultActiveKey="0" flush>
-                        {FAQsItems.length > 0 ? (
-                            FAQsItems.map((item) => (
-                                <Accordion.Item eventKey={item.id}>
-                                    <Accordion.Header>{item.title}</Accordion.Header>
-                                    <Accordion.Body>
-                                        {item.body}
-                                    </Accordion.Body>
-                                </Accordion.Item>
-                            ))
-                        ) : (
-                            <Col className="text-center">
-                                <p className="text-muted">Check again later</p>
-                            </Col>
-                        )}
-                    </Accordion>
-                </Col>
-            </Row>
-        </Container>
+        <section className="py-5 bg-light">
+            <Container>
+                <h2 className="text-center mb-5 text-primary fw-bold">{translations.home.faq.title}</h2>
+                <Row className="justify-content-center">
+                    <Col lg={8}>
+                        <Accordion defaultActiveKey="0" flush>
+                            {FAQsItems.length > 0 ? (
+                                FAQsItems.map((item) => (
+                                    <Accordion.Item eventKey={item.id}>
+                                        <Accordion.Header>{item.title}</Accordion.Header>
+                                        <Accordion.Body>
+                                            {item.body}
+                                        </Accordion.Body>
+                                    </Accordion.Item>
+                                ))
+                            ) : (
+                                <Col className="text-center">
+                                    <p className="text-muted">Check again later</p>
+                                </Col>
+                            )}
+                        </Accordion>
+                    </Col>
+                </Row>
+            </Container>
+        </section>
     );
 }
 
