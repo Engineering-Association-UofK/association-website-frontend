@@ -1,6 +1,6 @@
 import apiClient from '../../../api/axiosClient';
 
-const ENDPOINT = '/blogs';
+const ENDPOINT = '/api/blogs';
 
 export const blogService = {
   getAll: async (params) => {

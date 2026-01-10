@@ -124,7 +124,7 @@ const BlogsDashboard = () => {
                         <Button 
                           variant="outline-primary" 
                           size="sm"
-                          onClick={handleEdit}
+                          onClick={() => handleEdit(row.id)}
                         >
                           <i className="bi pe-none bi-pencil-fill"></i>
                         </Button>
