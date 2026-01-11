@@ -29,7 +29,14 @@ const Gallery = () => {
         );
     }
 
-    const displayImages = images.length < 6 ? [...images, ...images, ...images, ...images] : [...images, ...images];
+    let displayImages = [];
+    if (images.length > 0) {
+        let loopSet = [...images];
+        while (loopSet.length < 6) {
+            loopSet = [...loopSet, ...images];
+        }
+        displayImages = [...loopSet, ...loopSet];
+    }
 
     return (
         <section className="py-5 overflow-hidden">
