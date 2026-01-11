@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
+import {useAuth} from "../context/AuthContext.jsx";
 
 const RegisterForm = () => {
     const { translations } = useLanguage();
     const navigate = useNavigate();
+        const { register, loading } = useAuth();
 
     const [formData, setFormData] = useState({
         username: '',
@@ -14,7 +16,6 @@ const RegisterForm = () => {
         confirmPassword: ''
     });
     const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
         setFormData({
@@ -32,33 +33,43 @@ const RegisterForm = () => {
             return;
         }
 
-        setLoading(true);
+        const result = await register({
+            name: formData.username,
+            email: formData.email,
+            password: formData.password
+        });
 
-        try {
-            const response = await fetch('/api/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    username: formData.username,
-                    email: formData.email,
-                    password: formData.password
-                }),
-            });
-
-            if (!response.ok) {
-                const data = await response.json();
-                throw new Error(data.message || 'Registration failed');
-            }
-
-            // Redirect to login page upon successful registration
+        if (result.success) {
             navigate('/login');
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
+        } else {
+            setError(result.message);
         }
+
+        // try {
+        //     const response = await fetch('/api/register', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify({
+        //             username: formData.username,
+        //             email: formData.email,
+        //             password: formData.password
+        //         }),
+        //     });
+
+        //     if (!response.ok) {
+        //         const data = await response.json();
+        //         throw new Error(data.message || 'Registration failed');
+        //     }
+
+        //     // Redirect to login page upon successful registration
+        //     navigate('/login');
+        // } catch (err) {
+        //     setError(err.message);
+        // } finally {
+        //     setLoading(false);
+        // }
     };
 
     return (
