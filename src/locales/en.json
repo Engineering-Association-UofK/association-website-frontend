@@ -5,6 +5,7 @@
         "about": "About",
         "initiatives": "Initiatives",
         "news": "News",
+        "gallery": "Gallery",
         "forms": "Forms",
         "admin": "Admin",
         "login": "Login",
@@ -38,6 +39,11 @@
             "a3": "You can email us at contact@esa-university.edu or use the contact form on our website."
         }
     },
+    "gallery": {
+        "title": "Photo Gallery",
+        "loading": "Loading photos...",
+        "noPhotos": "No photos available at the moment."
+    },
     "about": {
         "title": "About ESA",
         "mission": "Our Mission",
@@ -59,18 +65,18 @@
         "error": "Login failed. Please check your credentials."
     },
     "register": {
-      "title": "Register",
-      "username": "Username",
-      "email": "Email Address",
-      "emailExample": "name@example.com",
-      "password": "Password",
-      "confirmPassword": "Confirm Password",
-      "remember": "Remember Me",
-      "forgotPassword": "Forgot Password?",
-      "register": "Register",
-      "loading": "Registering...",
-      "haveAccount": "Already have an account?",
-      "login": "Login"
+        "title": "Register",
+        "username": "Username",
+        "email": "Email Address",
+        "emailExample": "name@example.com",
+        "password": "Password",
+        "confirmPassword": "Confirm Password",
+        "remember": "Remember Me",
+        "forgotPassword": "Forgot Password?",
+        "register": "Register",
+        "loading": "Registering...",
+        "haveAccount": "Already have an account?",
+        "login": "Login"
     },
     "footer": {
         "contact": "Contact Us",
