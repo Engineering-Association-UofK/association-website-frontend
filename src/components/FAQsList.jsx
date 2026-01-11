@@ -1,7 +1,7 @@
 import {Accordion, Alert, Col, Container, Row, Spinner} from "react-bootstrap";
 import React, {useEffect, useState} from "react";
 import {useLanguage} from "../context/LanguageContext.jsx";
-import {CONFIG} from "../config/index.js";
+import api from "../utils/api.js";
 
 
 const FAQsList = () => {
@@ -14,14 +14,10 @@ const FAQsList = () => {
         const fetchFAQs = async () => {
             setLoading(true);
             try {
-                const response = await fetch(`${CONFIG.API_BASE_URL}/faqs?lang=${language}`);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch news feed');
-                }
-                const data = await response.json();
-                setFAQsItems(data);
+                const response = await api.get(`/faqs?lang=${language}`);
+                setFAQsItems(response.data);
             } catch (err) {
-                setError(err.message);
+                setError(err.response?.data?.message || err.message || 'Failed to fetch FAQs');
             } finally {
                 setLoading(false);
             }

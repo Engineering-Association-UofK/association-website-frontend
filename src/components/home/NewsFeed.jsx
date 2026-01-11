@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Spinner, Alert } from 'react-bootstrap';
 import {useLanguage} from "../../context/LanguageContext.jsx";
 import {Link} from "react-router-dom";
-import {CONFIG} from "../../config/index.js";
+import api from "../../utils/api.js";
 
 const NewsFeed = ({ start = 0, end = 3, card = true }) => {
     const { translations, language } = useLanguage();
@@ -13,14 +13,11 @@ const NewsFeed = ({ start = 0, end = 3, card = true }) => {
     useEffect(() => {
         const fetchNews = async () => {
             try {
-                const response = await fetch(`${CONFIG.API_BASE_URL}/blogs`);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch news feed');
-                }
-                const data = await response.json();
-                setNewsItems(data.reverse().slice(start, end));
+                const response = await api.get('/blogs');
+                const publishedNews = response.data.filter(item => item.status === 'published');
+                setNewsItems(publishedNews.reverse().slice(start, end));
             } catch (err) {
-                setError(err.message);
+                setError(err.response?.data?.message || err.message);
             } finally {
                 setLoading(false);
             }
@@ -36,8 +33,7 @@ const NewsFeed = ({ start = 0, end = 3, card = true }) => {
         <section className="py-5">
             <Container>
                 <h2 className="text-center mb-5 text-primary fw-bold">{translations.home.news.title}</h2>
-                
-                {/* Desktop View: Grid of Cards (Hidden on small screens) */}
+
                 <Row className="d-none d-md-flex">
                     {newsItems.length > 0 ? (
                         newsItems.map((item) => (
@@ -75,7 +71,6 @@ const NewsFeed = ({ start = 0, end = 3, card = true }) => {
                     )}
                 </Row>
 
-                {/* Mobile View: List & Thumbnail (Hidden on medium+ screens) */}
                 <div className="d-md-none d-flex flex-column gap-3">
                     {newsItems.length > 0 ? (
                         newsItems.map((item) => (

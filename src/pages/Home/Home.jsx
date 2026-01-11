@@ -8,6 +8,7 @@ import InitiativesSection from "../../components/home/InitiativesSection.jsx";
 import NewsFeed from "../../components/home/NewsFeed.jsx";
 import FAQsList from "../../components/FAQsList.jsx";
 import Gallery from "../../components/Gallery.jsx";
+import ContactSection from "../../components/home/ContactSection.jsx";
 
 const Home = () => {
     return (
@@ -17,6 +18,7 @@ const Home = () => {
             <Gallery />
             <InitiativesSection />
             <NewsFeed />
+            <ContactSection />
             <FAQsList />
         </div>
     );

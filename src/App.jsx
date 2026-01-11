@@ -4,6 +4,7 @@ import Home from './pages/Home/Home';
 import About from './pages/About/About';
 import AdminLayout from './pages/Admin/AdminLayout';
 import BlogsDashboard from './pages/Blogs/BlogsDashboard';
+import BlogsPage from './pages/Blogs/BlogsPage';
 import BlogsEntry from './pages/Blogs/BlogsEntry';
 import FAQsDashboard from './pages/FAQs/FAQsDashboard';
 import GalleryDashboard from './pages/Gallery/GalleryDashboard';
@@ -24,7 +25,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             {/* Add other public routes here */}
-            <Route path="/news" element={<div className="container mt-5"><h2>News Page</h2></div>} />
+            <Route path="/blogs" element={<BlogsPage />} />
           </Route>
 
           {/* Standalone Layout containing only Back to Home button */}

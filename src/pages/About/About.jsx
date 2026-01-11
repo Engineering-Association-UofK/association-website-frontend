@@ -1,6 +1,7 @@
 import React from 'react';
-import { Container, Row, Col, Card } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import { useLanguage } from '../../context/LanguageContext';
+import TeamSection from '../../components/TeamSection';
 import './About.css';
 
 const About = () => {
@@ -42,29 +43,7 @@ const About = () => {
                     </Col>
                 </Row>
 
-                <Row>
-                    <Col>
-                        <h2 className="text-center mb-5 text-primary fw-bold">{translations.about.team}</h2>
-                        <Row>
-                            {[1, 2, 3, 4].map((item) => (
-                                <Col md={3} sm={6} key={item} className="mb-4">
-                                    <Card className="border-0 shadow-sm text-center h-100 hover-card">
-                                        <div className="card-img-top bg-light rounded-circle mx-auto mt-4 d-flex align-items-center justify-content-center text-secondary" style={{ width: '120px', height: '120px' }}>
-                                            <span className="fs-1">👤</span>
-                                        </div>
-                                        <Card.Body>
-                                            <Card.Title className="fw-bold">Team Member {item}</Card.Title>
-                                            <Card.Subtitle className="mb-2 text-muted">Position</Card.Subtitle>
-                                            <Card.Text className="small">
-                                                Lorem ipsum dolor sit amet.
-                                            </Card.Text>
-                                        </Card.Body>
-                                    </Card>
-                                </Col>
-                            ))}
-                        </Row>
-                    </Col>
-                </Row>
+                <TeamSection />
             </Container>
         </div>
     );

@@ -1,33 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Container, Alert, Spinner } from 'react-bootstrap';
 import { useLanguage } from '../context/LanguageContext.jsx';
-import { CONFIG } from '../config/index.js';
+import { useGallery } from '../hooks/useGallery.js';
 
 const Gallery = () => {
     const { translations, language } = useLanguage();
     const isRtl = language === 'ar';
-    const [images, setImages] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        const loadGallery = async () => {
-            try {
-                const response = await fetch(`${CONFIG.API_BASE_URL}/gallery`);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch gallery');
-                }
-                const data = await response.json();
-                setImages(data);
-            } catch (err) {
-                console.error(err);
-                setError('Failed to load gallery images.');
-            } finally {
-                setLoading(false);
-            }
-        };
-        loadGallery();
-    }, []);
+    
+    const { images, loading, error } = useGallery();
 
     if (loading) {
         return (

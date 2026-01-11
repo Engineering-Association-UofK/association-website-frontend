@@ -4,11 +4,12 @@
         "home": "Home",
         "about": "About",
         "initiatives": "Initiatives",
-        "news": "News",
+        "blogs": "Blogs",
         "gallery": "Gallery",
         "forms": "Forms",
         "admin": "Admin",
         "login": "Login",
+        "logout": "Logout",
         "language": "العربية"
     },
     "home": {
@@ -37,7 +38,19 @@
             "a2": "We organize workshops, guest lectures, social events, and the annual Engineering Innovation Fair.",
             "q3": "How can I contact the ESA?",
             "a3": "You can email us at contact@esa-university.edu or use the contact form on our website."
-        }
+        },
+        "contact": {
+          "title": "Contact Us",
+          "subtitle": "Have questions? We would love to hear from you."
+        },
+      "blogsPage": {
+        "title": "Our Blogs",
+        "subtitle": "News, updates, and stories from the student community.",
+        "searchPlaceholder": "Search for articles...",
+        "readMore": "Read More",
+        "noResults": "No articles found.",
+        "latest": "Latest Post"
+      }
     },
     "gallery": {
         "title": "Photo Gallery",
@@ -45,7 +58,7 @@
         "noPhotos": "No photos available at the moment."
     },
     "about": {
-        "title": "About ESA",
+        "title": "About Us",
         "mission": "Our Mission",
         "missionText": "To empower engineering students by providing opportunities for professional development, academic support, and social engagement.",
         "vision": "Our Vision",
@@ -81,6 +94,13 @@
     "footer": {
         "contact": "Contact Us",
         "follow": "Follow Us",
-        "rights": "All rights reserved."
+        "rights": "All rights reserved.",
+        "quickLinks": "Quick Links",
+        "privacy": "Privacy Policy",
+        "terms": "Terms of Service",
+        "email": "Email",
+        "phone": "Phone",
+        "locationName": "Location",
+        "location": "Engineering Building, Main Campus"
     }
 }
