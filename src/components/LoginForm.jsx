@@ -2,24 +2,29 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import {useLanguage} from "../context/LanguageContext.jsx";
-import {CONFIG} from "../config/index.js";
 import {useAuth} from "../context/AuthContext.jsx";
 
 
 const LoginForm = () => {
     const { translations } = useLanguage();
     const navigate = useNavigate();
-    const { login, sendCode, verifyCode, loading } = useAuth();
+    const { login, sendCode, verifyCode, loading, isAuthenticated } = useAuth();
 
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
-    const [isAdmin, setIsAdmin] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(true);
     const [rememberMe, setRememberMe] = useState(false);
     const [error, setError] = useState('');
     
     const [isVerifying, setIsVerifying] = useState(false);
     const [verificationCode, setVerificationCode] = useState('');
     const [resendTimer, setResendTimer] = useState(0);
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate('/');
+        }
+    }, [isAuthenticated, navigate]);
 
     useEffect(() => {
         let interval;
@@ -159,6 +164,7 @@ const LoginForm = () => {
                                         checked={isAdmin}
                                         onChange={(e) => setIsAdmin(e.target.checked)}
                                         className="text-muted"
+                                        disabled
                                     />
                                 </Form.Group>
 
