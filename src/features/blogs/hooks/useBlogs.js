@@ -47,7 +47,7 @@ export const useUpdateBlog = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({id, data}) => blogService.update(id, data),
+    mutationFn: ({data}) => blogService.update(data),
     onSuccess: (data, variables) => {
       // Refresh the list
       queryClient.invalidateQueries(['blogs', 'list']);

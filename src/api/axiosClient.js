@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { CONFIG } from '../config';
+import { useAuth } from "../context/AuthContext.jsx";
 
 // 1. Create the instance
 const apiClient = axios.create({
@@ -11,12 +12,25 @@ const apiClient = axios.create({
   },
 });
 
+// Helper: Get Token from either storage
+const getAuthToken = () => {
+  return localStorage.getItem('sea-token') || sessionStorage.getItem('sea-token');
+};
+
+// Helper: Clear all auth data
+const clearAuthData = () => {
+  localStorage.removeItem('sea-token');
+  localStorage.removeItem('role');
+  sessionStorage.removeItem('sea-token');
+  sessionStorage.removeItem('role');
+};
+
 // 2. Request Interceptor (Attach Token)
 apiClient.interceptors.request.use(
   (config) => {
-    // const token = localStorage.getItem('authToken'); 
-    const token = "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9BRE1JTiIsInN1YiI6ImFkbWluIiwiaWF0IjoxNzY3OTgyMjg3LCJleHAiOjE3NjgxNTUwODd9.Rru_oD1Sql22jYvvoaOHSrNpsFlszbmDMixJZSzd06k"; 
-    if (token) {
+    const token = getAuthToken();
+
+    if (token && !config.skipAuth) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
@@ -34,6 +48,13 @@ apiClient.interceptors.response.use(
       localStorage.removeItem('token');
       console.error('Unauthorized! Redirecting to login...');
       // window.location.href = '/login';
+      if (!window.location.pathname.includes('/login')) {
+        clearAuthData();
+        // Force Redirect to Login
+        // We use window.location.href instead of useNavigate because
+        // we want to wipe the app state clean.
+        window.location.href = '/login?session_expired=true';
+      }
     }
     return Promise.reject(error);
   }

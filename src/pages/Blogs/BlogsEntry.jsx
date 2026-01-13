@@ -71,19 +71,16 @@ const BlogsEntry = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log("Form Data: ", formData);
-        const dataToSend = {
-            ...formData
-        }
 
         if (isEditMode) {
             // UPDATE LOGIC
-            updateMutation.mutate({ id, data: formData }, {
+            updateMutation.mutate({ data: formData }, {
                 onSuccess: () => navigate('/admin/blogs'),
                 onError: (err) => console.error("Update failed", err)
             });
         } else {
             // CREATE LOGIC
-            createMutation.mutate(dataToSend, {
+            createMutation.mutate(formData, {
                 onSuccess: () => navigate('/admin/blogs'),
                 onError: (err) => console.error("Create failed", err)
             });
