@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import api from '../../utils/api';
 
-const BlogsPage = () => {
+const Blogs = () => {
     const { translations, language } = useLanguage();
     const [blogs, setBlogs] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -143,4 +143,4 @@ const BlogsPage = () => {
     );
 };
 
-export default BlogsPage;
+export default Blogs;
