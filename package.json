@@ -1,9 +1,5 @@
 {
-<<<<<<< HEAD
   "name": "association-website-frontend",
-=======
-  "name": "markdown-editor",
->>>>>>> 8d577cb (Markdown)
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -14,7 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-<<<<<<< HEAD
     "@fortawesome/free-brands-svg-icons": "^7.1.0",
     "@fortawesome/free-solid-svg-icons": "^7.1.0",
     "@fortawesome/react-fontawesome": "^3.1.1",
@@ -26,12 +21,6 @@
     "react-bootstrap": "^2.10.10",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.11.0"
-=======
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "react-markdown": "^10.1.0",
-    "react-router-dom": "^7.12.0"
->>>>>>> 8d577cb (Markdown)
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
