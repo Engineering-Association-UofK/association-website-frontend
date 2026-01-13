@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { LanguageProvider } from './context/LanguageContext';
 import Home from './pages/Home/Home';
@@ -45,6 +46,35 @@ function App() {
         </Routes>
       </Router>
     </LanguageProvider>
+=======
+import { Routes, Route, Link } from "react-router-dom";
+import { useState } from "react";
+import EditorPage from "./Editorpage";
+import PreviewPage from "./PreviewPage";
+import "./App.css";
+
+function App() {
+  const [markdown, setMarkdown] = useState("");
+
+  return (
+    <div>
+      <nav style={{ marginBottom: "1rem" }}>
+        <Link to="/edit">Editor</Link> | <Link to="/preview">Preview</Link>
+      </nav>
+
+      <Routes>
+        {}
+        <Route
+          path="/edit"
+          element={<EditorPage markdown={markdown} setMarkdown={setMarkdown} />}
+        />
+        <Route
+          path="/preview"
+          element={<PreviewPage markdown={markdown} />}
+        />
+      </Routes>
+    </div>
+>>>>>>> 8d577cb (Markdown)
   );
 }
 

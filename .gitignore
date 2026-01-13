@@ -22,8 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+<<<<<<< HEAD
 
 
 .env
 .env.*
 !.env.example
+=======
+>>>>>>> 8d577cb (Markdown)
