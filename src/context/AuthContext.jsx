@@ -25,13 +25,13 @@ export const AuthProvider = ({ children }) => {
     setLoading(true);
     try {
       const data = await authService.login({ name, password, isAdmin });
-
+      console.log('context ', data);
       // Handle "Account not verified" special case
       if (data.message === "Account not verified") {
         return { success: false, status: 'verification_needed' };
       }
 
-      const token = data.token;
+      const token = data;
       
       // Handle Storage Choice
       const storage = rememberMe ? localStorage : sessionStorage;
