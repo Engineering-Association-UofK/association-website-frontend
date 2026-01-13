@@ -5,7 +5,7 @@ const ENDPOINT = '/api/blogs';
 export const blogService = {
   getAll: async (params) => {
     // params can be { page: 1, limit: 10, category: 'tech' }
-    return await apiClient.get(ENDPOINT, { params });
+    return await apiClient.get(ENDPOINT, { params }, { skipAuth: true });
   },
 
   getById: async (id) => {
@@ -16,9 +16,9 @@ export const blogService = {
     return await apiClient.post(ENDPOINT, data);
   },
 
-  update: async (id, data) => {
+  update: async (data) => {
     console.log("update", data);
-    return await apiClient.put(`${ENDPOINT}/${id}`, data);
+    return await apiClient.put(`${ENDPOINT}`, data);
   },
 
   delete: async (id) => {

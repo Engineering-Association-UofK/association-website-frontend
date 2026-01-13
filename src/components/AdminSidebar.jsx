@@ -15,19 +15,19 @@ const AdminSidebar = () => {
         <hr></hr>  */}
         <ul className="nav nav-pills flex-column mb-auto"> 
           <li className="nav-item"> 
-            <NavLink to="/admin/blogs" className="nav-link text-white">
+            <NavLink to="/admin/blogs" className="nav-link">
               <i className="bi pe-none bi-newspaper me-2"></i>
               Blogs
             </NavLink>
           </li> 
           <li className="nav-item"> 
-            <NavLink to="/admin/faqs" className="nav-link text-white">
+            <NavLink to="/admin/faqs" className="nav-link">
               <i className="bi pe-none bi-chat-left-text me-2"></i>
               FAQs
             </NavLink>
           </li> 
           <li className="nav-item"> 
-            <NavLink to="/admin/gallery" className="nav-link text-white">
+            <NavLink to="/admin/gallery" className="nav-link">
               <i className="bi pe-none bi-image me-2"></i>
               Gallery
             </NavLink>
