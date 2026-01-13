@@ -4,16 +4,16 @@ import Home from './pages/Home/Home';
 import About from './pages/About/About';
 import AdminLayout from './pages/Admin/AdminLayout';
 import BlogsDashboard from './pages/Blogs/BlogsDashboard';
-import BlogsPage from './pages/Blogs/BlogsPage';
+import Blogs from './pages/Blogs/Blogs.jsx';
 import BlogsEntry from './pages/Blogs/BlogsEntry';
 import FAQsDashboard from './pages/FAQs/FAQsDashboard';
 import GalleryDashboard from './pages/Gallery/GalleryDashboard';
-import Gallery from './components/Gallery.jsx';
 import MainLayout from './layouts/MainLayout';
 import StandaloneLayout from './layouts/StandaloneLayout';
 import './App.css';
 import RegisterForm from "./components/RegisterForm.jsx";
 import LoginForm from "./components/LoginForm.jsx";
+import BlogPage from "./pages/Blogs/BlogPage.jsx";
 
 function App() {
   return (
@@ -25,7 +25,8 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             {/* Add other public routes here */}
-            <Route path="/blogs" element={<BlogsPage />} />
+            <Route path="/blogs" element={<Blogs />} />
+            <Route path="/blogs/:id" element={<BlogPage />} />
           </Route>
 
           {/* Standalone Layout containing only Back to Home button */}

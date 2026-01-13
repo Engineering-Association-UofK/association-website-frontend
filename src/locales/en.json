@@ -49,7 +49,9 @@
         "searchPlaceholder": "Search for articles...",
         "readMore": "Read More",
         "noResults": "No articles found.",
-        "latest": "Latest Post"
+        "latest": "Latest Post",
+        "backToBlogs": "Back to Blogs",
+        "lastUpdated": "Last Updated"
       }
     },
     "gallery": {

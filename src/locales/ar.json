@@ -49,7 +49,9 @@
           "searchPlaceholder": "ابحث عن المقالات...",
           "readMore": "اقرأ المزيد",
           "noResults": "لم يتم العثور على مقالات.",
-          "latest": "أحدث المنشورات"
+          "latest": "أحدث المنشورات",
+          "backToBlogs": "العودة للمدونة",
+          "lastUpdated": "آخر تحديث"
         }
     },
     "gallery": {
