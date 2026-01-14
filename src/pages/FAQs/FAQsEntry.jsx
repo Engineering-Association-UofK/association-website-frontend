@@ -5,61 +5,53 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner';
-import { useCreateBlog, useUpdateBlog, useBlog } from '../../features/blogs/hooks/useBlogs';
-import ImageUpload from '../../components/ImageUpload';
-import './BlogsDashboard.css'
+import { useCreateFaq, useUpdateFaq, useFaq } from '../../features/faqs/hooks/useFaqs';
+import { useLanguage } from '../../context/LanguageContext.jsx';
+import './FaqsDashboard.css'
 
-const BlogsEntry = () => {
+const FAQsEntry = () => {
 
     const { id } = useParams();
-    console.log("blog Id: ", id);
+    console.log("faq Id: ", id);
     
     const navigate = useNavigate();
 
     const isEditMode = id && id !== '0';
 
-    const createMutation = useCreateBlog();
-    const updateMutation = useUpdateBlog();
+    const createMutation = useCreateFaq();
+    const updateMutation = useUpdateFaq();
+    const { language } = useLanguage();
 
     // Fetch Data (Only runs if isEditMode is true)
     const { 
-        data: fetchedBlog, 
+        data: fetchedFaq, 
         isLoading: isLoadingData, 
         isError: isFetchError 
-    } = useBlog(id);
+    } = useFaq(id, {lang: language});
 
     const isPending = createMutation.isPending || updateMutation.isPending;
     const error = createMutation.error || updateMutation.error;
 
     const [formData, setFormData] = useState({
-        id: 0,
+        // faqId: 0,
         title: "",
-        content: "",
-        authorId: 1,
-        status: "draft",
-        imageLink: "",
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        body: "",
+        lang: "en",
     });
 
     // POPULATE FORM when data arrives
     useEffect(() => {
-        console.log("Fetched blog: ", fetchedBlog);
+        console.log("Fetched faq: ", fetchedFaq);
         
-        if (fetchedBlog) {
+        if (fetchedFaq) {
             setFormData({
-            id: fetchedBlog.id,
-            title: fetchedBlog.title || '',
-            content: fetchedBlog.content || '',
-            authorId: fetchedBlog.authorId,
-            status: fetchedBlog.status || 'draft',
-            imageLink: fetchedBlog.imageLink || '',
-            // Ensure date is formatted for <input type="date"> (YYYY-MM-DD)
-            createdAt: fetchedBlog.createdAt ? new Date(fetchedBlog.createdAt) : '', 
-            updatedAt: fetchedBlog.updatedAt ? new Date(fetchedBlog.updatedAt) : '', 
+            faqId: fetchedFaq.faqId,
+            title: fetchedFaq.title || '',
+            body: fetchedFaq.body || '',
+            lang: fetchedFaq.lang || 'en',
             });
         }
-    }, [fetchedBlog]);
+    }, [fetchedFaq]);
 
     const handleChange = (e) => {
     setFormData({
@@ -75,13 +67,13 @@ const BlogsEntry = () => {
         if (isEditMode) {
             // UPDATE LOGIC
             updateMutation.mutate({ data: formData }, {
-                onSuccess: () => navigate('/admin/blogs'),
+                onSuccess: () => navigate('/admin/faqs'),
                 onError: (err) => console.error("Update failed", err)
             });
         } else {
             // CREATE LOGIC
             createMutation.mutate(formData, {
-                onSuccess: () => navigate('/admin/blogs'),
+                onSuccess: () => navigate('/admin/faqs'),
                 onError: (err) => console.error("Create failed", err)
             });
         }
@@ -92,14 +84,14 @@ const BlogsEntry = () => {
         return (
             <div className="text-center mt-5">
                 <Spinner animation="border" variant="primary" />
-                <p>Loading blog details...</p>
+                <p>Loading FAQ details...</p>
             </div>
         );
     }
 
     // Show Error if fetching failed
     if (isEditMode && isFetchError) {
-        return <Alert variant="danger">Error loading blog details.</Alert>;
+        return <Alert variant="danger">Error loading FAQ details.</Alert>;
     }
 
   return (
@@ -111,12 +103,12 @@ const BlogsEntry = () => {
                         className='me-2' 
                         variant="outline-secondary" 
                         size="sm"
-                        onClick={() => navigate(`/admin/blogs`)}
+                        onClick={() => navigate(`/admin/faqs`)}
                         disabled={isPending}
                     >
                         <i className="bi bi-arrow-left"></i>
                     </Button>
-                    <h4>Add blog</h4>
+                    <h4>Add FAQ</h4>
                 </div>
                 <div className="actions-wrapper">
                     <Button 
@@ -141,14 +133,6 @@ const BlogsEntry = () => {
                 </div>
             </div>
             <div className="scrollable-container">
-                <Row className="mb-3">
-                    <Col md={12}>
-                        <ImageUpload 
-                            value={formData.imageLink} 
-                            onChange={(url) => setFormData({ ...formData, imageLink: url })} 
-                        />
-                    </Col>
-                </Row>
                 <Form.Group className="mb-3" controlId="formGridTitle">
                     <Form.Label>Title</Form.Label>
                     <Form.Control 
@@ -161,41 +145,29 @@ const BlogsEntry = () => {
                     />
                 </Form.Group>
                 <Row className="mb-3">
-                    {/* <Form.Group as={Col} controlId="formGridDate">
-                    <Form.Label>Date</Form.Label>
-                    <Form.Control
-                        name="createdAt" 
-                        type="date" 
-                        value={formData.createdAt}
-                        onChange={handleChange}
-                        disabled={isPending}
-                    />
-                    </Form.Group> */}
-
-                    <Form.Group as={Col} controlId="formGridStatus">
-                    <Form.Label>Status</Form.Label>
+                    <Form.Group as={Col} controlId="formGridLang">
+                    <Form.Label>Language</Form.Label>
                     <Form.Select
-                        name="status"
-                        value={formData.status}
+                        name="lang"
+                        value={formData.lang}
                         onChange={handleChange}
                         disabled={isPending}
                     >
-                        <option value="draft">Draft</option>
-                        <option value="published">Published</option>
-                        <option value="archived">Archived</option>
+                        <option value="en">English</option>
+                        <option value="ar">Arabic</option>
                     </Form.Select>
                     </Form.Group>
                 </Row>
 
-                <Form.Group className="mb-3" controlId="formGridContent">
-                    <Form.Label>Content</Form.Label>
+                <Form.Group className="mb-3" controlId="formGridBody">
+                    <Form.Label>Body</Form.Label>
                     <textarea
-                        name="content" 
+                        name="body" 
                         className="form-control" 
                         id="exampleFormControlTextarea1" 
                         rows="3" 
-                        placeholder="Enter content"
-                        value={formData.content}
+                        placeholder="Enter body"
+                        value={formData.body}
                         onChange={handleChange}
                         disabled={isPending}
                     />
@@ -206,4 +178,4 @@ const BlogsEntry = () => {
   )
 }
 
-export default BlogsEntry
+export default FAQsEntry
