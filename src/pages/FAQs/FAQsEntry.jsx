@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner';
 import { useCreateFaq, useUpdateFaq, useFaq } from '../../features/faqs/hooks/useFaqs';
 import { useLanguage } from '../../context/LanguageContext.jsx';
-import './FaqsDashboard.css'
+import './FAQsDashboard.css'
 
 const FAQsEntry = () => {
 
