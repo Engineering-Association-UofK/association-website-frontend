@@ -7,6 +7,7 @@ import BlogsDashboard from './pages/Blogs/BlogsDashboard';
 import Blogs from './pages/Blogs/Blogs.jsx';
 import BlogsEntry from './pages/Blogs/BlogsEntry';
 import FAQsDashboard from './pages/FAQs/FAQsDashboard';
+import FAQsEntry from './pages/FAQs/FAQsEntry.jsx';
 import GalleryDashboard from './pages/Gallery/GalleryDashboard';
 import MainLayout from './layouts/MainLayout';
 import StandaloneLayout from './layouts/StandaloneLayout';
@@ -36,10 +37,11 @@ function App() {
 
             {/* Admin Routes wrapped in StandaloneLayout so they have the Back button */}
             <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<h1>Dashboard</h1>} />
+              <Route index element={<h1 className='text-center'>Welcome Admin</h1>} />
               <Route path="blogs" element={<BlogsDashboard />} />
               <Route path="blogs/:id" element={<BlogsEntry />} />
               <Route path="faqs" element={<FAQsDashboard />} />
+              <Route path="faqs/:id" element={<FAQsEntry/>} />
               <Route path="gallery" element={<GalleryDashboard />} />
             </Route>
           </Route>
