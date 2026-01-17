@@ -1,18 +1,23 @@
 import React from 'react'
 import { NavLink } from "react-router-dom";
+import Button from 'react-bootstrap/Button';
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from "react-router-dom";
 import '../pages/Admin/Admin.css'
 
 const AdminSidebar = () => {
+
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate(`/`);
+  }
+
   return (
     <>
-    
-      <div className="d-flex flex-column  p-3 bg-body-tertiary" style={{width: "200px", height: 'calc(100dvh - 114px)'}}> 
-        {/* <a href="/" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"> 
-          <svg className="bi pe-none me-2" width="40" height="32" aria-hidden="true"> <use xlink:href="#bootstrap"></use> </svg> 
-
-          <span className="fs-4">Sidebar</span> 
-        </a> 
-        <hr></hr>  */}
+      <div className="d-flex flex-column  p-3 bg-body-tertiary" style={{width: "200px", marginBottom: '-16px', height: 'calc(100dvh - 42px - 16px)'}}> 
         <ul className="nav nav-pills flex-column mb-auto"> 
           <li className="nav-item"> 
             <NavLink to="/admin/blogs" className="nav-link">
@@ -34,27 +39,27 @@ const AdminSidebar = () => {
           </li>
         </ul> 
         <hr></hr> 
-        <div className="dropdown"> 
-          <a href="#" className="d-flex align-items-center link-body-emphasis text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="https://github.com/mdo.png" alt="" width="32" height="32" className="rounded-circle me-2"></img>
-            <strong>Admin User</strong> 
-          </a> 
-        </div> 
+        <div className="d-flex align-items-center justify-content-between">
+          <div className="d-flex align-items-center">
+            <img 
+              src="/src/utils/images/person.svg" 
+              alt="admin" 
+              width="32" 
+              height="32" 
+              className="rounded-circle me-2 bg-dark-subtle"></img>
+            <strong>Admin</strong> 
+          </div>
+          <Button 
+            variant="outline-primary" 
+            size="sm"
+            onClick={handleLogout}
+          >
+            <h5 className='m-0'>
+              <i className="bi pe-none bi-box-arrow-left"></i>
+            </h5>
+          </Button>
+        </div>
       </div>
-
-      {/* <aside className='sidebar'>
-        <h3>Admin</h3>
-
-        <NavLink to="/admin/blogs" className='link'>
-          Blogs
-        </NavLink>
-        <NavLink to="/admin/faqs" className='link'>
-          FAQs
-        </NavLink>
-        <NavLink to="/admin/gallery" className='link'>
-          Gallery
-        </NavLink>
-      </aside> */}
     </>
     
   )

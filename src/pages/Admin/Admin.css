@@ -22,3 +22,33 @@
 ul .nav-link.active {
     color: var(--fg-color-light) !important;
 }
+
+.table-wrapper {
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: calc(100dvh - 55px - 48px - 42px - 32px);
+}
+.table-wrapper::-webkit-scrollbar-thumb {
+    width: 8px;
+    background-color: grey;
+    border-radius: 4px;
+}
+.table-wrapper thead th {
+    position: sticky; 
+    top: 0;
+    z-index: 10;
+}
+.table-title {
+    margin-bottom: 0;
+}
+.entry-form {
+    text-align: start;
+}
+
+.content-preview {
+    max-width: 350px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
