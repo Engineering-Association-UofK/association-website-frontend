@@ -7,7 +7,7 @@ export const authService = {
     // credentials = { name, password }
     const endpoint = isAdmin ? '/admin/login' : '/login'
     const response = await apiClient.post(`${endpoint}`, { name, password }, { skipAuth: true });
-    console.log('login ', response);
+    // console.log('login ', response);
     return response; // Expecting { token }
   },
 
