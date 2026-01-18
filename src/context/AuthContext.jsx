@@ -4,28 +4,32 @@ import { authService } from '../features/auth/api/auth.service';
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    const token = localStorage.getItem('sea-token') || sessionStorage.getItem('sea-token');
+    const role = localStorage.getItem('role') || sessionStorage.getItem('role');
+    return token ? { role } : null;
+  });
 //   const [token, setToken] = useState(localStorage.getItem('token'));
   const [loading, setLoading] = useState(false);
   
   // Helper to find token in either storage
   const getStoredToken = () => localStorage.getItem('sea-token') || sessionStorage.getItem('sea-token');
 
-    useEffect(() => {
-        const token = getStoredToken();
-        const role = localStorage.getItem('role') || sessionStorage.getItem('role');
-        if (token) {
-            // If we have a token, we assume logged in. 
-            // Ideally, you'd call an API like /me here to get user details.
-            setUser({ role }); 
-        }
-    }, []);
+    // useEffect(() => {
+    //     const token = getStoredToken();
+    //     const role = localStorage.getItem('role') || sessionStorage.getItem('role');
+    //     if (token) {
+    //         // If we have a token, we assume logged in. 
+    //         // Ideally, you'd call an API like /me here to get user details.
+    //         setUser({ role }); 
+    //     }
+    // }, []);
 
   const login = async ({ name, password, isAdmin, rememberMe }) => {
     setLoading(true);
     try {
       const data = await authService.login({ name, password, isAdmin });
-      console.log('context ', data);
+      // console.log('context ', data);
       // Handle "Account not verified" special case
       if (data.message === "Account not verified") {
         return { success: false, status: 'verification_needed' };

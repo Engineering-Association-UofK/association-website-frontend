@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { LanguageProvider } from './context/LanguageContext';
 import Home from './pages/Home/Home';
 import About from './pages/About/About';
@@ -14,38 +14,64 @@ import './App.css';
 import RegisterForm from "./components/RegisterForm.jsx";
 import LoginForm from "./components/LoginForm.jsx";
 import BlogPage from "./pages/Blogs/BlogPage.jsx";
+import { AuthProvider } from './context/AuthContext.jsx';
+import ProtectedRoute from './components/ProtectedRoute.jsx';
+import PublicOnlyRoute from './components/PublicOnlyRoute.jsx';
 
 function App() {
   return (
-    <LanguageProvider>
-      <Router>
-        <Routes>
-          {/* Main Layout containing NavBar and Footer */}
-          <Route element={<MainLayout />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            {/* Add other public routes here */}
-            <Route path="/blogs" element={<Blogs />} />
-            <Route path="/blogs/:id" element={<BlogPage />} />
-          </Route>
-
-          {/* Standalone Layout containing only Back to Home button */}
-          <Route element={<StandaloneLayout />}>
-            <Route path="/login" element={<LoginForm />} />
-            <Route path="/register" element={<RegisterForm />} />
-
-            {/* Admin Routes wrapped in StandaloneLayout so they have the Back button */}
-            <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<h1>Dashboard</h1>} />
-              <Route path="blogs" element={<BlogsDashboard />} />
-              <Route path="blogs/:id" element={<BlogsEntry />} />
-              <Route path="faqs" element={<FAQsDashboard />} />
-              <Route path="gallery" element={<GalleryDashboard />} />
+    <AuthProvider>
+      <LanguageProvider>
+        <Router>
+          <Routes>
+            {/* PUBLIC ROUTES (Accessible by everyone) */}
+            {/* Main Layout containing NavBar and Footer */}
+            <Route element={<MainLayout />}>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              {/* Add other public routes here */}
+              <Route path="/blogs" element={<Blogs />} />
+              <Route path="/blogs/:id" element={<BlogPage />} />
             </Route>
-          </Route>
-        </Routes>
-      </Router>
-    </LanguageProvider>
+
+
+            {/* GUEST ONLY ROUTES (Login/Register) 
+              - Logged in users get kicked out to /admin or / */}
+            {/* Standalone Layout containing only Back to Home button */}
+            <Route element={<StandaloneLayout />}>
+              <Route element={<PublicOnlyRoute />}>
+                <Route path="/login" element={<LoginForm />} />
+                <Route path="/register" element={<RegisterForm />} />
+              </Route>
+            </Route>
+
+            {/* ADMIN ROUTES (Protected)
+                - Only users with role 'admin' can enter */}
+            {/* Admin Routes wrapped in StandaloneLayout so they have the Back button */}
+            <Route element={<StandaloneLayout />} >
+              <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+                <Route path="/admin" element={<AdminLayout />}>
+                  <Route index element={<h1>Dashboard</h1>} />
+                  <Route path="blogs" element={<BlogsDashboard />} />
+                  <Route path="blogs/:id" element={<BlogsEntry />} />
+                  <Route path="faqs" element={<FAQsDashboard />} />
+                  <Route path="gallery" element={<GalleryDashboard />} />
+                </Route>
+              </Route>
+            </Route>
+            {/* STUDENT ROUTES (Future) */}
+            {/* 
+            <Route element={<MainLayout />}>
+              <Route element={<ProtectedRoute allowedRoles={['student']} />}>
+                 <Route path="/student/courses" element={<Courses />} />
+              </Route>
+            </Route> 
+            */}
+            <Route path='*' element={<Navigate to={'/'} />} />
+          </Routes>
+        </Router>
+      </LanguageProvider>
+    </AuthProvider>
   );
 }
 
