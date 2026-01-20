@@ -7,12 +7,10 @@ import Alert from 'react-bootstrap/Alert';
 import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from "react-router-dom";
 import { useFaqs, useDeleteFaq } from '../../features/faqs/hooks/useFaqs';
-import { useLanguage } from '../../context/LanguageContext.jsx';
 
 const FAQsDashboard = () => {
   const navigate = useNavigate();
-  const { language } = useLanguage();
-  const { data: faqs, isLoading, isError, error, refetch } = useFaqs({lang: language});
+  const { data: faqs, isLoading, isError, error, refetch } = useFaqs();
   const { mutate: deleteFaq, isPending: isDeleting } = useDeleteFaq();
 
   // Local State for Modal
@@ -101,9 +99,9 @@ const FAQsDashboard = () => {
                 {
                   faqs?.map((row) => (
                     <tr 
-                      key={row.id}
+                      key={row.FaqId}
                     >
-                      <td>{row["faqId"]}</td>
+                      <td>{row["FaqId"]}</td>
                       <td>{row["title"]}</td>
                       <td style={{ maxWidth: '300px' }}>
                         <div className="content-preview">
@@ -115,14 +113,14 @@ const FAQsDashboard = () => {
                           <Button 
                             variant="outline-primary" 
                             size="sm"
-                            onClick={() => handleEdit(row.id)}
+                            onClick={() => handleEdit(row.FaqId)}
                           >
                             <i className="bi pe-none bi-pencil-fill"></i>
                           </Button>
                           <Button 
                             variant="outline-danger" 
                             size="sm"
-                            onClick={() => handleOpenDeleteModal(row.id)}
+                            onClick={() => handleOpenDeleteModal(row.FaqId)}
                           >
                             <i className="bi pe-none bi-trash-fill"></i>
                           </Button>

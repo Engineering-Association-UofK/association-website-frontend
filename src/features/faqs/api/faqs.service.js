@@ -3,12 +3,12 @@ import apiClient from '../../../api/axiosClient';
 const ENDPOINT = '/api/faqs';
 
 export const faqService = {
-  getAll: async (queryParams) => {
-    return await apiClient.get(ENDPOINT, { params: queryParams, skipAuth: true });
+  getAll: async () => {
+    return await apiClient.get(`${ENDPOINT}/dashboard`);
   },
 
-  getById: async (id, queryParams) => {
-    return await apiClient.get(`${ENDPOINT}/${id}`, { params: queryParams });
+  getById: async (id) => {
+    return await apiClient.get(`${ENDPOINT}/dashboard/${id}`);
   },
 
   create: async (data) => {
@@ -16,7 +16,6 @@ export const faqService = {
   },
 
   update: async (data) => {
-    console.log("update", data);
     return await apiClient.put(`${ENDPOINT}`, data);
   },
 

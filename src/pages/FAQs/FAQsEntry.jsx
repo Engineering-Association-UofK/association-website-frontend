@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, useNavigate } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
-import Col from 'react-bootstrap/Col';
+import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner';
+import Alert from 'react-bootstrap/Alert';
 import { useCreateFaq, useUpdateFaq, useFaq } from '../../features/faqs/hooks/useFaqs';
-import { useLanguage } from '../../context/LanguageContext.jsx';
 import './FAQsDashboard.css'
 
 const FAQsEntry = () => {
@@ -20,23 +19,23 @@ const FAQsEntry = () => {
 
     const createMutation = useCreateFaq();
     const updateMutation = useUpdateFaq();
-    const { language } = useLanguage();
 
     // Fetch Data (Only runs if isEditMode is true)
     const { 
         data: fetchedFaq, 
         isLoading: isLoadingData, 
         isError: isFetchError 
-    } = useFaq(id, {lang: language});
+    } = useFaq(id);
 
     const isPending = createMutation.isPending || updateMutation.isPending;
     const error = createMutation.error || updateMutation.error;
 
     const [formData, setFormData] = useState({
-        // faqId: 0,
+        faqId: 0,
         title: "",
         body: "",
         lang: "en",
+        translations: []
     });
 
     // POPULATE FORM when data arrives
@@ -48,31 +47,75 @@ const FAQsEntry = () => {
             faqId: fetchedFaq.faqId,
             title: fetchedFaq.title || '',
             body: fetchedFaq.body || '',
-            lang: fetchedFaq.lang || 'en',
+            translations: fetchedFaq.translations || []
             });
         }
     }, [fetchedFaq]);
 
     const handleChange = (e) => {
-    setFormData({
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    // Function to handle changes in a specific translation
+    const handleTranslationChange = (index, field, value) => {
+      const updatedTranslations = [...formData.translations];
+      updatedTranslations[index] = {
+        ...updatedTranslations[index],
+        [field]: value
+      };
+
+      setFormData({
         ...formData,
-        [e.target.name]: e.target.value
-    });
+        translations: updatedTranslations
+      });
+    };
+  
+    const handleAddTranslation = () => {
+      setFormData({
+            ...formData,
+            translations: [
+                ...formData.translations, 
+                { lang: 'ar', title: '', body: '' }
+            ]
+      });
+    };
+
+    const handleChildDelete = (indexToDelete) => {
+        const updatedTranslations = formData.translations.filter((_, index) => index !== indexToDelete);
+        
+        setFormData({
+            ...formData,
+            translations: updatedTranslations
+        });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Form Data: ", formData);
+        const dataToSend = {
+            id: formData.faqId,
+            translations: [
+                ...formData.translations,
+                {
+                    title: formData.title,
+                    body: formData.body,
+                    lang: "en"
+                }
+            ]
+        }
+        console.log("Form Data: ", formData, dataToSend);
 
         if (isEditMode) {
             // UPDATE LOGIC
-            updateMutation.mutate({ data: formData }, {
+            updateMutation.mutate({ data: dataToSend }, {
                 onSuccess: () => navigate('/admin/faqs'),
                 onError: (err) => console.error("Update failed", err)
             });
         } else {
             // CREATE LOGIC
-            createMutation.mutate(formData, {
+            createMutation.mutate(dataToSend, {
                 onSuccess: () => navigate('/admin/faqs'),
                 onError: (err) => console.error("Create failed", err)
             });
@@ -144,7 +187,7 @@ const FAQsEntry = () => {
                         disabled={isPending}
                     />
                 </Form.Group>
-                <Row className="mb-3">
+                {/* <Row className="mb-3">
                     <Form.Group as={Col} controlId="formGridLang">
                     <Form.Label>Language</Form.Label>
                     <Form.Select
@@ -157,7 +200,7 @@ const FAQsEntry = () => {
                         <option value="ar">Arabic</option>
                     </Form.Select>
                     </Form.Group>
-                </Row>
+                </Row> */}
 
                 <Form.Group className="mb-3" controlId="formGridBody">
                     <Form.Label>Body</Form.Label>
@@ -172,6 +215,75 @@ const FAQsEntry = () => {
                         disabled={isPending}
                     />
                 </Form.Group>
+
+
+                <div className="children-wrapper">
+                    {formData?.translations?.map((translation, index) => (
+                        <Card className='child-card mb-3' key={index} >
+                            <Card.Header className='d-flex align-items-center justify-content-between'>
+                                <span>Translation #{index + 1}</span>
+
+                                <Button 
+                                    variant="outline-danger" 
+                                    size="sm"
+                                    onClick={() => handleChildDelete(index)}
+                                >
+                                    <i className="bi pe-none bi-trash-fill"></i>
+                                </Button>
+                            </Card.Header>
+                            <Card.Body>
+                                <Form.Group className="mb-3" controlId="formGridLang">
+                                <Form.Label>Language</Form.Label>
+                                    <Form.Select
+                                        name="lang"
+                                        value={translation.lang}
+                                        onChange={(e) => handleTranslationChange(index, 'lang', e.target.value)}
+                                        disabled={isPending}
+                                    >
+                                        <option value="en">English</option>
+                                        <option value="ar">Arabic</option>
+                                        {/* <option value="fr">French</option> */}
+                                    </Form.Select>
+                                </Form.Group>
+
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Title</Form.Label>
+                                    <Form.Control 
+                                        name="title"
+                                        type="text" 
+                                        placeholder="Enter title" 
+                                        value={translation.title}
+                                        onChange={(e) => handleTranslationChange(index, 'title', e.target.value)}
+                                        disabled={isPending}
+                                    />
+                                </Form.Group>
+
+                                <Form.Group>
+                                    <Form.Label>Body</Form.Label>
+                                    <textarea
+                                        name="body" 
+                                        className="form-control" 
+                                        id="exampleFormControlTextarea1" 
+                                        rows="3" 
+                                        placeholder="Enter body"
+                                        value={translation.body}
+                                        onChange={(e) => handleTranslationChange(index, 'body', e.target.value)}
+                                        disabled={isPending}
+                                    />
+                                </Form.Group>
+                            </Card.Body>
+                        </Card>
+                    ))}
+                </div>
+
+                <Button 
+                    variant="outline-primary" 
+                    size="sm" 
+                    disabled={isPending}
+                    onClick={handleAddTranslation}
+                >
+                    Add Translation
+                </Button>
             </div>
         </Form>
     </>

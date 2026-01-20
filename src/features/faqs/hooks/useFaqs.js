@@ -9,20 +9,20 @@ export const FAQS_KEYS = {
 };
 
 // Hook for fetching all faqs
-export const useFaqs = (queryParams) => {
+export const useFaqs = () => {
   return useQuery({
     queryKey: FAQS_KEYS.lists(),
-    queryFn: () => faqService.getAll(queryParams),
+    queryFn: () => faqService.getAll(),
 
     staleTime: 0, 
   });
 };
 
 // Hook for fetching a faq by id
-export const useFaq = (id, queryParams) => {
+export const useFaq = (id) => {
   return useQuery({
     queryKey: ['faqs', 'detail', id],
-    queryFn: () => faqService.getById(id, queryParams),
+    queryFn: () => faqService.getById(id),
 
     enabled: !!id && id !== '0' && id !== 'new', 
     staleTime: 0,
