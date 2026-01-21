@@ -1,22 +1,14 @@
 import apiClient from '../../../api/axiosClient';
 
-const ENDPOINT = '/api/blogs';
+const ENDPOINT = '/api/gallery';
 
-export const blogService = {
+export const galleryService = {
   getAll: async () => {
     return await apiClient.get(ENDPOINT, { skipAuth: true });
   },
 
-  getById: async (id) => {
-    return await apiClient.get(`${ENDPOINT}/${id}`);
-  },
-
   create: async (data) => {
     return await apiClient.post(ENDPOINT, data);
-  },
-
-  update: async (data) => {
-    return await apiClient.put(`${ENDPOINT}`, data);
   },
 
   delete: async (id) => {

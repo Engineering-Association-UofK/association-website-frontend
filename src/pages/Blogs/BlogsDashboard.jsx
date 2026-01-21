@@ -36,7 +36,6 @@ const BlogsDashboard = () => {
 
   const handleConfirmDelete = () => {
     if (selectedBlogId) {
-      console.log("selectedBlogId ", selectedBlogId);
       
       deleteBlog(selectedBlogId, {
         onSuccess: () => {

@@ -12,7 +12,6 @@ import './BlogsDashboard.css'
 const BlogsEntry = () => {
 
     const { id } = useParams();
-    console.log("blog Id: ", id);
     
     const navigate = useNavigate();
 
@@ -44,7 +43,7 @@ const BlogsEntry = () => {
 
     // POPULATE FORM when data arrives
     useEffect(() => {
-        console.log("Fetched blog: ", fetchedBlog);
+        // console.log("Fetched blog: ", fetchedBlog);
         
         if (fetchedBlog) {
             setFormData({
@@ -70,7 +69,7 @@ const BlogsEntry = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Form Data: ", formData);
+        // console.log("Form Data: ", formData);
 
         if (isEditMode) {
             // UPDATE LOGIC

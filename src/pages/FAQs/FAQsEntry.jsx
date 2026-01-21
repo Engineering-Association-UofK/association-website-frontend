@@ -11,7 +11,6 @@ import './FAQsDashboard.css'
 const FAQsEntry = () => {
 
     const { id } = useParams();
-    console.log("faq Id: ", id);
     
     const navigate = useNavigate();
 
@@ -40,7 +39,7 @@ const FAQsEntry = () => {
 
     // POPULATE FORM when data arrives
     useEffect(() => {
-        console.log("Fetched faq: ", fetchedFaq);
+        // console.log("Fetched faq: ", fetchedFaq);
         
         if (fetchedFaq) {
             setFormData({
@@ -105,7 +104,7 @@ const FAQsEntry = () => {
                 }
             ]
         }
-        console.log("Form Data: ", formData, dataToSend);
+        // console.log("Form Data: ", formData, dataToSend);
 
         if (isEditMode) {
             // UPDATE LOGIC

@@ -9,10 +9,10 @@ export const BLOGS_KEYS = {
 };
 
 // Hook for fetching all blogs
-export const useBlogs = (queryParams) => {
+export const useBlogs = () => {
   return useQuery({
     queryKey: BLOGS_KEYS.lists(),
-    queryFn: () => blogService.getAll(queryParams),
+    queryFn: () => blogService.getAll(),
 
     staleTime: 0, 
   });
