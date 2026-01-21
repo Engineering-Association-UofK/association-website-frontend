@@ -34,7 +34,6 @@ const FAQsDashboard = () => {
 
   const handleConfirmDelete = () => {
     if (selectedFaqId) {
-      console.log("selectedFaqId ", selectedFaqId);
       
       deleteFaq(selectedFaqId, {
         onSuccess: () => {

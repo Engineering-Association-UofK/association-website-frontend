@@ -9,6 +9,7 @@ import BlogsEntry from './pages/Blogs/BlogsEntry';
 import FAQsDashboard from './pages/FAQs/FAQsDashboard';
 import FAQsEntry from './pages/FAQs/FAQsEntry.jsx';
 import GalleryDashboard from './pages/Gallery/GalleryDashboard';
+import GalleryEntry from './pages/Gallery/GalleryEntry';
 import MainLayout from './layouts/MainLayout';
 import StandaloneLayout from './layouts/StandaloneLayout';
 import './App.css';
@@ -58,6 +59,7 @@ function App() {
                   <Route path="faqs" element={<FAQsDashboard />} />
                   <Route path="faqs/:id" element={<FAQsEntry/>} />
                   <Route path="gallery" element={<GalleryDashboard />} />
+                  <Route path="gallery/:id" element={<GalleryEntry />} />
                 </Route>
               </Route>
             </Route>
