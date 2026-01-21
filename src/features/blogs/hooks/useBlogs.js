@@ -11,7 +11,7 @@ export const BLOGS_KEYS = {
 // Hook for fetching all blogs
 export const useBlogs = (queryParams) => {
   return useQuery({
-    queryKey: BLOGS_KEYS.lists(), // <--- STILL MANDATORY
+    queryKey: BLOGS_KEYS.lists(),
     queryFn: () => blogService.getAll(queryParams),
 
     staleTime: 0, 
@@ -25,7 +25,7 @@ export const useBlog = (id) => {
     queryFn: () => blogService.getById(id),
     
     enabled: !!id && id !== '0' && id !== 'new', 
-    staleTime: 0,//5 * 60 * 1000,
+    staleTime: 0,
   });
 };
 

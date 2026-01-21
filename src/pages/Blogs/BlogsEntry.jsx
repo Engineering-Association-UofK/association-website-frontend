@@ -104,7 +104,7 @@ const BlogsEntry = () => {
 
   return (
     <>
-        <Form onSubmit={handleSubmit}>
+        <Form className='entry-form' onSubmit={handleSubmit}>
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <div className="title-wrapper d-flex">
                     <Button 

@@ -21,7 +21,7 @@ const BlogsDashboard = () => {
 
   // Handlers
   const handleEdit = (id) => {
-    navigate(`/admin/blogs/${id}`); // Assuming your route is /admin/blogs/:id
+    navigate(`/admin/blogs/${id}`); 
   };
 
   const handleOpenDeleteModal = (id) => {
@@ -40,11 +40,11 @@ const BlogsDashboard = () => {
       
       deleteBlog(selectedBlogId, {
         onSuccess: () => {
-          handleCloseModal(); // Close modal on success
+          handleCloseModal(); 
         },
         onError: (err) => {
             console.error("Delete failed", err);
-            // Optionally set a toast/alert state here
+            // Set a toast/alert state here
         }
       });
     }
@@ -53,7 +53,7 @@ const BlogsDashboard = () => {
   return (
     <>
       <div className="d-flex justify-content-between mb-4">
-        <h4>Blogs</h4>
+        <h4 className='table-title'>Blogs</h4>
         <div className="actions-wrapper">
             <Button 
               variant="outline-primary" 
@@ -87,61 +87,59 @@ const BlogsDashboard = () => {
             <Alert variant="info">No blogs found. Create one to get started!</Alert>
           </Container>
         ) : (
-          <Table responsive>
-            <thead>
-              <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Content</th>
-                <th>Status</th>
-                <th>Date</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                blogs?.map((row) => (
-                  <tr 
-                    key={row.id}
-                    // onClick={() => navigate(`/admin/blogs/${row.id}`)}
-                  >
-                    <td key="id" >{row["id"]}</td>
-                    <td key="title" >{row["title"]}</td>
-                    <td key="content" >{row["content"]}</td>
-                    <td key="status" >{row["status"]}</td>
-                    <td key="createdAt" >
-                      {
-                        // new Intl.DateTimeFormat('en-GB', {
-                        //   year: 'numeric',
-                        //   month: 'short',
-                        //   day: '2-digit',
-                        // }).format(new Date(row["createdAt"]))
-                      }
-                      {new Intl.DateTimeFormat("en-GB").format(new Date(row["createdAt"]))}
-                    </td>
-                    <td>
-                      <div className="d-flex justify-content-center gap-2">
-                        <Button 
-                          variant="outline-primary" 
-                          size="sm"
-                          onClick={() => handleEdit(row.id)}
-                        >
-                          <i className="bi pe-none bi-pencil-fill"></i>
-                        </Button>
-                        <Button 
-                          variant="outline-danger" 
-                          size="sm"
-                          onClick={() => handleOpenDeleteModal(row.id)}
-                        >
-                          <i className="bi pe-none bi-trash-fill"></i>
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              }
-            </tbody>
-          </Table>
+          <div className="table-wrapper">
+            <Table hover className='text-center'>
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Title</th>
+                  <th>Content</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  blogs?.map((row) => (
+                    <tr 
+                      key={row.id}
+                    >
+                      <td>{row["id"]}</td>
+                      <td>{row["title"]}</td>
+                      <td style={{ maxWidth: '200px' }}>
+                        <div className="content-preview">
+                          {row["content"]}
+                        </div>
+                      </td>
+                      <td>{row["status"]}</td>
+                      <td>
+                        {new Intl.DateTimeFormat("en-GB").format(new Date(row["createdAt"]))}
+                      </td>
+                      <td>
+                        <div className="d-flex justify-content-center gap-2">
+                          <Button 
+                            variant="outline-primary" 
+                            size="sm"
+                            onClick={() => handleEdit(row.id)}
+                          >
+                            <i className="bi pe-none bi-pencil-fill"></i>
+                          </Button>
+                          <Button 
+                            variant="outline-danger" 
+                            size="sm"
+                            onClick={() => handleOpenDeleteModal(row.id)}
+                          >
+                            <i className="bi pe-none bi-trash-fill"></i>
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                }
+              </tbody>
+            </Table>
+          </div>
           
         )
       }
