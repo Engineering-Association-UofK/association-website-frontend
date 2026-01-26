@@ -7,6 +7,7 @@ import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner';
 import { useCreateBlog, useUpdateBlog, useBlog } from '../../features/blogs/hooks/useBlogs';
 import ImageUpload from '../../components/ImageUpload';
+import TextareaAutosize from 'react-textarea-autosize';
 import './BlogsDashboard.css'
 
 const BlogsEntry = () => {
@@ -188,11 +189,11 @@ const BlogsEntry = () => {
 
                 <Form.Group className="mb-3" controlId="formGridContent">
                     <Form.Label>Content</Form.Label>
-                    <textarea
+                    <Form.Control
+                        as={TextareaAutosize}
                         name="content" 
-                        className="form-control" 
-                        id="exampleFormControlTextarea1" 
-                        rows="3" 
+                        minRows={3}
+                        maxRows={15}
                         placeholder="Enter content"
                         value={formData.content}
                         onChange={handleChange}
