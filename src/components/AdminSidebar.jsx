@@ -37,6 +37,12 @@ const AdminSidebar = () => {
               Gallery
             </NavLink>
           </li>
+          <li className="nav-item"> 
+            <NavLink to="/admin/admin-users" className="nav-link">
+              <i className="bi pe-none bi-person me-2"></i>
+              Admin Users
+            </NavLink>
+          </li>
         </ul> 
         <hr></hr> 
         <div className="d-flex align-items-center justify-content-between">
