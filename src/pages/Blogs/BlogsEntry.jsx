@@ -5,8 +5,10 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner';
+import Alert from 'react-bootstrap/Alert';
 import { useCreateBlog, useUpdateBlog, useBlog } from '../../features/blogs/hooks/useBlogs';
 import ImageUpload from '../../components/ImageUpload';
+import { useFileUpload } from '../../hooks/useFileUpload';
 import TextareaAutosize from 'react-textarea-autosize';
 import './BlogsDashboard.css'
 
@@ -20,6 +22,7 @@ const BlogsEntry = () => {
 
     const createMutation = useCreateBlog();
     const updateMutation = useUpdateBlog();
+    const { upload, isUploading, uploadError } = useFileUpload();
 
     // Fetch Data (Only runs if isEditMode is true)
     const { 
@@ -28,7 +31,7 @@ const BlogsEntry = () => {
         isError: isFetchError 
     } = useBlog(id);
 
-    const isPending = createMutation.isPending || updateMutation.isPending;
+    const isPending = createMutation.isPending || updateMutation.isPending || isUploading;
     const error = createMutation.error || updateMutation.error;
 
     const [formData, setFormData] = useState({
@@ -72,18 +75,29 @@ const BlogsEntry = () => {
         e.preventDefault();
         // console.log("Form Data: ", formData);
 
-        if (isEditMode) {
-            // UPDATE LOGIC
-            updateMutation.mutate({ data: formData }, {
-                onSuccess: () => navigate('/admin/blogs'),
-                onError: (err) => console.error("Update failed", err)
-            });
-        } else {
-            // CREATE LOGIC
-            createMutation.mutate(formData, {
-                onSuccess: () => navigate('/admin/blogs'),
-                onError: (err) => console.error("Create failed", err)
-            });
+        try {
+            const finalImageUrl = await upload(formData.imageLink);
+
+            const payload = {
+                ...formData,
+                imageLink: finalImageUrl 
+            };
+            
+            if (isEditMode) {
+                // UPDATE LOGIC
+                updateMutation.mutate({ data: payload }, {
+                    onSuccess: () => navigate('/admin/blogs'),
+                    onError: (err) => console.error("Update failed", err)
+                });
+            } else {
+                // CREATE LOGIC
+                createMutation.mutate(payload, {
+                    onSuccess: () => navigate('/admin/blogs'),
+                    onError: (err) => console.error("Create failed", err)
+                });
+            }
+        } catch (error) {
+            return;
         }
     };
 
@@ -126,13 +140,18 @@ const BlogsEntry = () => {
                         disabled={isPending}
                     >
                         {isPending ? (
-                                <Spinner
-                                as="span"
-                                animation="border"
-                                size="sm"
-                                role="status"
-                                aria-hidden="true"
-                                />
+                                <>
+                                    <Spinner
+                                    as="span"
+                                    animation="border"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                    className="me-2"
+                                    />
+
+                                    {isUploading ? 'Uploading Image...' : 'Saving...'}
+                                </>
                             ) : (
                                 <i className="bi pe-none bi-floppy2-fill"></i>
                             )
@@ -141,11 +160,22 @@ const BlogsEntry = () => {
                 </div>
             </div>
             <div className="scrollable-container">
+
+                {/* Error Alerts */}
+                {uploadError && <Alert variant="danger">{uploadError}</Alert>}
+
+                {(createMutation.isError || updateMutation.isError) && (
+                    <Alert variant="danger">
+                        Failed to save blog : {error?.message}
+                    </Alert>
+                )}
+
                 <Row className="mb-3">
                     <Col md={12}>
                         <ImageUpload 
                             value={formData.imageLink} 
-                            onChange={(url) => setFormData({ ...formData, imageLink: url })} 
+                            onChange={(urlOrFile) => setFormData({ ...formData, imageLink: urlOrFile })} 
+                            disabled={isPending}  
                         />
                     </Col>
                 </Row>

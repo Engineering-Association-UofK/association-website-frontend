@@ -176,6 +176,12 @@ const FAQsEntry = () => {
                 </div>
             </div>
             <div className="scrollable-container">
+
+                {(createMutation.isError || updateMutation.isError) && (
+                    <Alert variant="danger">
+                        Failed to save FAQ : {error?.message}
+                    </Alert>
+                )}
                 <Form.Group className="mb-3" controlId="formGridTitle">
                     <Form.Label>Title</Form.Label>
                     <Form.Control 
@@ -187,20 +193,6 @@ const FAQsEntry = () => {
                         disabled={isPending}
                     />
                 </Form.Group>
-                {/* <Row className="mb-3">
-                    <Form.Group as={Col} controlId="formGridLang">
-                    <Form.Label>Language</Form.Label>
-                    <Form.Select
-                        name="lang"
-                        value={formData.lang}
-                        onChange={handleChange}
-                        disabled={isPending}
-                    >
-                        <option value="en">English</option>
-                        <option value="ar">Arabic</option>
-                    </Form.Select>
-                    </Form.Group>
-                </Row> */}
 
                 <Form.Group className="mb-3" controlId="formGridBody">
                     <Form.Label>Body</Form.Label>
