@@ -6,6 +6,7 @@ import Form from 'react-bootstrap/Form';
 import Spinner from 'react-bootstrap/Spinner';
 import Alert from 'react-bootstrap/Alert';
 import { useCreateFaq, useUpdateFaq, useFaq } from '../../features/faqs/hooks/useFaqs';
+import TextareaAutosize from 'react-textarea-autosize';
 import './FAQsDashboard.css'
 
 const FAQsEntry = () => {
@@ -175,6 +176,12 @@ const FAQsEntry = () => {
                 </div>
             </div>
             <div className="scrollable-container">
+
+                {(createMutation.isError || updateMutation.isError) && (
+                    <Alert variant="danger">
+                        Failed to save FAQ : {error?.message}
+                    </Alert>
+                )}
                 <Form.Group className="mb-3" controlId="formGridTitle">
                     <Form.Label>Title</Form.Label>
                     <Form.Control 
@@ -186,28 +193,14 @@ const FAQsEntry = () => {
                         disabled={isPending}
                     />
                 </Form.Group>
-                {/* <Row className="mb-3">
-                    <Form.Group as={Col} controlId="formGridLang">
-                    <Form.Label>Language</Form.Label>
-                    <Form.Select
-                        name="lang"
-                        value={formData.lang}
-                        onChange={handleChange}
-                        disabled={isPending}
-                    >
-                        <option value="en">English</option>
-                        <option value="ar">Arabic</option>
-                    </Form.Select>
-                    </Form.Group>
-                </Row> */}
 
                 <Form.Group className="mb-3" controlId="formGridBody">
                     <Form.Label>Body</Form.Label>
-                    <textarea
+                    <Form.Control
+                        as={TextareaAutosize}
                         name="body" 
-                        className="form-control" 
-                        id="exampleFormControlTextarea1" 
-                        rows="3" 
+                        minRows={3}
+                        maxRows={15}
                         placeholder="Enter body"
                         value={formData.body}
                         onChange={handleChange}
@@ -259,11 +252,11 @@ const FAQsEntry = () => {
 
                                 <Form.Group>
                                     <Form.Label>Body</Form.Label>
-                                    <textarea
+                                    <Form.Control
+                                        as={TextareaAutosize}
                                         name="body" 
-                                        className="form-control" 
-                                        id="exampleFormControlTextarea1" 
-                                        rows="3" 
+                                        minRows={3}
+                                        maxRows={15}
                                         placeholder="Enter body"
                                         value={translation.body}
                                         onChange={(e) => handleTranslationChange(index, 'body', e.target.value)}

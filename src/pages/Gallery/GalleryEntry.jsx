@@ -5,8 +5,11 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner';
+import Alert from 'react-bootstrap/Alert';
 import { useCreateGalleryItem } from '../../features/gallery/hooks/useGallery';
 import ImageUpload from '../../components/ImageUpload';
+import { useFileUpload } from '../../hooks/useFileUpload';
+import TextareaAutosize from 'react-textarea-autosize';
 
 const GalleryEntry = () => {
 
@@ -14,8 +17,9 @@ const GalleryEntry = () => {
     
     const navigate = useNavigate();
     const createMutation = useCreateGalleryItem();
+    const { upload, isUploading, uploadError } = useFileUpload();
 
-    const isPending = createMutation.isPending;
+    const isPending = createMutation.isPending || isUploading;
     const error = createMutation.error;
 
     const [formData, setFormData] = useState({
@@ -35,11 +39,22 @@ const GalleryEntry = () => {
         e.preventDefault();
         // console.log("Form Data: ", formData);
 
-        // CREATE LOGIC
-        createMutation.mutate(formData, {
-            onSuccess: () => navigate('/admin/gallery'),
-            onError: (err) => console.error("Create failed", err)
-        });
+        try {
+            const finalImageUrl = await upload(formData.imageLink);
+
+            const payload = {
+                ...formData,
+                imageLink: finalImageUrl 
+            };
+
+            // CREATE LOGIC
+            createMutation.mutate(payload, {
+                onSuccess: () => navigate('/admin/gallery'),
+                onError: (err) => console.error("Create failed", err)
+            });
+        } catch (error) {
+            return;
+        }
     };
 
   return (
@@ -66,13 +81,18 @@ const GalleryEntry = () => {
                         disabled={isPending}
                     >
                         {isPending ? (
-                                <Spinner
-                                as="span"
-                                animation="border"
-                                size="sm"
-                                role="status"
-                                aria-hidden="true"
-                                />
+                                <>
+                                    <Spinner
+                                    as="span"
+                                    animation="border"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                    className="me-2"
+                                    />
+
+                                    {isUploading ? 'Uploading Image...' : 'Saving...'}
+                                </>
                             ) : (
                                 <i className="bi pe-none bi-floppy2-fill"></i>
                             )
@@ -80,12 +100,24 @@ const GalleryEntry = () => {
                     </Button>
                 </div>
             </div>
-            <div className="scrollable-container">
+
+            <div className="scrollable-container" >
+
+                {/* Error Alerts */}
+                {uploadError && <Alert variant="danger">{uploadError}</Alert>}
+
+                {createMutation.isError && (
+                    <Alert variant="danger">
+                        Failed to save gallery item: {createMutation.error?.message}
+                    </Alert>
+                )}
+
                 <Row className="mb-3">
                     <Col md={12}>
                         <ImageUpload 
                             value={formData.imageLink} 
-                            onChange={(url) => setFormData({ ...formData, imageLink: url })} 
+                            onChange={(urlOrFile) => setFormData({ ...formData, imageLink: urlOrFile })}
+                            disabled={isPending}  
                         />
                     </Col>
                 </Row>
@@ -100,14 +132,14 @@ const GalleryEntry = () => {
                         disabled={isPending}
                     />
                 </Form.Group>
-
+                
                 <Form.Group className="mb-3">
                     <Form.Label>Description</Form.Label>
-                    <textarea
+                    <Form.Control
+                        as={TextareaAutosize}
                         name="description" 
-                        className="form-control" 
-                        id="exampleFormControlTextarea1" 
-                        rows="3" 
+                        minRows={3}
+                        maxRows={15}
                         placeholder="Enter description"
                         value={formData.description}
                         onChange={handleChange}
