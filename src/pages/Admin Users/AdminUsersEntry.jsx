@@ -138,7 +138,7 @@ const AdminUsersEntry = () => {
                         placeholder="Enter name" 
                         value={formData.name}
                         onChange={handleChange}
-                        disabled={isPending}
+                        disabled={isPending || isEditMode}
                     />
                 </Form.Group>
 
@@ -172,7 +172,7 @@ const AdminUsersEntry = () => {
                         name="role"
                         value={formData.role}
                         onChange={handleChange}
-                        disabled={isPending}
+                        disabled={isPending || isEditMode}
                     >
                         <option value="ROLE_VIEWER">Viewer</option>
                         <option value="ROLE_ADMIN">Admin</option>

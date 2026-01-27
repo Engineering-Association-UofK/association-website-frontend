@@ -119,7 +119,7 @@ const AdminUsersDashboard = () => {
                       </td>
                       <td>
                         <div className="d-flex justify-content-center gap-2">
-                          {row.status == 'pending' && (
+                          {!row.isVerified && (
                             <Button 
                               variant="outline-primary" 
                               size="sm"

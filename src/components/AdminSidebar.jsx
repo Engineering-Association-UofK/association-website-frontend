@@ -40,7 +40,7 @@ const AdminSidebar = () => {
           <li className="nav-item"> 
             <NavLink to="/admin/admin-users" className="nav-link">
               <i className="bi pe-none bi-person me-2"></i>
-              Admin Users
+              <div>Admin Users</div>
             </NavLink>
           </li>
         </ul> 
