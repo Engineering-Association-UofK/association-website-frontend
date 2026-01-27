@@ -19,6 +19,9 @@
 .nav-item {
     text-align: start;
 }
+.nav-item .nav-link {
+    display: flex;
+}
 ul .nav-link.active {
     color: var(--fg-color-light) !important;
 }
