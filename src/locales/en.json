@@ -6,6 +6,7 @@
         "initiatives": "Initiatives",
         "blogs": "Blogs",
         "gallery": "Gallery",
+        "secretariats": "Secretariats",
         "forms": "Forms",
         "admin": "Admin",
         "login": "Login",
@@ -40,19 +41,19 @@
             "a3": "You can email us at contact@esa-university.edu or use the contact form on our website."
         },
         "contact": {
-          "title": "Contact Us",
-          "subtitle": "Have questions? We would love to hear from you."
+            "title": "Contact Us",
+            "subtitle": "Have questions? We would love to hear from you."
         },
-      "blogsPage": {
-        "title": "Our Blogs",
-        "subtitle": "News, updates, and stories from the student community.",
-        "searchPlaceholder": "Search for articles...",
-        "readMore": "Read More",
-        "noResults": "No articles found.",
-        "latest": "Latest Post",
-        "backToBlogs": "Back to Blogs",
-        "lastUpdated": "Last Updated"
-      }
+        "blogsPage": {
+            "title": "Our Blogs",
+            "subtitle": "News, updates, and stories from the student community.",
+            "searchPlaceholder": "Search for articles...",
+            "readMore": "Read More",
+            "noResults": "No articles found.",
+            "latest": "Latest Post",
+            "backToBlogs": "Back to Blogs",
+            "lastUpdated": "Last Updated"
+        }
     },
     "gallery": {
         "title": "Photo Gallery",
@@ -66,6 +67,12 @@
         "vision": "Our Vision",
         "visionText": "To be the leading student organization that inspires the next generation of engineers to solve global challenges.",
         "team": "Our Team"
+    },
+    "secretariats": {
+        "title": "Association's Secretariats",
+        "intro": "Introduction to the Secretariat Offices Series",
+        "heroSubtitle": "Discover the eight secretariats that form the backbone of the Steering Engineering Association.",
+        "officesOf": "Offices of the"
     },
     "login": {
         "title": "Login",
