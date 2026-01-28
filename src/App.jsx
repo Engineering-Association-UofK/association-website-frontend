@@ -10,6 +10,9 @@ import FAQsDashboard from './pages/FAQs/FAQsDashboard';
 import FAQsEntry from './pages/FAQs/FAQsEntry.jsx';
 import GalleryDashboard from './pages/Gallery/GalleryDashboard';
 import GalleryEntry from './pages/Gallery/GalleryEntry';
+import Secretariats from './pages/Secretariats/Secretariats';
+import SecretariatsDashboard from './pages/Secretariats/SecretariatsDashboard';
+import SecretariatsEntry from './pages/Secretariats/SecretariatsEntry';
 import MainLayout from './layouts/MainLayout';
 import StandaloneLayout from './layouts/StandaloneLayout';
 import './App.css';
@@ -34,6 +37,7 @@ function App() {
               {/* Add other public routes here */}
               <Route path="/blogs" element={<Blogs />} />
               <Route path="/blogs/:id" element={<BlogPage />} />
+              <Route path="/secretariats" element={<Secretariats />} />
             </Route>
 
 
@@ -57,9 +61,11 @@ function App() {
                   <Route path="blogs" element={<BlogsDashboard />} />
                   <Route path="blogs/:id" element={<BlogsEntry />} />
                   <Route path="faqs" element={<FAQsDashboard />} />
-                  <Route path="faqs/:id" element={<FAQsEntry/>} />
+                  <Route path="faqs/:id" element={<FAQsEntry />} />
                   <Route path="gallery" element={<GalleryDashboard />} />
                   <Route path="gallery/:id" element={<GalleryEntry />} />
+                  <Route path="secretariats" element={<SecretariatsDashboard />} />
+                  <Route path="secretariats/:id" element={<SecretariatsEntry />} />
                 </Route>
               </Route>
             </Route>
