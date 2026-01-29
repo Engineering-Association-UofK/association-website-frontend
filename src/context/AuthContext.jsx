@@ -9,21 +9,11 @@ export const AuthProvider = ({ children }) => {
     const role = localStorage.getItem('role') || sessionStorage.getItem('role');
     return token ? { role } : null;
   });
-//   const [token, setToken] = useState(localStorage.getItem('token'));
+
   const [loading, setLoading] = useState(false);
   
   // Helper to find token in either storage
   const getStoredToken = () => localStorage.getItem('sea-token') || sessionStorage.getItem('sea-token');
-
-    // useEffect(() => {
-    //     const token = getStoredToken();
-    //     const role = localStorage.getItem('role') || sessionStorage.getItem('role');
-    //     if (token) {
-    //         // If we have a token, we assume logged in. 
-    //         // Ideally, you'd call an API like /me here to get user details.
-    //         setUser({ role }); 
-    //     }
-    // }, []);
 
   const login = async ({ name, password, isAdmin, rememberMe }) => {
     setLoading(true);
@@ -35,7 +25,7 @@ export const AuthProvider = ({ children }) => {
         return { success: false, status: 'verification_needed' };
       }
 
-      const token = data;
+      const token = data?.token || data;
       
       // Handle Storage Choice
       const storage = rememberMe ? localStorage : sessionStorage;
@@ -45,8 +35,11 @@ export const AuthProvider = ({ children }) => {
       setUser({ role: isAdmin ? 'admin' : 'student' });
       return { success: true };
     } catch (error) {
+      const errorData = error.response?.data;
+      const serverMessage = errorData?.message || errorData?.error || (typeof errorData === 'string' ? errorData : "");
+      const cleanMessage = String(serverMessage).toLowerCase().trim();
       // Check if the backend sent the verification message via error response
-      if (error.response?.data?.message === "Account not verified") {
+      if (cleanMessage.includes("account not verified")) {
         return { success: false, status: 'verification_needed' };
       }
       

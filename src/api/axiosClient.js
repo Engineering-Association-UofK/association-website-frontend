@@ -42,13 +42,27 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
   (response) => response.data, // Return data directly, avoiding .data.data in components
   (error) => {
+
+    const config = error.config || error.response?.config;
+    const response = error.response;
+    const currentPath = window.location.pathname;
+    
+    // actively trying to authenticate. We should NEVER force a page reload here.
+    const isAuthRequest = config?.url?.includes('/login') || 
+                          config?.url?.includes('/verify') || 
+                          config?.url?.includes('/send-code');
+
     // Handle 401 (Unauthorized) - Auto logout logic here
-    if (error.response?.status === 401) {
+    if (response?.status === 401) {
+      if (isAuthRequest) {
+        // Return the error to the component (LoginForm) so it can display the red Alert
+        return Promise.reject(error);
+      }
       // Token expired or invalid
       localStorage.removeItem('token');
       console.error('Unauthorized! Redirecting to login...');
       // window.location.href = '/login';
-      if (!window.location.pathname.includes('/login')) {
+      if (!currentPath.includes('/login') && !currentPath.includes('/register')) {
         clearAuthData();
         // Force Redirect to Login
         // We use window.location.href instead of useNavigate because

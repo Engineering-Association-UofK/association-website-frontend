@@ -21,12 +21,6 @@ const LoginForm = () => {
     const [resendTimer, setResendTimer] = useState(0);
 
     useEffect(() => {
-        if (isAuthenticated) {
-            navigate('/');
-        }
-    }, [isAuthenticated, navigate]);
-
-    useEffect(() => {
         let interval;
         if (resendTimer > 0) {
             interval = setInterval(() => {

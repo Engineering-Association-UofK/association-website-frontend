@@ -101,6 +101,7 @@ const AdminUsersDashboard = () => {
                   <th>Email</th>
                   <th>Role</th>
                   <th>Date</th>
+                  <th>Verified</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -117,17 +118,9 @@ const AdminUsersDashboard = () => {
                       <td>
                         {new Intl.DateTimeFormat("en-GB").format(new Date(row["createdAt"]))}
                       </td>
+                      <td>{row["isVerified"] && <i className="bi pe-none bi-patch-check-fill"></i>}</td>
                       <td>
                         <div className="d-flex justify-content-center gap-2">
-                          {!row.isVerified && (
-                            <Button 
-                              variant="outline-primary" 
-                              size="sm"
-                              onClick={() => handleVerify(row.name)}
-                            >
-                              <i className="bi pe-none bi-patch-check-fill"></i>
-                            </Button>
-                          )}
                           <Button 
                             variant="outline-primary" 
                             size="sm"
