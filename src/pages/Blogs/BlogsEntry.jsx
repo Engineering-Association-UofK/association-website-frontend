@@ -24,7 +24,6 @@ const BlogsEntry = () => {
     const updateMutation = useUpdateBlog();
     const { upload, isUploading, uploadError } = useFileUpload();
 
-    // Fetch Data (Only runs if isEditMode is true)
     const { 
         data: fetchedBlog, 
         isLoading: isLoadingData, 
