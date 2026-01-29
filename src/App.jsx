@@ -13,6 +13,7 @@ import GalleryEntry from './pages/Gallery/GalleryEntry';
 import Secretariats from './pages/Secretariats/Secretariats';
 import SecretariatsDashboard from './pages/Secretariats/SecretariatsDashboard';
 import SecretariatsEntry from './pages/Secretariats/SecretariatsEntry';
+import Verification from './pages/Verification/Verification';
 import MainLayout from './layouts/MainLayout';
 import StandaloneLayout from './layouts/StandaloneLayout';
 import './App.css';
@@ -38,6 +39,7 @@ function App() {
               <Route path="/blogs" element={<Blogs />} />
               <Route path="/blogs/:id" element={<BlogPage />} />
               <Route path="/secretariats" element={<Secretariats />} />
+              <Route path="/verification" element={<Verification />} />
             </Route>
 
 

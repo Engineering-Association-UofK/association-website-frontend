@@ -87,6 +87,10 @@ const NavigationBar = () => {
                                 {translations.navbar.secretariats}
                             </Nav.Link>
 
+                            <Nav.Link as={NavLink} to="/verification" className="mx-2 fw-medium" onClick={() => setExpanded(false)}>
+                                Verification
+                            </Nav.Link>
+
                             {user?.role === 'admin' && (
                                 <Nav.Link as={NavLink} to="/admin" className="mx-2 fw-medium" onClick={() => setExpanded(false)}>
                                     {translations.navbar.admin}
