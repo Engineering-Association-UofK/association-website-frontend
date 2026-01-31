@@ -1,7 +1,26 @@
 // src/pages/forms/FormCard.jsx
+// src/pages/forms/FormCard.jsx
 import React from 'react';
+import { useLanguage } from '../../context/LanguageContext'; // Access their context engine
 
 function FormCard({ title, available, description, onClick }) {
+  const { language } = useLanguage(); // Detect 'en' or 'ar'
+
+  // Internal dictionary for the card's specific UI labels
+  const labels = {
+    en: {
+      btn: "Explore Opportunities",
+      available: "Available"
+    },
+    ar: {
+      btn: "استكشف الفرص",
+      available: "متاح"
+    }
+  };
+
+  // Get the translations based on the current active language
+  const t = labels[language] || labels.en;
+
   return (
     <div 
       onClick={onClick}
@@ -14,7 +33,7 @@ function FormCard({ title, available, description, onClick }) {
         cursor: 'pointer',
         transition: 'all 0.3s ease-out',
         position: 'relative',
-        textAlign: 'left' // Keeps text aligned professionaly
+        textAlign: language === 'ar' ? 'right' : 'left' // Align text based on language
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = 'translateY(-12px)';
@@ -31,7 +50,8 @@ function FormCard({ title, available, description, onClick }) {
       <div style={{
         position: 'absolute',
         top: '15px',
-        right: '20px',
+        // Automatically flip position based on language
+        [language === 'ar' ? 'left' : 'right']: '20px', 
         display: 'flex',
         alignItems: 'center',
         gap: '6px',
@@ -42,11 +62,14 @@ function FormCard({ title, available, description, onClick }) {
       }}>
         <span style={{ width: '8px', height: '8px', backgroundColor: '#22c55e', borderRadius: '50%' }}></span>
         <span style={{ color: '#166534', fontSize: '0.8rem', fontWeight: 'bold' }}>
-          {available} Available
+          {available} {t.available}
         </span>
       </div>
 
-      <h3 style={{ color: '#004a99', marginBottom: '12px', marginTop: '10px' }}>{title}</h3>
+      <h3 style={{ color: '#004a99', marginBottom: '12px', marginTop: '10px' }}>
+        {title}
+      </h3>
+      
       <p style={{ color: '#666', fontSize: '0.95rem', marginBottom: '25px', minHeight: '40px' }}>
         {description}
       </p>
@@ -67,7 +90,7 @@ function FormCard({ title, available, description, onClick }) {
         onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#003366'}
         onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#004a99'}
       >
-        Explore Opportunities
+        {t.btn}
       </button>
     </div>
   );
