@@ -6,6 +6,8 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner';
 import { useCreateAdminUser, useUpdateAdminUser, useAdminUser } from '../../features/admin users/hooks/useAdminUsers';
+import { roles } from './roles';
+import './AdminUsers.css'
 
 const AdminUsersEntry = () => {
 
@@ -31,7 +33,7 @@ const AdminUsersEntry = () => {
     id: 0,
     name: "",
     email: "",
-    role: "ROLE_VIEWER",
+    roles: [],
     password: "",
   });
 
@@ -44,7 +46,7 @@ const AdminUsersEntry = () => {
           id: fetchedAdminUser.id,
           name: fetchedAdminUser.name || '',
           email: fetchedAdminUser.email || '',
-          role: fetchedAdminUser.role || 'ROLE_VIEWER',
+          roles: fetchedAdminUser.roles || [],
           password: fetchedAdminUser.password || '',
           });
       }
@@ -56,10 +58,26 @@ const AdminUsersEntry = () => {
       [e.target.name]: e.target.value
   });
   };
+  
+  const handleRoleChange = (roleValue) => {
+    const currentRoles = [...formData.roles];
+    
+    if (currentRoles.includes(roleValue)) {
+        setFormData({
+            ...formData,
+            roles: currentRoles.filter(r => r !== roleValue)
+        });
+    } else {
+        setFormData({
+            ...formData,
+            roles: [...currentRoles, roleValue]
+        });
+    }
+  };
 
   const handleSubmit = async (e) => {
       e.preventDefault();
-      // console.log("Form Data: ", formData);
+      console.log("Form Data: ", formData);
 
       if (isEditMode) {
           // UPDATE LOGIC
@@ -168,16 +186,20 @@ const AdminUsersEntry = () => {
 
                 <Form.Group controlId="formGridRole">
                     <Form.Label>Role</Form.Label>
-                    <Form.Select
-                        name="role"
-                        value={formData.role}
-                        onChange={handleChange}
-                        disabled={isPending || isEditMode}
-                    >
-                        <option value="ROLE_VIEWER">Viewer</option>
-                        <option value="ROLE_ADMIN">Admin</option>
-                        <option value="ROLE_EDITOR">Editor</option>
-                    </Form.Select>
+                    {roles.map((role) => (
+                        <>
+                            <Form.Check 
+                                key={role.value}
+                                type="switch"
+                                className="role-check"
+                                id={`role-${role.value}`}
+                                label={role.name}
+                                checked={formData && formData.roles?.includes(role.value)}
+                                onChange={() => handleRoleChange(role.value)}
+                                disabled={isPending || role.value == 'ROLE_SUPER_ADMIN'}
+                            /> 
+                        </>   
+                    ))}
                 </Form.Group>
             </div>
         </Form>
