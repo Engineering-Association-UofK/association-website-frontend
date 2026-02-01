@@ -104,5 +104,20 @@
         "phone": "Phone",
         "locationName": "Location",
         "location": "Engineering Building, Main Campus"
+    },
+    "bot": {
+        "needHelp": "Need help?"
+    },
+    "feedback": {
+        "button": "Feedback",
+        "title": "Technical Feedback",
+        "messageLabel": "Message",
+        "messagePlaceholder": "Describe the issue or suggestion...",
+        "contactLabel": "Contact (Optional)",
+        "contactPlaceholder": "Email or Phone",
+        "send": "Send Feedback",
+        "sending": "Sending...",
+        "success": "Thank you! Feedback received.",
+        "error": "Something went wrong. Please try again."
     }
 }
