@@ -8,7 +8,7 @@ import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from "react-router-dom";
 import { useAdminUsers, useDeleteAdminUser } from '../../features/admin users/hooks/useAdminUsers';
 import {useAuth} from "../../context/AuthContext";
-import { roles } from './rols';
+import { displayRole } from './roles';
 
 const AdminUsersDashboard = () => {
   const navigate = useNavigate();
@@ -99,7 +99,7 @@ const AdminUsersDashboard = () => {
                   <th>Id</th>
                   <th>Name</th>
                   <th>Email</th>
-                  <th>Role</th>
+                  <th>Roles</th>
                   <th>Date</th>
                   <th>Verified</th>
                   <th>Actions</th>
@@ -114,7 +114,11 @@ const AdminUsersDashboard = () => {
                       <td>{row["id"]}</td>
                       <td>{row["name"]}</td>
                       <td>{row["email"]}</td>
-                      <td>{row["role"]}</td>
+                      <td>
+                        {row["roles"]?.map((role, index) => (
+                          <div>{ displayRole(role) + (index < row["roles"]?.length - 1 ? ',' : '')}</div>
+                        ))}
+                      </td>
                       <td>
                         {new Intl.DateTimeFormat("en-GB").format(new Date(row["createdAt"]))}
                       </td>

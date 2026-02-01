@@ -53,7 +53,8 @@ apiClient.interceptors.response.use(
                           config?.url?.includes('/send-code');
 
     // Handle 401 (Unauthorized) - Auto logout logic here
-    if (response?.status === 401) {
+    console.log("ss", response);
+    if (response?.status === 401 || response?.data?.status === 401) {
       if (isAuthRequest) {
         // Return the error to the component (LoginForm) so it can display the red Alert
         return Promise.reject(error);
