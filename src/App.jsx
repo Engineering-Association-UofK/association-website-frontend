@@ -11,6 +11,7 @@ import FAQsEntry from './pages/FAQs/FAQsEntry.jsx';
 import GalleryDashboard from './pages/Gallery/GalleryDashboard';
 import GalleryEntry from './pages/Gallery/GalleryEntry';
 import Secretariats from './pages/Secretariats/Secretariats';
+import SecretariatPage from './pages/Secretariats/SecretariatPage';
 import SecretariatsDashboard from './pages/Secretariats/SecretariatsDashboard';
 import SecretariatsEntry from './pages/Secretariats/SecretariatsEntry';
 import Verification from './pages/Verification/Verification';
@@ -39,6 +40,7 @@ function App() {
               <Route path="/blogs" element={<Blogs />} />
               <Route path="/blogs/:id" element={<BlogPage />} />
               <Route path="/secretariats" element={<Secretariats />} />
+              <Route path="/secretariats/:id" element={<SecretariatPage />} />
               <Route path="/verification" element={<Verification />} />
             </Route>
 

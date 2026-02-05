@@ -5,10 +5,12 @@ import { secretariatService } from '../api/secretariats.service';
 export const SECRETARIATS_KEYS = {
     all: ['secretariats'],
     lists: () => [...SECRETARIATS_KEYS.all, 'list'],
+    publicLists: () => [...SECRETARIATS_KEYS.all, 'public-list'],
     detail: (id) => [...SECRETARIATS_KEYS.all, 'detail', id],
+    publicDetail: (id) => [...SECRETARIATS_KEYS.all, 'public-detail', id],
 };
 
-// Hook for fetching all secretariats
+// Hook for fetching all secretariats (admin)
 export const useSecretariats = () => {
     return useQuery({
         queryKey: SECRETARIATS_KEYS.lists(),
@@ -17,13 +19,32 @@ export const useSecretariats = () => {
     });
 };
 
-// Hook for fetching a secretariat by id
+// Hook for fetching all secretariats (public)
+export const usePublicSecretariats = () => {
+    return useQuery({
+        queryKey: SECRETARIATS_KEYS.publicLists(),
+        queryFn: () => secretariatService.getPublicAll(),
+        staleTime: 5 * 60 * 1000, // 5 minutes cache for public data
+    });
+};
+
+// Hook for fetching a secretariat by id (admin)
 export const useSecretariat = (id) => {
     return useQuery({
         queryKey: ['secretariats', 'detail', id],
         queryFn: () => secretariatService.getById(id),
         enabled: !!id && id !== '0' && id !== 'new',
         staleTime: 0,
+    });
+};
+
+// Hook for fetching a secretariat by id (public)
+export const usePublicSecretariat = (id) => {
+    return useQuery({
+        queryKey: SECRETARIATS_KEYS.publicDetail(id),
+        queryFn: () => secretariatService.getPublicById(id),
+        enabled: !!id && id !== '0',
+        staleTime: 5 * 60 * 1000, // 5 minutes cache for public data
     });
 };
 

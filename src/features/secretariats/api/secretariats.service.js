@@ -3,6 +3,7 @@ import apiClient from '../../../api/axiosClient';
 const ENDPOINT = '/api/secretariats';
 
 export const secretariatService = {
+    // Admin endpoints
     getAll: async () => {
         return await apiClient.get(`${ENDPOINT}/dashboard`);
     },
@@ -21,5 +22,14 @@ export const secretariatService = {
 
     delete: async (id) => {
         return await apiClient.delete(`${ENDPOINT}/${id}`);
+    },
+
+    // Public endpoints
+    getPublicAll: async () => {
+        return await apiClient.get(`${ENDPOINT}`);
+    },
+
+    getPublicById: async (id) => {
+        return await apiClient.get(`${ENDPOINT}/${id}`);
     },
 };
