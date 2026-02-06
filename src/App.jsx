@@ -23,7 +23,7 @@ import AdminUsersDashboard from './pages/Admin Users/AdminUsersDashboard.jsx';
 import AdminUsersEntry from './pages/Admin Users/AdminUsersEntry.jsx';
 import FormsGallery from './pages/forms/FormsGallery';
 import FormsDashboard from './pages/forms/FormsDashboard.jsx';
-
+import FormEntry from './pages/forms/FormEntry.jsx';
 function App() {
   return (
     <AuthProvider>
@@ -68,6 +68,7 @@ function App() {
                   <Route path="admin-users" element={<AdminUsersDashboard />} />
                   <Route path="admin-users/:id" element={<AdminUsersEntry />} />
                   <Route path="forms" element={<FormsDashboard />} />
+                  <Route path="forms/:id" element={<FormEntry />} />
                   
                   
 
