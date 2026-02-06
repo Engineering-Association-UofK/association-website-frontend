@@ -22,6 +22,8 @@ import PublicOnlyRoute from './components/PublicOnlyRoute.jsx';
 import AdminUsersDashboard from './pages/Admin Users/AdminUsersDashboard.jsx';
 import AdminUsersEntry from './pages/Admin Users/AdminUsersEntry.jsx';
 import FormsGallery from './pages/forms/FormsGallery';
+import FormsDashboard from './pages/forms/FormsDashboard.jsx';
+
 function App() {
   return (
     <AuthProvider>
@@ -65,6 +67,8 @@ function App() {
                   <Route path="gallery/:id" element={<GalleryEntry />} />
                   <Route path="admin-users" element={<AdminUsersDashboard />} />
                   <Route path="admin-users/:id" element={<AdminUsersEntry />} />
+                  <Route path="forms" element={<FormsDashboard />} />
+                  
                   
 
 

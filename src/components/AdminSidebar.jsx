@@ -17,7 +17,7 @@ const AdminSidebar = () => {
 
   return (
     <>
-      <div className="d-flex flex-column  p-3 bg-body-tertiary" style={{width: "200px", marginBottom: '-16px', height: 'calc(100dvh - 42px - 16px)', borderRight: 'var(--bs-border-width) solid var(--bs-border-color)'}}> 
+      <div className="d-flex flex-column p-3 bg-body-tertiary" style={{width: "200px", marginBottom: '-16px', height: 'calc(100dvh - 42px - 16px)', borderRight: 'var(--bs-border-width) solid var(--bs-border-color)'}}> 
         <ul className="nav nav-pills flex-column mb-auto"> 
           <li className="nav-item"> 
             <NavLink to="/admin/blogs" className="nav-link">
@@ -43,6 +43,15 @@ const AdminSidebar = () => {
               <div>Admin Users</div>
             </NavLink>
           </li>
+          
+          {/* NEW FORMS SECTION */}
+          <li className="nav-item"> 
+            <NavLink to="/admin/forms" className="nav-link">
+              <i className="bi pe-none bi-file-earmark-text me-2"></i>
+              <div>Forms</div>
+            </NavLink>
+          </li>
+          
         </ul> 
         <hr></hr> 
         <div className="d-flex align-items-center justify-content-between">
@@ -67,7 +76,6 @@ const AdminSidebar = () => {
         </div>
       </div>
     </>
-    
   )
 }
 
