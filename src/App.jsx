@@ -24,6 +24,9 @@ import AdminUsersEntry from './pages/Admin Users/AdminUsersEntry.jsx';
 import FormsGallery from './pages/forms/FormsGallery';
 import FormsDashboard from './pages/forms/FormsDashboard.jsx';
 import FormEntry from './pages/forms/FormEntry.jsx';
+import CategoryView from './pages/forms/CategoryView'; // Make sure this is here!
+import ApplicationView from './pages/forms/ApplicationView';
+
 function App() {
   return (
     <AuthProvider>
@@ -39,6 +42,8 @@ function App() {
               <Route path="/blogs" element={<Blogs />} />
               <Route path="/blogs/:id" element={<BlogPage />} />
               <Route path="/forms" element={<FormsGallery />} />
+              <Route path="/apply/:formId" element={<ApplicationView />} />
+              <Route path="/forms/category/:categoryId" element={<CategoryView />} />
             </Route>
 
 

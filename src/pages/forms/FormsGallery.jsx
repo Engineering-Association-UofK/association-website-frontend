@@ -1,18 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FormCard from './formcard'; 
-import { useLanguage } from '../../context/LanguageContext'; // Matches their export
+import { useLanguage } from '../../context/LanguageContext';
 
 function FormsGallery() {
   const navigate = useNavigate();
-  // We pull 'language' from their context
   const { language } = useLanguage(); 
+  const [counts, setCounts] = useState({ competitions: 0, positions: 0, workshops: 0 });
+
+  // --- Logic: Fetch and count published forms from localStorage ---
+  useEffect(() => {
+    // 1. Read data from "Database"
+    const allForms = JSON.parse(localStorage.getItem('myCustomForms') || '[]');
+    
+    // 2. Filter for Published only
+    const publishedOnly = allForms.filter(f => f.status === 'published');
+
+    // 3. Count by category
+    const newCounts = {
+      competitions: publishedOnly.filter(f => f.category === 'competitions').length,
+      positions: publishedOnly.filter(f => f.category === 'positions').length,
+      workshops: publishedOnly.filter(f => f.category === 'workshops').length,
+    };
+
+    setCounts(newCounts);
+  }, []);
 
   const categories = [
     { 
       id: 'competitions', 
       title: { en: 'Competitions', ar: 'المسابقات' }, 
-      available: 2, 
+      available: counts.competitions, 
       description: { 
         en: 'Join our technical and creative challenges.', 
         ar: 'انضم إلى تحدياتنا التقنية والإبداعية.' 
@@ -21,7 +39,7 @@ function FormsGallery() {
     { 
       id: 'positions', 
       title: { en: 'Apply for Position', ar: 'التقديم على منصب' }, 
-      available: 5, 
+      available: counts.positions, 
       description: { 
         en: 'Become a leader or a member in our offices.', 
         ar: 'كن قائداً أو عضواً في مكاتبنا المختلفة.' 
@@ -30,7 +48,7 @@ function FormsGallery() {
     { 
       id: 'workshops', 
       title: { en: 'Workshop Attendance', ar: 'حضور ورش العمل' }, 
-      available: 1, 
+      available: counts.workshops, 
       description: { 
         en: 'Register for training in upcoming workshops.', 
         ar: 'سجل للحصول على تدريب في ورش العمل القادمة.' 
@@ -51,16 +69,18 @@ function FormsGallery() {
         display: 'grid', 
         gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', 
         gap: '25px',
-        // Their context already handles document.dir, but we ensure layout follows
         direction: language === 'ar' ? 'rtl' : 'ltr' 
       }}>
         {categories.map((cat) => (
+          /* FIX: Added the 'key' prop here to stop the console error */
           <FormCard 
             key={cat.id} 
-            title={cat.title[language]} 
-            available={cat.available} 
-            description={cat.description[language]}
-            onClick={() => navigate(`/forms/${cat.id}`)}
+            title={cat.title[language]}
+            available={cat.available}
+            description={cat.description[language]} // Added description back so cards look good
+            showDeadline={false} 
+            btnLabel={language === 'ar' ? "استكشف الفرص" : "Explore Opportunities"}
+            onClick={() => navigate(`/forms/category/${cat.id}`)}
           />
         ))}
       </div>

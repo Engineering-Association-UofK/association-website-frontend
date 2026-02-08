@@ -1,16 +1,20 @@
 import React, { useState } from 'react';
 import { Container, Form, Button, Row, Col, Card, Modal } from 'react-bootstrap';
-// Ensure the path to your TextField atom is correct
+import { useNavigate } from 'react-router-dom';
+
+// Import all Atoms (Atoms are your UI building blocks)
 import TextField from '../../components/FormFields/TextField'; 
+import FileField from '../../components/FormFields/FileField'; 
+import MCField from '../../components/FormFields/mcField';
+import DateField from '../../components/FormFields/Datefield';
 
 const FormEntry = () => {
+  const navigate = useNavigate();
   const [formName, setFormName] = useState('');
   const [category, setCategory] = useState('competitions');
   const [openDate, setOpenDate] = useState('');
   const [closeDate, setCloseDate] = useState('');
   const [formFields, setFormFields] = useState([]);
-
-  // --- Preview State ---
   const [showPreview, setShowPreview] = useState(false);
 
   const addField = (fieldType) => {
@@ -20,43 +24,76 @@ const FormEntry = () => {
       subType: 'short',
       label: '',
       isRequired: false,
-      options: ['Option 1'] // Default option for choices
+      options: fieldType === 'choice' ? ['Option 1'] : []
     };
     setFormFields([...formFields, newField]);
   };
 
   const updateField = (id, key, value) => {
-    setFormFields(formFields.map(field => 
-      field.id === id ? { ...field, [key]: value } : field
-    ));
+    setFormFields(formFields.map(field => field.id === id ? { ...field, [key]: value } : field));
   };
 
   const removeField = (id) => {
     setFormFields(formFields.filter(field => field.id !== id));
   };
 
-  const handleSave = () => {
-    const formData = { formName, category, openDate, closeDate, fields: formFields };
-    console.log("Saving Form Structure:", formData);
-    alert("Form structure saved to console!");
+  const addOption = (fieldId) => {
+    setFormFields(formFields.map(f => {
+      if (f.id === fieldId) return { ...f, options: [...f.options, `Option ${f.options.length + 1}`] };
+      return f;
+    }));
+  };
+
+  const updateOption = (fieldId, optIdx, val) => {
+    setFormFields(formFields.map(f => {
+      if (f.id === fieldId) {
+        const newOpts = [...f.options];
+        newOpts[optIdx] = val;
+        return { ...f, options: newOpts };
+      }
+      return f;
+    }));
+  };
+
+  // --- Real Engineering Logic: Save to LocalStorage with Dates ---
+  const handleSave = (status) => {
+    if (!formName || !closeDate) {
+      alert("Please enter a form name and a close date!");
+      return;
+    }
+
+    const newFormEntry = {
+      id: Date.now(),
+      title: formName,
+      category: category,
+      status: status, // 'draft' or 'published'
+      openDate: openDate, // تم الربط هنا
+      closeDate: closeDate, // تم الربط هنا
+      fields: formFields,
+      createdAt: new Date().toLocaleDateString(),
+      submissions: 0 // Initialize applicant count
+    };
+
+    const existingForms = JSON.parse(localStorage.getItem('myCustomForms') || '[]');
+    localStorage.setItem('myCustomForms', JSON.stringify([newFormEntry, ...existingForms]));
+
+    alert(status === 'published' ? "🚀 Form Published!" : "💾 Draft Saved!");
+    navigate('/admin/forms');
   };
 
   return (
     <Container className="py-4 text-start">
-      <h4 className="mb-4">Form Builder Dashboard</h4>
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h4>Form Builder</h4>
+        <Button variant="outline-secondary" size="sm" onClick={() => navigate('/admin/forms')}>Back</Button>
+      </div>
       
-      {/* SECTION 1: FORM META DATA */}
       <Card className="p-4 mb-4 shadow-sm border-0 bg-light">
         <Row className="mb-3">
           <Col md={6}>
             <Form.Group>
               <Form.Label className="fw-bold">Form Name</Form.Label>
-              <Form.Control 
-                type="text" 
-                placeholder="e.g., Annual Robotics Competition"
-                value={formName} 
-                onChange={(e) => setFormName(e.target.value)} 
-              />
+              <Form.Control type="text" value={formName} onChange={(e) => setFormName(e.target.value)} />
             </Form.Group>
           </Col>
           <Col md={6}>
@@ -86,15 +123,14 @@ const FormEntry = () => {
         </Row>
       </Card>
 
-      {/* SECTION 2: FIELD ADDER */}
-      <h5 className="mb-3">Add Form Elements</h5>
-      <div className="d-flex gap-2 mb-4">
-        <Button variant="primary" onClick={() => addField('text')}>+ Text Input</Button>
-        <Button variant="primary" onClick={() => addField('number')}>+ Number Input</Button>
-        <Button variant="primary" onClick={() => addField('choice')}>+ Multiple Choice</Button>
+      <div className="d-flex flex-wrap gap-2 mb-4">
+        <Button variant="primary" onClick={() => addField('text')}>+ Text</Button>
+        <Button variant="primary" onClick={() => addField('number')}>+ Number</Button>
+        <Button variant="primary" onClick={() => addField('choice')}>+ Choice</Button>
+        <Button variant="primary" onClick={() => addField('file')}>+ File</Button>
+        <Button variant="primary" onClick={() => addField('date')}>+ Date</Button>
       </div>
 
-      {/* SECTION 3: FIELD LIST */}
       {formFields.map((field, index) => (
         <Card key={field.id} className="mb-3 p-3 border-start border-primary border-4 shadow-sm">
           <div className="d-flex justify-content-between align-items-center mb-2">
@@ -103,21 +139,16 @@ const FormEntry = () => {
           </div>
           <Row className="g-3">
             <Col md={12}>
-              <Form.Control 
-                type="text" 
-                placeholder="Enter Question/Label"
-                value={field.label}
-                onChange={(e) => updateField(field.id, 'label', e.target.value)}
-              />
+              <Form.Control type="text" placeholder="Question Label" value={field.label} onChange={(e) => updateField(field.id, 'label', e.target.value)} />
             </Col>
-            {field.type === 'text' && (
-              <Col md={6}>
-                <Form.Select value={field.subType} onChange={(e) => updateField(field.id, 'subType', e.target.value)}>
-                  <option value="short">Short Answer</option>
-                  <option value="long">Long Answer</option>
-                  <option value="email">Email Address</option>
-                  <option value="phone">Phone Number</option>
-                </Form.Select>
+            {field.type === 'choice' && (
+              <Col md={12} className="bg-light p-3 rounded">
+                {field.options.map((opt, optIdx) => (
+                  <div key={optIdx} className="d-flex gap-2 mb-2">
+                    <Form.Control size="sm" value={opt} onChange={(e) => updateOption(field.id, optIdx, e.target.value)} />
+                  </div>
+                ))}
+                <Button variant="link" size="sm" onClick={() => addOption(field.id)}>+ Add Choice</Button>
               </Col>
             )}
             <Col md={6} className="d-flex align-items-center">
@@ -127,57 +158,11 @@ const FormEntry = () => {
         </Card>
       ))}
 
-      <hr className="my-5" />
-      <div className="d-flex justify-content-end gap-3">
-        <Button variant="outline-secondary" size="lg" onClick={() => setShowPreview(true)}>
-          Preview Design
-        </Button>
-        <Button variant="success" size="lg" className="px-5 fw-bold" onClick={handleSave}>
-          Save and Publish
-        </Button>
+      <div className="d-flex justify-content-end gap-3 mt-5">
+        <Button variant="outline-info" onClick={() => setShowPreview(true)}>Preview</Button>
+        <Button variant="outline-secondary" onClick={() => handleSave('draft')}>Save Draft</Button>
+        <Button variant="success" className="px-5 fw-bold" onClick={() => handleSave('published')}>Publish</Button>
       </div>
-
-      {/* --- PREVIEW MODAL --- */}
-      <Modal show={showPreview} onHide={() => setShowPreview(false)} size="lg" centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Student View Preview</Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="bg-light p-4">
-          <div className="bg-white p-4 rounded shadow-sm">
-            <h2 className="text-primary mb-1">{formName || "Untitled Form"}</h2>
-            <p className="text-muted small mb-4">Category: {category}</p>
-            <hr />
-            {formFields.length === 0 ? (
-              <p className="text-center py-4">No fields added yet.</p>
-            ) : (
-              formFields.map((field) => (
-                <div key={field.id} className="mb-4">
-                  {field.type === 'text' ? (
-                    <TextField 
-                      label={field.label || "Untitled Question"} 
-                      type={field.subType} 
-                      isRequired={field.isRequired} 
-                    />
-                  ) : field.type === 'number' ? (
-                    <Form.Group>
-                      <Form.Label className="fw-bold">{field.label || "Untitled Question"} {field.isRequired && "*"}</Form.Label>
-                      <Form.Control type="number" />
-                    </Form.Group>
-                  ) : (
-                    <Form.Group>
-                      <Form.Label className="fw-bold">{field.label || "Untitled Question"}</Form.Label>
-                      <div className="p-2 border rounded bg-light text-muted small">
-                        Multiple choice options would appear here.
-                      </div>
-                    </Form.Group>
-                  )}
-                </div>
-              ))
-            )}
-            <Button variant="primary" className="mt-3" disabled>Submit Application</Button>
-          </div>
-        </Modal.Body>
-      </Modal>
     </Container>
   );
 };
