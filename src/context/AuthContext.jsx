@@ -11,6 +11,7 @@ export const AuthProvider = ({ children }) => {
   });
 
   const [loading, setLoading] = useState(false);
+  const [changePasswordLoading, setChangePasswordLoading] = useState(false);
   
   // Helper to find token in either storage
   const getStoredToken = () => localStorage.getItem('sea-token') || sessionStorage.getItem('sea-token');
@@ -78,6 +79,21 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const changePassword = async ({ oldPassword, newPassword, confirmPassword }) => {
+    setChangePasswordLoading(true);
+    try {
+      await authService.changePassword({ oldPassword, newPassword, confirmPassword });
+      return { success: true, message: "Password updated successfully" };
+    } catch (error) {
+      const errorData = error.response?.data;
+      const msg = errorData?.message || errorData?.error || (typeof errorData === 'string' ? errorData : "") || "Failed to update password";
+      return { success: false, message: msg };
+    } finally {
+      setChangePasswordLoading(false);
+    }
+  };
+
+
   const logout = () => {
     localStorage.removeItem('sea-token');
     // localStorage.removeItem('role');
@@ -106,7 +122,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout, sendCode, verifyCode, isAuthenticated: !!user }}>
+    <AuthContext.Provider value={{ user, loading, changePasswordLoading, login, register, logout, sendCode, verifyCode, changePassword, isAuthenticated: !!user }}>
       {children}
     </AuthContext.Provider>
   );

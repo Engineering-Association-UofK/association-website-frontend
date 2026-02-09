@@ -22,6 +22,7 @@ import PublicOnlyRoute from './components/PublicOnlyRoute.jsx';
 import AdminUsersDashboard from './pages/Admin Users/AdminUsersDashboard.jsx';
 import AdminUsersEntry from './pages/Admin Users/AdminUsersEntry.jsx';
 import AdminProfile from './pages/Admin Profile/AdminProfile.jsx';
+import ChangePassword from './pages/Admin/ChangePassword.jsx';
 
 function App() {
   return (
@@ -66,6 +67,7 @@ function App() {
                   <Route path="admin-users" element={<AdminUsersDashboard />} />
                   <Route path="admin-users/:id" element={<AdminUsersEntry />} />
                   <Route path="admin-profile" element={<AdminProfile />} />
+                  <Route path="change-password" element={<ChangePassword />} />
                 </Route>
               </Route>
             </Route>
