@@ -6,6 +6,7 @@ import { Form, Button, Card, Image, Alert, Spinner } from 'react-bootstrap';
 import { useAuth } from '../../context/AuthContext';
 import { displayRole } from "../Admin Users/roles";
 import { useUpdateAdminUserEmail } from '../../features/admin users/hooks/useAdminUsers';
+import defaultImg from '../../utils/images/person.svg';
 
 const AdminProfile = () => {
     const { user } = useAuth();
@@ -87,7 +88,7 @@ const AdminProfile = () => {
             <Card className='p-0 mb-4'>
                 <Card.Body className='d-flex align-items-center'>
                     <Image 
-                        src="/src/utils/images/person.svg" 
+                        src={defaultImg} 
                         roundedCircle
                         width="80" 
                         height="80" 

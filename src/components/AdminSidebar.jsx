@@ -4,6 +4,7 @@ import {Button, Dropdown} from 'react-bootstrap';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from "react-router-dom";
 import '../pages/Admin/Admin.css'
+import defaultImg from '../utils/images/person.svg';
 
 const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
   <div
@@ -62,7 +63,7 @@ const AdminSidebar = () => {
         <div className="d-flex align-items-center justify-content-between">
           <div className="d-flex align-items-center">
             <img 
-              src="/src/utils/images/person.svg" 
+              src={defaultImg} 
               alt="admin" 
               width="32" 
               height="32" 
