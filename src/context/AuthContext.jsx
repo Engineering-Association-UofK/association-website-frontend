@@ -5,9 +5,9 @@ const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
-    const token = localStorage.getItem('sea-token') || sessionStorage.getItem('sea-token');
-    const role = localStorage.getItem('role') || sessionStorage.getItem('role');
-    return token ? { role } : null;
+    // const token = localStorage.getItem('sea-token') || sessionStorage.getItem('sea-token');
+    // console.log('sss', JSON.parse(localStorage.getItem('sea-user') || sessionStorage.getItem('sea-user')) || null, token);
+    return JSON.parse(localStorage.getItem('sea-user') || sessionStorage.getItem('sea-user')) || null;
   });
 
   const [loading, setLoading] = useState(false);
@@ -26,13 +26,21 @@ export const AuthProvider = ({ children }) => {
       }
 
       const token = data?.token || data;
+      const decodedToken = parseJwt(token)
+      console.log('token', parseJwt(token));
       
       // Handle Storage Choice
       const storage = rememberMe ? localStorage : sessionStorage;
       storage.setItem('sea-token', token);
-      storage.setItem('role', isAdmin ? 'admin' : 'student');
-
-      setUser({ role: isAdmin ? 'admin' : 'student' });
+      // storage.setItem('roles', decodedToken?.roles);
+      const userToSet = { 
+        roles: decodedToken?.roles, 
+        type: decodedToken?.type, 
+        name: decodedToken?.name,
+        email: decodedToken?.email 
+      }
+      setUser(userToSet);
+      storage.setItem('sea-user', JSON.stringify(userToSet));
       return { success: true };
     } catch (error) {
       const errorData = error.response?.data;
@@ -72,10 +80,29 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem('sea-token');
-    localStorage.removeItem('role');
+    // localStorage.removeItem('role');
+    localStorage.removeItem('sea-user');
     sessionStorage.removeItem('sea-token');
-    sessionStorage.removeItem('role');
+    // sessionStorage.removeItem('role');
+    sessionStorage.removeItem('sea-user');
     setUser(null);
+  };
+  
+  const parseJwt = (token) => {
+    try {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(
+        window.atob(base64)
+          .split('')
+          .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+          .join('')
+      );
+
+      return JSON.parse(jsonPayload);
+    } catch (e) {
+      return null;
+    }
   };
 
   return (

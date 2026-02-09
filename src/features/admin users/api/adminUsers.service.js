@@ -19,6 +19,10 @@ export const adminUsersService = {
     return await apiClient.put(`${ENDPOINT}/update`, data);
   },
 
+  updateEmail: async (data) => {
+    return await apiClient.put(`${ENDPOINT}/update-email`, data);
+  },
+
   delete: async (id) => {
     return await apiClient.delete(`${ENDPOINT}/delete/${id}`);
   },

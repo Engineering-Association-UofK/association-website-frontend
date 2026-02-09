@@ -20,9 +20,11 @@ const getAuthToken = () => {
 // Helper: Clear all auth data
 const clearAuthData = () => {
   localStorage.removeItem('sea-token');
-  localStorage.removeItem('role');
+  localStorage.removeItem('sea-user');
+  // localStorage.removeItem('role');
   sessionStorage.removeItem('sea-token');
-  sessionStorage.removeItem('role');
+  sessionStorage.removeItem('sea-user');
+  // sessionStorage.removeItem('role');
 };
 
 // 2. Request Interceptor (Attach Token)
