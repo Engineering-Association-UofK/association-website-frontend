@@ -43,6 +43,12 @@ const AdminSidebar = () => {
               <div>Admin Users</div>
             </NavLink>
           </li>
+          <li className="nav-item"> 
+            <NavLink to="/admin/bot-commands" className="nav-link">
+              <i className="bi pe-none bi-chat me-2"></i>
+              <div>Bot Commands</div>
+            </NavLink>
+          </li>
         </ul> 
         <hr></hr> 
         <div className="d-flex align-items-center justify-content-between">
