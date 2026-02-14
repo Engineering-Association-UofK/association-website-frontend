@@ -1,25 +1,50 @@
 import React from 'react';
-import { Container, Row, Col, Card } from 'react-bootstrap';
-import { useLanguage } from '../../context/LanguageContext.jsx';
+import { Container, Row, Col, Card, Spinner } from 'react-bootstrap';
+import { useGenerics } from '../../features/generics/hooks/useGenerics.js';
+import EditGenericButton from '../../features/generics/components/EditGenericButton.jsx';
 
 const InitiativesSection = () => {
-    const { translations } = useLanguage();
+    
+    // Define the keywords we need for this section
+    const keywords = ['home_initiatives_intro', 'home_initiative_1', 'home_initiative_2', 'home_initiative_3'];
+    const { data: generics, isLoading } = useGenerics(keywords);
+
+    // Helper to safely get data
+    const getText = (key) => generics?.[key] || {};
+
+    if (isLoading) {
+        return (
+            <section className="py-5 bg-light text-center">
+                <Spinner animation="border" variant="primary" />
+            </section>
+        );
+    }
 
     return (
         <section className="py-5 bg-light">
             <Container>
-                <h2 className="text-center mb-5 text-primary fw-bold">{translations.home.initiatives.title}</h2>
+                <div className="text-center mb-5">
+                    <h2 className="text-primary fw-bold">
+                        {getText('home_initiatives_intro').title}
+                        <EditGenericButton keyword="home_initiatives_intro" currentData={getText('home_initiatives_intro')} />
+                    </h2>
+                    <p className="text-muted w-75 mx-auto">{getText('home_initiatives_intro').body}</p>
+                </div>
+                
                 <Row>
-                    {[1, 2, 3].map((item) => (
-                        <Col md={4} key={item} className="mb-4">
+                    {['home_initiative_1', 'home_initiative_2', 'home_initiative_3'].map((key, index) => (
+                        <Col md={4} key={key} className="mb-4">
                             <Card className="h-100 shadow-sm border-0 hover-card">
                                 <Card.Body className="text-center p-4">
                                     <div className="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center mb-3" style={{ width: '60px', height: '60px' }}>
-                                        <span className="fs-3">{item}</span>
+                                        <span className="fs-3">{index + 1}</span>
                                     </div>
-                                    <Card.Title className="fw-bold">Initiative {item}</Card.Title>
+                                    <Card.Title className="fw-bold">
+                                        {getText(key).title || `Initiative ${index + 1}`}
+                                        <EditGenericButton keyword={key} currentData={getText(key)} />
+                                    </Card.Title>
                                     <Card.Text className="text-muted">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                                        {getText(key).body || "Loading initiative details..."}
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
