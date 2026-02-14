@@ -83,7 +83,7 @@ const NavigationBar = () => {
                             {translations.navbar.blogs}
                         </Nav.Link>
 
-                        {user?.role === 'admin' && (
+                        {user?.type === 'admin' && (
                             <Nav.Link as={NavLink} to="/admin" className="mx-2 fw-medium" onClick={() => setExpanded(false)}>
                                 {translations.navbar.admin}
                             </Nav.Link>

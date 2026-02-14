@@ -1,13 +1,28 @@
 import React from 'react'
 import { NavLink } from "react-router-dom";
-import Button from 'react-bootstrap/Button';
+import {Button, Dropdown} from 'react-bootstrap';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from "react-router-dom";
 import '../pages/Admin/Admin.css'
+import defaultImg from '../utils/images/person.svg';
+
+const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
+  <div
+    ref={ref}
+    onClick={(e) => {
+      e.preventDefault();
+      onClick(e);
+    }}
+    style={{ cursor: "pointer" }}
+    className="text-dark p-0 border-0"
+  >
+    {children}
+  </div>
+));
 
 const AdminSidebar = () => {
 
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -54,14 +69,35 @@ const AdminSidebar = () => {
         <div className="d-flex align-items-center justify-content-between">
           <div className="d-flex align-items-center">
             <img 
-              src="/src/utils/images/person.svg" 
+              src={defaultImg} 
               alt="admin" 
               width="32" 
               height="32" 
               className="rounded-circle me-2 bg-dark-subtle"></img>
-            <strong>Admin</strong> 
+            <strong>{user?.name}</strong> 
           </div>
-          <Button 
+
+          <Dropdown drop="up">
+            <Dropdown.Toggle as={CustomToggle} variant="link" className="text-dark p-0 border-0" id="dropdown-custom-components">
+              <i className="bi bi-three-dots-vertical" style={{ fontSize: '1.2rem' }}></i>
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu className="shadow border-0">
+              <Dropdown.Item onClick={() => navigate('/admin/admin-profile')}>
+                <i className="bi bi-person-circle me-2"></i> Profile
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => navigate('/admin/change-password')}>
+                <i className="bi bi-key me-2"></i> Change Password
+              </Dropdown.Item>
+              
+              <Dropdown.Divider />
+              <Dropdown.Item onClick={handleLogout} className="text-danger">
+                <i className="bi bi-box-arrow-right me-2"></i> Logout
+              </Dropdown.Item>
+
+            </Dropdown.Menu>
+          </Dropdown>
+          {/* <Button 
             variant="outline-primary" 
             size="sm"
             onClick={handleLogout}
@@ -69,7 +105,7 @@ const AdminSidebar = () => {
             <h5 className='m-0'>
               <i className="bi pe-none bi-box-arrow-left"></i>
             </h5>
-          </Button>
+          </Button> */}
         </div>
       </div>
     </>

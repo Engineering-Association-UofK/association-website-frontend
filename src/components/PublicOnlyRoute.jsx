@@ -7,7 +7,7 @@ const PublicOnlyRoute = () => {
   
     // If user is ALREADY logged in, send them to their dashboard
     if (isAuthenticated) {
-      if (user.role === 'admin') {
+      if (user.type === 'admin') {
           return <Navigate to="/admin" replace />;
       } else {
           return <Navigate to="/" replace />; // Or /student/dashboard

@@ -25,6 +25,10 @@ export const authService = {
     return await apiClient.post('/admin/verify', { name, code }, { skipAuth: true });
   },
 
+  changePassword: async ({ oldPassword, newPassword, confirmPassword }) => {
+    return await apiClient.put(`${ENDPOINT}/update-password`, { oldPassword, newPassword, confirmPassword });
+  },
+
   logout: async () => {
     // Optional: Call backend to invalidate session if needed
     // await apiClient.post(`${ENDPOINT}/logout`);

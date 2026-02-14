@@ -21,6 +21,8 @@ import ProtectedRoute from './components/ProtectedRoute.jsx';
 import PublicOnlyRoute from './components/PublicOnlyRoute.jsx';
 import AdminUsersDashboard from './pages/Admin Users/AdminUsersDashboard.jsx';
 import AdminUsersEntry from './pages/Admin Users/AdminUsersEntry.jsx';
+import AdminProfile from './pages/Admin Profile/AdminProfile.jsx';
+import ChangePassword from './pages/Admin/ChangePassword.jsx';
 import BotCommandsDashboard from './pages/Bot Commands/BotCommandsDashboard.jsx';
 import BotCommandsEntry from './pages/Bot Commands/BotCommandsEntry.jsx';
 
@@ -66,6 +68,8 @@ function App() {
                   <Route path="gallery/:id" element={<GalleryEntry />} />
                   <Route path="admin-users" element={<AdminUsersDashboard />} />
                   <Route path="admin-users/:id" element={<AdminUsersEntry />} />
+                  <Route path="admin-profile" element={<AdminProfile />} />
+                  <Route path="change-password" element={<ChangePassword />} />
                   <Route path="bot-commands" element={<BotCommandsDashboard />} />
                   <Route path="bot-commands/:id" element={<BotCommandsEntry />} />
                 </Route>
