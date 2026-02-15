@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Button } from 'react-bootstrap';
 import { useLanguage } from '../../context/LanguageContext.jsx';
 import headerImg from '../../utils/images/home-page-header.jpg';
+import {Link} from "react-router-dom";
 
 const HeroSection = () => {
     const { translations } = useLanguage();
@@ -29,7 +30,7 @@ const HeroSection = () => {
             <Container className="position-relative z-2 text-center text-white">
                 <h1 className="display-4 display-md-2 fw-bold mb-4 text-shadow">{translations.home.hero.title}</h1>
                 <p className="lead mb-5 fs-5 fs-md-3 text-shadow opacity-90">{translations.home.hero.subtitle}</p>
-                <Button variant="primary" size="lg" className="rounded-pill px-5 py-3 fs-5 fw-bold shadow-lg hover-scale">
+                <Button as={Link} to="/about" variant="primary" size="lg" className="rounded-pill px-5 py-3 fs-5 fw-bold shadow-lg hover-scale">
                     {translations.home.hero.cta}
                 </Button>
             </Container>

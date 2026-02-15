@@ -1,32 +1,20 @@
 import React, { useState } from 'react';
-import api from '../../utils/api.js';
+import axios from 'axios';
+import { CONFIG } from '../../config/index.js';
 import { useLanguage } from '../../context/LanguageContext.jsx';
 import './FeedbackWidget.css';
 
 const FeedbackWidget = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [message, setMessage] = useState('');
-    const [contact, setContact] = useState('');
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState(null);
 
     const { translations, language } = useLanguage();
     const dir = language === 'ar' ? 'rtl' : 'ltr';
-
-    // A function to parse JWT and get create a contact string if not given contact info
-    // returns empty string if no token is found
-    const parseJwt = (token) => {
-        try {
-            const base64Url = token.split('.')[1];
-            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-            }).join(''));
-            return JSON.parse(jsonPayload);
-        } catch (e) {
-            return "";
-        }
-    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -36,27 +24,19 @@ const FeedbackWidget = () => {
         setStatus(null);
 
         try {
-            const payload = { message };
+            const payload = {
+                message,
+                name: name.trim() || null,
+                email: email.trim() || null,
+                phone: phone.trim() || null
+            };
 
-            if (contact.trim()) {
-                payload.senderContact = contact;
-            } else {
-                let contactInfo = '';
-
-                const token = localStorage.getItem('sea-token') || sessionStorage.getItem('sea-token');
-                if (token) {
-                    const claims = parseJwt(token);
-                    if (claims && claims.sub && claims.type) {
-                        contactInfo = `No Contact: ${claims.type} - ${claims.sub}`;
-                    }
-                }
-                payload.senderContact = contactInfo;
-            }
-
-            await api.post('/feedback', payload);
+            await axios.post(`${CONFIG.BOT_BASE_URL_RAW}/api/v1/feedback`, payload);
             setStatus('success');
             setMessage('');
-            setContact('');
+            setName('');
+            setEmail('');
+            setPhone('');
             setTimeout(() => {
                 setIsOpen(false);
                 setStatus(null);
@@ -105,13 +85,29 @@ const FeedbackWidget = () => {
                                     </div>
                                     <div className="mb-3">
                                         <label className="form-label">{translations.feedback?.contactLabel || "Contact (Optional)"}</label>
-                                        <input 
-                                            type="text" 
-                                            className="form-control" 
-                                            value={contact}
-                                            onChange={(e) => setContact(e.target.value)}
-                                            placeholder={translations.feedback?.contactPlaceholder || "Email or Phone"}
-                                        />
+                                        <div>
+                                            <input 
+                                                type="text" 
+                                                className="form-control mb-2" 
+                                                value={name}
+                                                onChange={(e) => setName(e.target.value)}
+                                                placeholder="Name"
+                                            />
+                                            <input 
+                                                type="email" 
+                                                className="form-control mb-2" 
+                                                value={email}
+                                                onChange={(e) => setEmail(e.target.value)}
+                                                placeholder="Email"
+                                            />
+                                            <input 
+                                                type="tel" 
+                                                className="form-control" 
+                                                value={phone}
+                                                onChange={(e) => setPhone(e.target.value)}
+                                                placeholder="Phone"
+                                            />
+                                        </div>
                                     </div>
                                     {status === 'error' && <div className="text-danger mb-2 small">{translations.feedback?.error || "Failed to send."}</div>}
                                     <button type="submit" className="btn btn-primary w-100" disabled={loading}>
