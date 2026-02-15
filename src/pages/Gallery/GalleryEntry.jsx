@@ -44,7 +44,8 @@ const GalleryEntry = () => {
 
             const payload = {
                 ...formData,
-                imageLink: finalImageUrl 
+                imageLink: finalImageUrl,
+                type: "news"
             };
 
             // CREATE LOGIC
