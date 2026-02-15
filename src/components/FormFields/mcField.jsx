@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
 
-const MCField = ({ label, options, isRequired, name }) => {
+const MCField = ({ label, options, isRequired, name, onChange }) => {
   return (
     <Form.Group className="mb-3 text-start">
       <Form.Label className="fw-bold">
@@ -14,9 +14,11 @@ const MCField = ({ label, options, isRequired, name }) => {
             key={index}
             type="radio"
             label={opt}
-            name={name} // This ensures only one can be selected
+            name={name} 
             id={`choice-${name}-${index}`}
             className="mb-1"
+            
+            onChange={() => onChange(opt)} 
           />
         ))
       ) : (

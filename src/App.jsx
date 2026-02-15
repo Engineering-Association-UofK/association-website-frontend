@@ -26,6 +26,8 @@ import FormsDashboard from './pages/forms/FormsDashboard.jsx';
 import FormEntry from './pages/forms/FormEntry.jsx';
 import CategoryView from './pages/forms/CategoryView'; // Make sure this is here!
 import ApplicationView from './pages/forms/ApplicationView';
+import AnalysisGallery from './pages/forms/AnalysisGallery';
+import FormAnalysisView from './pages/forms/FormAnalysisView';
 
 function App() {
   return (
@@ -74,6 +76,8 @@ function App() {
                   <Route path="admin-users/:id" element={<AdminUsersEntry />} />
                   <Route path="forms" element={<FormsDashboard />} />
                   <Route path="forms/:id" element={<FormEntry />} />
+                  <Route path="forms/analysis" element={<AnalysisGallery />} />
+                  <Route path="forms/analysis/:id" element={<FormAnalysisView />} />
                   
                   
 

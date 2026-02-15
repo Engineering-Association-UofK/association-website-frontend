@@ -2,33 +2,29 @@ import React, { useState } from 'react';
 import { Form, Button, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-// Import your Atoms
 import TextField from '../../components/FormFields/TextField';
-import FileField from '../../components/FormFields/FileField';
 import MCField from '../../components/FormFields/mcField';
-import DateField from '../../components/FormFields/Datefield';
+
 
 const ApplicationForm = ({ schema }) => {
   const navigate = useNavigate();
   const [answers, setAnswers] = useState({});
 
+  
   const handleInputChange = (fieldId, value) => {
-    setAnswers({ ...answers, [fieldId]: value });
+    setAnswers(prev => ({ ...prev, [fieldId]: value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // 1. Create the submission package
     const submission = {
       id: Date.now(),
       formId: schema.id,
-      formTitle: schema.title,
-      studentData: answers,
+      studentData: answers, // دي الداتا اللي الجدول بيدور فيها
       submittedAt: new Date().toLocaleString()
     };
 
-    // 2. Logic: Save to allSubmissions list
     const existing = JSON.parse(localStorage.getItem('allSubmissions') || '[]');
     localStorage.setItem('allSubmissions', JSON.stringify([submission, ...existing]));
 
@@ -46,8 +42,8 @@ const ApplicationForm = ({ schema }) => {
                 label={field.label} 
                 type={field.subType} 
                 isRequired={field.isRequired}
-                // Update state when student types
-                onChange={(e) => handleInputChange(field.id, e.target.value)} 
+                // نمرر القيمة الراجعة من الـ Atom للـ state
+                onChange={(val) => handleInputChange(field.id, val)} 
               />
             )}
 
@@ -68,16 +64,12 @@ const ApplicationForm = ({ schema }) => {
                 options={field.options} 
                 name={`q-${field.id}`}
                 isRequired={field.isRequired}
+                // ربط الـ MCField بالـ ID
+                onChange={(val) => handleInputChange(field.id, val)} 
               />
             )}
-
-            {field.type === 'file' && (
-              <FileField label={field.label} isRequired={field.isRequired} />
-            )}
-
-            {field.type === 'date' && (
-              <DateField label={field.label} isRequired={field.isRequired} />
-            )}
+            
+            {/* كرري نفس المنطق للـ FileField والـ DateField */}
           </div>
         ))}
 
