@@ -3,21 +3,26 @@ import { Container, Button } from 'react-bootstrap';
 import { useLanguage } from '../../context/LanguageContext.jsx';
 import headerImg from '../../utils/images/home-page-header.jpg';
 import EditGenericButton from '../../features/generics/components/EditGenericButton.jsx';
+import { useGalleryImage } from '../../features/gallery/hooks/useGallery.js';
+import EditGalleryImageButton from '../../features/gallery/components/EditGalleryImageButton.jsx';
 
 const HeroSection = ({title, subtitle, keyword, data}) => {
     const { translations } = useLanguage();
+    const { data: heroImgData } = useGalleryImage('home_hero');
 
     return (
         <header className="position-relative d-flex align-items-center justify-content-center overflow-hidden" style={{ minHeight: '100vh' }}>
             <div
                 className="position-absolute top-0 start-0 w-100 h-100 z-0"
                 style={{
-                    backgroundImage: `url(${headerImg})`,
+                    backgroundImage: `url(${heroImgData?.imageLink || headerImg})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     backgroundAttachment: 'fixed'
                 }}
-            ></div>
+            >
+                <EditGalleryImageButton keyword="home_hero" currentData={heroImgData} />
+            </div>
 
             <div
                 className="position-absolute top-0 start-0 w-100 h-100 z-1"

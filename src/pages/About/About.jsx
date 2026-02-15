@@ -1,16 +1,16 @@
 import React from 'react';
 import { Container, Row, Col, Spinner } from 'react-bootstrap';
-import { useLanguage } from '../../context/LanguageContext';
 import TeamSection from '../../components/TeamSection';
 import { useGenerics } from '../../features/generics/hooks/useGenerics';
 import EditGenericButton from '../../features/generics/components/EditGenericButton';
+import { useGalleryImage } from '../../features/gallery/hooks/useGallery';
+import EditGalleryImageButton from '../../features/gallery/components/EditGalleryImageButton';
 import './About.css';
 import headerImg from '../../utils/images/about-page-header.jpg';
 import img1 from '../../utils/images/img1.jpg';
 import img2 from '../../utils/images/img2.jpg';
 
 const About = () => {
-    const { translations } = useLanguage();
     
     const keywords = [
         'home_about', 
@@ -25,19 +25,25 @@ const About = () => {
     const { data: generics, isLoading } = useGenerics(keywords);
     const getText = (key) => generics?.[key] || {};
 
+    // Fetch dynamic images
+    const { data: headerImgData } = useGalleryImage('about_header');
+    const { data: missionImgData } = useGalleryImage('about_mission');
+    const { data: visionImgData } = useGalleryImage('about_vision');
+
     const renderHTML = (content) => {
         return { __html: content || '' };
     };
 
     return (
         <div className="about-page">
-            <header className="w-100 mb-5 vh-100 overflow-hidden ">
+            <header className="w-100 mb-5 vh-100 overflow-hidden position-relative">
                 <img
-                    src={headerImg}
+                    src={headerImgData?.imageLink || headerImg}
                     alt="About Engineering Association"
                     className="w-100 h-auto shadow-sm"
                     style={{ display: 'block' }}
                 />
+                <EditGalleryImageButton keyword="about_header" currentData={headerImgData} />
             </header>
 
             {isLoading ? (
@@ -60,7 +66,15 @@ const About = () => {
 
                 <Row className="mb-5 align-items-center">
                     <Col md={6} className="mb-4 mb-md-0">
-                        <img src={img1} alt="Our Mission" className="img-fluid rounded shadow-sm hover-scale w-100" style={{ objectFit: 'cover', height: '300px' }} />
+                        <div className="position-relative">
+                            <img 
+                                src={missionImgData?.imageLink || img1} 
+                                alt="Our Mission" 
+                                className="img-fluid rounded shadow-sm hover-scale w-100" 
+                                style={{ objectFit: 'cover', height: '300px' }} 
+                            />
+                            <EditGalleryImageButton keyword="about_mission" currentData={missionImgData} />
+                        </div>
                     </Col>
                     <Col md={6}>
                         <h2 className="fw-bold mb-3">
@@ -84,7 +98,15 @@ const About = () => {
                         </p>
                     </Col>
                     <Col md={6} className="mb-4 mb-md-0">
-                        <img src={img2} alt="Our Vision" className="img-fluid rounded shadow-sm hover-scale w-100" style={{ objectFit: 'cover', height: '300px' }} />
+                        <div className="position-relative">
+                            <img 
+                                src={visionImgData?.imageLink || img2} 
+                                alt="Our Vision" 
+                                className="img-fluid rounded shadow-sm hover-scale w-100" 
+                                style={{ objectFit: 'cover', height: '300px' }} 
+                            />
+                            <EditGalleryImageButton keyword="about_vision" currentData={visionImgData} />
+                        </div>
                     </Col>
                 </Row>
 
