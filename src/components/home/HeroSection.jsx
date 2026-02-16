@@ -2,9 +2,8 @@ import React from 'react';
 import { Container, Button } from 'react-bootstrap';
 import { useLanguage } from '../../context/LanguageContext.jsx';
 import headerImg from '../../utils/images/home-page-header.jpg';
-import EditGenericButton from '../../features/generics/components/EditGenericButton.jsx';
 import { useGalleryImage } from '../../features/gallery/hooks/useGallery.js';
-import EditGalleryImageButton from '../../features/gallery/components/EditGalleryImageButton.jsx';
+import EditContentButton from '../../components/EditContentButton.jsx';
 
 const HeroSection = ({title, subtitle, keyword, data}) => {
     const { translations } = useLanguage();
@@ -21,7 +20,7 @@ const HeroSection = ({title, subtitle, keyword, data}) => {
                     backgroundAttachment: 'fixed'
                 }}
             >
-                <EditGalleryImageButton keyword="home_hero" currentData={heroImgData} />
+                <EditContentButton keyword="home_hero" currentData={heroImgData} type="image" />
             </div>
 
             <div
@@ -35,7 +34,7 @@ const HeroSection = ({title, subtitle, keyword, data}) => {
             <Container className="position-relative z-2 text-center text-white">
                 <h1 className="display-4 display-md-2 fw-bold mb-4 text-shadow">
                     {title}
-                    {keyword && <EditGenericButton keyword={keyword} currentData={data} />}
+                    {keyword && <EditContentButton keyword={keyword} currentData={data} />}
                 </h1>
                 <p className="lead mb-5 fs-5 fs-md-3 text-shadow opacity-90">{subtitle}</p>
                 <Button variant="primary" size="lg" className="rounded-pill px-5 py-3 fs-5 fw-bold shadow-lg hover-scale">

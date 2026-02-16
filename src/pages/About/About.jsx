@@ -2,9 +2,8 @@ import React from 'react';
 import { Container, Row, Col, Spinner } from 'react-bootstrap';
 import TeamSection from '../../components/TeamSection';
 import { useGenerics } from '../../features/generics/hooks/useGenerics';
-import EditGenericButton from '../../features/generics/components/EditGenericButton';
 import { useGalleryImage } from '../../features/gallery/hooks/useGallery';
-import EditGalleryImageButton from '../../features/gallery/components/EditGalleryImageButton';
+import EditContentButton from '../../components/EditContentButton';
 import './About.css';
 import headerImg from '../../utils/images/about-page-header.jpg';
 import img1 from '../../utils/images/img1.jpg';
@@ -43,7 +42,7 @@ const About = () => {
                     className="w-100 h-auto shadow-sm"
                     style={{ display: 'block' }}
                 />
-                <EditGalleryImageButton keyword="about_header" currentData={headerImgData} />
+                <EditContentButton keyword="about_header" currentData={headerImgData} type="image" />
             </header>
 
             {isLoading ? (
@@ -56,7 +55,7 @@ const About = () => {
                     <Col lg={10}>
                         <h1 className="display-4 fw-bold mb-4">
                             {getText('home_about').title}
-                            <EditGenericButton keyword="home_about" currentData={getText('home_about')} />
+                            <EditContentButton keyword="home_about" currentData={getText('home_about')} />
                         </h1>
                         <p className="lead text-muted w-75 mx-auto">
                             {getText('home_about').body}
@@ -73,13 +72,13 @@ const About = () => {
                                 className="img-fluid rounded shadow-sm hover-scale w-100" 
                                 style={{ objectFit: 'cover', height: '300px' }} 
                             />
-                            <EditGalleryImageButton keyword="about_mission" currentData={missionImgData} />
+                            <EditContentButton keyword="about_mission" currentData={missionImgData} type="image" />
                         </div>
                     </Col>
                     <Col md={6}>
                         <h2 className="fw-bold mb-3">
                             {getText('about_mission').title}
-                            <EditGenericButton keyword="about_mission" currentData={getText('about_mission')} />
+                            <EditContentButton keyword="about_mission" currentData={getText('about_mission')} />
                         </h2>
                         <p className="text-muted fs-5">
                             {getText('about_mission').body}
@@ -91,7 +90,7 @@ const About = () => {
                     <Col md={6}>
                         <h2 className="fw-bold mb-3">
                             {getText('about_vision').title}
-                            <EditGenericButton keyword="about_vision" currentData={getText('about_vision')} />
+                            <EditContentButton keyword="about_vision" currentData={getText('about_vision')} />
                         </h2>
                         <p className="text-muted fs-5">
                             {getText('about_vision').body}
@@ -105,7 +104,7 @@ const About = () => {
                                 className="img-fluid rounded shadow-sm hover-scale w-100" 
                                 style={{ objectFit: 'cover', height: '300px' }} 
                             />
-                            <EditGalleryImageButton keyword="about_vision" currentData={visionImgData} />
+                            <EditContentButton keyword="about_vision" currentData={visionImgData} type="image" />
                         </div>
                     </Col>
                 </Row>
@@ -115,7 +114,7 @@ const About = () => {
                         <Col md={6}>
                             <h2 className="fw-bold mb-3">
                                 {getText('about_goals').title || "Our Goals"}
-                                <EditGenericButton keyword="about_goals" currentData={getText('about_goals')} />
+                                <EditContentButton keyword="about_goals" currentData={getText('about_goals')} />
                             </h2>
                             <div 
                                 className="text-muted fs-5" 
@@ -125,7 +124,7 @@ const About = () => {
                         <Col md={6}>
                             <h2 className="fw-bold mb-3">
                                 {getText('about_problems').title || "Problems We Solve"}
-                                <EditGenericButton keyword="about_problems" currentData={getText('about_problems')} />
+                                <EditContentButton keyword="about_problems" currentData={getText('about_problems')} />
                             </h2>
                             <div 
                                 className="text-muted fs-5" 
@@ -135,7 +134,7 @@ const About = () => {
                         <Col md={6}>
                             <h2 className="fw-bold mb-3">
                                 {getText('about_achievements').title || "Achievements"}
-                                <EditGenericButton keyword="about_achievements" currentData={getText('about_achievements')} />
+                                <EditContentButton keyword="about_achievements" currentData={getText('about_achievements')} />
                             </h2>
                             <div 
                                 className="text-muted fs-5" 
@@ -145,7 +144,7 @@ const About = () => {
                         <Col md={6}>
                             <h2 className="fw-bold mb-3">
                                 {getText('about_message').title || "Message to our visitors"}
-                                <EditGenericButton keyword="about_message" currentData={getText('about_message')} />
+                                <EditContentButton keyword="about_message" currentData={getText('about_message')} />
                             </h2>
                             <p className="text-muted fs-5">
                                 {getText('about_message').body}

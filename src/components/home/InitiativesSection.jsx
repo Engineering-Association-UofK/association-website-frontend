@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Row, Col, Card, Spinner } from 'react-bootstrap';
 import { useGenerics } from '../../features/generics/hooks/useGenerics.js';
-import EditGenericButton from '../../features/generics/components/EditGenericButton.jsx';
+import EditContentButton from '../../components/EditContentButton.jsx';
 
 const InitiativesSection = () => {
     
@@ -26,7 +26,7 @@ const InitiativesSection = () => {
                 <div className="text-center mb-5">
                     <h2 className="text-primary fw-bold">
                         {getText('home_initiatives_intro').title}
-                        <EditGenericButton keyword="home_initiatives_intro" currentData={getText('home_initiatives_intro')} />
+                        <EditContentButton keyword="home_initiatives_intro" currentData={getText('home_initiatives_intro')} />
                     </h2>
                     <p className="text-muted w-75 mx-auto">{getText('home_initiatives_intro').body}</p>
                 </div>
@@ -41,7 +41,7 @@ const InitiativesSection = () => {
                                     </div>
                                     <Card.Title className="fw-bold">
                                         {getText(key).title || `Initiative ${index + 1}`}
-                                        <EditGenericButton keyword={key} currentData={getText(key)} />
+                                        <EditContentButton keyword={key} currentData={getText(key)} />
                                     </Card.Title>
                                     <Card.Text className="text-muted">
                                         {getText(key).body || "Loading initiative details..."}
