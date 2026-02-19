@@ -4,6 +4,7 @@ import { useLanguage } from '../../context/LanguageContext.jsx';
 import headerImg from '../../utils/images/home-page-header.jpg';
 import { useGalleryImage } from '../../features/gallery/hooks/useGallery.js';
 import EditContentButton from '../../components/EditContentButton.jsx';
+import {Link} from "react-router-dom";
 
 const HeroSection = ({title, subtitle, keyword, data}) => {
     const { translations } = useLanguage();
@@ -37,7 +38,7 @@ const HeroSection = ({title, subtitle, keyword, data}) => {
                     {keyword && <EditContentButton keyword={keyword} currentData={data} />}
                 </h1>
                 <p className="lead mb-5 fs-5 fs-md-3 text-shadow opacity-90">{subtitle}</p>
-                <Button variant="primary" size="lg" className="rounded-pill px-5 py-3 fs-5 fw-bold shadow-lg hover-scale">
+                <Button as={Link} to="/about" variant="primary" size="lg" className="rounded-pill px-5 py-3 fs-5 fw-bold shadow-lg hover-scale">
                     {translations.home.hero.cta}
                 </Button>
             </Container>
