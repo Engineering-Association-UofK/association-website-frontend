@@ -9,7 +9,7 @@ export const useGallery = () => {
     useEffect(() => {
         const loadGallery = async () => {
             try {
-                const response = await api.get('/gallery');
+                const response = await api.get('/gallery/open/news',  { skipAuth: true });
                 setImages(response.data);
             } catch (err) {
                 console.error(err);
