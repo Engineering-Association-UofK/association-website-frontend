@@ -25,6 +25,7 @@ import AdminProfile from './pages/Admin Profile/AdminProfile.jsx';
 import ChangePassword from './pages/Admin/ChangePassword.jsx';
 import BotCommandsDashboard from './pages/Bot Commands/BotCommandsDashboard.jsx';
 import BotCommandsEntry from './pages/Bot Commands/BotCommandsEntry.jsx';
+import Dashboard from './pages/Dashboard/Dashboard.jsx';
 
 function App() {
   return (
@@ -56,10 +57,11 @@ function App() {
             {/* ADMIN ROUTES (Protected)
                 - Only users with role 'admin' can enter */}
             {/* Admin Routes wrapped in StandaloneLayout so they have the Back button */}
-            <Route element={<StandaloneLayout />} >
+            {/* <Route element={<StandaloneLayout />} > */}
               <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
                 <Route path="/admin" element={<AdminLayout />}>
-                  <Route index element={<h1 className='text-center'>Welcome Admin</h1>} />
+                <Route index element={<Navigate to="dashboard" replace />} />
+                  <Route path="dashboard" element={<Dashboard />} />
                   <Route path="blogs" element={<BlogsDashboard />} />
                   <Route path="blogs/:id" element={<BlogsEntry />} />
                   <Route path="faqs" element={<FAQsDashboard />} />
@@ -74,7 +76,7 @@ function App() {
                   <Route path="bot-commands/:id" element={<BotCommandsEntry />} />
                 </Route>
               </Route>
-            </Route>
+            {/* </Route> */}
             {/* STUDENT ROUTES (Future) */}
             {/* 
             <Route element={<MainLayout />}>

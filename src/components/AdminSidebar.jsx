@@ -35,6 +35,12 @@ const AdminSidebar = () => {
       <div className="d-flex flex-column  p-3 bg-body-tertiary" style={{width: "200px", marginBottom: '-16px', height: 'calc(100dvh - 42px - 16px)', borderRight: 'var(--bs-border-width) solid var(--bs-border-color)'}}> 
         <ul className="nav nav-pills flex-column mb-auto"> 
           <li className="nav-item"> 
+            <NavLink to="/admin/dashboard" className="nav-link">
+              <i className="bi pe-none bi-speedometer me-2"></i>
+              Dashboard
+            </NavLink>
+          </li> 
+          <li className="nav-item"> 
             <NavLink to="/admin/blogs" className="nav-link">
               <i className="bi pe-none bi-newspaper me-2"></i>
               Blogs
