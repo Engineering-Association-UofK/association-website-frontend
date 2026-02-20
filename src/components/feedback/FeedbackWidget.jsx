@@ -31,7 +31,7 @@ const FeedbackWidget = () => {
                 phone: phone.trim() || null
             };
 
-            await axios.post(`${CONFIG.BOT_BASE_URL_RAW}/api/v1/feedback`, payload);
+            await axios.post(`${CONFIG.API_MONITOR_URL}/api/v1/feedback`, payload);
             setStatus('success');
             setMessage('');
             setName('');
