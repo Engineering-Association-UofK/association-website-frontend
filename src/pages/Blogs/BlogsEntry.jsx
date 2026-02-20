@@ -10,7 +10,8 @@ import { useCreateBlog, useUpdateBlog, useBlog } from '../../features/blogs/hook
 import ImageUpload from '../../components/ImageUpload';
 import { useFileUpload } from '../../hooks/useFileUpload';
 import TextareaAutosize from 'react-textarea-autosize';
-import './BlogsDashboard.css'
+import MDEdit from '../../components/markdown/MDEdit.jsx';
+import styles from './Blogs.module.css'
 
 const BlogsEntry = () => {
 
@@ -158,7 +159,7 @@ const BlogsEntry = () => {
                     </Button>
                 </div>
             </div>
-            <div className="scrollable-container">
+            <div className={`scrollable-container ${styles.scrollableContainer}`}>
 
                 {/* Error Alerts */}
                 {uploadError && <Alert variant="danger">{uploadError}</Alert>}
@@ -218,7 +219,7 @@ const BlogsEntry = () => {
 
                 <Form.Group className="mb-3" controlId="formGridContent">
                     <Form.Label>Content</Form.Label>
-                    <Form.Control
+                    {/* <Form.Control
                         as={TextareaAutosize}
                         name="content" 
                         minRows={3}
@@ -227,6 +228,13 @@ const BlogsEntry = () => {
                         value={formData.content}
                         onChange={handleChange}
                         disabled={isPending}
+                    /> */}
+                    <MDEdit 
+                        name="content"
+                        value={formData.content}
+                        onChange={handleChange} 
+                        disabled={isPending}
+                        placeholder="Enter content"
                     />
                 </Form.Group>
             </div>

@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Button, Card, Form, Spinner, Alert, Badge } from 'react-bootstrap';
 import { useCreateBotCommand, useUpdateBotCommand, useBotCommand, useBotCommands } from '../../features/bot commands/hooks/useBotCommands';
 import TextareaAutosize from 'react-textarea-autosize';
-import './BotCommandsDashboard.css'
+import styles from './BotCommands.module.css'
 
 const BotCommandsEntry = () => {
 
@@ -237,7 +237,7 @@ const BotCommandsEntry = () => {
                     </Button>
                 </div>
             </div>
-            <div className="scrollable-container">
+            <div className={`scrollable-container ${styles.scrollableContainer}`}>
 
                 {(createMutation.isError || updateMutation.isError) && (
                     <Alert variant="danger">
