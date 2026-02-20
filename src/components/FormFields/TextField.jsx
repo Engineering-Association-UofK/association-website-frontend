@@ -59,12 +59,13 @@ const TextField = ({ label, type, isRequired, onChange }) => {
         />
       ) : (
         <Form.Control 
-          type={type === 'email' ? 'email' : type === 'phone' ? 'tel' : 'text'}
-          isInvalid={!!error}
-          value={value}
-          onChange={handleChange}
-          placeholder={`Enter ${type}...`}
-        />
+  type={type === 'email' ? 'email' : type === 'phone' ? 'tel' : 'text'}
+  isInvalid={!!error}
+  value={value}
+  required={isRequired} // ADD THIS LINE
+  onChange={handleChange}
+  placeholder={`Enter ${type}...`}
+/>
       )}
 
       <Form.Control.Feedback type="invalid">

@@ -16,6 +16,7 @@ const FormEntry = () => {
   const [closeDate, setCloseDate] = useState('');
   const [formFields, setFormFields] = useState([]);
   const [showPreview, setShowPreview] = useState(false);
+  const [description, setDescription] = useState('');
 
   const addField = (fieldType) => {
     const newField = {
@@ -65,6 +66,7 @@ const FormEntry = () => {
     const newFormEntry = {
       id: Date.now(),
       title: formName,
+      description: description,
       category: category,
       status: status, // 'draft' or 'published'
       openDate: openDate, // تم الربط هنا
@@ -96,6 +98,18 @@ const FormEntry = () => {
               <Form.Control type="text" value={formName} onChange={(e) => setFormName(e.target.value)} />
             </Form.Group>
           </Col>
+          <Col md={12} className="mt-3">
+  <Form.Group>
+    <Form.Label className="fw-bold">Form Description</Form.Label>
+    <Form.Control 
+      as="textarea" 
+      rows={3} 
+      placeholder="Enter instructions for students..." 
+      value={description} 
+      onChange={(e) => setDescription(e.target.value)} 
+    />
+  </Form.Group>
+</Col>
           <Col md={6}>
             <Form.Group>
               <Form.Label className="fw-bold">Category</Form.Label>

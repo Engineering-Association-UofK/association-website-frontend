@@ -41,6 +41,7 @@ const CategoryView = () => {
           {filteredForms.map((form) => {
             const status = getFormStatus(form.openDate, form.closeDate);
             const isOpen = status === (language === 'ar' ? 'مفتوح الآن' : 'Opened');
+            
             return (
               <Col key={form.id} md={6} lg={4}>
                 <FormCard 
@@ -50,7 +51,17 @@ const CategoryView = () => {
                   deadline={getRemainingTime(form.closeDate)}
                   showDeadline={isOpen}
                   btnLabel={language === 'ar' ? "قدم الآن" : "Apply Now"}
-                  onClick={() => navigate(`/apply/${form.id}`)}
+                  
+                  /* NEW FIX: Block navigation if the form is not 'Opened' */
+                  onClick={() => {
+                    if (status === (language === 'ar' ? 'مفتوح الآن' : 'Opened')) {
+                      navigate(`/apply/${form.id}`);
+                    } else if (status === (language === 'ar' ? 'يفتح قريباً' : 'Opening Soon')) {
+                      alert(language === 'ar' ? 'هذا النموذج لم يفتح بعد.' : 'This form has not opened yet.');
+                    } else {
+                      alert(language === 'ar' ? 'عذراً، هذا النموذج مغلق حالياً.' : 'Sorry, this form is currently closed.');
+                    }
+                  }}
                 />
               </Col>
             );

@@ -15,8 +15,19 @@ const ApplicationView = () => {
     
     // 2. Find the specific form by ID
     const found = allForms.find(f => f.id.toString() === formId);
+
     
     if (found) {
+     
+    // --- NEW SECURITY LOGIC ---
+    const now = new Date();
+    const closeDate = new Date(found.closeDate);
+
+    if (now > closeDate) {
+      alert("This form is now closed and no longer accepting submissions.");
+      navigate('/forms'); // Kick them back to the gallery
+      return;
+    }
       setTargetForm(found);
     } else {
       alert("Form not found in database!");

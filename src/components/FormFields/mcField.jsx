@@ -17,7 +17,7 @@ const MCField = ({ label, options, isRequired, name, onChange }) => {
             name={name} 
             id={`choice-${name}-${index}`}
             className="mb-1"
-            
+            required={isRequired}
             onChange={() => onChange(opt)} 
           />
         ))
