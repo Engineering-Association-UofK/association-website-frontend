@@ -11,7 +11,7 @@ import App from './App.jsx'
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: false, // Optional: Stop refetching when you switch tabs
+      refetchOnWindowFocus: false,
     },
   },
 });
