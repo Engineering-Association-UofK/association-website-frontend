@@ -6,8 +6,6 @@ import AdminLayout from './pages/Admin/AdminLayout';
 import BlogsDashboard from './pages/Blogs/BlogsDashboard';
 import Blogs from './pages/Blogs/Blogs.jsx';
 import BlogsEntry from './pages/Blogs/BlogsEntry';
-import FAQsDashboard from './pages/FAQs/FAQsDashboard';
-import FAQsEntry from './pages/FAQs/FAQsEntry.jsx';
 import GalleryDashboard from './pages/Gallery/GalleryDashboard';
 import GalleryEntry from './pages/Gallery/GalleryEntry';
 import MainLayout from './layouts/MainLayout';
@@ -64,8 +62,6 @@ function App() {
                   <Route path="dashboard" element={<Dashboard />} />
                   <Route path="blogs" element={<BlogsDashboard />} />
                   <Route path="blogs/:id" element={<BlogsEntry />} />
-                  <Route path="faqs" element={<FAQsDashboard />} />
-                  <Route path="faqs/:id" element={<FAQsEntry/>} />
                   <Route path="gallery" element={<GalleryDashboard />} />
                   <Route path="gallery/:id" element={<GalleryEntry />} />
                   <Route path="admin-users" element={<AdminUsersDashboard />} />

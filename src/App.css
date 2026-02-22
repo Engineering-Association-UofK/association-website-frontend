@@ -37,3 +37,14 @@
 .read-the-docs {
   color: #888;
 }
+.scrollable-container {
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: calc(100dvh - 36px - 48px - 42px - 16px);
+  margin-bottom: -24px;
+}
+.scrollable-container::-webkit-scrollbar-thumb {
+  width: 8px;
+  background-color: grey;
+  border-radius: 4px;
+}

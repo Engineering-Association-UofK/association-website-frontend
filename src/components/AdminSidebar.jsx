@@ -47,12 +47,6 @@ const AdminSidebar = () => {
             </NavLink>
           </li> 
           <li className="nav-item"> 
-            <NavLink to="/admin/faqs" className="nav-link">
-              <i className="bi pe-none bi-chat-left-text me-2"></i>
-              FAQs
-            </NavLink>
-          </li> 
-          <li className="nav-item"> 
             <NavLink to="/admin/gallery" className="nav-link">
               <i className="bi pe-none bi-image me-2"></i>
               Gallery
