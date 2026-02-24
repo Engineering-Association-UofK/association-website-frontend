@@ -1,6 +1,6 @@
 import React from 'react'
 import { NavLink } from "react-router-dom";
-import {Button, Dropdown} from 'react-bootstrap';
+import { Button, Dropdown } from 'react-bootstrap';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from "react-router-dom";
 import '../pages/Admin/Admin.css'
@@ -32,49 +32,55 @@ const AdminSidebar = () => {
 
   return (
     <>
-      <div className="d-flex flex-column  p-3 bg-body-tertiary" style={{width: "200px", marginBottom: '-16px', height: 'calc(100dvh - 42px - 16px)', borderRight: 'var(--bs-border-width) solid var(--bs-border-color)'}}> 
-        <ul className="nav nav-pills flex-column mb-auto"> 
-          <li className="nav-item"> 
+      <div className="d-flex flex-column  p-3 bg-body-tertiary" style={{ width: "200px", marginBottom: '-16px', height: 'calc(100dvh - 42px - 16px)', borderRight: 'var(--bs-border-width) solid var(--bs-border-color)' }}>
+        <ul className="nav nav-pills flex-column mb-auto">
+          <li className="nav-item">
             <NavLink to="/admin/dashboard" className="nav-link">
               <i className="bi pe-none bi-speedometer me-2"></i>
               Dashboard
             </NavLink>
-          </li> 
-          <li className="nav-item"> 
+          </li>
+          <li className="nav-item">
             <NavLink to="/admin/blogs" className="nav-link">
               <i className="bi pe-none bi-newspaper me-2"></i>
               Blogs
             </NavLink>
-          </li> 
-          <li className="nav-item"> 
+          </li>
+          <li className="nav-item">
             <NavLink to="/admin/gallery" className="nav-link">
               <i className="bi pe-none bi-image me-2"></i>
               Gallery
             </NavLink>
           </li>
-          <li className="nav-item"> 
+          <li className="nav-item">
             <NavLink to="/admin/admin-users" className="nav-link">
               <i className="bi pe-none bi-person me-2"></i>
               <div>Admin Users</div>
             </NavLink>
           </li>
-          <li className="nav-item"> 
+          <li className="nav-item">
             <NavLink to="/admin/bot-commands" className="nav-link">
               <i className="bi pe-none bi-chat me-2"></i>
               <div>Bot Commands</div>
             </NavLink>
           </li>
-        </ul> 
-        <hr></hr> 
+          <li className="nav-item">
+            <NavLink to="/admin/secretariats" className="nav-link">
+              <i className="bi pe-none bi-building me-2"></i>
+              Secretariats
+            </NavLink>
+          </li>
+        </ul>
+        <hr></hr>
         <div className="d-flex align-items-center justify-content-between">
           <div className="d-flex align-items-center">
-            <img 
-              src={defaultImg} 
-              alt="admin" 
-              width="32" 
-              height="32" 
+            <img
+              src={defaultImg}
+              alt="admin"
+              width="32"
+              height="32"
               className="rounded-circle me-2 bg-dark-subtle"></img>
-            <strong>{user?.name}</strong> 
+            <strong>{user?.name}</strong>
           </div>
 
           <Dropdown drop="up">
@@ -89,7 +95,7 @@ const AdminSidebar = () => {
               <Dropdown.Item onClick={() => navigate('/admin/change-password')}>
                 <i className="bi bi-key me-2"></i> Change Password
               </Dropdown.Item>
-              
+
               <Dropdown.Divider />
               <Dropdown.Item onClick={handleLogout} className="text-danger">
                 <i className="bi bi-box-arrow-right me-2"></i> Logout
@@ -109,7 +115,7 @@ const AdminSidebar = () => {
         </div>
       </div>
     </>
-    
+
   )
 }
 

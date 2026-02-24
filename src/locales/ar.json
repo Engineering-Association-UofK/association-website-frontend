@@ -5,6 +5,7 @@
         "about": "من نحن",
         "initiatives": "المبادرات",
         "blogs": "الأخبار",
+        "secretariats": "الأمانات",
         "gallery": "المعرض",
         "forms": "النماذج",
         "admin": "المسؤول",
@@ -21,18 +22,27 @@
             "readMore": "اقرأ المزيد"
         },
         "contact": {
-          "title": "تواصل معنا",
-          "subtitle": "لديك أسئلة؟ نود أن نسمع منك."
+            "title": "تواصل معنا",
+            "subtitle": "لديك أسئلة؟ نود أن نسمع منك."
         },
         "blogsPage": {
-          "title": "المدونة",
-          "subtitle": "أخبار، تحديثات، وقصص من المجتمع الطلابي.",
-          "searchPlaceholder": "ابحث عن المقالات...",
-          "readMore": "اقرأ المزيد",
-          "noResults": "لم يتم العثور على مقالات.",
-          "latest": "أحدث المنشورات",
-          "backToBlogs": "العودة للمدونة",
-          "lastUpdated": "آخر تحديث"
+            "title": "المدونة",
+            "subtitle": "أخبار، تحديثات، وقصص من المجتمع الطلابي.",
+            "searchPlaceholder": "ابحث عن المقالات...",
+            "readMore": "اقرأ المزيد",
+            "noResults": "لم يتم العثور على مقالات.",
+            "latest": "أحدث المنشورات",
+            "backToBlogs": "العودة للمدونة",
+            "lastUpdated": "آخر تحديث"
+        },
+        "secretariatsPage": {
+            "title": "أمانات الجمعية",
+            "subtitle": "تعرف على أمانات الجمعية وأعمالها",
+            "viewMore": "عرض المزيد",
+            "backToSecretariats": "العودة للأمانات",
+            "noSecretariats": "لا توجد أمانات متاحة.",
+            "errorLoading": "فشل تحميل الأمانات.",
+            "notFound": "لم يتم العثور على الأمانة"
         }
     },
     "gallery": {

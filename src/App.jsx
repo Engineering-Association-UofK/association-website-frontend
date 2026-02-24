@@ -8,6 +8,10 @@ import Blogs from './pages/Blogs/Blogs.jsx';
 import BlogsEntry from './pages/Blogs/BlogsEntry';
 import GalleryDashboard from './pages/Gallery/GalleryDashboard';
 import GalleryEntry from './pages/Gallery/GalleryEntry';
+import Secretariats from './pages/Secretariats/Secretariats';
+import SecretariatPage from './pages/Secretariats/SecretariatPage';
+import SecretariatsDashboard from './pages/Secretariats/SecretariatsDashboard';
+import SecretariatsEntry from './pages/Secretariats/SecretariatsEntry';
 import MainLayout from './layouts/MainLayout';
 import StandaloneLayout from './layouts/StandaloneLayout';
 import './App.css';
@@ -39,6 +43,8 @@ function App() {
               {/* Add other public routes here */}
               <Route path="/blogs" element={<Blogs />} />
               <Route path="/blogs/:id" element={<BlogPage />} />
+              <Route path="/secretariats" element={<Secretariats />} />
+              <Route path="/secretariats/:id" element={<SecretariatPage />} />
             </Route>
 
 
@@ -56,22 +62,24 @@ function App() {
                 - Only users with role 'admin' can enter */}
             {/* Admin Routes wrapped in StandaloneLayout so they have the Back button */}
             {/* <Route element={<StandaloneLayout />} > */}
-              <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
-                <Route path="/admin" element={<AdminLayout />}>
+            <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+              <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<Navigate to="dashboard" replace />} />
-                  <Route path="dashboard" element={<Dashboard />} />
-                  <Route path="blogs" element={<BlogsDashboard />} />
-                  <Route path="blogs/:id" element={<BlogsEntry />} />
-                  <Route path="gallery" element={<GalleryDashboard />} />
-                  <Route path="gallery/:id" element={<GalleryEntry />} />
-                  <Route path="admin-users" element={<AdminUsersDashboard />} />
-                  <Route path="admin-users/:id" element={<AdminUsersEntry />} />
-                  <Route path="admin-profile" element={<AdminProfile />} />
-                  <Route path="change-password" element={<ChangePassword />} />
-                  <Route path="bot-commands" element={<BotCommandsDashboard />} />
-                  <Route path="bot-commands/:id" element={<BotCommandsEntry />} />
-                </Route>
+                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="blogs" element={<BlogsDashboard />} />
+                <Route path="blogs/:id" element={<BlogsEntry />} />
+                <Route path="gallery" element={<GalleryDashboard />} />
+                <Route path="gallery/:id" element={<GalleryEntry />} />
+                <Route path="admin-users" element={<AdminUsersDashboard />} />
+                <Route path="admin-users/:id" element={<AdminUsersEntry />} />
+                <Route path="admin-profile" element={<AdminProfile />} />
+                <Route path="change-password" element={<ChangePassword />} />
+                <Route path="bot-commands" element={<BotCommandsDashboard />} />
+                <Route path="bot-commands/:id" element={<BotCommandsEntry />} />
+                <Route path="secretariats" element={<SecretariatsDashboard />} />
+                <Route path="secretariats/:id" element={<SecretariatsEntry />} />
               </Route>
+            </Route>
             {/* </Route> */}
             {/* STUDENT ROUTES (Future) */}
             {/* 
