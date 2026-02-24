@@ -5,6 +5,7 @@
         "about": "About",
         "initiatives": "Initiatives",
         "blogs": "Blogs",
+        "secretariats": "Secretariats",
         "gallery": "Gallery",
         "forms": "Forms",
         "admin": "Admin",
@@ -14,25 +15,34 @@
     },
     "home": {
         "hero": {
-          "cta": "Learn More"
+            "cta": "Learn More"
         },
         "news": {
-          "title": "Latest News",
-          "readMore": "Read More"
+            "title": "Latest News",
+            "readMore": "Read More"
         },
         "contact": {
-          "title": "Contact Us",
-          "subtitle": "Have questions? We would love to hear from you."
+            "title": "Contact Us",
+            "subtitle": "Have questions? We would love to hear from you."
         },
         "blogsPage": {
-          "title": "Our Blogs",
-          "subtitle": "News, updates, and stories from the student community.",
-          "searchPlaceholder": "Search for articles...",
-          "readMore": "Read More",
-          "noResults": "No articles found.",
-          "latest": "Latest Post",
-          "backToBlogs": "Back to Blogs",
-          "lastUpdated": "Last Updated"
+            "title": "Our Blogs",
+            "subtitle": "News, updates, and stories from the student community.",
+            "searchPlaceholder": "Search for articles...",
+            "readMore": "Read More",
+            "noResults": "No articles found.",
+            "latest": "Latest Post",
+            "backToBlogs": "Back to Blogs",
+            "lastUpdated": "Last Updated"
+        },
+        "secretariatsPage": {
+            "title": "Association's Secretariats",
+            "subtitle": "Explore our secretariats and their work",
+            "viewMore": "View More",
+            "backToSecretariats": "Back to Secretariats",
+            "noSecretariats": "No secretariats available.",
+            "errorLoading": "Failed to load secretariats.",
+            "notFound": "Secretariat not found"
         }
     },
     "gallery": {
