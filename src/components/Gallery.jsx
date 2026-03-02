@@ -84,16 +84,16 @@ const Gallery = () => {
                                     }}
                                 >
                                     <img
-                                        src={img.imageLink}
-                                        alt={img.title || `Gallery image ${index + 1}`}
+                                        src={img.url}
+                                        alt={img.alt || `Gallery image ${index + 1}`}
                                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                     />
-                                    {img.title && (
+                                    {img.alt && (
                                         <div
                                             className="position-absolute bottom-0 start-0 w-100 p-3"
                                             style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)' }}
                                         >
-                                            <h5 className="text-white mb-0 fw-bold">{img.title}</h5>
+                                            <h5 className="text-white mb-0 fw-bold">{img.alt}</h5>
                                         </div>
                                     )}
                                 </div>
