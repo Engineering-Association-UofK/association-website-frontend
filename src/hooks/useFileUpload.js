@@ -5,24 +5,29 @@ export const useFileUpload = () => {
     const [isUploading, setIsUploading] = useState(false);
     const [uploadError, setUploadError] = useState(null);
     
-    const upload = async (fileOrUrl) => {
+    const upload = async (fileOrImage) => {
         setUploadError(null);
 
         // Case 1: Empty
-        if (!fileOrUrl) return "";
+        if (!fileOrImage) return null;
 
-        // Case 2: Already a URL (User didn't change the image)
-        if (typeof fileOrUrl === 'string') {
-        return fileOrUrl;
+        // Case 2: Already an image object
+        if (typeof fileOrImage === 'object' && !(fileOrImage instanceof File)) {
+            const url = fileOrImage?.url;
+            const publicId = fileOrImage?.publicId;
+            if (typeof url === 'string' && typeof publicId === 'string') {
+                return { url, publicId };
+            }
+            return null;
         }
 
         // Case 3: It is a File (User picked a new image)
-        if (fileOrUrl instanceof File) {
+        if (fileOrImage instanceof File) {
         setIsUploading(true);
         try {
-            const url = await uploadService.uploadImage(fileOrUrl);
+            const { secureUrl, publicId } = await uploadService.uploadImage(fileOrImage);
             setIsUploading(false);
-            return url;
+            return { url: secureUrl, publicId };
         } catch (err) {
             console.error("Upload failed", err);
             setUploadError("Failed to upload image.");
@@ -31,7 +36,7 @@ export const useFileUpload = () => {
         }
         }
 
-        return "";
+        return null;
     };
 
     return { upload, isUploading, uploadError };

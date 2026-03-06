@@ -74,8 +74,8 @@ const Blogs = () => {
                                             <div 
                                                 className="h-100 w-100"
                                                 style={{
-                                                    backgroundImage: filteredBlogs[0].imageLink ? `url(${filteredBlogs[0].imageLink})` : 'none',
-                                                    backgroundColor: filteredBlogs[0].imageLink ? 'transparent' : '#6c757d',
+                                                    backgroundImage: filteredBlogs[0].image?.url ? `url(${filteredBlogs[0].image?.url})` : 'none',
+                                                    backgroundColor: filteredBlogs[0].image?.url ? 'transparent' : '#6c757d',
                                                     backgroundSize: 'cover',
                                                     backgroundPosition: 'center'
                                                 }}
@@ -111,8 +111,8 @@ const Blogs = () => {
                                         <div 
                                             style={{
                                                 height: '200px',
-                                                backgroundImage: blog.imageLink ? `url(${blog.imageLink})` : 'none',
-                                                backgroundColor: blog.imageLink ? 'transparent' : '#6c757d',
+                                                backgroundImage: blog.image?.url ? `url(${blog.image?.url})` : 'none',
+                                                backgroundColor: blog.image?.url ? 'transparent' : '#6c757d',
                                                 backgroundSize: 'cover',
                                                 backgroundPosition: 'center'
                                             }}

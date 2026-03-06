@@ -9,9 +9,10 @@ import Alert from 'react-bootstrap/Alert';
 import { useCreateBlog, useUpdateBlog, useBlog } from '../../features/blogs/hooks/useBlogs';
 import ImageUpload from '../../components/ImageUpload';
 import { useFileUpload } from '../../hooks/useFileUpload';
-import TextareaAutosize from 'react-textarea-autosize';
+// import TextareaAutosize from 'react-textarea-autosize';
 import MDEdit from '../../components/markdown/MDEdit.jsx';
 import styles from './Blogs.module.css'
+import ImageUpload2 from '../../components/ImageUpload2.jsx';
 
 const BlogsEntry = () => {
 
@@ -40,7 +41,7 @@ const BlogsEntry = () => {
         content: "",
         authorId: 1,
         status: "draft",
-        imageLink: "",
+        image: null, // File | { url, publicId } | null
         createdAt: new Date(),
         updatedAt: new Date(),
     });
@@ -56,7 +57,8 @@ const BlogsEntry = () => {
             content: fetchedBlog.content || '',
             authorId: fetchedBlog.authorId,
             status: fetchedBlog.status || 'draft',
-            imageLink: fetchedBlog.imageLink || '',
+            image: fetchedBlog.image || null,
+            // imageLink: fetchedBlog.imageLink || '',
             // Ensure date is formatted for <input type="date"> (YYYY-MM-DD)
             createdAt: fetchedBlog.createdAt ? new Date(fetchedBlog.createdAt) : '', 
             updatedAt: fetchedBlog.updatedAt ? new Date(fetchedBlog.updatedAt) : '', 
@@ -76,22 +78,26 @@ const BlogsEntry = () => {
         // console.log("Form Data: ", formData);
 
         try {
-            const finalImageUrl = await upload(formData.imageLink);
+            const finalImage = await upload(formData.image);
 
-            const payload = {
-                ...formData,
-                imageLink: finalImageUrl 
+            const basePayload = {
+                id: Number(id),
+                title: formData.title,
+                content: formData.content,
+                authorId: formData.authorId,
+                status: formData.status,
+                image: finalImage,
             };
-            
+            console.log(basePayload);
             if (isEditMode) {
                 // UPDATE LOGIC
-                updateMutation.mutate({ data: payload }, {
+                updateMutation.mutate({ data: basePayload }, {
                     onSuccess: () => navigate('/admin/blogs'),
                     onError: (err) => console.error("Update failed", err)
                 });
             } else {
                 // CREATE LOGIC
-                createMutation.mutate(payload, {
+                createMutation.mutate(basePayload, {
                     onSuccess: () => navigate('/admin/blogs'),
                     onError: (err) => console.error("Create failed", err)
                 });
@@ -172,11 +178,16 @@ const BlogsEntry = () => {
 
                 <Row className="mb-3">
                     <Col md={12}>
-                        <ImageUpload 
+                        <ImageUpload2 
+                            value={formData.image} 
+                            onChange={(val) => setFormData({ ...formData, image: val })} 
+                            disabled={isPending}  
+                        />
+                        {/* <ImageUpload 
                             value={formData.imageLink} 
                             onChange={(urlOrFile) => setFormData({ ...formData, imageLink: urlOrFile })} 
                             disabled={isPending}  
-                        />
+                        /> */}
                     </Col>
                 </Row>
                 <Form.Group className="mb-3" controlId="formGridTitle">
