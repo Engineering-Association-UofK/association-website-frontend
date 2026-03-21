@@ -1,11 +1,12 @@
 /* eslint-disable react-hooks/refs */
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { Container, Toast, ToastContainer } from 'react-bootstrap';
+import { uploadService } from '../../api/upload.service'; 
 import './ImageEditor.css';
 
 const HANDLE_SIZE = 10;
 
-const ImageEditor = () => {
+const ImageEditor = ({ setUrl }) => {
   // ---- State ----
   const [imageSrc, setImageSrc] = useState(null);
   const [originalFile, setOriginalFile] = useState(null);
@@ -352,18 +353,49 @@ const ImageEditor = () => {
     return 'png';
   };
 
-  const handleExport = () => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const mime = getExportMime();
-    const dataUrl = canvas.toDataURL(mime, 0.92);
-    const link = document.createElement('a');
-    const baseName = originalFile ? originalFile.name.replace(/\.[^.]+$/, '') : 'edited-image';
-    link.download = `${baseName}.${getExportExtension()}`;
-    link.href = dataUrl;
-    link.click();
-    showToast(`Image downloaded as ${getExportExtension().toUpperCase()}`, 'success');
-  };
+  // const handleExport = () => {
+  //   const canvas = canvasRef.current;
+  //   if (!canvas) return;
+  //   const mime = getExportMime();
+  //   const dataUrl = canvas.toDataURL(mime, 0.92);
+  //   const link = document.createElement('a');
+  //   const baseName = originalFile ? originalFile.name.replace(/\.[^.]+$/, '') : 'edited-image';
+  //   link.download = `${baseName}.${getExportExtension()}`;
+  //   link.href = dataUrl;
+  //   link.click();
+  //   showToast(`Image downloaded as ${getExportExtension().toUpperCase()}`, 'success');
+  // };
+
+  const handleUpload = async () => {
+  const canvas = canvasRef.current;
+  if (!canvas) return;
+
+  const mime = getExportMime();
+
+  canvas.toBlob(async (blob) => {
+    if (!blob) return;
+
+    const baseName = originalFile
+      ? originalFile.name.replace(/\.[^.]+$/, '')
+      : "edited-image";
+
+    const file = new File(
+      [blob],
+      `${baseName}.${getExportExtension()}`,
+      { type: mime }
+    );
+
+    try {
+      const result = await uploadService.uploadImage(file);
+      showToast("Image uploaded successfully", "success");
+
+      setUrl(result);
+
+    } catch (err) {
+      showToast("Upload failed", "error", err.message);
+    }
+  }, mime, 0.92);
+};
 
   // ---- Remove image entirely ----
   const handleRemove = () => {
@@ -545,9 +577,12 @@ const ImageEditor = () => {
 
               {/* Action buttons */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <button className="ie-btn ie-btn-primary ie-btn-block" onClick={handleExport}>
-                  <i className="bi bi-download"></i> Export & Download
+                <button className="ie-btn ie-btn-primary ie-btn-block" onClick={handleUpload}>
+                  <i className="bi bi-download"></i> Confirm changes & Upload
                 </button>
+                {/* <button className="ie-btn ie-btn-primary ie-btn-block" onClick={handleExport}>
+                  <i className="bi bi-download"></i> Export & Download
+                </button> */}
                 <button className="ie-btn ie-btn-outline ie-btn-block ie-btn-sm" onClick={handleResetToOriginal}>
                   <i className="bi bi-arrow-counterclockwise"></i> Reset to Original
                 </button>
