@@ -24,6 +24,8 @@ import ChangePassword from './pages/Admin/ChangePassword.jsx';
 import BotCommandsDashboard from './pages/Bot Commands/BotCommandsDashboard.jsx';
 import BotCommandsEntry from './pages/Bot Commands/BotCommandsEntry.jsx';
 import Dashboard from './pages/Dashboard/Dashboard.jsx';
+import ImageStorageDashboard from './pages/Image Storage/ImageStorageDashboard.jsx';
+import ImageStorageEntry from './pages/Image Storage/ImageStorageEntry.jsx';
 
 function App() {
   return (
@@ -62,14 +64,16 @@ function App() {
                   <Route path="dashboard" element={<Dashboard />} />
                   <Route path="blogs" element={<BlogsDashboard />} />
                   <Route path="blogs/:id" element={<BlogsEntry />} />
-                  <Route path="gallery" element={<GalleryDashboard />} />
-                  <Route path="gallery/:id" element={<GalleryEntry />} />
+                  {/* <Route path="gallery" element={<GalleryDashboard />} />
+                  <Route path="gallery/:id" element={<GalleryEntry />} /> */}
                   <Route path="admin-users" element={<AdminUsersDashboard />} />
                   <Route path="admin-users/:id" element={<AdminUsersEntry />} />
                   <Route path="admin-profile" element={<AdminProfile />} />
                   <Route path="change-password" element={<ChangePassword />} />
                   <Route path="bot-commands" element={<BotCommandsDashboard />} />
                   <Route path="bot-commands/:id" element={<BotCommandsEntry />} />
+                  <Route path="image-storage" element={<ImageStorageDashboard />} />
+                  <Route path="image-storage/:id" element={<ImageStorageEntry />} />
                 </Route>
               </Route>
             {/* </Route> */}

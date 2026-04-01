@@ -32,7 +32,7 @@ const AdminSidebar = () => {
 
   return (
     <>
-      <div className="d-flex flex-column  p-3 bg-body-tertiary" style={{width: "200px", marginBottom: '-16px', height: 'calc(100dvh - 42px - 16px)', borderRight: 'var(--bs-border-width) solid var(--bs-border-color)'}}> 
+      <div className="d-flex flex-column  p-3 bg-body-tertiary" style={{width: "200px", minWidth: "200px", marginBottom: '-16px', height: 'calc(100dvh - 42px - 16px)', borderRight: 'var(--bs-border-width) solid var(--bs-border-color)'}}> 
         <ul className="nav nav-pills flex-column mb-auto"> 
           <li className="nav-item"> 
             <NavLink to="/admin/dashboard" className="nav-link">
@@ -46,12 +46,12 @@ const AdminSidebar = () => {
               Blogs
             </NavLink>
           </li> 
-          <li className="nav-item"> 
+          {/* <li className="nav-item"> 
             <NavLink to="/admin/gallery" className="nav-link">
               <i className="bi pe-none bi-image me-2"></i>
               Gallery
             </NavLink>
-          </li>
+          </li> */}
           <li className="nav-item"> 
             <NavLink to="/admin/admin-users" className="nav-link">
               <i className="bi pe-none bi-person me-2"></i>
@@ -62,6 +62,12 @@ const AdminSidebar = () => {
             <NavLink to="/admin/bot-commands" className="nav-link">
               <i className="bi pe-none bi-chat me-2"></i>
               <div>Bot Commands</div>
+            </NavLink>
+          </li>
+          <li className="nav-item"> 
+            <NavLink to="/admin/image-storage" className="nav-link">
+              <i className="bi pe-none bi-images me-2"></i>
+              <div>Images Storage</div>
             </NavLink>
           </li>
         </ul> 

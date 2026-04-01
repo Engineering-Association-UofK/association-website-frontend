@@ -93,6 +93,7 @@ const BlogsDashboard = () => {
                   <th>Id</th>
                   <th>Title</th>
                   <th>Content</th>
+                  <th>Author</th>
                   <th>Status</th>
                   <th>Date</th>
                   <th>Actions</th>
@@ -109,6 +110,11 @@ const BlogsDashboard = () => {
                       <td style={{ maxWidth: '200px' }}>
                         <div className="content-preview">
                           {row["content"]}
+                        </div>
+                      </td>
+                      <td style={{ maxWidth: '200px' }}>
+                        <div className="content-preview">
+                          {row["authorName"]}
                         </div>
                       </td>
                       <td>{row["status"]}</td>
