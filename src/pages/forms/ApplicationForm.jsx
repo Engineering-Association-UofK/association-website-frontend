@@ -1,51 +1,59 @@
 import React, { useState } from 'react';
-import { Form, Button, Card, Image } from 'react-bootstrap';
+import { Form, Button, Card, Image, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 import TextField from '../../components/FormFields/TextField';
-import MCField from '../../components/FormFields/mcField';
-import FileField from '../../components/FormFields/FileField'; 
-import DateField from '../../components/FormFields/Datefield';
-
-// 1. IMPORT YOUR ASSETS
-// Make sure these filenames match exactly what is in your src/assets folder
 import AssociationLogo from '../../assets/OIP.webp';
-import bgImage from '../../assets/OIP.webp'; 
+
+// --- IMPORTING YOUR NEW FILENAME ---
+import bgImage from '../../assets/uofk.png'; 
 
 const ApplicationForm = ({ schema }) => {
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(0);
   const [answers, setAnswers] = useState({});
+  const [fieldValidity, setFieldValidity] = useState({});
+  const totalPages = schema.pages.length;
 
-  const handleInputChange = (fieldId, value) => {
+  const handleInputChange = (fieldId, value, isValid = true) => {
     setAnswers(prev => ({ ...prev, [fieldId]: value }));
+    setFieldValidity(prev => ({ ...prev, [fieldId]: isValid }));
+  };
+
+  const handleNext = (e) => {
+    e.preventDefault();
+    const currentFields = schema.pages[currentPage].fields;
+    
+    const hasError = currentFields.find(
+      f => (f.isRequired && !answers[f.id]) || fieldValidity[f.id] === false
+    );
+
+    if (hasError) {
+      alert("Please ensure all fields are filled correctly before moving to the next step.");
+      return;
+    }
+
+    setCurrentPage(prev => prev + 1);
+    window.scrollTo(0, 0);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    // Check validation
-    const form = e.currentTarget;
-    if (form.checkValidity() === false) {
-      e.stopPropagation();
-      return;
-    }
-
     const submission = {
       id: Date.now(),
       formId: schema.id,
-      studentData: answers, 
+      studentData: answers,
       submittedAt: new Date().toLocaleString()
     };
 
     const existing = JSON.parse(localStorage.getItem('allSubmissions') || '[]');
     localStorage.setItem('allSubmissions', JSON.stringify([submission, ...existing]));
-    
-    alert("🎉 Submitted successfully!");
+
+    alert("🎉 Application Submitted Successfully!");
     navigate('/forms');
   };
 
   return (
-    /* MAIN WRAPPER WITH BACKGROUND */
     <div style={{ 
       position: 'relative', 
       minHeight: '100vh', 
@@ -54,142 +62,147 @@ const ApplicationForm = ({ schema }) => {
       justifyContent: 'center', 
       alignItems: 'center',
       padding: '40px 20px',
-      overflow: 'hidden'
+      overflow: 'hidden',
+      backgroundColor: '#f8fafc' // Subtle fallback color
     }}>
       
-      {/* THE BLURRED BACKGROUND LAYER */}
-      <div style={{
-        position: 'absolute',
-        top: 0, left: 0, right: 0, bottom: 0,
-        backgroundImage: `url(${bgImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        filter: 'blur(30px)', // Fixed blur value here
-        transform: 'scale(1.1)', 
-        zIndex: -1
-      }}></div>
+      {/* --- BACKGROUND IMAGE LAYER --- */}
+      {/* --- BACKGROUND IMAGE LAYER --- */}
+<div style={{
+  position: 'fixed', 
+  top: 0, 
+  left: 0, 
+  right: 0, 
+  bottom: 0,
+  backgroundImage: `url(${bgImage})`,
+  backgroundSize: 'cover',
+  
+  // --- CHANGE THIS LINE TO MOVE PICTURE DOWN ---
+  backgroundPosition: 'center 80%', // 50% is center, 75% is lower, 100% is bottom
+  
+  filter: 'blur(10px) brightness(0.9)', 
+  transform: 'scale(1.15)', // Slightly increased to cover the gap created by moving it
+  zIndex: 1
+}}></div>
 
-      {/* THE CONTENT CONTAINER */}
-      <div style={{ width: '100%', maxWidth: '750px', zIndex: 1 }}>
-        
-        {/* Header Section with Circular Logo */}
-        <Card className="border-0 shadow-lg p-4 mb-4 text-center" style={{ 
-          backgroundColor: 'rgba(255, 255, 255, 0.9)', 
-          backdropFilter: 'blur(10px)',
-          borderRadius: '20px' 
-        }}>
-          <div className="d-flex flex-column align-items-center">
-            {/* THE CIRCULAR LOGO CONTAINER */}
-            <div style={{
-                width: '120px',
-                height: '120px',
-                backgroundColor: 'white',
-                borderRadius: '50%',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                border: '4px solid #f8fcff', 
-                marginBottom: '20px',
-                overflow: 'hidden',
-                padding: '10px',
-                boxShadow: '0 4px 15px rgba(0,0,0,0.1)'
-            }}>
-                <Image 
-                  src={AssociationLogo} 
-                  style={{ width: '100%', height: 'auto', objectFit: 'contain' }} 
-                  alt="Association Logo"
-                />
+      {/* --- CONTENT CONTAINER --- */}
+      <Container style={{ maxWidth: '820px', zIndex: 10, position: 'relative' }}>
+        <Card
+          className="overflow-hidden shadow-lg"
+          style={{
+            borderRadius: '28px',
+            background: 'rgba(255, 255, 255, 0.98)',
+            border: '2px solid #ececed', // ELEGANT BLUE BORDER
+            boxShadow: '0 10px 40px rgba(207, 214, 227, 0.15)' // SOFT BLUE GLOW
+          }}
+        >
+          {/* HEADER SECTION */}
+          <div className="text-center px-4 px-md-5 pt-5 pb-4 border-bottom bg-white">
+            
+            {/* CIRCULAR LOGO */}
+            <div
+              className="mx-auto mb-4 shadow-sm"
+              style={{
+                width: '100px', height: '100px', borderRadius: '50%',
+                background: '#ffffff', display: 'flex', justifyContent: 'center',
+                alignItems: 'center', border: '3px solid #f1f5f9', overflow: 'hidden'
+              }}
+            >
+              <Image src={AssociationLogo} style={{ width: '80%', objectFit: 'contain' }} />
             </div>
 
-            <h2 className="fw-bold text-primary">{schema.title}</h2>
-            {schema.description && (
-              <p className="text-muted mt-2 mb-0" style={{ 
-                whiteSpace: 'pre-wrap', 
-                fontSize: '1.05rem',
-                lineHeight: '1.6' 
-              }}>
-                {schema.description }
-              </p>
-            
-            )}
+            <h2 className="fw-bold" style={{ color: '#1e293b' }}>{schema.title}</h2>
+            <p className="text-muted small">{schema.description}</p>
+
+            {/* STEPPER UI */}
+            <div className="d-flex align-items-center mt-4 px-lg-5">
+              {schema.pages.map((_, idx) => (
+                <React.Fragment key={idx}>
+                  <div
+                    onClick={() => idx < currentPage && setCurrentPage(idx)}
+                    style={{
+                      width: '32px', height: '32px', borderRadius: '50%',
+                      backgroundColor: idx <= currentPage ? '#2563eb' : '#e2e8f0',
+                      color: 'white', display: 'flex', alignItems: 'center',
+                      justifyContent: 'center', fontSize: '13px', fontWeight: 'bold',
+                      cursor: idx < currentPage ? 'pointer' : 'default',
+                      transition: '0.3s'
+                    }}
+                  >
+                    {idx + 1}
+                  </div>
+                  {idx < totalPages - 1 && (
+                    <div style={{
+                      flex: 1, height: '2px',
+                      backgroundColor: idx < currentPage ? '#2563eb' : '#e2e8f0',
+                      margin: '0 10px'
+                    }} />
+                  )}
+                </React.Fragment>
+              ))}
+            </div>
+
+            <h6 className="mt-4 fw-bold" style={{ color: '#2563eb' }}>
+              Step {currentPage + 1} of {totalPages}
+            </h6>
+            <p className="text-muted small uppercase">{schema.pages[currentPage].title}</p>
           </div>
-        </Card>
 
-        {/* Questions Card */}
-        <Card className="border-0 shadow-lg p-4 p-md-5 text-start" style={{ 
-          backgroundColor: 'rgba(255, 255, 255, 0.95)', 
-          borderRadius: '20px' 
-        }}>
-          <Form onSubmit={handleSubmit}>
-            {schema.fields.map((field) => (
-              <div key={field.id} className="mb-4">
-                {/* Text Fields */}
-                {field.type === 'text' && (
-                  <TextField 
-                    label={field.label} 
-                    type={field.subType} 
-                    isRequired={field.isRequired}
-                    onChange={(val) => handleInputChange(field.id, val)} 
-                  />
-                )}
-
-                {/* Number Fields */}
-                {field.type === 'number' && (
-                  <Form.Group>
-                    <Form.Label className="fw-bold">{field.label} {field.isRequired && "*"}</Form.Label>
-                    <Form.Control 
-                      type="number" 
-                      required={field.isRequired} 
-                      onChange={(e) => handleInputChange(field.id, e.target.value)} 
+          {/* QUESTIONS BODY */}
+          <Card.Body className="px-4 px-md-5 py-5 bg-white">
+            <Form onSubmit={handleSubmit}>
+              {schema.pages[currentPage].fields.map((field) => (
+                <div key={field.id} className="mb-4">
+                  {field.type === 'text' && (
+                    <TextField
+                      label={field.label}
+                      type={field.subType}
+                      isRequired={field.isRequired}
+                      onChange={(v, valid) => handleInputChange(field.id, v, valid)}
                     />
-                  </Form.Group>
-                )}
+                  )}
+                  {/* Note: Add checks here for 'number', 'choice', 'file' as needed */}
+                </div>
+              ))}
 
-                {/* Choice / Radio Fields */}
-                {field.type === 'choice' && (
-                  <MCField 
-                    label={field.label} 
-                    options={field.options} 
-                    name={`q-${field.id}`}
-                    isRequired={field.isRequired}
-                    onChange={(val) => handleInputChange(field.id, val)} 
-                  />
-                )}
+              {/* FOOTER BUTTONS */}
+              <div className="d-flex justify-content-between mt-5 pt-4 border-top">
+                <Button
+                  variant="light"
+                  disabled={currentPage === 0}
+                  onClick={() => setCurrentPage(prev => prev - 1)}
+                  style={{ borderRadius: '12px', padding: '10px 25px' }}
+                >
+                  Back
+                </Button>
 
-                {/* Date Selection */}
-                {field.type === 'date' && (
-                  <Form.Group>
-                    <Form.Label className="fw-bold">{field.label} {field.isRequired && "*"}</Form.Label>
-                    <Form.Control 
-                      type="date" 
-                      required={field.isRequired} 
-                      onChange={(e) => handleInputChange(field.id, e.target.value)} 
-                    />
-                  </Form.Group>
-                )}
-
-                {/* File Upload */}
-                {field.type === 'file' && (
-                  <Form.Group>
-                    <Form.Label className="fw-bold">{field.label} {field.isRequired && "*"}</Form.Label>
-                    <Form.Control 
-                      type="file" 
-                      required={field.isRequired} 
-                      onChange={(e) => handleInputChange(field.id, e.target.files[0]?.name)} 
-                    />
-                  </Form.Group>
+                {currentPage < totalPages - 1 ? (
+                  <Button
+                    type="button"
+                    onClick={handleNext}
+                    style={{
+                      background: '#2563eb', border: 'none', borderRadius: '12px',
+                      padding: '12px 35px', fontWeight: 600
+                    }}
+                  >
+                    Continue →
+                  </Button>
+                ) : (
+                  <Button
+                    type="submit"
+                    style={{
+                      background: '#16a34a', border: 'none', borderRadius: '12px',
+                      padding: '12px 35px', fontWeight: 600
+                    }}
+                  >
+                    Submit ✓
+                  </Button>
                 )}
               </div>
-            ))}
-
-            <div className="d-grid gap-2 mt-5">
-              <Button variant="primary" size="lg" type="submit" className="fw-bold" style={{ borderRadius: '10px' }}>
-                Submit Application
-              </Button>
-            </div>
-          </Form>
+            </Form>
+          </Card.Body>
         </Card>
-      </div>
+      </Container>
     </div>
   );
 };

@@ -42,21 +42,21 @@ const ApplicationView = () => {
     </Container>
   );
 
-  return (
-    <Container className="py-5">
-      <div className="mb-4 text-start">
-        <Button variant="link" onClick={() => navigate(-1)} className="p-0 mb-2">
-          &larr; Back
-        </Button>
-        <h2 className="fw-bold text-primary">{targetForm.title}</h2>
-        <p className="text-muted">Fill out the requirements below to apply.</p>
-        <hr />
-      </div>
-
-      {/* CALLING THE RENDERER COMPONENT */}
-      <ApplicationForm schema={targetForm} />
+  // Inside ApplicationView.jsx, the return section:
+// ApplicationView.jsx
+return (
+  <div className="bg-light min-vh-100"> 
+    {/* Only the back button stays outside if you want, or put it inside */}
+    <Container className="pt-4 text-start">
+      <Button variant="link" onClick={() => navigate(-1)} className="p-0 mb-2">
+        &larr; Back
+      </Button>
     </Container>
-  );
+
+    {/* The Form handles the Title and Description inside the white box */}
+    <ApplicationForm schema={targetForm} />
+  </div>
+);
 };
 
 export default ApplicationView;

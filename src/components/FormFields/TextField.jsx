@@ -1,37 +1,18 @@
 import React, { useState } from 'react';
-import { Form, Alert } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 
 const TextField = ({ label, type, isRequired, onChange }) => {
   const [value, setValue] = useState('');
   const [error, setError] = useState('');
 
-  // Validation Logic (Error Catching)
   const validate = (input) => {
     let errorMessage = '';
-    
     if (isRequired && !input) {
       errorMessage = 'This field is required.';
-    } else {
-      switch (type) {
-        case 'email': // Type 1
-          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          if (!emailRegex.test(input)) errorMessage = 'Invalid email format.';
-          break;
-        case 'phone': // Type 4
-          const phoneRegex = /^\+?[0-9]{10,14}$/;
-          if (!phoneRegex.test(input)) errorMessage = 'Invalid phone number (10-14 digits).';
-          break;
-        case 'short': // Type 2
-          if (input.length > 50) errorMessage = 'Short answer must be under 50 characters.';
-          break;
-        case 'long': // Type 3
-          if (input.length < 10) errorMessage = 'Long answer should be at least 10 characters.';
-          break;
-        default:
-          break;
-      }
+    } else if (input) {
+      if (type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input)) errorMessage = 'Invalid email format.';
+      if (type === 'phone' && !/^\+?[0-9]{10,14}$/.test(input)) errorMessage = 'Invalid phone number.';
     }
-    
     setError(errorMessage);
     if (onChange) onChange(input, errorMessage === '');
   };
@@ -47,30 +28,16 @@ const TextField = ({ label, type, isRequired, onChange }) => {
       <Form.Label className="fw-bold">
         {label} {isRequired && <span className="text-danger">*</span>}
       </Form.Label>
-
-      {type === 'long' ? (
-        <Form.Control 
-          as="textarea" 
-          rows={3} 
-          isInvalid={!!error}
-          value={value}
-          onChange={handleChange}
-          placeholder="Enter long answer..."
-        />
-      ) : (
-        <Form.Control 
-  type={type === 'email' ? 'email' : type === 'phone' ? 'tel' : 'text'}
-  isInvalid={!!error}
-  value={value}
-  required={isRequired} // ADD THIS LINE
-  onChange={handleChange}
-  placeholder={`Enter ${type}...`}
-/>
-      )}
-
-      <Form.Control.Feedback type="invalid">
-        {error}
-      </Form.Control.Feedback>
+      <Form.Control 
+        as={type === 'long' ? 'textarea' : 'input'}
+        rows={type === 'long' ? 3 : 1}
+        type={type === 'email' ? 'email' : type === 'phone' ? 'tel' : 'text'}
+        isInvalid={!!error}
+        value={value}
+        onChange={handleChange}
+        placeholder={`Enter your ${type === 'short' || type === 'long' ? 'answer' : type}...`}
+      />
+      <Form.Control.Feedback type="invalid">{error}</Form.Control.Feedback>
     </Form.Group>
   );
 };
