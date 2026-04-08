@@ -1,0 +1,25 @@
+{
+  "trusteeTitle": "Trustee",
+  "cards": [
+    {
+      "title": "Transparency",
+      "text": "We believe public work is a trust; we commit to full clarity in every step.",
+      "icon": "bi bi-eye"
+    },
+    {
+      "title": "Commitment",
+      "text": "We focus on tangible achievements, believing change is made through commitment and continuous effort.",
+      "icon": "bi bi-hand-thumbs-up"
+    },
+    {
+      "title": "Professionalism",
+      "text": "We work methodically, putting student interests above all.",
+      "icon": "bi bi-briefcase"
+    },
+    {
+      "title": "Inclusiveness",
+      "text": "We are committed to representing all students, offering help, and making the association a safe, open space for everyone.",
+      "icon": "bi bi-people"
+    }
+  ]
+}
