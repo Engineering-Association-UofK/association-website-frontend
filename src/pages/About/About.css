@@ -1,6 +1,81 @@
-.about-page h1,
-.about-page h2 {
-    color: #23085a !important;
+.about-page {
+    background: #f8f9fa;
 }
 
-/* Overriding bootstrap utility classes 'text-primary'*/
+.about-page-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    margin-top: 60px;
+    padding: 2rem 1rem;
+}
+
+.identity-card {
+    background: white;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.identity-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.identity-grid.rtl-grid {
+    direction: rtl;
+}
+
+.identity-image {
+    min-height: 300px;
+}
+
+.identity-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.identity-content {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.trustee-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.trustee-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 992px) {
+    .identity-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+    }
+    .identity-grid.rtl-grid {
+        direction: ltr;
+    }
+    .identity-image {
+        min-height: 250px;
+    }
+    .identity-content {
+        padding: 1.5rem;
+    }
+    .about-page-container {
+        max-width: 95%;
+    }
+}
+
+@media (max-width: 576px) {
+    .about-page-container {
+        padding: 1rem;
+    }
+    .identity-content {
+        padding: 1rem;
+    }
+}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, Card } from 'react-bootstrap';
+import { Row, Col, Card } from 'react-bootstrap';
 import { useLanguage } from '../../context/LanguageContext';
 import enContent from './en.json';
 import arContent from './ar.json';
@@ -11,16 +11,39 @@ const About = () => {
 
     return (
         <div className="about-page">
-            <Container className="py-5">
+            <div className="about-page-container">
+                {/* first section */}
+                <section className="identity-section mb-5">
+                    <div className="identity-card">
+                        <div className={`identity-grid ${language === 'ar' ? 'rtl-grid' : ''}`}>
+                            {/* TODO: uofk image */}
+                            <div className="identity-image">
+                                <img
+                                    src="https://placehold.co/600x400/e2e8f0/1e293b?text=Identity+Image"
+                                    alt={content.identity.title}
+                                />
+                            </div>
+                            <div className="identity-content">
+                                <h2 className="fw-bold mb-4 text-primary">
+                                    {content.identity.title}
+                                </h2>
+                                <div className="text-muted" style={{ lineHeight: 1.7, whiteSpace: 'pre-line' }}>
+                                    {content.identity.text}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
                 {/* 3rd section */}
                 <section className="trustee-section mb-5">
-                    <h2 className="text-center fw-bold mb-5">
+                    <h2 className="text-center fw-bold mb-5 text-primary">
                         {content.trusteeTitle}
                     </h2>
                     <Row className="g-4">
                         {content.cards.map((card, idx) => (
                             <Col md={6} lg={3} key={idx}>
-                                <Card className="h-100 shadow-sm border-0 text-center">
+                                <Card className="trustee-card h-100 shadow-sm border-0 text-center">
                                     <Card.Body className="p-4">
                                         <div className="mb-3">
                                             {/* TODO: replace with ahmed images */}
@@ -38,7 +61,7 @@ const About = () => {
                         ))}
                     </Row>
                 </section>
-            </Container>
+            </div>
         </div>
     );
 };
