@@ -2,6 +2,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { LanguageProvider } from './context/LanguageContext';
 import Home from './pages/Home/Home';
 import About from './pages/About/About';
+import TeamStructure from './pages/About/TeamStructure';
+import TeamMembers from './pages/About/TeamMembers';
 import AdminLayout from './pages/Admin/AdminLayout';
 import BlogsDashboard from './pages/Blogs/BlogsDashboard';
 import Blogs from './pages/Blogs/Blogs.jsx';
@@ -38,6 +40,8 @@ function App() {
             <Route element={<MainLayout />}>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
+              <Route path="/about/structure" element={<TeamStructure />} />
+              <Route path="/about/members" element={<TeamMembers />} /> 
               {/* Add other public routes here */}
               <Route path="/blogs" element={<Blogs />} />
               <Route path="/blogs/:id" element={<BlogPage />} />

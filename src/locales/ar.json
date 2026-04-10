@@ -1,8 +1,11 @@
 {
     "navbar": {
-        "brand": "الجمعيةالهندسية",
+        "brand": "الجمعية الهندسية",
         "home": "الرئيسية",
         "about": "من نحن",
+        "aboutAssociation": "عن الجمعية",
+        "teamStructure": "الهيكل التنظيمي",
+        "teamMembers": "أعضاء الفريق",
         "initiatives": "المبادرات",
         "blogs": "الأخبار",
         "gallery": "المعرض",
