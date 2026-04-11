@@ -1,0 +1,140 @@
+.team-members-page {
+    background: #f8f9fa;
+    min-height: 100vh;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.member-card {
+    background: white;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.member-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.1);
+}
+
+.member-img {
+    width: 120px;
+    height: 120px;
+    margin: 1.5rem auto 0;
+    display: block;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #e9ecef;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.member-info {
+    padding: 1.25rem;
+    text-align: center;
+}
+
+.member-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #1e293b;
+}
+
+.member-role {
+    font-size: 0.9rem;
+    color: #0d6efd;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.member-bio {
+    font-size: 0.85rem;
+    color: #6c757d;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.skeleton-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.skeleton-card {
+    background: white;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+    text-align: center;
+    padding: 1.5rem 1rem 1rem;
+}
+
+.skeleton-img {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+    border-radius: 50%;
+    background: linear-gradient(90deg, #e9ecef 25%, #f8f9fa 50%, #e9ecef 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+.skeleton-text {
+    padding: 1rem 0.5rem;
+}
+
+.skeleton-title {
+    height: 1.2rem;
+    width: 60%;
+    margin: 0.5rem auto;
+    background: #e9ecef;
+    border-radius: 4px;
+}
+
+.skeleton-subtitle {
+    height: 0.9rem;
+    width: 40%;
+    margin: 0.5rem auto;
+    background: #e9ecef;
+    border-radius: 4px;
+}
+
+.skeleton-line {
+    height: 0.8rem;
+    width: 80%;
+    margin: 0.5rem auto;
+    background: #e9ecef;
+    border-radius: 4px;
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+@media (max-width: 768px) {
+    .member-card {
+        margin: 2rem;
+    }
+    .member-img {
+        width: 100px;
+        height: 100px;
+    }
+    .team-grid {
+        gap: 1rem;
+    }
+}

@@ -1,0 +1,74 @@
+{
+  "trusteeTitle": "Trustee",
+  "cards": [
+    {
+      "title": "Transparency",
+      "text": "We believe public work is a trust; we commit to full clarity in every step.",
+      "icon": "bi bi-eye"
+    },
+    {
+      "title": "Commitment",
+      "text": "We focus on tangible achievements, believing change is made through commitment and continuous effort.",
+      "icon": "bi bi-hand-thumbs-up"
+    },
+    {
+      "title": "Professionalism",
+      "text": "We work methodically, putting student interests above all.",
+      "icon": "bi bi-briefcase"
+    },
+    {
+      "title": "Inclusiveness",
+      "text": "We are committed to representing all students, offering help, and making the association a safe, open space for everyone.",
+      "icon": "bi bi-people"
+    }
+  ],
+  "identity": {
+    "title": "Identity",
+    "text": "The Engineering Association of the University of Khartoum is a student organization and the legitimate body representing all male and female students of the Faculty of Engineering across its departments and batches. It derives its legitimacy from student mandate through the electoral process.\n\nThe Association adopts the principle of 'comprehensive representation' in its identity, transcending sub-affiliations to solidify the unity of the Faculty of Engineering students. It also serves as the institutional bridge connecting student aspirations with the university administration. It works to provide academic support, social cohesion, and various activities to develop students' skills and awareness, while instilling the values of responsibility and teamwork, which are an integral part of the Faculty of Engineering's legacy."
+  },
+  "objectives": {
+    "title": "Our Objectives",
+    "list": [
+      {
+        "title": "Academic Support",
+        "icon": "bi bi-book",
+        "points": [
+          "Empower students with the necessary knowledge and technical tools to compete in the engineering job market through organizing scientific workshops, training courses, and research.",
+          "Help students face various academic challenges during their studies by providing guidance, resources such as references, sheets, and previous academic experiences."
+        ]
+      },
+      {
+        "title": "Union Protection",
+        "icon": "bi bi-shield",
+        "points": [
+          "Establish the association as an official link and negotiator with the university administration and relevant authorities, ensuring the student's voice is heard in all academic and service decisions, while protecting their legal and academic rights.",
+          "Enhance union awareness by educating students about their rights and duties, and raise awareness about the importance of participating in the electoral process to choose honest and competent representatives."
+        ]
+      },
+      {
+        "title": "University Environment Preparation",
+        "icon": "bi bi-building",
+        "points": [
+          "Follow up on development and maintenance processes for basic service facilities such as the faculty mosque, lecture halls, laboratories, and related items like air conditioners, rehabilitate restrooms, and improve student housing, ensuring a healthy and comfortable environment befitting students."
+        ]
+      },
+      {
+        "title": "Cultural & Sports Development",
+        "icon": "bi bi-trophy",
+        "points": [
+          "Provide a supportive environment for students to express their creativity in arts and literature, enrich awareness by organizing cultural and intellectual events that broaden the student's horizons in arts and humanities to enhance their personality.",
+          "Manage various sports activities, ensuring expanded student participation and providing a training environment with regular periodic competitions, aimed at strengthening bonds between students, channeling their energy positively, and building team spirit."
+        ]
+      },
+      {
+        "title": "Social Cohesion",
+        "icon": "bi bi-people",
+        "points": [
+          "Organize and sponsor regular social events that bring together students, graduates, and professors to instill values of brotherhood and unity, enhancing human bonds.",
+          "Organize 'welcome and orientation' programs for new students, connecting them with older batches to facilitate their integration into the university environment and transfer experiences.",
+          "Organize student solidarity initiatives to provide direct financial support to students facing tuition fees or living and housing costs."
+        ]
+      }
+    ]
+  }
+}

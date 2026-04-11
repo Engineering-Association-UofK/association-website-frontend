@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { LanguageProvider } from './context/LanguageContext';
 import Home from './pages/Home/Home';
-import About from './pages/About/About';
-import TeamStructure from './pages/About/TeamStructure';
-import TeamMembers from './pages/About/TeamMembers';
+import About from './pages/About/association/About';
+import TeamStructure from './pages/About/TeamStructure/TeamStructure';
+import TeamMembers from './pages/About/TeamMembers/TeamMembers';
 import AdminLayout from './pages/Admin/AdminLayout';
 import BlogsDashboard from './pages/Blogs/BlogsDashboard';
 import Blogs from './pages/Blogs/Blogs.jsx';
