@@ -75,18 +75,47 @@ const NavigationBar = () => {
                             <Nav.Link as={NavLink} to="/" end className="mx-2 fw-medium text-white" onClick={() => setExpanded(false)}>
                                 {translations.navbar.home}
                             </Nav.Link>
-                            <Dropdown as={Nav.Item} className="mx-2 about-dropdown">
-                                <Dropdown.Toggle as={Nav.Link} className="fw-medium text-white about-toggle" style={{ cursor: 'pointer' }}>
+
+                            <Dropdown as={Nav.Item} className="mx-2">
+                                <style>
+                                    {`
+                                        .about-drop-down::after {
+                                            display: none !important;
+                                        }
+                                        .custom-dropdown-menu {
+                                            background-color: #003366 !important;
+                                            border: none !important;
+                                            min-width: 180px;
+                                            text-align: center;
+                                        }
+                                        .custom-dropdown-menu .dropdown-item {
+                                            color: #ffffff !important;
+                                            text-align: center;
+                                            padding: 0.5rem 1rem;
+                                            transition: background 0.2s;
+                                        }
+                                        .custom-dropdown-menu .dropdown-item:hover,
+                                        .custom-dropdown-menu .dropdown-item:focus {
+                                            background-color: #0d6efd !important;
+                                            color: #ffffff !important;
+                                        }
+                                        .custom-dropdown-menu .dropdown-item.active {
+                                            background-color: #0d6efd !important;
+                                            color: #ffffff !important;
+                                        }
+                                    `}
+                                </style>
+                                <Dropdown.Toggle as="div" className={`about-drop-down fw-medium text-white text-center ${language === 'ar' ? 'text-end' : ''}`} style={{ cursor: 'pointer', background: 'transparent', border: 'none', padding: '0.5rem 0', display: 'inline-block', width: '100%'}}>
                                     {translations.navbar.about}
                                 </Dropdown.Toggle>
-                                <Dropdown.Menu align="end" className="mt-2 shadow-sm border-0 rounded-3">
-                                    <Dropdown.Item as={NavLink} to="/about" end onClick={() => setExpanded(false)} className="dropdown-navlink">
+                                <Dropdown.Menu align="end" className={`mt-2 shadow-sm rounded-3 custom-dropdown-menu ${language === 'ar' ? 'text-end' : ''}`}>
+                                    <Dropdown.Item as={NavLink} to="/about" end onClick={() => setExpanded(false)}>
                                         {translations.navbar.aboutAssociation}
                                     </Dropdown.Item>
-                                    <Dropdown.Item as={NavLink} to="/about/structure" onClick={() => setExpanded(false)} className="dropdown-navlink">
+                                    <Dropdown.Item as={NavLink} to="/about/structure" onClick={() => setExpanded(false)}>
                                         {translations.navbar.teamStructure}
                                     </Dropdown.Item>
-                                    <Dropdown.Item as={NavLink} to="/about/members" onClick={() => setExpanded(false)} className="dropdown-navlink">
+                                    <Dropdown.Item as={NavLink} to="/about/members" onClick={() => setExpanded(false)}>
                                         {translations.navbar.teamMembers}
                                     </Dropdown.Item>
                                 </Dropdown.Menu>
