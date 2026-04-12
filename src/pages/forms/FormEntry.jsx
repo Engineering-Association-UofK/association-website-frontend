@@ -6,6 +6,8 @@ import { authFetch, endpoints } from '../../config/api';
 
 const FormEntry = () => {
   const navigate = useNavigate();
+  const [isSaving, setIsSaving] = useState(false);
+
   
   const [formName, setFormName] = useState('');
   const [category, setCategory] = useState('competitions');
@@ -13,7 +15,8 @@ const FormEntry = () => {
   const [openDate, setOpenDate] = useState('');
   const [closeDate, setCloseDate] = useState('');
   const [showPreview, setShowPreview] = useState(false);
-  
+  const [allowMultiple, setAllowMultiple] = useState(false);
+
   const [pages, setPages] = useState([
     { id: Date.now(), title: 'Step 1', fields: [] }
   ]);
@@ -482,61 +485,583 @@ const FormEntry = () => {
 //   }
 // };
 
+// const handleSave = async (status) => {
+//   if (!formName.trim()) return alert("Please enter a Form Name!");
+
+//   try {
+//     // STEP 1: Create Form
+//     console.log("Step 1: Creating form...");
+//     const formRes = await authFetch(endpoints.forms, {
+//       method: 'POST',
+//       body: JSON.stringify({
+//         title: formName,
+//         description: description || "No description",
+//         allow_multiple: false,
+//         is_active: status === 'published'
+//       })
+//     });
+
+//     const savedForm = await formRes.json();
+//     console.log("✅ Form created, ID:", savedForm.id);
+//     if (!savedForm.id) return alert("Form creation failed");
+//     const formId = savedForm.id;
+
+//     // STEP 2: Fetch the form immediately to get auto-created pages
+//     console.log("Step 2: Fetching form structure...");
+//     const formDetailRes = await authFetch(`${endpoints.forms}/${formId}`);
+//     const formDetail = await formDetailRes.json();
+//     console.log("Form detail:", JSON.stringify(formDetail));
+
+//     // Get existing pages from backend
+//     let existingPages = formDetail.pages || [];
+
+//     // Create any missing pages
+//     for (let i = 0; i < pages.length; i++) {
+//       const existingPage = existingPages.find(p => p.page_num === i + 1);
+      
+//       if (!existingPage) {
+//         console.log(`Creating missing page ${i + 1}...`);
+//         const pageRes = await authFetch(endpoints.pages, {
+//           method: 'POST',
+//           body: JSON.stringify({ form_id: formId, page_num: i + 1 })
+//         });
+//         const newPage = await pageRes.json();
+//         existingPages.push(newPage);
+//         console.log(`✅ Page ${i + 1} created, ID:`, newPage.id);
+//       } else {
+//         console.log(`✅ Page ${i + 1} already exists, ID:`, existingPage.id);
+//       }
+//     }
+
+//     // STEP 3: Create Questions using correct page IDs
+//     for (let i = 0; i < pages.length; i++) {
+//       const backendPage = existingPages.find(p => p.page_num === i + 1);
+//       if (!backendPage) {
+//         console.error(`No backend page found for page ${i + 1}`);
+//         continue;
+//       }
+//       const pageId = backendPage.id;
+
+//       for (let j = 0; j < pages[i].fields.length; j++) {
+//         const field = pages[i].fields[j];
+
+//         const typeMap = {
+//           text: field.subType === 'long' ? 'PARAGRAPH' : 'TEXT',
+//           number: 'NUMBER',
+//           choice: 'RADIO',
+//           date: 'TEXT',
+//           file: 'TEXT',
+//         };
+
+//         let options = null;
+//         if (field.type === 'number') {
+//           options = { min: 0, max: 100 };
+//         } else if (field.type === 'choice') {
+//           options = field.options;
+//         }
+
+//         const questionPayload = {
+//           form_page_id: pageId,
+//           question_text: field.label || `Question ${j + 1}`,
+//           type: typeMap[field.type] || 'TEXT',
+//           options: options,
+//           is_required: field.isRequired,
+//           display_order: j + 1
+//         };
+
+//         console.log(`Creating question ${j + 1}:`, JSON.stringify(questionPayload));
+
+//         const questionRes = await authFetch(endpoints.questions, {
+//           method: 'POST',
+//           body: JSON.stringify(questionPayload)
+//         });
+
+//         console.log(`Question ${j + 1} status:`, questionRes.status);
+//         const questionData = await questionRes.json();
+//         console.log(`Question ${j + 1} response:`, JSON.stringify(questionData));
+//       }
+//     }
+
+//     alert(status === 'published' ? "🚀 Form Published!" : "💾 Draft Saved!");
+//     navigate('/admin/forms');
+
+//   } catch (err) {
+//     console.error("❌ Error:", err);
+//     alert("Connection failed. Is the server online?");
+//   }
+// };
+
+// const handleSave = async (status) => {
+//   if (!formName.trim()) return alert("Please enter a Form Name!");
+
+//   try {
+//     // STEP 1: Create Form with new required fields
+//     const formRes = await authFetch(endpoints.forms, {
+//       method: 'POST',
+//       body: JSON.stringify({
+//         title: formName,
+//         description: description || "No description",
+//         allow_multiple: false,
+//         start_date: openDate ? `${openDate}T00:00:00Z` : new Date().toISOString(),
+//         end_date: closeDate ? `${closeDate}T00:00:00Z` : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+//         type: category // competitions, positions, workshops
+//       })
+//     });
+
+//     const savedForm = await formRes.json();
+//     console.log("✅ Form created:", JSON.stringify(savedForm));
+//     if (!savedForm.id) return alert(`Form creation failed: ${JSON.stringify(savedForm)}`);
+//     const formId = savedForm.id;
+
+//     // STEP 2: Fetch form to get auto-created pages
+//     const formDetailRes = await authFetch(`${endpoints.forms}/${formId}`);
+//     const formDetail = await formDetailRes.json();
+//     let existingPages = formDetail.pages || [];
+
+//     // Create missing pages
+//     for (let i = 0; i < pages.length; i++) {
+//       const existingPage = existingPages.find(p => p.page_num === i + 1);
+//       if (!existingPage) {
+//         const pageRes = await authFetch(endpoints.pages, {
+//           method: 'POST',
+//           body: JSON.stringify({ form_id: formId, page_num: i + 1 })
+//         });
+//         const newPage = await pageRes.json();
+//         existingPages.push(newPage);
+//         console.log(`✅ Page ${i + 1} created, ID:`, newPage.id);
+//       } else {
+//         console.log(`✅ Page ${i + 1} exists, ID:`, existingPage.id);
+//       }
+//     }
+
+//     // STEP 3: Create Questions
+//     for (let i = 0; i < pages.length; i++) {
+//       const backendPage = existingPages.find(p => p.page_num === i + 1);
+//       if (!backendPage) continue;
+//       const pageId = backendPage.id;
+
+//       for (let j = 0; j < pages[i].fields.length; j++) {
+//         const field = pages[i].fields[j];
+
+//         const typeMap = {
+//           text: field.subType === 'long' ? 'PARAGRAPH' : 'TEXT',
+//           number: 'NUMBER',
+//           choice: 'RADIO',
+//           date: 'TEXT',
+//           file: 'TEXT',
+//         };
+
+//         let options = null;
+//         if (field.type === 'number') options = { min: 0, max: 100 };
+//         else if (field.type === 'choice') options = field.options;
+
+//         const questionRes = await authFetch(endpoints.questions, {
+//           method: 'POST',
+//           body: JSON.stringify({
+//             form_page_id: pageId,
+//             question_text: field.label || `Question ${j + 1}`,
+//             type: typeMap[field.type] || 'TEXT',
+//             options: options,
+//             is_required: field.isRequired,
+//             display_order: j + 1
+//           })
+//         });
+
+//         const savedQ = await questionRes.json();
+//         console.log(`✅ Question ${j + 1}:`, JSON.stringify(savedQ));
+//       }
+//     }
+
+//     alert(status === 'published' ? "🚀 Form Published!" : "💾 Draft Saved!");
+//     navigate('/admin/forms');
+
+//   } catch (err) {
+//     console.error("❌ Error:", err);
+//     alert("Connection failed.");
+//   }
+// };
+
+// const handleSave = async (status) => {
+//   if (!formName.trim()) return alert("Please enter a Form Name!");
+//   if (isSaving) return; // ← prevent double clicks
+  
+//   setIsSaving(true); // ← lock the button
+
+//   try {
+//     const formRes = await authFetch(endpoints.forms, {
+//       method: 'POST',
+//       body: JSON.stringify({
+//         title: formName,
+//         description: description || "No description",
+//         allow_multiple: false,
+//         start_date: openDate ? `${openDate}T00:00:00Z` : new Date().toISOString(),
+//         end_date: closeDate ? `${closeDate}T00:00:00Z` : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+//         type: category
+//       })
+//     });
+
+//     const savedForm = await formRes.json();
+//     console.log("✅ Form created:", JSON.stringify(savedForm));
+
+//     if (savedForm.id === undefined || savedForm.id === null) {
+//       return alert(`Form creation failed: ${JSON.stringify(savedForm)}`);
+//     }
+
+//     const formId = savedForm.id;
+
+//     // Fetch form to get auto-created pages
+//     const formDetailRes = await authFetch(`${endpoints.forms}/${formId}`);
+//     const formDetail = await formDetailRes.json();
+//     let existingPages = formDetail.pages || [];
+
+//     // Create missing pages
+//     for (let i = 0; i < pages.length; i++) {
+//       const existingPage = existingPages.find(p => p.page_num === i + 1);
+//       if (!existingPage) {
+//         const pageRes = await authFetch(endpoints.pages, {
+//           method: 'POST',
+//           body: JSON.stringify({ form_id: formId, page_num: i + 1 })
+//         });
+//         const newPage = await pageRes.json();
+//         existingPages.push(newPage);
+//       }
+//     }
+
+//     // Create questions
+//     for (let i = 0; i < pages.length; i++) {
+//       const backendPage = existingPages.find(p => p.page_num === i + 1);
+//       if (!backendPage) continue;
+//       const pageId = backendPage.id;
+
+//       for (let j = 0; j < pages[i].fields.length; j++) {
+//         const field = pages[i].fields[j];
+
+//         const typeMap = {
+//           text: field.subType === 'long' ? 'PARAGRAPH' : 'TEXT',
+//           number: 'NUMBER',
+//           choice: field.subType || 'RADIO',
+//           date: 'TEXT',
+//           file: 'TEXT',
+//         };
+
+//         let options = null;
+//         if (field.type === 'number') options = { min: 0, max: 100 };
+//         else if (field.type === 'choice') options = field.options;
+
+//         await authFetch(endpoints.questions, {
+//           method: 'POST',
+//           body: JSON.stringify({
+//             form_page_id: pageId,
+//             question_text: field.label || `Question ${j + 1}`,
+//             type: typeMap[field.type] || 'TEXT',
+//             options: options,
+//             is_required: field.isRequired,
+//             display_order: j + 1
+//           })
+//         });
+//       }
+//     }
+
+//     alert(status === 'published' ? "🚀 Form Published!" : "💾 Draft Saved!");
+//     navigate('/admin/forms');
+
+//   } catch (err) {
+//     console.error("❌ Error:", err);
+//     alert("Connection failed.");
+//   } finally {
+//     setIsSaving(false); // ← always unlock when done
+//   }
+// };
+// const handleSave = async (status) => {
+//   if (!formName.trim()) return alert("Please enter a Form Name!");
+//   if (isSaving) return;
+//   setIsSaving(true);
+
+//   try {
+//     // STEP 1: Create Form
+//     console.log("Step 1: Creating form...");
+//     const formRes = await authFetch(endpoints.forms, {
+//       method: 'POST',
+//       body: JSON.stringify({
+//         title: formName,
+//         description: description || "No description",
+//         allow_multiple: false,
+//         start_date: openDate ? `${openDate}T00:00:00Z` : new Date().toISOString(),
+//         end_date: closeDate ? `${closeDate}T00:00:00Z` : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+//         type: category
+//       })
+//     });
+
+//     const savedForm = await formRes.json();
+//     console.log("✅ Form created:", JSON.stringify(savedForm));
+
+//     if (savedForm.id === undefined || savedForm.id === null) {
+//       return alert(`Form creation failed: ${JSON.stringify(savedForm)}`);
+//     }
+//     const formId = savedForm.id;
+
+//     // STEP 2: Fetch form to get auto-created pages
+//     console.log("Step 2: Fetching form structure for ID:", formId);
+//     const formDetailRes = await authFetch(`${endpoints.forms}/${formId}`);
+//     const formDetail = await formDetailRes.json();
+//     console.log("Form detail response:", JSON.stringify(formDetail));
+//     let existingPages = formDetail.pages || [];
+//     console.log("Existing pages from backend:", JSON.stringify(existingPages));
+
+//     // Create missing pages
+//     for (let i = 0; i < pages.length; i++) {
+//       const existingPage = existingPages.find(p => p.page_num === i + 1);
+//       if (!existingPage) {
+//         console.log(`Creating missing page ${i + 1}...`);
+//         const pageRes = await authFetch(endpoints.pages, {
+//           method: 'POST',
+//           body: JSON.stringify({ form_id: formId, page_num: i + 1 })
+//         });
+//         console.log(`Page ${i + 1} status:`, pageRes.status);
+//         const newPage = await pageRes.json();
+//         console.log(`Page ${i + 1} response:`, JSON.stringify(newPage));
+//         existingPages.push(newPage);
+//       } else {
+//         console.log(`Page ${i + 1} already exists, ID:`, existingPage.id);
+//       }
+//     }
+
+//     console.log("All pages after creation:", JSON.stringify(existingPages));
+
+//     // STEP 3: Create Questions
+//     console.log("Step 3: Total frontend pages:", pages.length);
+//     for (let i = 0; i < pages.length; i++) {
+//       console.log(`Page ${i} fields:`, JSON.stringify(pages[i].fields));
+//       console.log(`Page ${i} fields count:`, pages[i].fields.length);
+
+//       const backendPage = existingPages.find(p => p.page_num === i + 1);
+//       console.log(`Backend page for index ${i + 1}:`, JSON.stringify(backendPage));
+
+//       if (!backendPage) {
+//         console.error(`❌ No backend page found for page_num ${i + 1}`);
+//         continue;
+//       }
+
+//       const pageId = backendPage.id;
+//       console.log(`Using pageId: ${pageId} for page ${i + 1}`);
+
+//       for (let j = 0; j < pages[i].fields.length; j++) {
+//         const field = pages[i].fields[j];
+//         console.log(`Processing field ${j + 1}:`, JSON.stringify(field));
+
+//         const typeMap = {
+//           text: field.subType === 'long' ? 'PARAGRAPH' : 'TEXT',
+//           number: 'NUMBER',
+//           choice: field.subType || 'RADIO',
+//           date: 'TEXT',
+//           file: 'TEXT',
+//         };
+
+//         let options = null;
+//         if (field.type === 'number') options = { min: 0, max: 100 };
+//         else if (field.type === 'choice') options = field.options;
+
+//         const questionPayload = {
+//           form_page_id: pageId,
+//           question_text: field.label || `Question ${j + 1}`,
+//           type: typeMap[field.type] || 'TEXT',
+//           options: options,
+//           is_required: field.isRequired,
+//           display_order: j + 1
+//         };
+
+//         console.log(`Creating question ${j + 1}:`, JSON.stringify(questionPayload));
+
+//         const questionRes = await authFetch(endpoints.questions, {
+//           method: 'POST',
+//           body: JSON.stringify(questionPayload)
+//         });
+
+//         console.log(`Question ${j + 1} status:`, questionRes.status);
+//         const questionData = await questionRes.json();
+//         console.log(`Question ${j + 1} response:`, JSON.stringify(questionData));
+//       }
+//     }
+
+//     alert(status === 'published' ? "🚀 Form Published!" : "💾 Draft Saved!");
+//     navigate('/admin/forms');
+
+//   } catch (err) {
+//     console.error("❌ Error:", err);
+//     alert("Connection failed.");
+//   } finally {
+//     setIsSaving(false);
+//   }
+// };
+// const handleSave = async (status) => {
+//   if (!formName.trim()) return alert("Please enter a Form Name!");
+//   if (isSaving) return;
+//   setIsSaving(true);
+
+//   try {
+//     // STEP 1: Create Form
+//     console.log("Step 1: Creating form...");
+//     const formRes = await authFetch(endpoints.forms, {
+//       method: 'POST',
+//       body: JSON.stringify({
+//         title: formName,
+//         description: description || "No description",
+//         allow_multiple: false,
+//         start_date: openDate ? `${openDate}T00:00:00Z` : new Date().toISOString(),
+//         end_date: closeDate ? `${closeDate}T00:00:00Z` : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+//         type: category
+//       })
+//     });
+
+//     const savedForm = await formRes.json();
+//     console.log("Form creation response:", JSON.stringify(savedForm));
+
+//     // WORKAROUND: backend returns id:0, so fetch all forms and get the newest one
+//     let formId = savedForm.id;
+//     if (!formId || formId === 0) {
+//       console.log("ID is 0, fetching all forms to find the real ID...");
+//       const allFormsRes = await authFetch(endpoints.forms);
+//       const allForms = await allFormsRes.json();
+
+//       // Sort by created_at descending and get the first one
+//       const sorted = allForms.sort((a, b) =>
+//         new Date(b.created_at) - new Date(a.created_at)
+//       );
+//       const newest = sorted[0];
+//       console.log("Newest form found:", JSON.stringify(newest));
+//       formId = newest.id;
+//     }
+
+//     console.log("✅ Using form ID:", formId);
+
+//     // STEP 2: Fetch form to get auto-created pages
+//     console.log("Step 2: Fetching form structure for ID:", formId);
+//     const formDetailRes = await authFetch(`${endpoints.forms}/${formId}`);
+//     const formDetail = await formDetailRes.json();
+//     console.log("Form detail:", JSON.stringify(formDetail));
+//     let existingPages = formDetail.pages || [];
+
+//     // Create missing pages
+//     for (let i = 0; i < pages.length; i++) {
+//       const existingPage = existingPages.find(p => p.page_num === i + 1);
+//       if (!existingPage) {
+//         console.log(`Creating page ${i + 1}...`);
+//         const pageRes = await authFetch(endpoints.pages, {
+//           method: 'POST',
+//           body: JSON.stringify({ form_id: formId, page_num: i + 1 })
+//         });
+//         console.log(`Page ${i + 1} status:`, pageRes.status);
+//         const newPage = await pageRes.json();
+//         console.log(`Page ${i + 1} response:`, JSON.stringify(newPage));
+//         existingPages.push(newPage);
+//       } else {
+//         console.log(`Page ${i + 1} already exists, ID:`, existingPage.id);
+//       }
+//     }
+
+//     // STEP 3: Create Questions
+//     for (let i = 0; i < pages.length; i++) {
+//       const backendPage = existingPages.find(p => p.page_num === i + 1);
+//       if (!backendPage) {
+//         console.error(`❌ No backend page for page_num ${i + 1}`);
+//         continue;
+//       }
+//       const pageId = backendPage.id;
+//       console.log(`Creating ${pages[i].fields.length} questions for page ${i + 1}, pageId: ${pageId}`);
+
+//       for (let j = 0; j < pages[i].fields.length; j++) {
+//         const field = pages[i].fields[j];
+
+//         const typeMap = {
+//           text: field.subType === 'long' ? 'PARAGRAPH' : 'TEXT',
+//           number: 'NUMBER',
+//           choice: field.subType || 'RADIO',
+//           date: 'TEXT',
+//           file: 'TEXT',
+//         };
+
+//         let options = null;
+//         if (field.type === 'number') options = { min: 0, max: 100 };
+//         else if (field.type === 'choice') options = field.options;
+
+//         const questionPayload = {
+//           form_page_id: pageId,
+//           question_text: field.label || `Question ${j + 1}`,
+//           type: typeMap[field.type] || 'TEXT',
+//           options: options,
+//           is_required: field.isRequired,
+//           display_order: j + 1
+//         };
+
+//         console.log(`Creating question ${j + 1}:`, JSON.stringify(questionPayload));
+//         const questionRes = await authFetch(endpoints.questions, {
+//           method: 'POST',
+//           body: JSON.stringify(questionPayload)
+//         });
+//         console.log(`Question ${j + 1} status:`, questionRes.status);
+//         const questionData = await questionRes.json();
+//         console.log(`Question ${j + 1} response:`, JSON.stringify(questionData));
+//       }
+//     }
+
+//     alert(status === 'published' ? "🚀 Form Published!" : "💾 Draft Saved!");
+//     navigate('/admin/forms');
+
+//   } catch (err) {
+//     console.error("❌ Error:", err);
+//     alert("Connection failed.");
+//   } finally {
+//     setIsSaving(false);
+//   }
+// };
 const handleSave = async (status) => {
   if (!formName.trim()) return alert("Please enter a Form Name!");
+  if (isSaving) return;
+  setIsSaving(true);
 
   try {
     // STEP 1: Create Form
-    console.log("Step 1: Creating form...");
     const formRes = await authFetch(endpoints.forms, {
       method: 'POST',
       body: JSON.stringify({
         title: formName,
         description: description || "No description",
-        allow_multiple: false,
-        is_active: status === 'published'
+        allow_multiple: allowMultiple,
+        start_date: openDate ? `${openDate}T00:00:00Z` : new Date().toISOString(),
+        end_date: closeDate ? `${closeDate}T00:00:00Z` : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+        type: category
       })
     });
 
     const savedForm = await formRes.json();
-    console.log("✅ Form created, ID:", savedForm.id);
-    if (!savedForm.id) return alert("Form creation failed");
-    const formId = savedForm.id;
+    console.log("✅ Form created:", JSON.stringify(savedForm));
 
-    // STEP 2: Fetch the form immediately to get auto-created pages
-    console.log("Step 2: Fetching form structure...");
+    // ✅ Now works correctly — no more workaround needed
+    const formId = savedForm.id;
+    if (!formId) return alert(`Form creation failed: ${JSON.stringify(savedForm)}`);
+
+    // STEP 2: Fetch form to get auto-created pages
     const formDetailRes = await authFetch(`${endpoints.forms}/${formId}`);
     const formDetail = await formDetailRes.json();
-    console.log("Form detail:", JSON.stringify(formDetail));
-
-    // Get existing pages from backend
     let existingPages = formDetail.pages || [];
 
-    // Create any missing pages
+    // Create missing pages
     for (let i = 0; i < pages.length; i++) {
       const existingPage = existingPages.find(p => p.page_num === i + 1);
-      
       if (!existingPage) {
-        console.log(`Creating missing page ${i + 1}...`);
         const pageRes = await authFetch(endpoints.pages, {
           method: 'POST',
           body: JSON.stringify({ form_id: formId, page_num: i + 1 })
         });
         const newPage = await pageRes.json();
         existingPages.push(newPage);
-        console.log(`✅ Page ${i + 1} created, ID:`, newPage.id);
-      } else {
-        console.log(`✅ Page ${i + 1} already exists, ID:`, existingPage.id);
       }
     }
 
-    // STEP 3: Create Questions using correct page IDs
+    // STEP 3: Create Questions
     for (let i = 0; i < pages.length; i++) {
       const backendPage = existingPages.find(p => p.page_num === i + 1);
-      if (!backendPage) {
-        console.error(`No backend page found for page ${i + 1}`);
-        continue;
-      }
+      if (!backendPage) continue;
       const pageId = backendPage.id;
 
       for (let j = 0; j < pages[i].fields.length; j++) {
@@ -545,37 +1070,26 @@ const handleSave = async (status) => {
         const typeMap = {
           text: field.subType === 'long' ? 'PARAGRAPH' : 'TEXT',
           number: 'NUMBER',
-          choice: 'RADIO',
+          choice: field.subType || 'RADIO',
           date: 'TEXT',
           file: 'TEXT',
         };
 
         let options = null;
-        if (field.type === 'number') {
-          options = { min: 0, max: 100 };
-        } else if (field.type === 'choice') {
-          options = field.options;
-        }
+        if (field.type === 'number') options = { min: 0, max: 100 };
+        else if (field.type === 'choice') options = field.options;
 
-        const questionPayload = {
-          form_page_id: pageId,
-          question_text: field.label || `Question ${j + 1}`,
-          type: typeMap[field.type] || 'TEXT',
-          options: options,
-          is_required: field.isRequired,
-          display_order: j + 1
-        };
-
-        console.log(`Creating question ${j + 1}:`, JSON.stringify(questionPayload));
-
-        const questionRes = await authFetch(endpoints.questions, {
+        await authFetch(endpoints.questions, {
           method: 'POST',
-          body: JSON.stringify(questionPayload)
+          body: JSON.stringify({
+            form_page_id: pageId,
+            question_text: field.label || `Question ${j + 1}`,
+            type: typeMap[field.type] || 'TEXT',
+            options: options,
+            is_required: field.isRequired,
+            display_order: j + 1
+          })
         });
-
-        console.log(`Question ${j + 1} status:`, questionRes.status);
-        const questionData = await questionRes.json();
-        console.log(`Question ${j + 1} response:`, JSON.stringify(questionData));
       }
     }
 
@@ -584,7 +1098,9 @@ const handleSave = async (status) => {
 
   } catch (err) {
     console.error("❌ Error:", err);
-    alert("Connection failed. Is the server online?");
+    alert("Connection failed.");
+  } finally {
+    setIsSaving(false);
   }
 };
   return (
@@ -599,14 +1115,40 @@ const handleSave = async (status) => {
           <Col md={6}><Form.Label className="fw-bold">Form Name</Form.Label><Form.Control value={formName} onChange={(e) => setFormName(e.target.value)} /></Col>
           <Col md={6}><Form.Label className="fw-bold">Category</Form.Label>
             <Form.Select value={category} onChange={(e) => setCategory(e.target.value)}>
-              <option value="competitions">Competitions</option>
-              <option value="positions">Apply for Position</option>
-              <option value="workshops">Workshops</option>
+              
+  <option value="competitions">Competitions</option>
+  <option value="positions">Apply for Position</option>
+  <option value="workshops">Workshops</option>
+  <option value="event">Event</option>
+
             </Form.Select>
           </Col>
           <Col md={12}><Form.Label className="fw-bold">Description</Form.Label><Form.Control as="textarea" rows={2} value={description} onChange={(e) => setDescription(e.target.value)} /></Col>
           <Col md={6}><Form.Label className="fw-bold text-success">Open Date</Form.Label><Form.Control type="date" value={openDate} onChange={(e) => setOpenDate(e.target.value)} /></Col>
           <Col md={6}><Form.Label className="fw-bold text-danger">Close Date</Form.Label><Form.Control type="date" value={closeDate} onChange={(e) => setCloseDate(e.target.value)} /></Col>
+         <Col md={12}>
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: '12px 16px', background: '#f8fafc',
+        borderRadius: '10px', border: '1px solid #e2e8f0'
+      }}>
+        <div>
+          <p className="fw-bold mb-0" style={{ fontSize: 14 }}>Allow Multiple Submissions</p>
+          <p className="text-muted mb-0" style={{ fontSize: 12 }}>
+            {allowMultiple
+              ? 'Students can submit this form more than once.'
+              : 'Each student can only submit this form once.'}
+          </p>
+        </div>
+        <Form.Check
+          type="switch"
+          id="allow-multiple-switch"
+          checked={allowMultiple}
+          onChange={(e) => setAllowMultiple(e.target.checked)}
+        />
+      </div>
+    </Col>
+  
         </Row>
       </Card>
 
@@ -655,26 +1197,107 @@ const handleSave = async (status) => {
             )}
 
             {field.type === 'choice' && (
-              <div className="bg-white p-2 rounded border mb-2">
-                {field.options.map((opt, oIdx) => (
-                  <Form.Control key={oIdx} size="sm" className="mb-1" value={opt} onChange={e => {
-                    const updated = [...pages]; updated[activePageIndex].fields.find(f => f.id === field.id).options[oIdx] = e.target.value; setPages(updated);
-                  }} />
-                ))}
-                <Button variant="link" size="sm" onClick={() => {
-                  const updated = [...pages]; updated[activePageIndex].fields.find(f => f.id === field.id).options.push(`Option ${field.options.length + 1}`); setPages(updated);
-                }}>+ Add Choice</Button>
-              </div>
-            )}
+  <>
+    {/* STEP 1: Pick the choice type */}
+    <Form.Select
+      size="sm"
+      className="mb-2"
+      value={field.subType || 'RADIO'}
+      onChange={e => updateField(field.id, 'subType', e.target.value)}
+    >
+      <option value="RADIO">Radio (pick one)</option>
+      <option value="CHECKBOX">Checkbox (pick many)</option>
+      <option value="DROPDOWN">Dropdown (pick one)</option>
+    </Form.Select>
+
+    {/* STEP 2: Add the options */}
+    <div className="bg-white p-2 rounded border mb-2">
+      <p className="text-muted small mb-2 fw-bold">Options:</p>
+      {field.options.map((opt, oIdx) => (
+        <div key={oIdx} className="d-flex gap-2 mb-1 align-items-center">
+          <Form.Control
+            size="sm"
+            value={opt}
+            placeholder={`Option ${oIdx + 1}`}
+            onChange={e => {
+              const updated = [...pages];
+              updated[activePageIndex].fields.find(f => f.id === field.id).options[oIdx] = e.target.value;
+              setPages(updated);
+            }}
+          />
+          {/* Delete option button */}
+          <Button
+            variant="link"
+            size="sm"
+            className="text-danger p-0"
+            onClick={() => {
+              const updated = [...pages];
+              updated[activePageIndex].fields.find(f => f.id === field.id).options =
+                field.options.filter((_, i) => i !== oIdx);
+              setPages(updated);
+            }}
+          >
+            ✕
+          </Button>
+        </div>
+      ))}
+      <Button
+        variant="link"
+        size="sm"
+        onClick={() => {
+          const updated = [...pages];
+          updated[activePageIndex].fields.find(f => f.id === field.id).options.push(`Option ${field.options.length + 1}`);
+          setPages(updated);
+        }}
+      >
+        + Add Option
+      </Button>
+    </div>
+
+    {/* STEP 3: Live preview of how it will look */}
+    <div className="bg-light p-2 rounded border mb-2">
+      <p className="text-muted small mb-2">Preview:</p>
+      {field.subType === 'DROPDOWN' ? (
+        <Form.Select size="sm" disabled>
+          <option>Select an option...</option>
+          {field.options.map((opt, i) => <option key={i}>{opt}</option>)}
+        </Form.Select>
+      ) : (
+        field.options.map((opt, i) => (
+          <Form.Check
+            key={i}
+            type={field.subType === 'CHECKBOX' ? 'checkbox' : 'radio'}
+            label={opt || `Option ${i + 1}`}
+            disabled
+            className="small"
+          />
+        ))
+      )}
+    </div>
+  </>
+)}
             <Form.Check type="checkbox" label="Required" checked={field.isRequired} onChange={e => updateField(field.id, 'isRequired', e.target.checked)} />
           </Card>
         ))}
       </div>
 
       <div className="d-flex justify-content-end gap-3 mt-5">
-        <Button variant="outline-info" onClick={() => setShowPreview(true)}>Preview</Button>
-        <Button variant="outline-secondary" onClick={() => handleSave('draft')}>Save Draft</Button>
-        <Button variant="success" className="px-5 fw-bold" onClick={() => handleSave('published')}>Publish</Button>
+        <Button 
+  variant="outline-secondary" 
+  onClick={() => handleSave('draft')}
+  disabled={isSaving} // ← add this
+>
+  {isSaving ? 'Saving...' : 'Save Draft'}
+</Button>
+
+<Button 
+  variant="success" 
+  className="px-5 fw-bold" 
+  onClick={() => handleSave('published')}
+  disabled={isSaving} // ← add this
+>
+  {isSaving ? 'Publishing...' : 'Publish'}
+</Button>
       </div>
 
       <Modal show={showPreview} onHide={() => setShowPreview(false)} size="lg" centered>

@@ -74,6 +74,75 @@
 
 // export default CategoryView;
 
+// import React, { useState, useEffect } from 'react';
+// import { useParams, useNavigate } from 'react-router-dom';
+// import { Container, Row, Col, Spinner } from 'react-bootstrap';
+// import { useLanguage } from '../../context/LanguageContext';
+// import FormCard from './formcard';
+// import { endpoints, authFetch } from '../../config/api';
+
+// const CategoryView = () => {
+//   const { categoryId } = useParams();
+//   const navigate = useNavigate();
+//   const { language } = useLanguage();
+//   const [forms, setForms] = useState([]);
+//   const [loading, setLoading] = useState(true);
+
+//   useEffect(() => {
+//     const fetchForms = async () => {
+//       try {
+//         const res = await authFetch(endpoints.forms);
+//         const data = await res.json();
+//         // Show all active forms for now since backend has no category field yet
+//         const active = Array.isArray(data) ? data.filter(f => f.is_active) : [];
+//         setForms(active);
+//       } catch (err) {
+//         console.error("Failed to load forms:", err);
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+//     fetchForms();
+//   }, [categoryId]);
+
+//   if (loading) return (
+//     <Container className="text-center py-5">
+//       <Spinner animation="border" variant="primary" />
+//     </Container>
+//   );
+
+//   return (
+//     <Container className="py-5" style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}>
+//       <h2 className="mb-4 text-start text-primary fw-bold">
+//         {language === 'ar' ? 'النماذج المتاحة' : 'Available Forms'}
+//       </h2>
+
+//       {forms.length === 0 ? (
+//         <p className="text-muted">
+//           {language === 'ar' ? 'لا توجد نماذج متاحة.' : 'No forms available.'}
+//         </p>
+//       ) : (
+//         <Row className="g-4">
+//           {forms.map((form) => (
+//             <Col key={form.id} md={6} lg={4}>
+//               <FormCard
+//                 title={form.title}
+//                 description={form.description || (language === 'ar' ? 'اضغط للتقديم' : 'Click to apply')}
+//                 status={language === 'ar' ? 'مفتوح الآن' : 'Opened'}
+//                 showDeadline={false}
+//                 btnLabel={language === 'ar' ? "قدم الآن" : "Apply Now"}
+//                 onClick={() => navigate(`/apply/${form.id}`)}
+//               />
+//             </Col>
+//           ))}
+//         </Row>
+//       )}
+//     </Container>
+//   );
+// };
+
+// export default CategoryView;
+
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Spinner } from 'react-bootstrap';
@@ -93,9 +162,14 @@ const CategoryView = () => {
       try {
         const res = await authFetch(endpoints.forms);
         const data = await res.json();
-        // Show all active forms for now since backend has no category field yet
-        const active = Array.isArray(data) ? data.filter(f => f.is_active) : [];
-        setForms(active);
+        const now = new Date();
+
+        // Filter by type AND not expired
+        const filtered = Array.isArray(data)
+          ? data.filter(f => f.type === categoryId && new Date(f.end_date) > now)
+          : [];
+
+        setForms(filtered);
       } catch (err) {
         console.error("Failed to load forms:", err);
       } finally {
@@ -104,6 +178,24 @@ const CategoryView = () => {
     };
     fetchForms();
   }, [categoryId]);
+
+  const getStatus = (form) => {
+    const now = new Date();
+    const start = new Date(form.start_date);
+    const end = new Date(form.end_date);
+    if (now < start) return language === 'ar' ? 'يفتح قريباً' : 'Opening Soon';
+    if (now > end) return language === 'ar' ? 'منتهي' : 'Closed';
+    return language === 'ar' ? 'مفتوح الآن' : 'Opened';
+  };
+
+  const getTimeLeft = (endDate) => {
+    const diff = new Date(endDate) - new Date();
+    if (diff <= 0) return '';
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const days = Math.floor(hours / 24);
+    if (days > 0) return language === 'ar' ? `متبقي ${days} يوم` : `${days}d left`;
+    return language === 'ar' ? `متبقي ${hours} ساعة` : `${hours}h left`;
+  };
 
   if (loading) return (
     <Container className="text-center py-5">
@@ -119,22 +211,37 @@ const CategoryView = () => {
 
       {forms.length === 0 ? (
         <p className="text-muted">
-          {language === 'ar' ? 'لا توجد نماذج متاحة.' : 'No forms available.'}
+          {language === 'ar' ? 'لا توجد نماذج متاحة.' : 'No forms available in this category.'}
         </p>
       ) : (
         <Row className="g-4">
-          {forms.map((form) => (
-            <Col key={form.id} md={6} lg={4}>
-              <FormCard
-                title={form.title}
-                description={form.description || (language === 'ar' ? 'اضغط للتقديم' : 'Click to apply')}
-                status={language === 'ar' ? 'مفتوح الآن' : 'Opened'}
-                showDeadline={false}
-                btnLabel={language === 'ar' ? "قدم الآن" : "Apply Now"}
-                onClick={() => navigate(`/apply/${form.id}`)}
-              />
-            </Col>
-          ))}
+          {forms.map((form) => {
+            const status = getStatus(form);
+            const isOpen = status === (language === 'ar' ? 'مفتوح الآن' : 'Opened');
+
+            return (
+              <Col key={form.id} md={6} lg={4}>
+                <FormCard
+                  title={form.title}
+                  description={form.description || (language === 'ar' ? 'اضغط للتقديم' : 'Click to apply')}
+                  status={status}
+                  deadline={getTimeLeft(form.end_date)}
+                  showDeadline={isOpen}
+                  btnLabel={language === 'ar' ? "قدم الآن" : "Apply Now"}
+                  onClick={() => {
+                    if (isOpen) {
+                      navigate(`/apply/${form.id}`);
+                    } else {
+                      alert(language === 'ar'
+                        ? 'هذا النموذج غير متاح حالياً.'
+                        : `This form is currently ${status.toLowerCase()}.`
+                      );
+                    }
+                  }}
+                />
+              </Col>
+            );
+          })}
         </Row>
       )}
     </Container>
