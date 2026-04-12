@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Container, Form, Button, Row, Col, Card, Badge, Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import ApplicationForm from './ApplicationForm'; 
+import { authFetch, endpoints } from '../../config/api';
 
 const FormEntry = () => {
   const navigate = useNavigate();
@@ -59,21 +60,533 @@ const FormEntry = () => {
     setPages(updatedPages);
   };
 
-  const handleSave = (status) => {
-    if (!formName || !closeDate) {
-      alert("Please enter a form name and a close date!");
-      return;
+  // const handleSave = (status) => {
+  //   if (!formName || !closeDate) {
+  //     alert("Please enter a form name and a close date!");
+  //     return;
+  //   }
+  //   const newFormEntry = {
+  //     id: Date.now(), title: formName, description, category, status,
+  //     openDate, closeDate, pages, createdAt: new Date().toLocaleDateString(), submissions: 0
+  //   };
+  //   const existingForms = JSON.parse(localStorage.getItem('myCustomForms') || '[]');
+  //   localStorage.setItem('myCustomForms', JSON.stringify([newFormEntry, ...existingForms]));
+  //   alert(status === 'published' ? "🚀 Form Published!" : "💾 Draft Saved!");
+  //   navigate('/admin/forms');
+  // };
+// const handleSave = async (status) => {
+//   try {
+//     // 1. Create Form
+//     const formRes = await fetch(endpoints.forms, {
+//       method: 'POST',
+//       headers: { 'Content-Type': 'application/json' },
+//       body: JSON.stringify({
+//         title: formName,
+//         description: description || "No description provided",
+//         is_active: true, // Force true for testing
+//         allow_multiple: false,
+//         //header_image_id: 1
+//       })
+//     });
+
+//     const savedForm = await formRes.json();
+//     console.log("Form Saved with ID:", savedForm.id); // CHECK THIS IN CONSOLE
+
+//     if (!savedForm.id) {
+//        alert("Server didn't return a Form ID!");
+//        return;
+//     }
+
+//     // 2. Create Page
+//     const pageRes = await fetch(endpoints.pages, {
+//       method: 'POST',
+//       headers: { 'Content-Type': 'application/json' },
+//       body: JSON.stringify({
+//         form_id: savedForm.id,
+//         page_num: 1
+//       })
+//     });
+//     const savedPage = await pageRes.json();
+//     console.log("Page Saved with ID:", savedPage.id);
+
+//     alert("🚀 Form Synced! Refresh the browser link now.");
+//     navigate('/admin/forms');
+//   } catch (err) {
+//     console.error("Fetch Error:", err);
+//   }
+// };
+// const handleSave = async (status) => {
+//   if (!formName.trim()) return alert("Please enter a Form Name!");
+
+//   try {
+//     // STEP 1: Create Form
+//     console.log("Step 1: Creating form...");
+//     const formRes = await authFetch(endpoints.forms, {
+//       method: 'POST',
+//       body: JSON.stringify({
+//         title: formName,
+//         description: description || "No description",
+//         allow_multiple: false,
+//         is_active: status === 'published',
+//         header_image_id: 2
+//       })
+//     });
+//     console.log("Form response status:", formRes.status);
+//     const savedForm = await formRes.json();
+//     console.log("Form response body:", JSON.stringify(savedForm));
+//     if (!savedForm.id) return alert("Form creation failed");
+//     const formId = savedForm.id;
+
+//     // STEP 2: Create first page only to test
+//     console.log("Step 2: Creating page for form ID:", formId);
+//     const pageRes = await authFetch(endpoints.pages, {
+//       method: 'POST',
+//       body: JSON.stringify({
+//         form_id: formId,
+//         page_num: 1
+//       })
+//     });
+//     console.log("Page response status:", pageRes.status);
+//     const savedPage = await pageRes.json();
+//     console.log("Page response body:", JSON.stringify(savedPage));
+
+//   } catch (err) {
+//     console.error("❌ Error:", err);
+//   }
+// };
+
+// const handleSave = async (status) => {
+//   if (!formName.trim()) return alert("Please enter a Form Name!");
+
+//   try {
+//     // 1. Create the Form
+//     const formRes = await authFetch(endpoints.forms, {
+//       method: 'POST',
+//       body: JSON.stringify({
+//         title: formName,
+//         description: description || "No description",
+//         allow_multiple: false,
+//         is_active: status === 'published',
+//         header_image_id: 2
+//       })
+//     });
+
+//     if (!formRes.ok) {
+//       const err = await formRes.text();
+//       return alert(`Failed to create form: ${err}`);
+//     }
+
+//     const savedForm = await formRes.json();
+//     const formId = savedForm.id;
+//     console.log("✅ Form created, ID:", formId);
+
+//     // 2. Create Pages one by one
+//     for (let i = 0; i < pages.length; i++) {
+//       const pageRes = await authFetch(endpoints.pages, {
+//         method: 'POST',
+//         body: JSON.stringify({
+//           form_id: formId,
+//           page_num: i + 1  // 1, 2, 3...
+//         })
+//       });
+
+//       // 409 = page already exists, skip and continue
+//       if (pageRes.status === 409) {
+//         console.warn(`Page ${i + 1} already exists, skipping...`);
+//         continue;
+//       }
+
+//       if (!pageRes.ok) {
+//         const err = await pageRes.text();
+//         console.error(`Failed to create page ${i + 1}:`, err);
+//         continue;
+//       }
+
+//       const savedPage = await pageRes.json();
+//       const pageId = savedPage.id;
+//       console.log(`✅ Page ${i + 1} created, ID:`, pageId);
+
+//       // 3. Create Questions for this page
+//       for (let j = 0; j < pages[i].fields.length; j++) {
+//         const field = pages[i].fields[j];
+
+//         const typeMap = {
+//           text: field.subType === 'long' ? 'PARAGRAPH' : 'TEXT',
+//           number: 'NUMBER',
+//           choice: 'RADIO',
+//           date: 'TEXT',
+//           file: 'TEXT',
+//         };
+
+//         let options = null;
+//         if (field.type === 'number') {
+//           options = { min: 0, max: 100 };
+//         } else if (field.type === 'choice') {
+//           options = field.options;
+//         }
+
+//         const questionRes = await authFetch(endpoints.questions, {
+//           method: 'POST',
+//           body: JSON.stringify({
+//             form_page_id: pageId,
+//             question_text: field.label || `Question ${j + 1}`,
+//             type: typeMap[field.type] || 'TEXT',
+//             options: options,
+//             is_required: field.isRequired,
+//             display_order: j + 1
+//           })
+//         });
+
+//         if (!questionRes.ok) {
+//           const err = await questionRes.text();
+//           console.error(`Failed to create question ${j + 1}:`, err);
+//         } else {
+//           const savedQ = await questionRes.json();
+//           console.log(`✅ Question created, ID:`, savedQ.id);
+//         }
+//       }
+//     }
+
+//     alert(status === 'published' ? "🚀 Form Published!" : "💾 Draft Saved!");
+//     navigate('/admin/forms');
+
+//   } catch (err) {
+//     console.error("❌ Error:", err);
+//     alert("Connection failed. Is the server online?");
+//   }
+// };
+
+// const handleSave = async (status) => {
+//   if (!formName.trim()) return alert("Please enter a Form Name!");
+
+//   try {
+//     // --- 1. Create the Form ---
+//     const formRes = await authFetch(endpoints.forms, {
+//       method: 'POST',
+//       headers: { 'Content-Type': 'application/json' },
+//       body: JSON.stringify({
+//         title: formName,
+//         description: description || "No description",
+//         allow_multiple: false,
+//         is_active: status === 'published',
+//         //header_image_id: 2
+//       })
+//     })
+
+//     if (!formRes.ok) {
+//       const err = await formRes.text();
+//       return alert(`Failed to create form: ${err}`);
+//     }
+
+//     const savedForm = await formRes.json();
+//     const formId = savedForm.id;
+//     console.log("✅ Form created, ID:", formId);
+
+//     // --- 2. Create Pages and Questions ---
+//     for (let i = 0; i < pages.length; i++) {
+//       const pageRes = await authFetch(endpoints.pages, {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({ form_id: formId, page_num: i + 1 })
+//       });
+
+//       if (!pageRes.ok) {
+//         const err = await pageRes.text();
+//         return alert(`Failed to create page ${i + 1}: ${err}`);
+//       }
+
+//       const savedPage = await pageRes.json();
+//       const pageId = savedPage.id;
+//       console.log(`✅ Page ${i + 1} created, ID:`, pageId);
+
+//       // --- 3. Create Questions for this Page ---
+//       for (let j = 0; j < pages[i].fields.length; j++) {
+//         const field = pages[i].fields[j];
+
+//         // Map your frontend types → backend types
+//         const typeMap = {
+//           text: field.subType === 'long' ? 'PARAGRAPH' : 'TEXT',
+//           number: 'NUMBER',
+//           choice: 'RADIO',   // You can later add CHECKBOX/DROPDOWN support
+//           date: 'TEXT',
+//           file: 'TEXT',
+//         };
+
+//         // Map options based on type
+//         let options = null;
+//         if (field.type === 'number') {
+//           options = { min: 0, max: 100 };
+//         } else if (field.type === 'choice') {
+//           options = field.options; // Already an array of strings
+//         }
+
+//         const questionRes = await authFetch(endpoints.questions, {
+//           method: 'POST',
+//           headers: { 'Content-Type': 'application/json' },
+//           body: JSON.stringify({
+//             form_page_id: pageId,
+//             question_text: field.label || `Question ${j + 1}`,
+//             type: typeMap[field.type] || 'TEXT',
+//             options: options,
+//             is_required: field.isRequired,
+//             display_order: j + 1
+//           })
+//         });
+
+//         if (!questionRes.ok) {
+//           const err = await questionRes.text();
+//           console.error(`Failed to create question ${j + 1}:`, err);
+//         } else {
+//           const savedQ = await questionRes.json();
+//           console.log(`✅ Question created, ID:`, savedQ.id);
+//         }
+//       }
+//     }
+
+//     alert(status === 'published' ? "🚀 Form Published!" : "💾 Draft Saved!");
+//     navigate('/admin/forms');
+
+//   } catch (err) {
+//     console.error("❌ Error:", err);
+//     alert("Connection failed. Is the server online?");
+//   }
+// };
+
+// const handleSave = async (status) => {
+//   if (!formName.trim()) return alert("Please enter a Form Name!");
+
+//   try {
+//     // STEP 1: Create Form
+//     console.log("Step 1: Creating form...");
+//     const formRes = await authFetch(endpoints.forms, {
+//       method: 'POST',
+//       body: JSON.stringify({
+//         title: formName,
+//         description: description || "No description",
+//         allow_multiple: false,
+//         is_active: status === 'published'
+//         // ❌ removed header_image_id — causes 500
+//       })
+//     });
+
+//     const savedForm = await formRes.json();
+//     console.log("✅ Form created, ID:", savedForm.id);
+//     if (!savedForm.id) return alert("Form creation failed");
+//     const formId = savedForm.id;
+
+//     // STEP 2: Create Pages
+//     for (let i = 0; i < pages.length; i++) {
+//       console.log(`Step 2: Creating page ${i + 1}...`);
+//       const pageRes = await authFetch(endpoints.pages, {
+//         method: 'POST',
+//         body: JSON.stringify({
+//           form_id: formId,
+//           page_num: i + 1
+//         })
+//       });
+
+//       if (pageRes.status === 409) {
+//         console.warn(`Page ${i + 1} already exists, skipping...`);
+//         continue;
+//       }
+
+//       const savedPage = await pageRes.json();
+//       console.log(`✅ Page ${i + 1} created, ID:`, savedPage.id);
+//       if (!savedPage.id) continue;
+//       const pageId = savedPage.id;
+
+//       // STEP 3: Create Questions for this page
+//       // for (let j = 0; j < pages[i].fields.length; j++) {
+//       //   const field = pages[i].fields[j];
+
+//       //   const typeMap = {
+//       //     text: field.subType === 'long' ? 'PARAGRAPH' : 'TEXT',
+//       //     number: 'NUMBER',
+//       //     choice: 'RADIO',
+//       //     date: 'TEXT',
+//       //     file: 'TEXT',
+//       //   };
+
+//       //   let options = null;
+//       //   if (field.type === 'number') {
+//       //     options = { min: 0, max: 100 };
+//       //   } else if (field.type === 'choice') {
+//       //     options = field.options;
+//       //   }
+
+//       //   console.log(`Step 3: Creating question ${j + 1} for page ${i + 1}...`);
+//       //   const questionRes = await authFetch(endpoints.questions, {
+//       //     method: 'POST',
+//       //     body: JSON.stringify({
+//       //       form_page_id: pageId,
+//       //       question_text: field.label || `Question ${j + 1}`,
+//       //       type: typeMap[field.type] || 'TEXT',
+//       //       options: options,
+//       //       is_required: field.isRequired,
+//       //       display_order: j + 1
+//       //     })
+//       //   });
+
+//       //   const savedQ = await questionRes.json();
+//       //   console.log(`✅ Question ${j + 1} created:`, JSON.stringify(savedQ));
+//       // }
+
+
+//       // STEP 3: Create Questions for this page
+// for (let j = 0; j < pages[i].fields.length; j++) {
+//   const field = pages[i].fields[j];
+
+//   const typeMap = {
+//     text: field.subType === 'long' ? 'PARAGRAPH' : 'TEXT',
+//     number: 'NUMBER',
+//     choice: 'RADIO',
+//     date: 'TEXT',
+//     file: 'TEXT',
+//   };
+
+//   let options = null;
+//   if (field.type === 'number') {
+//     options = { min: 0, max: 100 };
+//   } else if (field.type === 'choice') {
+//     options = field.options;
+//   }
+
+//   const questionPayload = {
+//     form_page_id: pageId,
+//     question_text: field.label || `Question ${j + 1}`,
+//     type: typeMap[field.type] || 'TEXT',
+//     options: options,
+//     is_required: field.isRequired,
+//     display_order: j + 1
+//   };
+
+//   console.log(`Creating question ${j + 1}:`, JSON.stringify(questionPayload));
+
+//   const questionRes = await authFetch(endpoints.questions, {
+//     method: 'POST',
+//     body: JSON.stringify(questionPayload)
+//   });
+
+//   console.log(`Question ${j + 1} status:`, questionRes.status);
+//   const questionData = await questionRes.json();
+//   console.log(`Question ${j + 1} response:`, JSON.stringify(questionData));
+// }
+//     }
+
+//     alert(status === 'published' ? "🚀 Form Published!" : "💾 Draft Saved!");
+//     navigate('/admin/forms');
+
+//   } catch (err) {
+//     console.error("❌ Error:", err);
+//     alert("Connection failed. Is the server online?");
+//   }
+// };
+
+const handleSave = async (status) => {
+  if (!formName.trim()) return alert("Please enter a Form Name!");
+
+  try {
+    // STEP 1: Create Form
+    console.log("Step 1: Creating form...");
+    const formRes = await authFetch(endpoints.forms, {
+      method: 'POST',
+      body: JSON.stringify({
+        title: formName,
+        description: description || "No description",
+        allow_multiple: false,
+        is_active: status === 'published'
+      })
+    });
+
+    const savedForm = await formRes.json();
+    console.log("✅ Form created, ID:", savedForm.id);
+    if (!savedForm.id) return alert("Form creation failed");
+    const formId = savedForm.id;
+
+    // STEP 2: Fetch the form immediately to get auto-created pages
+    console.log("Step 2: Fetching form structure...");
+    const formDetailRes = await authFetch(`${endpoints.forms}/${formId}`);
+    const formDetail = await formDetailRes.json();
+    console.log("Form detail:", JSON.stringify(formDetail));
+
+    // Get existing pages from backend
+    let existingPages = formDetail.pages || [];
+
+    // Create any missing pages
+    for (let i = 0; i < pages.length; i++) {
+      const existingPage = existingPages.find(p => p.page_num === i + 1);
+      
+      if (!existingPage) {
+        console.log(`Creating missing page ${i + 1}...`);
+        const pageRes = await authFetch(endpoints.pages, {
+          method: 'POST',
+          body: JSON.stringify({ form_id: formId, page_num: i + 1 })
+        });
+        const newPage = await pageRes.json();
+        existingPages.push(newPage);
+        console.log(`✅ Page ${i + 1} created, ID:`, newPage.id);
+      } else {
+        console.log(`✅ Page ${i + 1} already exists, ID:`, existingPage.id);
+      }
     }
-    const newFormEntry = {
-      id: Date.now(), title: formName, description, category, status,
-      openDate, closeDate, pages, createdAt: new Date().toLocaleDateString(), submissions: 0
-    };
-    const existingForms = JSON.parse(localStorage.getItem('myCustomForms') || '[]');
-    localStorage.setItem('myCustomForms', JSON.stringify([newFormEntry, ...existingForms]));
+
+    // STEP 3: Create Questions using correct page IDs
+    for (let i = 0; i < pages.length; i++) {
+      const backendPage = existingPages.find(p => p.page_num === i + 1);
+      if (!backendPage) {
+        console.error(`No backend page found for page ${i + 1}`);
+        continue;
+      }
+      const pageId = backendPage.id;
+
+      for (let j = 0; j < pages[i].fields.length; j++) {
+        const field = pages[i].fields[j];
+
+        const typeMap = {
+          text: field.subType === 'long' ? 'PARAGRAPH' : 'TEXT',
+          number: 'NUMBER',
+          choice: 'RADIO',
+          date: 'TEXT',
+          file: 'TEXT',
+        };
+
+        let options = null;
+        if (field.type === 'number') {
+          options = { min: 0, max: 100 };
+        } else if (field.type === 'choice') {
+          options = field.options;
+        }
+
+        const questionPayload = {
+          form_page_id: pageId,
+          question_text: field.label || `Question ${j + 1}`,
+          type: typeMap[field.type] || 'TEXT',
+          options: options,
+          is_required: field.isRequired,
+          display_order: j + 1
+        };
+
+        console.log(`Creating question ${j + 1}:`, JSON.stringify(questionPayload));
+
+        const questionRes = await authFetch(endpoints.questions, {
+          method: 'POST',
+          body: JSON.stringify(questionPayload)
+        });
+
+        console.log(`Question ${j + 1} status:`, questionRes.status);
+        const questionData = await questionRes.json();
+        console.log(`Question ${j + 1} response:`, JSON.stringify(questionData));
+      }
+    }
+
     alert(status === 'published' ? "🚀 Form Published!" : "💾 Draft Saved!");
     navigate('/admin/forms');
-  };
 
+  } catch (err) {
+    console.error("❌ Error:", err);
+    alert("Connection failed. Is the server online?");
+  }
+};
   return (
     <Container className="py-4 text-start">
       <div className="d-flex justify-content-between align-items-center mb-4">

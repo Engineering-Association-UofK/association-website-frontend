@@ -1,37 +1,54 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Table, Badge, Button } from 'react-bootstrap';                    
+import { endpoints,authFetch } from '../../config/api';
 
 const FormsDashboard = () => {
   const navigate = useNavigate();
   const [savedForms, setSavedForms] = useState([]);
 
   // Fetch data from localStorage when component mounts
-  useEffect(() => {
-  // 1. Get the Forms
-  const allForms = JSON.parse(localStorage.getItem('myCustomForms') || '[]');
-  
-  // 2. Get the Submissions (The Student Answers)
-  const allSubmissions = JSON.parse(localStorage.getItem('allSubmissions') || '[]');
+useEffect(() => {
+  const fetchForms = async () => {
+    try {
+      const res = await authFetch(endpoints.forms);
+      
+      if (!res.ok) {
+        console.error("Failed to fetch forms:", res.status);
+        return;
+      }
 
-  // 3. Map through forms and calculate the real count
-  const updatedForms = allForms.map(form => {
-    // Count how many submissions have this form's ID
-    const applicantCount = allSubmissions.filter(sub => sub.formId === form.id).length;
-    return { ...form, submissions: applicantCount };
-  });
+      const data = await res.json();
+      console.log("Forms from backend:", data); // check what shape data is
+      setSavedForms(Array.isArray(data) ? data : []);
 
-  setSavedForms(updatedForms);
-}, []);
-
-  // Delete logic
-  const deleteForm = (id) => {
-    if(window.confirm("Delete this form?")) {
-      const updated = savedForms.filter(f => f.id !== id);
-      setSavedForms(updated);
-      localStorage.setItem('myCustomForms', JSON.stringify(updated));
+    } catch (err) {
+      console.error("Could not load forms:", err);
+      setSavedForms([]);
     }
   };
+
+  fetchForms();
+}, []);
+ 
+
+  // Delete logic
+  // const deleteForm = (id) => {
+  //   if(window.confirm("Delete this form?")) {
+  //     const updated = savedForms.filter(f => f.id !== id);
+  //     setSavedForms(updated);
+  //     localStorage.setItem('myCustomForms', JSON.stringify(updated));
+  //   }
+  // };
+ const deleteForm = async (id) => {
+  if (!window.confirm("Delete this form?")) return;
+  try {
+    await authFetch(`${endpoints.forms}/${id}`, { method: 'DELETE' });
+    setSavedForms(prev => prev.filter(f => f.id !== id));
+  } catch (err) {
+    alert("Failed to delete.");
+  }
+};
 
   return (
     <Container className="py-4">
@@ -81,23 +98,40 @@ const FormsDashboard = () => {
             {savedForms.length === 0 ? (
               <tr><td colSpan="5" className="text-center py-4">No forms created yet.</td></tr>
             ) : (
+              // savedForms.map((form) => (
+              //   <tr key={form.id}>
+              //     <td className="fw-bold">{form.title}</td>
+              //     <td>
+              //       <Badge bg={form.status === 'published' ? 'success' : 'secondary'}>
+              //         {form.status.toUpperCase()}
+              //       </Badge>
+              //     </td>
+              //     <td>{form.submissions} Applicants</td>
+              //     <td className="text-muted">{form.createdAt}</td>
+              //     <td className="text-end">
+              //       <Button variant="link" className="text-danger" onClick={() => deleteForm(form.id)}>
+              //         <i className="bi bi-trash"></i>
+              //       </Button>
+              //     </td>
+              //   </tr>
+              // ))
               savedForms.map((form) => (
-                <tr key={form.id}>
-                  <td className="fw-bold">{form.title}</td>
-                  <td>
-                    <Badge bg={form.status === 'published' ? 'success' : 'secondary'}>
-                      {form.status.toUpperCase()}
-                    </Badge>
-                  </td>
-                  <td>{form.submissions} Applicants</td>
-                  <td className="text-muted">{form.createdAt}</td>
-                  <td className="text-end">
-                    <Button variant="link" className="text-danger" onClick={() => deleteForm(form.id)}>
-                      <i className="bi bi-trash"></i>
-                    </Button>
-                  </td>
-                </tr>
-              ))
+  <tr key={form.id}>
+    <td className="fw-bold">{form.title}</td>
+    <td>
+      <Badge bg={form.is_active ? 'success' : 'secondary'}>
+        {form.is_active ? 'ACTIVE' : 'INACTIVE'}
+      </Badge>
+    </td>
+    <td>— Applicants</td>
+    <td className="text-muted">{form.id}</td>
+    <td className="text-end">
+      <Button variant="link" className="text-danger" onClick={() => deleteForm(form.id)}>
+        <i className="bi bi-trash"></i>
+      </Button>
+    </td>
+  </tr>
+))
             )}
           </tbody>
         </Table>
