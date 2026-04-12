@@ -83,8 +83,8 @@ export default function ImagePickerModal({ show, onHide, onPick, disabled = fals
             <div className={`scrollable-container mb-0 ${styles.scrollableContainer}`}>
               <Row xs={2} md={3} lg={4} className="g-3">
                 {items.map((item) => {
-                  const url = item?.image?.url || "";
-                  const publicId = item?.image?.publicId || "";
+                  const url = item?.url || "";
+                  const publicId = item?.id || "";
                   const isSelected = selectedId === item.id;
                   return (
                     <Col key={item.id}>
@@ -102,7 +102,7 @@ export default function ImagePickerModal({ show, onHide, onPick, disabled = fals
                         <div className="ratio ratio-4x3 bg-light rounded overflow-hidden">
                           <Image
                             src={url || PLACEHOLDER_IMG}
-                            alt={item?.title || "Stored image"}
+                            alt={item?.alt_text || "Stored image"}
                             style={{ objectFit: "cover", width: "100%", height: "100%" }}
                             onError={(e) => {
                               e.currentTarget.src = PLACEHOLDER_IMG;
