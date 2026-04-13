@@ -42,7 +42,7 @@
     },
     "login": {
         "title": "تسجيل الدخول",
-        "username": "اسم المستخدم",
+        "username": "رقم المستخدم",
         "password": "كلمة المرور",
         "remember": "تذكرني",
         "forgotPassword": "هل نسيت كلمة المرور؟",

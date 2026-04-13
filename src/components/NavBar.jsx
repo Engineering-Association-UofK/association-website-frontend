@@ -3,6 +3,7 @@ import { Navbar, Nav, Container, Dropdown } from 'react-bootstrap';
 import { Link, NavLink } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
+import { ADMIN_ROLES } from '../utils/roles';
 
 const NavigationBar = () => {
     const { translations, switchLanguage, language } = useLanguage();
@@ -10,6 +11,9 @@ const NavigationBar = () => {
     const currentLabel = language === 'en' ? 'EN' : 'AR';
     const { user, logout } = useAuth();
     const [expanded, setExpanded] = useState(false);
+    const isAdmin = user?.roles?.some((r) => ADMIN_ROLES.includes(r));
+    
+                        
 
     useEffect(() => {
         if (expanded) {
@@ -83,7 +87,7 @@ const NavigationBar = () => {
                             {translations.navbar.blogs}
                         </Nav.Link>
 
-                        {user?.type === 'admin' && (
+                        {isAdmin && (
                             <Nav.Link as={NavLink} to="/admin" className="mx-2 fw-medium" onClick={() => setExpanded(false)}>
                                 {translations.navbar.admin}
                             </Nav.Link>

@@ -4,7 +4,7 @@ import { useAuth } from "../context/AuthContext.jsx";
 
 // 1. Create the instance
 const apiClient = axios.create({
-  baseURL: CONFIG.API_NEW_BASE_URL,
+  baseURL: CONFIG.API_BASE_URL_RAW,
   timeout: CONFIG.TIMEOUT,
   headers: {
     'Content-Type': 'application/json',
@@ -64,15 +64,13 @@ apiClient.interceptors.response.use(
       // Token expired or invalid
       localStorage.removeItem('token');
       console.error('Unauthorized! Redirecting to login...');
-      window.location.href = '/login';
+      // window.location.href = '/login';
       if (!currentPath.includes('/login') && !currentPath.includes('/register')) {
         clearAuthData();
-
         // Force Redirect to Login
         // We use window.location.href instead of useNavigate because
         // we want to wipe the app state clean.
-
-        window.location.href = '/login?session_expired=true';
+        // window.location.href = '/login?session_expired=true';
       }
     }
     return Promise.reject(error);
