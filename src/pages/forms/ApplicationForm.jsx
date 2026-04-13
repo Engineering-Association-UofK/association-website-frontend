@@ -485,16 +485,16 @@ const ApplicationForm = ({ schema }) => {
         );
 
       case 'choice':
-        return (
-          <MCField
-            label={field.label}
-            options={field.options}
-            isRequired={field.isRequired}
-            name={`field-${field.id}`}
-            type={field.subType || 'RADIO'}
-            onChange={(value) => handleInputChange(field.id, value)}
-          />
-        );
+  return (
+    <MCField
+      label={field.label}
+      options={field.options}
+      isRequired={field.isRequired}
+      name={`field-${field.id}`}
+      type={field.subType} // ✅ RADIO, CHECKBOX, or DROPDOWN
+      onChange={(value) => handleInputChange(field.id, value)}
+    />
+  );
 
       case 'date':
         return (
