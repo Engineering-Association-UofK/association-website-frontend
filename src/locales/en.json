@@ -6,6 +6,7 @@
         "initiatives": "Initiatives",
         "blogs": "Blogs",
         "gallery": "Gallery",
+        "secretariats": "Secretariats",
         "forms": "Forms",
         "admin": "Admin",
         "login": "Login",
@@ -21,8 +22,8 @@
           "readMore": "Read More"
         },
         "contact": {
-          "title": "Contact Us",
-          "subtitle": "Have questions? We would love to hear from you."
+            "title": "Contact Us",
+            "subtitle": "Have questions? We would love to hear from you."
         },
         "blogsPage": {
           "title": "Our Blogs",

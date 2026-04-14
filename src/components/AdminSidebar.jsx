@@ -70,8 +70,14 @@ const AdminSidebar = () => {
               <div>Images Storage</div>
             </NavLink>
           </li>
-        </ul> 
-        <hr></hr> 
+          <li className="nav-item">
+            <NavLink to="/admin/secretariats" className="nav-link">
+              <i className="bi pe-none bi-diagram-3 me-2"></i>
+              Secretariats
+            </NavLink>
+          </li>
+        </ul>
+        <hr></hr>
         <div className="d-flex align-items-center justify-content-between">
           <div className="d-flex align-items-center">
             <img 
@@ -115,7 +121,7 @@ const AdminSidebar = () => {
         </div>
       </div>
     </>
-    
+
   )
 }
 
