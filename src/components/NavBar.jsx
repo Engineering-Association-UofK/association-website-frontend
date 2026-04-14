@@ -8,6 +8,7 @@ import { ADMIN_ROLES } from '../utils/roles';
 const NavigationBar = () => {
     const { translations, switchLanguage, language } = useLanguage();
 
+    // --- Desktop dropdown hover state (for "About" menu) ---
     const [showAboutDropdown, setShowAboutDropdown] = useState(false);
     let timeoutId;
 
@@ -22,18 +23,22 @@ const NavigationBar = () => {
 
     const currentLabel = language === 'en' ? 'EN' : 'AR';
     const { user, logout } = useAuth();
+
+    // expanded = whether the mobile navbar collapse is open (used for mobile backdrop & body scroll lock)
     const [expanded, setExpanded] = useState(false);
     const isAdmin = user?.roles?.some((r) => ADMIN_ROLES.includes(r));
 
+    // MOBILE: When the collapsed navbar is open, prevent body scrolling and show a dark backdrop.
     useEffect(() => {
         if (expanded) {
-            document.body.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden'; // lock background scroll
         } else {
             document.body.style.overflow = 'unset';
         }
         return () => { document.body.style.overflow = 'unset'; };
     }, [expanded]);
 
+    // MOBILE: Detect if viewport is desktop (>=992px) to switch between hover dropdown and stacked links.
     const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 992);
 
     useEffect(() => {
@@ -42,6 +47,7 @@ const NavigationBar = () => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    // --- Desktop version of About dropdown (hover‑based, absolute positioned) ---
     const DesktopAboutDropDown = () => {
         return (
             <div className="mx-2 position-relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
@@ -65,6 +71,8 @@ const NavigationBar = () => {
         );
     };
 
+    // --- MOBILE: About menu becomes a vertical list of Nav.Link elements inside the collapsed navbar.
+    // This avoids hover complexity on touch devices and makes tapping easier.
     const MobileAboutDropDown = () => {
         return (
             <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
@@ -116,6 +124,10 @@ const NavigationBar = () => {
             </style>
 
             {/* Backdrop for mobile menu */}
+            {/* 
+                MOBILE: Dark semi‑transparent backdrop that appears when the collapsed navbar is open.
+                Clicking it closes the navbar (sets expanded = false). 
+            */}
             {expanded && (
                 <div
                     className="position-fixed top-0 start-0 w-100 h-100 bg-dark"
@@ -136,6 +148,10 @@ const NavigationBar = () => {
                         {translations.navbar.brand}
                     </Navbar.Brand>
 
+                    {/* 
+                        MOBILE: Language switcher and hamburger toggle are placed on the right side.
+                        The language dropdown is only visible on small screens (d-lg-none). 
+                    */}
                     <div className="d-flex align-items-center order-lg-last ms-auto ms-lg-0 gap-2">
                         <Dropdown className="d-lg-none">
                             <Dropdown.Toggle
@@ -152,6 +168,7 @@ const NavigationBar = () => {
                             </Dropdown.Menu>
                         </Dropdown>
 
+                        {/* MOBILE: The hamburger button that toggles the collapsed menu. */}
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     </div>
 
@@ -161,6 +178,12 @@ const NavigationBar = () => {
                                 {translations.navbar.home}
                             </Nav.Link>
 
+                            {/* 
+                                MOBILE: Conditional rendering based on screen width.
+                                - Desktop (>992px) uses a hover dropdown (DesktopAboutDropDown).
+                                - Mobile (≤992px) uses a simple vertical list (MobileAboutDropDown) inside the collapsed navbar.
+                                This ensures touch‑friendly navigation on small devices. 
+                            */}
                             { isDesktop ? <DesktopAboutDropDown /> : <MobileAboutDropDown /> }
 
                             <Nav.Link as={NavLink} to="/blogs" className="mx-2 fw-medium" onClick={() => setExpanded(false)}>
@@ -183,6 +206,7 @@ const NavigationBar = () => {
                                 </Nav.Link>
                             )}
 
+                            {/* Desktop language switcher (hidden on mobile). */}
                             <Dropdown className="d-none d-lg-block ms-lg-3">
                                 <Dropdown.Toggle
                                     variant="light"
