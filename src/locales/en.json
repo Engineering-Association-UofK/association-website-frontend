@@ -3,6 +3,9 @@
         "brand": "Engineering Association",
         "home": "Home",
         "about": "About",
+        "association": "Association",
+        "oraganizationStructure": "Organization Structure",
+        "thirtiethCouncil": "Thirtieth Council",
         "initiatives": "Initiatives",
         "blogs": "Blogs",
         "gallery": "Gallery",
@@ -42,7 +45,7 @@
     },
     "login": {
         "title": "Login",
-        "username": "User ID",
+        "username": "Username",
         "password": "Password",
         "remember": "Remember Me",
         "forgotPassword": "Forgot Password?",

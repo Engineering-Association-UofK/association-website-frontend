@@ -8,6 +8,18 @@ import { ADMIN_ROLES } from '../utils/roles';
 const NavigationBar = () => {
     const { translations, switchLanguage, language } = useLanguage();
 
+    const [showAboutDropdown, setShowAboutDropdown] = useState(false);
+    let timeoutId;
+
+    const handleMouseEnter = () => {
+        clearTimeout(timeoutId);
+        setShowAboutDropdown(true);
+    };
+
+    const handleMouseLeave = () => {
+        timeoutId = setTimeout(() => setShowAboutDropdown(false), 150);
+    };
+
     const currentLabel = language === 'en' ? 'EN' : 'AR';
     const { user, logout } = useAuth();
     const [expanded, setExpanded] = useState(false);
@@ -32,8 +44,32 @@ const NavigationBar = () => {
                     from { opacity: 0; }
                     to { opacity: 0.5; }
                 }
+                .custom-about-dropdown {
+                    border: none !important;
+                    min-width: 180px;
+                    text-align: center;
+                }
+                .custom-about-dropdown .dropdown-item-custom {
+                    color: #ffffff !important;
+                    text-align: center;
+                    padding: 0.5rem 1rem;
+                    transition: background 0.2s;
+                    display: block;
+                    text-decoration: none;
+                }
+                .custom-about-dropdown .dropdown-item-custom:hover,
+                .custom-about-dropdown .dropdown-item-custom:focus {
+                    background-color: #0d6efd !important;
+                    color: #ffffff !important;
+                    border-radius: 0.25rem;
+                }
+                .custom-about-dropdown .dropdown-item-custom.active {
+                    background-color: #0d6efd !important;
+                    color: #ffffff !important;
+                }
             `}
         </style>
+
         {/* Backdrop for mobile menu */}
         {expanded && (
             <div 
@@ -79,10 +115,26 @@ const NavigationBar = () => {
                         <Nav.Link as={NavLink} to="/" end className="mx-2 fw-medium text-white" onClick={() => setExpanded(false)}>
                             {translations.navbar.home}
                         </Nav.Link>
-                        <Nav.Link as={NavLink} to="/about" className="mx-2 fw-medium text-white" onClick={() => setExpanded(false)}>
-                            {translations.navbar.about}
-                        </Nav.Link>
-
+                        
+                        <div className="mx-2 position-relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+                            <div className={`fw-medium text-white text-center ${language === 'ar' ? 'text-end' : ''}`} style={{  cursor: 'pointer',  padding: '0.5rem 0',  display: 'inline-block',  width: '100%'}}>
+                                {translations.navbar.about}
+                            </div>
+                            {showAboutDropdown && (
+                                <div className="position-absolute mt-2 shadow-sm rounded-3 custom-about-dropdown" style={{ zIndex: 1050, right: language === 'ar' ? 'auto' : '0', left: language === 'ar' ? '0' : 'auto', transform: language === 'ar' ? 'translateX(-40%)' : 'translateX(40%)', backgroundColor: '#0c64bb'}}>
+                                    <NavLink to="/about/association" end className="dropdown-item-custom" onClick={() => { setExpanded(false); setShowAboutDropdown(false); }}>
+                                        {translations.navbar.association}
+                                    </NavLink>
+                                    <NavLink to="/about/oraganizationStructure" className="dropdown-item-custom" onClick={() => { setExpanded(false); setShowAboutDropdown(false); }}>
+                                        {translations.navbar.oraganizationStructure}
+                                    </NavLink>
+                                    <NavLink to="/about/thirtiethCouncil" className="dropdown-item-custom" onClick={() => { setExpanded(false); setShowAboutDropdown(false); }}>
+                                        {translations.navbar.thirtiethCouncil}
+                                    </NavLink>
+                                </div>
+                            )}
+                        </div>
+                        
                         <Nav.Link as={NavLink} to="/blogs" className="mx-2 fw-medium" onClick={() => setExpanded(false)}>
                             {translations.navbar.blogs}
                         </Nav.Link>

@@ -1,7 +1,9 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { LanguageProvider } from './context/LanguageContext';
 import Home from './pages/Home/Home';
-import About from './pages/About/About';
+import AssociationAbout from './pages/About/association/About.jsx';
+import OraganizationStructureAbout from './pages/About/oraganizationStructure/About.jsx';
+import ThirtiethCouncilAbout from './pages/About/thirtiethCouncil/About.jsx';
 import AdminLayout from './pages/Admin/AdminLayout';
 import BlogsDashboard from './pages/Blogs/BlogsDashboard';
 import Blogs from './pages/Blogs/Blogs.jsx';
@@ -38,7 +40,9 @@ function App() {
             {/* Main Layout containing NavBar and Footer */}
             <Route element={<MainLayout />}>
               <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
+              <Route path="/about/association" element={<AssociationAbout />} />
+              <Route path="/about/oraganizationStructure" element={<OraganizationStructureAbout />} />
+              <Route path="/about/thirtiethCouncil" element={<ThirtiethCouncilAbout />} />
               {/* Add other public routes here */}
               <Route path="/blogs" element={<Blogs />} />
               <Route path="/blogs/:id" element={<BlogPage />} />

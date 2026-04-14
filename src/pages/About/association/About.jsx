@@ -1,11 +1,11 @@
 import React from 'react';
 import { Row, Col, Card } from 'react-bootstrap';
-import { useLanguage } from '../../context/LanguageContext';
+import { useLanguage } from '../../../context/LanguageContext';
 import enContent from './en.json';
 import arContent from './ar.json';
 import './About.css';
 
-const About = () => {
+const AssociationAbout = () => {
     const { language } = useLanguage();
     const content = language === 'en' ? enContent : arContent;
 
@@ -101,4 +101,4 @@ const About = () => {
     );
 };
 
-export default About;
+export default AssociationAbout;
