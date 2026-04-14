@@ -1,0 +1,8 @@
+.field-label {
+    /* color: gray; */
+    font-weight: bold;
+    font-size: calc(var(--bs-body-font-size) - 1.5px);
+}
+.roles-container {
+    color: gray;
+}

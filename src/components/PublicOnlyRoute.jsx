@@ -1,26 +1,20 @@
 import React from 'react'
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Spinner, Container } from 'react-bootstrap';
+import { ADMIN_ROLES } from '../utils/roles';
+
 
 const PublicOnlyRoute = () => {
-    const { isAuthenticated, user, loading } = useAuth();
-
-    if (loading) {
-        return (
-          <Container className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
-            <Spinner animation="border" variant="primary" />
-          </Container>
-        );
-      }
+    const { user, isAuthenticated } = useAuth();
   
     // If user is ALREADY logged in, send them to their dashboard
     if (isAuthenticated) {
-      if (user.role === 'admin') {
-          return <Navigate to="/admin" replace />;
-      } else {
-          return <Navigate to="/" replace />; // Or /student/dashboard
-      }
+        const isAdmin = user?.roles?.some((r) => ADMIN_ROLES.includes(r));
+    //   if (user.type === 'admin') {
+          return <Navigate to={isAdmin ? '/admin' : '/'} replace />;
+    //   } else {
+    //       return <Navigate to="/" replace />; // Or /student/dashboard
+    //   }
     }
   
     // If not logged in, allow access to Login/Register

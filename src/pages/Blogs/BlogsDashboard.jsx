@@ -5,6 +5,7 @@ import Container from 'react-bootstrap/Container';
 import Spinner from 'react-bootstrap/Spinner';
 import Alert from 'react-bootstrap/Alert';
 import Modal from 'react-bootstrap/Modal';
+import Badge from 'react-bootstrap/Badge';
 import { useNavigate } from "react-router-dom";
 import { useBlogs, useDeleteBlog } from '../../features/blogs/hooks/useBlogs';
 
@@ -93,6 +94,7 @@ const BlogsDashboard = () => {
                   <th>Id</th>
                   <th>Title</th>
                   <th>Content</th>
+                  <th>Author</th>
                   <th>Status</th>
                   <th>Date</th>
                   <th>Actions</th>
@@ -111,9 +113,18 @@ const BlogsDashboard = () => {
                           {row["content"]}
                         </div>
                       </td>
-                      <td>{row["status"]}</td>
+                      <td style={{ maxWidth: '200px' }}>
+                        <div className="content-preview">
+                          {row["author_name"]}
+                        </div>
+                      </td>
                       <td>
-                        {new Intl.DateTimeFormat("en-GB").format(new Date(row["createdAt"]))}
+                        <Badge bg={row.is_published ? 'primary' : 'secondary'}>
+                          {row.is_published ? 'Published' : 'Unpublished'}
+                        </Badge>
+                      </td>
+                      <td>
+                        {new Intl.DateTimeFormat("en-GB").format(new Date(row["created_at"]))}
                       </td>
                       <td>
                         <div className="d-flex justify-content-center gap-2">

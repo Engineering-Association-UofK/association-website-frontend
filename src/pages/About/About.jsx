@@ -1,97 +1,102 @@
 import React from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Row, Col, Card } from 'react-bootstrap';
 import { useLanguage } from '../../context/LanguageContext';
-import TeamSection from '../../components/TeamSection';
+import enContent from './en.json';
+import arContent from './ar.json';
 import './About.css';
-import headerImg from '../../utils/images/about-page-header.jpg';
-import img1 from '../../utils/images/img1.jpg';
-import img2 from '../../utils/images/img2.jpg';
 
 const About = () => {
-    const { translations } = useLanguage();
+    const { language } = useLanguage();
+    const content = language === 'en' ? enContent : arContent;
 
     return (
         <div className="about-page">
-            <header className="w-100 mb-5">
-                <img
-                    src={headerImg}
-                    alt="About Engineering Association"
-                    className="w-100 h-auto shadow-sm"
-                    style={{ display: 'block' }}
-                />
-            </header>
+            <div className="about-page-container">
+                {/* first section */}
+                <section className="identity-section mb-5">
+                    <div className="identity-card">
+                        <div className={`identity-grid ${language === 'ar' ? 'rtl-grid' : ''}`}>
+                            {/* TODO: uofk image */}
+                            <div className="identity-image">
+                                <img
+                                    src="https://placehold.co/600x400/e2e8f0/1e293b?text=Identity+Image"
+                                    alt={content.identity.title}
+                                />
+                            </div>
+                            <div className="identity-content">
+                                <h2 className="fw-bold mb-4 text-primary">
+                                    {content.identity.title}
+                                </h2>
+                                <div className="text-muted" style={{ lineHeight: 1.7, whiteSpace: 'pre-line' }}>
+                                    {content.identity.text}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
-            <Container className="py-5">
-                <Row className="mb-5 text-center justify-content-center">
-                    <Col lg={10}>
-                        <h1 className="display-4 fw-bold mb-4">{translations.about.title}</h1>
-                        <p className="lead text-muted w-75 mx-auto">
-                            {translations.home.about.description}
-                        </p>
-                    </Col>
-                </Row>
-
-                <Row className="mb-5 align-items-center">
-                    <Col md={6} className="mb-4 mb-md-0">
-                        <img src={img1} alt="Our Mission" className="img-fluid rounded shadow-sm hover-scale w-100" style={{ objectFit: 'cover', height: '300px' }} />
-                    </Col>
-                    <Col md={6}>
-                        <h2 className="fw-bold mb-3">{translations.about.mission}</h2>
-                        <p className="text-muted fs-5">
-                            {translations.about.missionText}
-                        </p>
-                    </Col>
-                </Row>
-
-                <Row className="mb-5 align-items-center">
-                    <Col md={6} className="mb-4 mb-md-0">
-                        <img src={img2} alt="Our Vision" className="img-fluid rounded shadow-sm hover-scale w-100" style={{ objectFit: 'cover', height: '300px' }} />
-                    </Col>
-                    <Col md={6}>
-                        <h2 className="fw-bold mb-3">{translations.about.vision}</h2>
-                        <p className="text-muted fs-5">
-                            {translations.about.visionText}
-                        </p>
-                    </Col>
-                </Row>
-
-                <div className="py-5">
-                    <Row className="gy-4">
-                        <Col md={6}>
-                            <h2 className="fw-bold mb-3">Our Goals</h2>
-                            <ul className="text-muted fs-5">
-                                <li>Promote engineering excellence and innovation among students.</li>
-                                <li>Foster strong collaboration between academic environment and industry.</li>
-                                <li>Provide resources and mentorship for aspiring engineers.</li>
-                            </ul>
-                        </Col>
-                        <Col md={6}>
-                            <h2 className="fw-bold mb-3">Problems We Solve</h2>
-                            <ul className="text-muted fs-5">
-                                <li>Bridging the gap between theory and practice.</li>
-                                <li>Creating networking opportunities for students.</li>
-                                <li>Providing access to industry standards and trends.</li>
-                            </ul>
-                        </Col>
-                        <Col md={6}>
-                            <h2 className="fw-bold mb-3">Achievements</h2>
-                            <ul className="text-muted fs-5">
-                                <li>Organized over 50 technical workshops.</li>
-                                <li>Connected 500+ students with internships.</li>
-                                <li>Awarded "Best Student Association" for 3 years.</li>
-                            </ul>
-                        </Col>
-                        <Col md={6}>
-                            <h2 className="fw-bold mb-3">Message to our visitors</h2>
-                            <p className="text-muted fs-5">
-                                Welcome to our vibrant community of innovators. We strive to create an environment where creativity meets technical expertise. Join us in shaping the future of engineering.
-                            </p>
-                        </Col>
+                {/* 2nd section */}
+                <section className="objectives-section mb-5">
+                    <h2 className="text-center fw-bold mb-5 text-primary">
+                        {content.objectives.title}
+                    </h2>
+                    <Row className="g-4">
+                        {content.objectives.list.map((item, idx) => {
+                            return (
+                                <Col key={idx} md={6} className='mx-auto'>
+                                    <Card className="objective-card h-100 shadow-sm border-0">
+                                        <Card.Body className="p-4">
+                                            <div className="d-flex align-items-center mb-3">
+                                                <i className={`${item.icon} fs-2 text-primary me-3`}></i> {/* TODO replace these if needed*/}
+                                                {(language === 'ar') && <p style={{width: '10px', height: '10px'}}></p>} {/* this is my way to add extram margin XD*/}
+                                                <Card.Title className="fw-bold text-primary mb-0">
+                                                    {item.title}
+                                                </Card.Title>
+                                            </div>
+                                            <ul className="list-unstyled text-muted mb-0">
+                                                {item.points.map((point, pIdx) => (
+                                                    <li key={pIdx} className="mb-2 d-flex">
+                                                        <i className="bi bi-check-circle-fill text-primary me-2 mt-1" style={{ fontSize: '0.8rem' }}></i>
+                                                        {(language === 'ar') && <p style={{width: '20px', height: '10px'}}></p>}
+                                                        <span style={{ lineHeight: 1.5 }}>{point}</span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </Card.Body>
+                                    </Card>
+                                </Col>
+                            );
+                        })}
                     </Row>
-                </div>
+                </section>
 
-                <TeamSection />
-            </Container>
+                {/* 3rd section */}
+                <section className="trustee-section mb-5">
+                    <h2 className="text-center fw-bold mb-5 text-primary">
+                        {content.trusteeTitle}
+                    </h2>
+                    <Row className="g-4">
+                        {content.cards.map((card, idx) => (
+                            <Col md={6} lg={3} key={idx}>
+                                <Card className="trustee-card h-100 shadow-sm border-0 text-center">
+                                    <Card.Body className="p-4">
+                                        <div className="mb-3">
+                                            {/* TODO: replace with ahmed images */}
+                                            <i className={`${card.icon} fs-1 text-primary`}></i>
+                                        </div>
+                                        <Card.Title className="fw-bold text-primary">
+                                            {card.title}
+                                        </Card.Title>
+                                        <Card.Text className="text-muted">
+                                            {card.text}
+                                        </Card.Text>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                        ))}
+                    </Row>
+                </section>
+            </div>
         </div>
     );
 };

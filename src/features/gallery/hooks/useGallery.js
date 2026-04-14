@@ -18,6 +18,16 @@ export const useGalleryItems = () => {
   });
 };
 
+// Hook for fetching a single gallery image by keyword
+export const useGalleryImage = (keyword) => {
+  return useQuery({
+    queryKey: ['gallery', 'keyword', keyword],
+    queryFn: () => galleryService.getByKeyword(keyword),
+    enabled: !!keyword,
+    staleTime: 1000 * 60 * 60, // 1 hour cache
+  });
+};
+
 // Hook to CREATE a gallery item
 export const useCreateGalleryItem = () => {
   const queryClient = useQueryClient();
@@ -31,6 +41,20 @@ export const useCreateGalleryItem = () => {
   });
 };
 
+// Hook to UPDATE a gallery item (made for keyword-based updates)
+export const useUpdateGalleryImage = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: galleryService.update,
+    onSuccess: (data, variables) => {
+      // Invalidate the specific keyword query
+      queryClient.invalidateQueries(['gallery', 'keyword', variables.keyword]);
+      // Also invalidate list just in case
+      queryClient.invalidateQueries(GALLERY_KEYS.lists());
+    },
+  });
+};
 
 // Hook to DELETE a gallery item
 export const useDeleteGalleryItem = () => {

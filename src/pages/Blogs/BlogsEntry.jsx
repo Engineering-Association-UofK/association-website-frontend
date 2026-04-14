@@ -5,9 +5,14 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner';
+import Alert from 'react-bootstrap/Alert';
 import { useCreateBlog, useUpdateBlog, useBlog } from '../../features/blogs/hooks/useBlogs';
 import ImageUpload from '../../components/ImageUpload';
-import './BlogsDashboard.css'
+import { useFileUpload } from '../../hooks/useFileUpload';
+// import TextareaAutosize from 'react-textarea-autosize';
+import MDEdit from '../../components/markdown/MDEdit.jsx';
+import styles from './Blogs.module.css'
+import ImageUpload2 from '../../components/ImageUpload2.jsx';
 
 const BlogsEntry = () => {
 
@@ -19,26 +24,27 @@ const BlogsEntry = () => {
 
     const createMutation = useCreateBlog();
     const updateMutation = useUpdateBlog();
+    const { upload, isUploading, uploadError } = useFileUpload();
 
-    // Fetch Data (Only runs if isEditMode is true)
     const { 
         data: fetchedBlog, 
         isLoading: isLoadingData, 
         isError: isFetchError 
     } = useBlog(id);
 
-    const isPending = createMutation.isPending || updateMutation.isPending;
+    const isPending = createMutation.isPending || updateMutation.isPending || isUploading;
     const error = createMutation.error || updateMutation.error;
 
     const [formData, setFormData] = useState({
-        id: 0,
+        // id: 0,
+        cover_image_id: null,
         title: "",
         content: "",
-        authorId: 1,
-        status: "draft",
-        imageLink: "",
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        // authorId: 1,
+        is_published: true,
+        image: null, // File | { url, publicId } | null
+        // createdAt: new Date(),
+        // updatedAt: new Date(),
     });
 
     // POPULATE FORM when data arrives
@@ -47,15 +53,19 @@ const BlogsEntry = () => {
         
         if (fetchedBlog) {
             setFormData({
-            id: fetchedBlog.id,
+            // id: fetchedBlog.id,
+            cover_image_id: fetchedBlog.cover_image_id ?? null,
             title: fetchedBlog.title || '',
+            slug: fetchedBlog.slug || '',
             content: fetchedBlog.content || '',
-            authorId: fetchedBlog.authorId,
-            status: fetchedBlog.status || 'draft',
-            imageLink: fetchedBlog.imageLink || '',
+            author_id: fetchedBlog.author_id,
+            author_name: fetchedBlog.author_name || '',
+            is_published: fetchedBlog.is_published || true,
+            image: fetchedBlog.image_url ? { url: fetchedBlog.image_url, publicId: fetchedBlog.cover_image_id } : null,
+            // imageLink: fetchedBlog.imageLink || '',
             // Ensure date is formatted for <input type="date"> (YYYY-MM-DD)
-            createdAt: fetchedBlog.createdAt ? new Date(fetchedBlog.createdAt) : '', 
-            updatedAt: fetchedBlog.updatedAt ? new Date(fetchedBlog.updatedAt) : '', 
+            created_at: fetchedBlog.created_at ? new Date(fetchedBlog.created_at) : '', 
+            updated_at: fetchedBlog.updated_at ? new Date(fetchedBlog.updated_at) : '', 
             });
         }
     }, [fetchedBlog]);
@@ -71,18 +81,36 @@ const BlogsEntry = () => {
         e.preventDefault();
         // console.log("Form Data: ", formData);
 
-        if (isEditMode) {
-            // UPDATE LOGIC
-            updateMutation.mutate({ data: formData }, {
-                onSuccess: () => navigate('/admin/blogs'),
-                onError: (err) => console.error("Update failed", err)
-            });
-        } else {
-            // CREATE LOGIC
-            createMutation.mutate(formData, {
-                onSuccess: () => navigate('/admin/blogs'),
-                onError: (err) => console.error("Create failed", err)
-            });
+        try {
+            const uploaded = await upload(formData.image);
+            console.log("uploaded", formData.image, uploaded);
+            
+            const cover_image_id = uploaded?.publicId ?? null;
+
+            const payload = {
+                // id: Number(id),
+                title: formData.title,
+                content: formData.content,
+                authorId: formData.authorId,
+                is_published: formData.is_published,
+                cover_image_id: cover_image_id,
+            };
+            console.log(payload);
+            if (isEditMode) {
+                // UPDATE LOGIC
+                updateMutation.mutate({ data: { id: Number(id), ...payload } }, {
+                    onSuccess: () => navigate('/admin/blogs'),
+                    onError: (err) => console.error("Update failed", err)
+                });
+            } else {
+                // CREATE LOGIC
+                createMutation.mutate(payload, {
+                    onSuccess: () => navigate('/admin/blogs'),
+                    onError: (err) => console.error("Create failed", err)
+                });
+            }
+        } catch (error) {
+            return;
         }
     };
 
@@ -125,13 +153,18 @@ const BlogsEntry = () => {
                         disabled={isPending}
                     >
                         {isPending ? (
-                                <Spinner
-                                as="span"
-                                animation="border"
-                                size="sm"
-                                role="status"
-                                aria-hidden="true"
-                                />
+                                <>
+                                    <Spinner
+                                    as="span"
+                                    animation="border"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                    className="me-2"
+                                    />
+
+                                    {isUploading ? 'Uploading Image...' : 'Saving...'}
+                                </>
                             ) : (
                                 <i className="bi pe-none bi-floppy2-fill"></i>
                             )
@@ -139,13 +172,29 @@ const BlogsEntry = () => {
                     </Button>
                 </div>
             </div>
-            <div className="scrollable-container">
+            <div className={`scrollable-container ${styles.scrollableContainer}`}>
+
+                {/* Error Alerts */}
+                {uploadError && <Alert variant="danger">{uploadError}</Alert>}
+
+                {(createMutation.isError || updateMutation.isError) && (
+                    <Alert variant="danger">
+                        Failed to save blog : {error?.message}
+                    </Alert>
+                )}
+
                 <Row className="mb-3">
                     <Col md={12}>
-                        <ImageUpload 
-                            value={formData.imageLink} 
-                            onChange={(url) => setFormData({ ...formData, imageLink: url })} 
+                        <ImageUpload2 
+                            value={formData.image} 
+                            onChange={(val) => setFormData({ ...formData, image: val })} 
+                            disabled={isPending}  
                         />
+                        {/* <ImageUpload 
+                            value={formData.imageLink} 
+                            onChange={(urlOrFile) => setFormData({ ...formData, imageLink: urlOrFile })} 
+                            disabled={isPending}  
+                        /> */}
                     </Col>
                 </Row>
                 <Form.Group className="mb-3" controlId="formGridTitle">
@@ -174,29 +223,36 @@ const BlogsEntry = () => {
                     <Form.Group as={Col} controlId="formGridStatus">
                     <Form.Label>Status</Form.Label>
                     <Form.Select
-                        name="status"
-                        value={formData.status}
+                        name="is_published"
+                        value={formData.is_published}
                         onChange={handleChange}
                         disabled={isPending}
                     >
-                        <option value="draft">Draft</option>
-                        <option value="published">Published</option>
-                        <option value="archived">Archived</option>
+                        {/* <option value="draft">Draft</option> */}
+                        <option value={true}>Published</option>
+                        <option value={false}>Unpublished</option>
                     </Form.Select>
                     </Form.Group>
                 </Row>
 
                 <Form.Group className="mb-3" controlId="formGridContent">
                     <Form.Label>Content</Form.Label>
-                    <textarea
+                    {/* <Form.Control
+                        as={TextareaAutosize}
                         name="content" 
-                        className="form-control" 
-                        id="exampleFormControlTextarea1" 
-                        rows="3" 
+                        minRows={3}
+                        maxRows={15}
                         placeholder="Enter content"
                         value={formData.content}
                         onChange={handleChange}
                         disabled={isPending}
+                    /> */}
+                    <MDEdit 
+                        name="content"
+                        value={formData.content}
+                        onChange={handleChange} 
+                        disabled={isPending}
+                        placeholder="Enter content"
                     />
                 </Form.Group>
             </div>

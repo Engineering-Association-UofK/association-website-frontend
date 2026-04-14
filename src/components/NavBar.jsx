@@ -3,6 +3,7 @@ import { Navbar, Nav, Container, Dropdown } from 'react-bootstrap';
 import { Link, NavLink } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
+import { ADMIN_ROLES } from '../utils/roles';
 
 const NavigationBar = () => {
     const { translations, switchLanguage, language } = useLanguage();
@@ -10,6 +11,9 @@ const NavigationBar = () => {
     const currentLabel = language === 'en' ? 'EN' : 'AR';
     const { user, logout } = useAuth();
     const [expanded, setExpanded] = useState(false);
+    const isAdmin = user?.roles?.some((r) => ADMIN_ROLES.includes(r));
+    
+                        
 
     useEffect(() => {
         if (expanded) {
@@ -83,15 +87,7 @@ const NavigationBar = () => {
                                 {translations.navbar.blogs}
                             </Nav.Link>
 
-                            <Nav.Link as={NavLink} to="/secretariats" className="mx-2 fw-medium" onClick={() => setExpanded(false)}>
-                                {translations.navbar.secretariats}
-                            </Nav.Link>
-
-                            <Nav.Link as={NavLink} to="/verification" className="mx-2 fw-medium" onClick={() => setExpanded(false)}>
-                                Verification
-                            </Nav.Link>
-
-                            {user?.role === 'admin' && (
+                            {isAdmin && (
                                 <Nav.Link as={NavLink} to="/admin" className="mx-2 fw-medium" onClick={() => setExpanded(false)}>
                                     {translations.navbar.admin}
                                 </Nav.Link>
@@ -110,8 +106,9 @@ const NavigationBar = () => {
                             <Dropdown className="d-none d-lg-block ms-lg-3">
                                 <Dropdown.Toggle
                                     variant="light"
-                                    id="dropdown-language-desktop"
-                                    className="rounded-pill px-4 fw-bold shadow-sm text-primary"
+                                    id="dropdown-language-mobile"
+                                    className="rounded-pill px-3 fw-bold shadow-sm text-primary"
+                                    size="sm"
                                 >
                                     {currentLabel}
                                 </Dropdown.Toggle>
@@ -120,7 +117,62 @@ const NavigationBar = () => {
                                     <Dropdown.Item onClick={() => switchLanguage('ar')} active={language === 'ar'}>Arabic (AR)</Dropdown.Item>
                                 </Dropdown.Menu>
                             </Dropdown>
+
+                            {/* <Navbar.Toggle aria-controls="basic-navbar-nav" /> */}
                         </Nav>
+
+                        {/* <Navbar.Collapse id="basic-navbar-nav">
+                            <Nav className="ms-auto align-items-center py-3 py-lg-0">
+                                <Nav.Link as={NavLink} to="/" end className="mx-2 fw-medium text-white" onClick={() => setExpanded(false)}>
+                                    {translations.navbar.home}
+                                </Nav.Link>
+                                <Nav.Link as={NavLink} to="/about" className="mx-2 fw-medium text-white" onClick={() => setExpanded(false)}>
+                                    {translations.navbar.about}
+                                </Nav.Link>
+
+                                <Nav.Link as={NavLink} to="/blogs" className="mx-2 fw-medium" onClick={() => setExpanded(false)}>
+                                    {translations.navbar.blogs}
+                                </Nav.Link>
+
+                                <Nav.Link as={NavLink} to="/secretariats" className="mx-2 fw-medium" onClick={() => setExpanded(false)}>
+                                    {translations.navbar.secretariats}
+                                </Nav.Link>
+
+                                <Nav.Link as={NavLink} to="/verification" className="mx-2 fw-medium" onClick={() => setExpanded(false)}>
+                                    Verification
+                                </Nav.Link>
+
+                                {user?.role === 'admin' && (
+                                    <Nav.Link as={NavLink} to="/admin" className="mx-2 fw-medium" onClick={() => setExpanded(false)}>
+                                        {translations.navbar.admin}
+                                    </Nav.Link>
+                                )}
+
+                                {user ? (
+                                    <Nav.Link onClick={() => { logout(); setExpanded(false); }} className="mx-2 fw-medium" style={{ cursor: 'pointer' }}>
+                                        {translations.navbar.logout}
+                                    </Nav.Link>
+                                ) : (
+                                    <Nav.Link as={NavLink} to="/login" className="mx-2 fw-medium" onClick={() => setExpanded(false)}>
+                                        {translations.navbar.login}
+                                    </Nav.Link>
+                                )}
+
+                                <Dropdown className="d-none d-lg-block ms-lg-3">
+                                    <Dropdown.Toggle
+                                        variant="light"
+                                        id="dropdown-language-desktop"
+                                        className="rounded-pill px-4 fw-bold shadow-sm text-primary"
+                                    >
+                                        {currentLabel}
+                                    </Dropdown.Toggle>
+                                    <Dropdown.Menu align="end">
+                                        <Dropdown.Item onClick={() => switchLanguage('en')} active={language === 'en'}>English (EN)</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => switchLanguage('ar')} active={language === 'ar'}>Arabic (AR)</Dropdown.Item>
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                            </Nav>
+                        </Navbar.Collapse> */}
                     </Navbar.Collapse>
                 </Container>
             </Navbar>

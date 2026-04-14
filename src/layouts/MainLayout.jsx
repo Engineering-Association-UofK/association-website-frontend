@@ -2,6 +2,8 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
+import FloatingBot from '../components/bot/FloatingBot.jsx';
+import FeedbackWidget from '../components/feedback/FeedbackWidget.jsx';
 
 const MainLayout = () => {
     return (
@@ -11,6 +13,8 @@ const MainLayout = () => {
                 <Outlet />
             </main>
             <Footer />
+            <FeedbackWidget />
+            <FloatingBot />
         </div>
     );
 };

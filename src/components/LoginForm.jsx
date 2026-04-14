@@ -8,23 +8,20 @@ import {useAuth} from "../context/AuthContext.jsx";
 const LoginForm = () => {
     const { translations } = useLanguage();
     const navigate = useNavigate();
-    const { login, sendCode, verifyCode, loading, isAuthenticated } = useAuth();
+    const { login, sendCode, verifyCode, loading } = useAuth();
 
-    const [name, setName] = useState('');
+    // const [name, setName] = useState('');
+    const [username, setUsername] = useState('');
+    // const [userId, setUserId] = useState('');
     const [password, setPassword] = useState('');
-    const [isAdmin, setIsAdmin] = useState(true);
+    // const [isAdmin, setIsAdmin] = useState(true);
     const [rememberMe, setRememberMe] = useState(false);
     const [error, setError] = useState('');
     
     const [isVerifying, setIsVerifying] = useState(false);
+    const [pendingUserId, setPendingUserId] = useState(null);
     const [verificationCode, setVerificationCode] = useState('');
     const [resendTimer, setResendTimer] = useState(0);
-
-    useEffect(() => {
-        if (isAuthenticated) {
-            navigate('/');
-        }
-    }, [isAuthenticated, navigate]);
 
     useEffect(() => {
         let interval;
@@ -37,10 +34,12 @@ const LoginForm = () => {
     }, [resendTimer]);
 
     const handleSendCode = async () => {
-        if (resendTimer > 0) return;
-        setResendTimer(60);
+        console.log("cont4", pendingUserId, );
+        
+        if (resendTimer > 0 || !pendingUserId) return;
+            setResendTimer(60);
         try {
-            await sendCode(name);
+            await sendCode(pendingUserId);
         } catch (err) {
             setError('Failed to send verification code.');
             setResendTimer(0);
@@ -51,13 +50,23 @@ const LoginForm = () => {
         if (e) e.preventDefault();
         setError('');
 
-        const result = await login({ name, password, isAdmin, rememberMe });
+        const result = await login({ username, password, rememberMe });
 
         if (result.success) {
-            navigate(isAdmin ? '/admin' : '/');
+            navigate('/admin');
         } else if (result.status === 'verification_needed') {
+            setPendingUserId(result.user_id);
             setIsVerifying(true);
-            await handleSendCode();
+                console.log("cont2", result);
+            if (result.user_id) {
+                console.log("cont3", result.user_id);
+                setResendTimer(60);
+                try {
+                    await sendCode(result.user_id);
+                } catch {}
+
+                // await handleSendCode();
+            }
         } else {
             setError(result.message);
         }
@@ -68,7 +77,9 @@ const LoginForm = () => {
         setError('');
 
         try {
-            await verifyCode({ name, code: verificationCode });
+            console.log("ver", { user_id: pendingUserId, code: verificationCode });
+            
+            await verifyCode({ user_id: pendingUserId, code: verificationCode });
             // If verify works, try logging in again automatically
             await handleSubmit(null); 
         } catch (err) {
@@ -85,7 +96,7 @@ const LoginForm = () => {
                             <h2 className="text-center fw-bold text-primary mb-4">
                                 {isVerifying 
                                     ? 'Verify Account' 
-                                    : (isAdmin ? `${translations.login.title} (Admin)` : translations.login.title)
+                                    : translations.login.title
                                 }
                             </h2>
                             {error && <Alert variant="danger">{error}</Alert>}
@@ -126,8 +137,8 @@ const LoginForm = () => {
                                     <Form.Control 
                                         type="text" 
                                         placeholder={translations.login.username} 
-                                        value={name}
-                                        onChange={(e) => setName(e.target.value)}
+                                        value={username}
+                                        onChange={(e) => setUsername(e.target.value)}
                                         required 
                                     />
                                 </Form.Group>
@@ -151,12 +162,12 @@ const LoginForm = () => {
                                         onChange={(e) => setRememberMe(e.target.checked)}
                                     />
 
-                                    {!isAdmin && (
+                                    {/* {!isAdmin && (
                                         <Link to="/forgot-password" className="text-decoration-none text-primary small fw-bold">{translations.login.forgotPassword}</Link>
-                                    )}
+                                    )} */}
                                 </div>
 
-                                <Form.Group className="mb-4">
+                                {/* <Form.Group className="mb-4">
                                     <Form.Check 
                                         type="switch"
                                         id="admin-switch"
@@ -166,7 +177,7 @@ const LoginForm = () => {
                                         className="text-muted"
                                         disabled
                                     />
-                                </Form.Group>
+                                </Form.Group> */}
 
                                 <Button variant="primary" type="submit" className="w-100 rounded-pill py-2 fw-bold shadow-sm" disabled={loading}>
                                     {loading ? translations.login.loading : translations.login.login}
@@ -174,7 +185,7 @@ const LoginForm = () => {
                             </Form>
                             )}
 
-                            {!isAdmin && !isVerifying && (
+                            {!isVerifying && (
                                 <div className="text-center mt-4 text-muted">
                                     {translations.login.dontHaveAccount} <Link to="/register" className="text-primary fw-bold text-decoration-none">{translations.login.register}</Link>
                                 </div>
