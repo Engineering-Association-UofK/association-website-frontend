@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Alert, Spinner } from 'react-bootstrap';
 import { useLanguage } from '../context/LanguageContext.jsx';
 import { useGallery } from '../hooks/useGallery.js';
+import Skeleton_profilePage from './Skeleton_profilePage.jsx';
 
 const Gallery = () => {
     const { translations, language } = useLanguage();
@@ -12,9 +13,10 @@ const Gallery = () => {
     if (loading) {
         return (
             <Container className="py-5 text-center">
-                <Spinner animation="border" role="status" variant="primary">
+                {/* <Spinner animation="border" role="status" variant="primary">
                     <span className="visually-hidden">{translations.gallery.loading}</span>
-                </Spinner>
+                </Spinner> */}
+                <Skeleton_profilePage/>
             </Container>
         );
     }

@@ -1,31 +1,37 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { LanguageProvider } from './context/LanguageContext';
-import Home from './pages/Home/Home';
-import About from './pages/About/About';
-import AdminLayout from './pages/Admin/AdminLayout';
-import BlogsDashboard from './pages/Blogs/BlogsDashboard';
-import Blogs from './pages/Blogs/Blogs.jsx';
-import BlogsEntry from './pages/Blogs/BlogsEntry';
-import GalleryDashboard from './pages/Gallery/GalleryDashboard';
-import GalleryEntry from './pages/Gallery/GalleryEntry';
-import MainLayout from './layouts/MainLayout';
-import StandaloneLayout from './layouts/StandaloneLayout';
-import './App.css';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { LanguageProvider } from "./context/LanguageContext";
+import Home from "./pages/Home/Home";
+import About from "./pages/About/About";
+import AdminLayout from "./pages/Admin/AdminLayout";
+import BlogsDashboard from "./pages/Blogs/BlogsDashboard";
+import Blogs from "./pages/Blogs/Blogs.jsx";
+import BlogsEntry from "./pages/Blogs/BlogsEntry";
+import GalleryDashboard from "./pages/Gallery/GalleryDashboard";
+import GalleryEntry from "./pages/Gallery/GalleryEntry";
+import MainLayout from "./layouts/MainLayout";
+import StandaloneLayout from "./layouts/StandaloneLayout";
+import "./App.css";
 import RegisterForm from "./components/RegisterForm.jsx";
 import LoginForm from "./components/LoginForm.jsx";
 import BlogPage from "./pages/Blogs/BlogPage.jsx";
-import { AuthProvider } from './context/AuthContext.jsx';
-import ProtectedRoute from './components/ProtectedRoute.jsx';
-import PublicOnlyRoute from './components/PublicOnlyRoute.jsx';
-import AdminUsersDashboard from './pages/Admin Users/AdminUsersDashboard.jsx';
-import AdminUsersEntry from './pages/Admin Users/AdminUsersEntry.jsx';
-import AdminProfile from './pages/Admin Profile/AdminProfile.jsx';
-import ChangePassword from './pages/Admin/ChangePassword.jsx';
-import BotCommandsDashboard from './pages/Bot Commands/BotCommandsDashboard.jsx';
-import BotCommandsEntry from './pages/Bot Commands/BotCommandsEntry.jsx';
-import Dashboard from './pages/Dashboard/Dashboard.jsx';
-import ImageStorageDashboard from './pages/Image Storage/ImageStorageDashboard.jsx';
-import ImageStorageEntry from './pages/Image Storage/ImageStorageEntry.jsx';
+import { AuthProvider } from "./context/AuthContext.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import PublicOnlyRoute from "./components/PublicOnlyRoute.jsx";
+import AdminUsersDashboard from "./pages/Admin Users/AdminUsersDashboard.jsx";
+import AdminUsersEntry from "./pages/Admin Users/AdminUsersEntry.jsx";
+import AdminProfile from "./pages/Admin Profile/AdminProfile.jsx";
+import ChangePassword from "./pages/Admin/ChangePassword.jsx";
+import BotCommandsDashboard from "./pages/Bot Commands/BotCommandsDashboard.jsx";
+import BotCommandsEntry from "./pages/Bot Commands/BotCommandsEntry.jsx";
+import Dashboard from "./pages/Dashboard/Dashboard.jsx";
+import ImageStorageDashboard from "./pages/Image Storage/ImageStorageDashboard.jsx";
+import ImageStorageEntry from "./pages/Image Storage/ImageStorageEntry.jsx";
+import ProfilePage from "./pages/Profile/ProfilePage.jsx";
 
 function App() {
   return (
@@ -41,8 +47,8 @@ function App() {
               {/* Add other public routes here */}
               <Route path="/blogs" element={<Blogs />} />
               <Route path="/blogs/:id" element={<BlogPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
             </Route>
-
 
             {/* GUEST ONLY ROUTES (Login/Register) 
               - Logged in users get kicked out to /admin or / */}
@@ -58,24 +64,30 @@ function App() {
                 - Only users with role 'admin' can enter */}
             {/* Admin Routes wrapped in StandaloneLayout so they have the Back button */}
             {/* <Route element={<StandaloneLayout />} > */}
-              <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
-                <Route path="/admin" element={<AdminLayout />}>
+            <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
+              <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<Navigate to="dashboard" replace />} />
-                  <Route path="dashboard" element={<Dashboard />} />
-                  <Route path="blogs" element={<BlogsDashboard />} />
-                  <Route path="blogs/:id" element={<BlogsEntry />} />
-                  {/* <Route path="gallery" element={<GalleryDashboard />} />
+                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="blogs" element={<BlogsDashboard />} />
+                <Route path="blogs/:id" element={<BlogsEntry />} />
+                {/* <Route path="gallery" element={<GalleryDashboard />} />
                   <Route path="gallery/:id" element={<GalleryEntry />} /> */}
-                  <Route path="admin-users" element={<AdminUsersDashboard />} />
-                  <Route path="admin-users/:id" element={<AdminUsersEntry />} />
-                  <Route path="admin-profile" element={<AdminProfile />} />
-                  <Route path="change-password" element={<ChangePassword />} />
-                  <Route path="bot-commands" element={<BotCommandsDashboard />} />
-                  <Route path="bot-commands/:id" element={<BotCommandsEntry />} />
-                  <Route path="image-storage" element={<ImageStorageDashboard />} />
-                  <Route path="image-storage/:id" element={<ImageStorageEntry />} />
-                </Route>
+                <Route path="admin-users" element={<AdminUsersDashboard />} />
+                <Route path="admin-users/:id" element={<AdminUsersEntry />} />
+                <Route path="admin-profile" element={<AdminProfile />} />
+                <Route path="change-password" element={<ChangePassword />} />
+                <Route path="bot-commands" element={<BotCommandsDashboard />} />
+                <Route path="bot-commands/:id" element={<BotCommandsEntry />} />
+                <Route
+                  path="image-storage"
+                  element={<ImageStorageDashboard />}
+                />
+                <Route
+                  path="image-storage/:id"
+                  element={<ImageStorageEntry />}
+                />
               </Route>
+            </Route>
             {/* </Route> */}
             {/* STUDENT ROUTES (Future) */}
             {/* 
@@ -85,7 +97,7 @@ function App() {
               </Route>
             </Route> 
             */}
-            <Route path='*' element={<Navigate to={'/'} />} />
+            <Route path="*" element={<Navigate to={"/"} />} />
           </Routes>
         </Router>
       </LanguageProvider>

@@ -10,6 +10,7 @@ import Gallery from "../../components/Gallery.jsx";
 import ContactSection from "../../components/home/ContactSection.jsx";
 import {useGenerics} from "../../features/generics/hooks/useGenerics.js";
 import {Spinner} from "react-bootstrap";
+import Skeleton_profilePage from '../../components/Skeleton_profilePage.jsx';
 
 const Home = () => {
     const keywords = ['home_hero', 'home_about'];
@@ -20,7 +21,8 @@ const Home = () => {
     if (isLoading) {
         return (
             <section className="py-5 bg-light text-center">
-                <Spinner animation="border" variant="primary" />
+                {/* <Spinner animation="border" variant="primary" /> */}
+                <Skeleton_profilePage/>
             </section>
         );
     }
