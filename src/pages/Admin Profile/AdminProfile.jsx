@@ -4,13 +4,13 @@ import React, { useEffect, useState} from 'react'
 import './AdminProfile.css'
 import { Form, Button, Card, Image, Alert, Spinner } from 'react-bootstrap';
 import { useAuth } from '../../context/AuthContext';
-import { displayRole } from "../Admin Users/roles";
-import { useUpdateAdminUserEmail } from '../../features/admin users/hooks/useAdminUsers';
+import { displayRole } from "../../utils/roles";
+// import { useUpdateAdminUserEmail } from '../../features/admin users/hooks/useAdminUsers';
 import defaultImg from '../../utils/images/person.svg';
 
 const AdminProfile = () => {
     const { user } = useAuth();
-    const updateMutation = useUpdateAdminUserEmail();
+    const updateMutation = null//useUpdateAdminUserEmail();
     const [isPersonalEditing, setIsPersonalEditing] = useState(false);
 
     const [personalInfoForm, setPersonalInfoForm] = useState({

@@ -41,19 +41,19 @@ export const useCreateImageStorageItem = () => {
   });
 };
 
-// Hook to PUBLISH an image to news
-export const usePublishToNews = () => {
-  const queryClient = useQueryClient();
+// // Hook to PUBLISH an image to news
+// export const usePublishToNews = () => {
+//   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: imageStorageService.publish,
-    onSuccess: () => {
-      // Invalidates cache so the list updates automatically without a refresh
-      // queryClient.invalidateQueries(IMAGE_STORAGE_KEYS.lists());
-      queryClient.invalidateQueries(['image storage items', 'list']);
-    },
-  });
-};
+//   return useMutation({
+//     mutationFn: imageStorageService.publish,
+//     onSuccess: () => {
+//       // Invalidates cache so the list updates automatically without a refresh
+//       // queryClient.invalidateQueries(IMAGE_STORAGE_KEYS.lists());
+//       queryClient.invalidateQueries(['image storage items', 'list']);
+//     },
+//   });
+// };
 
 // // Hook to UPDATE a gallery item (made for keyword-based updates)
 // export const useUpdateGalleryImage = () => {
@@ -71,17 +71,17 @@ export const usePublishToNews = () => {
 // };
 
 // Hook to DELETE a image storage item
-export const useDeleteImageStorageItem = () => {
-  const queryClient = useQueryClient();
+// export const useDeleteImageStorageItem = () => {
+//   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: (id) => imageStorageService.delete(id),
-    onSuccess: () => {
-      // Refresh the list automatically
-      queryClient.invalidateQueries(['image storage items', 'list']);
-    },
-  });
-};
+//   return useMutation({
+//     mutationFn: (id) => imageStorageService.delete(id),
+//     onSuccess: () => {
+//       // Refresh the list automatically
+//       queryClient.invalidateQueries(['image storage items', 'list']);
+//     },
+//   });
+// };
 
 // Hook to DELETE all unused image storage items
 export const useClearUnused = () => {
@@ -96,14 +96,14 @@ export const useClearUnused = () => {
   });
 };
 
-export const useUnpublishFromNews = () => {
-  const queryClient = useQueryClient();
+// export const useUnpublishFromNews = () => {
+//   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: (id) => imageStorageService.unpublish(id),
-    onSuccess: () => {
-      // Refresh the list automatically
-      queryClient.invalidateQueries(['image storage items', 'list']);
-    },
-  });
-};
+//   return useMutation({
+//     mutationFn: (id) => imageStorageService.unpublish(id),
+//     onSuccess: () => {
+//       // Refresh the list automatically
+//       queryClient.invalidateQueries(['image storage items', 'list']);
+//     },
+//   });
+// };

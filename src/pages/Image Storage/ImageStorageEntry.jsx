@@ -6,36 +6,40 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner';
 import Alert from 'react-bootstrap/Alert';
-import { useCreateGalleryItem } from '../../features/gallery/hooks/useGallery';
+// import { useCreateGalleryItem } from '../../features/gallery/hooks/useGallery';
 import ImageUpload from '../../components/ImageUpload';
-import { useFileUpload } from '../../hooks/useFileUpload';
+// import { useFileUpload } from '../../hooks/useFileUpload';
 import TextareaAutosize from 'react-textarea-autosize';
+import { useCreateImageStorageItem } from '../../features/image storage/hooks/useImageStorage';
 
 const ImageStorageEntry = () => {
 
     const { id } = useParams();
     
     const navigate = useNavigate();
-    const createMutation = useCreateGalleryItem();
-    const { upload, isUploading, uploadError } = useFileUpload();
+    const createMutation = useCreateImageStorageItem();
+    // const { upload, isUploading, uploadError } = useFileUpload();
 
-    const isPending = createMutation.isPending || isUploading;
+    const isPending = createMutation.isPending //|| isUploading;
     const error = createMutation.error;
 
     const [formData, setFormData] = useState({
+        file_name: "test file name",
+        alt_text: "test alt",
         imageLink: "",
     });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // console.log("Form Data: ", formData);
+        console.log("Form Data: ", formData);
 
         try {
-            const { secureUrl, publicId } = await upload(formData.imageLink);
+            // const { secureUrl, publicId } = await upload(formData.imageLink);
 
             const payload = {
-                url: secureUrl,
-                publicId: publicId,
+                file: formData.imageLink,
+                file_name: formData.file_name,
+                alt_text: formData.alt_text,
             };
 
             // CREATE LOGIC
@@ -82,7 +86,8 @@ const ImageStorageEntry = () => {
                                     className="me-2"
                                     />
 
-                                    {isUploading ? 'Uploading Image...' : 'Saving...'}
+                                    {/* {isUploading ? 'Uploading Image...' : 'Saving...'} */}
+                                    {'Saving...'}
                                 </>
                             ) : (
                                 <i className="bi pe-none bi-floppy2-fill"></i>
@@ -95,7 +100,7 @@ const ImageStorageEntry = () => {
             <div className="scrollable-container" >
 
                 {/* Error Alerts */}
-                {uploadError && <Alert variant="danger">{uploadError}</Alert>}
+                {/* {uploadError && <Alert variant="danger">{uploadError}</Alert>} */}
 
                 {createMutation.isError && (
                     <Alert variant="danger">

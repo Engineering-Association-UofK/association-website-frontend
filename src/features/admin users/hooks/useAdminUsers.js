@@ -18,23 +18,35 @@ export const useAdminUsers = () => {
   });
 };
 
-// Hook for fetching a admin user by id
-export const useAdminUser = (id) => {
-  return useQuery({
-    queryKey: ['adminUsers', 'detail', id],
-    queryFn: () => adminUsersService.getById(id),
+// // Hook for fetching a admin user by id
+// export const useAdminUser = (id) => {
+//   return useQuery({
+//     queryKey: ['adminUsers', 'detail', id],
+//     queryFn: () => adminUsersService.getById(id),
 
-    enabled: !!id && id !== '0' && id !== 'new', 
-    staleTime: 0,
+//     enabled: !!id && id !== '0' && id !== 'new', 
+//     staleTime: 0,
+//   });
+// };
+
+// Hook to PROMOTE an admin user
+export const usePromoteUser = () => {
+  const queryClient = useQueryClient();
+ 
+  return useMutation({
+    mutationFn: (user_id) => adminUsersService.promote(user_id),
+    onSuccess: () => {
+      queryClient.invalidateQueries(ADMIN_USERS_KEYS.lists());
+    },
   });
 };
 
-// Hook to CREATE a admin user
-export const useCreateAdminUser = () => {
+// Hook to Make an admin manager
+export const useMakeAdminManager = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: adminUsersService.create,
+    mutationFn: adminUsersService.makeManager,
     onSuccess: () => {
       // Invalidates cache so the list updates automatically without a refresh
       queryClient.invalidateQueries(ADMIN_USERS_KEYS.lists());
@@ -57,20 +69,20 @@ export const useUpdateAdminUser = () => {
   });
 };
 
-// Hook to UPDATE a admin user email
-export const useUpdateAdminUserEmail = () => {
-  const queryClient = useQueryClient();
+// // Hook to UPDATE a admin user email
+// export const useUpdateAdminUserEmail = () => {
+//   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: ({data}) => adminUsersService.updateEmail(data),
-    onSuccess: (data, variables) => {
-      // Refresh the list
-      queryClient.invalidateQueries(['adminUsers', 'list']);
-      // Refresh the specific admin user details
-      queryClient.invalidateQueries(['adminUsers', 'detail', variables.id]);
-    },
-  });
-};
+//   return useMutation({
+//     mutationFn: ({data}) => adminUsersService.updateEmail(data),
+//     onSuccess: (data, variables) => {
+//       // Refresh the list
+//       queryClient.invalidateQueries(['adminUsers', 'list']);
+//       // Refresh the specific admin user details
+//       queryClient.invalidateQueries(['adminUsers', 'detail', variables.id]);
+//     },
+//   });
+// };
 
 // Hook to DELETE a admin user
 export const useDeleteAdminUser = () => {
@@ -84,3 +96,4 @@ export const useDeleteAdminUser = () => {
     },
   });
 };
+

@@ -42,7 +42,7 @@
     },
     "login": {
         "title": "Login",
-        "username": "Username",
+        "username": "User ID",
         "password": "Password",
         "remember": "Remember Me",
         "forgotPassword": "Forgot Password?",

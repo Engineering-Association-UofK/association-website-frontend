@@ -4,7 +4,7 @@ import { Table, Button, Container, Spinner, Alert,
   Card, Badge, OverlayTrigger, Tooltip, Form
 } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
-import { useImageStorageItems, usePublishToNews, useUnpublishFromNews, useClearUnused } from '../../features/image storage/hooks/useImageStorage';
+import { useImageStorageItems, useClearUnused } from '../../features/image storage/hooks/useImageStorage';
 
 const PLACEHOLDER_IMG = "https://placehold.co/600x400?text=No+Image";
 
@@ -26,8 +26,8 @@ const ImageStorageDashboard = () => {
   const navigate = useNavigate();
   
   const { data: imageStorageItems, isLoading, isError, error, refetch } = useImageStorageItems();
-  const { mutate: publishToNews, isPending: isPublishing, error: publishError } = usePublishToNews();
-  const { mutate: unpublishToNews, isPending: isUnpublishing, error: unpublishError } = useUnpublishFromNews();
+  // const { mutate: publishToNews, isPending: isPublishing, error: publishError } = usePublishToNews();
+  // const { mutate: unpublishToNews, isPending: isUnpublishing, error: unpublishError } = useUnpublishFromNews();
   const { mutate: clearUnused, isPending: isClearing, error: clearUnusedError } = useClearUnused();
 
   // Local State for Modal
@@ -50,26 +50,26 @@ const ImageStorageDashboard = () => {
     setSelectedImageStorageItemId(null);
   };
 
-  const handleConfirm = (e) => {
-    e.preventDefault(); 
-    if (selectedImageStorageItemId) {
-      // console.log("selectedImageStorageItemId ", selectedImageStorageItemId);
-      // console.log("alt: ", alt);
-      const dataToSend = {
-        storageId: selectedImageStorageItemId,
-        alt: alt
-      }
-      publishToNews(dataToSend, {
-        onSuccess: () => {
-          handleCloseModal(); 
-        },
-        onError: (err) => {
-            console.error("Publish failed", err);
-            // Set a toast/alert state here
-        }
-      });
-    }
-  };
+  // const handleConfirm = (e) => {
+  //   e.preventDefault(); 
+  //   if (selectedImageStorageItemId) {
+  //     // console.log("selectedImageStorageItemId ", selectedImageStorageItemId);
+  //     // console.log("alt: ", alt);
+  //     const dataToSend = {
+  //       storageId: selectedImageStorageItemId,
+  //       alt: alt
+  //     }
+  //     publishToNews(dataToSend, {
+  //       onSuccess: () => {
+  //         handleCloseModal(); 
+  //       },
+  //       onError: (err) => {
+  //           console.error("Publish failed", err);
+  //           // Set a toast/alert state here
+  //       }
+  //     });
+  //   }
+  // };
   
   const handleOpenUnpublishModal = (id) => {
     setSelectedImageStorageItemId(id);
@@ -81,21 +81,21 @@ const ImageStorageDashboard = () => {
     setSelectedImageStorageItemId(null);
   };
 
-  const handleConfirmUnpublish = (e) => {
-    e.preventDefault(); 
-    if (selectedImageStorageItemId) {
-      // console.log("selectedImageStorageItemId ", selectedImageStorageItemId);
-      unpublishToNews(selectedImageStorageItemId, {
-        onSuccess: () => {
-          handleCloseUnpublishModal(); 
-        },
-        onError: (err) => {
-            console.error("Unpublish failed", err);
-            // Set a toast/alert state here
-        }
-      });
-    }
-  };
+  // const handleConfirmUnpublish = (e) => {
+  //   e.preventDefault(); 
+  //   if (selectedImageStorageItemId) {
+  //     // console.log("selectedImageStorageItemId ", selectedImageStorageItemId);
+  //     unpublishToNews(selectedImageStorageItemId, {
+  //       onSuccess: () => {
+  //         handleCloseUnpublishModal(); 
+  //       },
+  //       onError: (err) => {
+  //           console.error("Unpublish failed", err);
+  //           // Set a toast/alert state here
+  //       }
+  //     });
+  //   }
+  // };
   
   const handleOpenClearModal = () => {
     setShowClearModal(true);
@@ -149,11 +149,11 @@ const ImageStorageDashboard = () => {
               <tr 
                 key={row.id}
               >
-                <td>{row["id"]}</td>
+                <td>{row?.id}</td>
                 <td>
                   <Image
-                    src={row.image?.url || PLACEHOLDER_IMG}
-                    alt="thumbnail"
+                    src={row?.url || PLACEHOLDER_IMG}
+                    alt={row?.alt_text || "thumbnail"}
                     rounded
                     style={{ 
                       width: '70px', 
@@ -168,7 +168,7 @@ const ImageStorageDashboard = () => {
                   />
                 </td>
                 <td>
-                  {row["news"] ? (
+                  {row?.reference_times > 0 ? (
                     <Badge bg="primary">Used</Badge>
                   ) : (
                     <Badge bg="secondary">Unused</Badge>
@@ -176,11 +176,11 @@ const ImageStorageDashboard = () => {
                 </td>
                 <td>
                   {/* {new Intl.DateTimeFormat("en-GB").format(new Date(row["createdAt"]))} */}
-                  {formatDate(row["createdAt"])}
+                  {formatDate(row?.created_at)}
                 </td>
                 <td>
                   <div className="d-flex justify-content-center gap-2">
-                    {row["news"] ? (
+                    {row?.reference_times > 0 ? (
                       <OverlayTrigger
                         overlay={<Tooltip>Unpublish from news</Tooltip>}
                       >
@@ -228,7 +228,8 @@ const ImageStorageDashboard = () => {
                       <div style={{ position: 'relative', height: '180px' }} className="rounded-top overflow-hidden bg-light">
                           <Card.Img 
                               variant="top" 
-                              src={item.image?.url || PLACEHOLDER_IMG} 
+                              src={item?.url || PLACEHOLDER_IMG} 
+                              alt={item?.alt_text || "thumbnail"}
                               style={{ height: '100%', objectFit: 'cover' }}
                               onError={(e) => { e.target.src = PLACEHOLDER_IMG; }}
                           />
@@ -238,7 +239,7 @@ const ImageStorageDashboard = () => {
                           </Badge>
                           <Badge bg="dark" className="position-absolute bottom-0 end-0 m-2 bg-opacity-75">
                               <i className="bi bi-calendar3 me-1"></i>
-                              {formatDate(item.createdAt)}
+                              {formatDate(item.created_at)}
                           </Badge>
                       </div>
                       
@@ -251,21 +252,21 @@ const ImageStorageDashboard = () => {
                               <Card.Title 
                                 className="h6 fw-bold text-truncate mb-0 flex-grow-1"
                               >
-                                {item.news ? (
+                                {item?.reference_times > 0 ? (
                                   <Badge bg="primary">Used</Badge>
                                 ) : (
                                   <Badge bg="secondary">Unused</Badge>
                                 )}
                               </Card.Title>
 
-                              {item.news ? (
+                              {item?.reference_times > 0 ? (
                                 <OverlayTrigger
                                   overlay={<Tooltip>Unpublish from news</Tooltip>}
                                 >
                                   <Button 
                                     variant="outline-primary" 
                                     size="sm"
-                                    onClick={() => handleOpenUnpublishModal(row.id)}
+                                    onClick={() => handleOpenUnpublishModal(item.id)}
                                   >
                                     <i className="bi pe-none bi-eye-slash-fill"></i>
                                   </Button>
@@ -277,7 +278,7 @@ const ImageStorageDashboard = () => {
                                   <Button 
                                     variant="outline-primary" 
                                     size="sm"
-                                    onClick={() => handleOpenPublishModal(row.id)}
+                                    onClick={() => handleOpenPublishModal(item.id)}
                                   >
                                     <i className="bi pe-none bi-eye-fill"></i>
                                   </Button>
@@ -397,7 +398,7 @@ const ImageStorageDashboard = () => {
         ) : viewMode === 'list' ? <ListView /> : <GridView />
       }
 
-      <Modal show={showModal} onHide={handleCloseModal} centered>
+      {/* <Modal show={showModal} onHide={handleCloseModal} centered>
         <Form  onSubmit={handleConfirm}>
           <Modal.Header closeButton>
             <Modal.Title>Confirm Publish</Modal.Title>
@@ -435,9 +436,9 @@ const ImageStorageDashboard = () => {
             </Button>
           </Modal.Footer>
         </Form>
-      </Modal>
+      </Modal> */}
 
-      <Modal show={showUnpublishModal} onHide={handleCloseUnpublishModal} centered>
+      {/* <Modal show={showUnpublishModal} onHide={handleCloseUnpublishModal} centered>
         <Modal.Header closeButton>
           <Modal.Title>Confirm Unpublish</Modal.Title>
         </Modal.Header>
@@ -461,7 +462,7 @@ const ImageStorageDashboard = () => {
             )}
           </Button>
         </Modal.Footer>
-      </Modal>
+      </Modal> */}
 
       <Modal show={showClearModal} onHide={handleCloseClearModal} centered>
         <Modal.Header closeButton>

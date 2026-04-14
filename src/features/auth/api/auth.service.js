@@ -1,12 +1,12 @@
 import apiClient from '../../../api/axiosClient';
 
-const ENDPOINT = '/admin';
+const ENDPOINT = '/v1/auth';
 
 export const authService = {
-  login: async ({ name, password, isAdmin }) => {
+  login: async ({ username, password }) => {
     // credentials = { name, password }
-    const endpoint = isAdmin ? '/admin/login' : '/login'
-    const response = await apiClient.post(`${endpoint}`, { name, password }, { skipAuth: true });
+    // const endpoint = isAdmin ? '/admin/login' : '/login'
+    const response = await apiClient.post(`${ENDPOINT}/login`, { username, password }, { skipAuth: true });
     // console.log('login ', response);
     return response; // Expecting { token }
   },
@@ -17,17 +17,21 @@ export const authService = {
     return response;
   },
 
-  sendVerificationCode: async (name) => {
-    return await apiClient.post('/admin/send-code', { name }, { skipAuth: true });
+  sendVerificationCode: async (user_id) => {
+    return await apiClient.post(`${ENDPOINT}/send-verification-code`, { user_id }, { skipAuth: true });
   },
 
-  verifyAdmin: async ({ name, code }) => {
-    return await apiClient.post('/admin/verify', { name, code }, { skipAuth: true });
+  verifyCode: async ({ user_id, code }) => {
+    return await apiClient.post(`${ENDPOINT}/verify`, { user_id, code }, { skipAuth: true });
   },
 
-  changePassword: async ({ oldPassword, newPassword, confirmPassword }) => {
-    return await apiClient.put(`${ENDPOINT}/update-password`, { oldPassword, newPassword, confirmPassword });
-  },
+  // verifyAdmin: async ({ name, code }) => {
+  //   return await apiClient.post('/admin/verify', { name, code }, { skipAuth: true });
+  // },
+
+  // changePassword: async ({ oldPassword, newPassword, confirmPassword }) => {
+  //   return await apiClient.put(`${ENDPOINT}/update-password`, { oldPassword, newPassword, confirmPassword });
+  // },
 
   logout: async () => {
     // Optional: Call backend to invalidate session if needed

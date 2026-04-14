@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner';
-import { useCreateAdminUser, useUpdateAdminUser, useAdminUser } from '../../features/admin users/hooks/useAdminUsers';
-import { roles } from './roles';
+import Alert from 'react-bootstrap/Alert';
+import { useUpdateAdminUser } from '../../features/admin users/hooks/useAdminUsers';
+import { roles } from '../../utils/roles';
 import './AdminUsers.css'
 
 const AdminUsersEntry = () => {
@@ -14,99 +15,128 @@ const AdminUsersEntry = () => {
   const { id } = useParams();
   
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const isEditMode = id && id !== '0';
+  const userFromState = location.state?.user;
 
-  const createMutation = useCreateAdminUser();
+//   const isEditMode = id && id !== '0';
+
+//   const createMutation = useCreateAdminUser();
   const updateMutation = useUpdateAdminUser();
 
-  const { 
-      data: fetchedAdminUser, 
-      isLoading: isLoadingData, 
-      isError: isFetchError 
-  } = useAdminUser(id);
+//   const { 
+//       data: fetchedAdminUser, 
+//       isLoading: isLoadingData, 
+//       isError: isFetchError 
+//   } = useAdminUser(id);
 
-  const isPending = createMutation.isPending || updateMutation.isPending;
-  const error = createMutation.error || updateMutation.error;
+ 
+  const [selectedRoles, setSelectedRoles] = useState([]);
 
-  const [formData, setFormData] = useState({
-    id: 0,
-    name: "",
-    email: "",
-    roles: [],
-    password: "",
-  });
+  const isPending = updateMutation.isPending;
+  const error = updateMutation.error;
+
+//   const [formData, setFormData] = useState({
+//     id: 0,
+//     name: "",
+//     email: "",
+//     roles: [],
+//     password: "",
+//   });
 
   // POPULATE FORM when data arrives
-  useEffect(() => {
-      // console.log("Fetched admin user: ", fetchedAdminUser);
+//   useEffect(() => {
+//       // console.log("Fetched admin user: ", fetchedAdminUser);
       
-      if (fetchedAdminUser) {
-          setFormData({
-          id: fetchedAdminUser.id,
-          name: fetchedAdminUser.name || '',
-          email: fetchedAdminUser.email || '',
-          roles: fetchedAdminUser.roles || [],
-          password: fetchedAdminUser.password || '',
-          });
-      }
-  }, [fetchedAdminUser]);
+//       if (fetchedAdminUser) {
+//           setFormData({
+//           id: fetchedAdminUser.id,
+//           name: fetchedAdminUser.name || '',
+//           email: fetchedAdminUser.email || '',
+//           roles: fetchedAdminUser.roles || [],
+//           password: fetchedAdminUser.password || '',
+//           });
+//       }
+//   }, [fetchedAdminUser]);
+  useEffect(() => {
+    if (userFromState?.roles) {
+      setSelectedRoles(userFromState.roles);
+    }
+  }, [userFromState]);
 
-  const handleChange = (e) => {
-  setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-  });
+//   const handleChange = (e) => {
+//   setFormData({
+//       ...formData,
+//       [e.target.name]: e.target.value
+//   });
+//   };
+ 
+  const handleRoleChange = (roleValue) => {
+    setSelectedRoles((prev) =>
+      prev.includes(roleValue)
+        ? prev.filter((r) => r !== roleValue)
+        : [...prev, roleValue]
+    );
   };
   
-  const handleRoleChange = (roleValue) => {
-    const currentRoles = [...formData.roles];
+//   const handleRoleChange = (roleValue) => {
+//     const currentRoles = [...formData.roles];
     
-    if (currentRoles.includes(roleValue)) {
-        setFormData({
-            ...formData,
-            roles: currentRoles.filter(r => r !== roleValue)
-        });
-    } else {
-        setFormData({
-            ...formData,
-            roles: [...currentRoles, roleValue]
-        });
-    }
-  };
+//     if (currentRoles.includes(roleValue)) {
+//         setFormData({
+//             ...formData,
+//             roles: currentRoles.filter(r => r !== roleValue)
+//         });
+//     } else {
+//         setFormData({
+//             ...formData,
+//             roles: [...currentRoles, roleValue]
+//         });
+//     }
+//   };
 
   const handleSubmit = async (e) => {
       e.preventDefault();
-      console.log("Form Data: ", formData);
+      console.log("Form Data: ", {id: Number(id), roles: selectedRoles});
 
-      if (isEditMode) {
+    //   if (isEditMode) {
           // UPDATE LOGIC
-          updateMutation.mutate({ data: formData }, {
+          updateMutation.mutate({ data: { id: Number(id), roles: selectedRoles } }, {
               onSuccess: () => navigate('/admin/admin-users'),
               onError: (err) => console.error("Update failed", err)
           });
-      } else {
-          // CREATE LOGIC
-          createMutation.mutate(formData, {
-              onSuccess: () => navigate('/admin/admin-users'),
-              onError: (err) => console.error("Create failed", err)
-          });
-      }
+    //   } else {
+    //       // CREATE LOGIC
+    //       createMutation.mutate(formData, {
+    //           onSuccess: () => navigate('/admin/admin-users'),
+    //           onError: (err) => console.error("Create failed", err)
+    //       });
+    //   }
   };
 
-  // Show Loading screen while fetching initial data for Edit
-  if (isEditMode && isLoadingData) {
-      return (
-          <div className="text-center mt-5">
-              <Spinner animation="border" variant="primary" />
-              <p>Loading admin user details...</p>
-          </div>
-      );
-  }
+//   // Show Loading screen while fetching initial data for Edit
+//   if (isEditMode && isLoadingData) {
+//       return (
+//           <div className="text-center mt-5">
+//               <Spinner animation="border" variant="primary" />
+//               <p>Loading admin user details...</p>
+//           </div>
+//       );
+//   }
 
-  // Show Error if fetching failed
-  if (isEditMode && isFetchError) {
-      return <Alert variant="danger">Error loading admin user details.</Alert>;
+//   // Show Error if fetching failed
+//   if (isEditMode && isFetchError) {
+//       return <Alert variant="danger">Error loading admin user details.</Alert>;
+//   }
+  if (!userFromState) {
+    return (
+      <Alert variant="warning">
+        No user data found.{' '}
+        <Alert.Link onClick={() => navigate('/admin/admin-users')}>
+          Go back to the list.
+        </Alert.Link>
+      </Alert>
+    );
   }
 
   return (
@@ -147,8 +177,15 @@ const AdminUsersEntry = () => {
                     </Button>
                 </div>
             </div>
+ 
+            {updateMutation.isError && (
+                <Alert variant="danger">
+                Failed to update roles: {updateMutation.error?.message}
+                </Alert>
+            )}
+
             <div className="scrollable-container">
-                <Form.Group className="mb-3" controlId="formGridName">
+                {/* <Form.Group className="mb-3" controlId="formGridName">
                     <Form.Label>Name</Form.Label>
                     <Form.Control 
                         name="name"
@@ -182,9 +219,50 @@ const AdminUsersEntry = () => {
                         onChange={handleChange}
                         disabled={isPending}
                     />
+                </Form.Group> */}
+
+                <Form.Group className="mb-3">
+                <Form.Label>Username</Form.Label>
+                <Form.Control value={userFromState.username || '—'} disabled />
+                </Form.Group>
+
+                <Form.Group className="mb-3">
+                <Form.Label>Index</Form.Label>
+                <Form.Control value={userFromState.id || '—'} disabled />
+                </Form.Group>
+        
+                <Form.Group className="mb-3">
+                <Form.Label>Name</Form.Label>
+                <Form.Control value={userFromState.name_ar || '—'} disabled />
+                </Form.Group>
+        
+                <Form.Group className="mb-3">
+                <Form.Label>Email</Form.Label>
+                <Form.Control value={userFromState.email || '—'} disabled />
+                </Form.Group>
+        
+                <Form.Group className="mb-3">
+                <Form.Label>Gender</Form.Label>
+                <Form.Control value={userFromState.gender || '—'} disabled />
                 </Form.Group>
 
                 <Form.Group controlId="formGridRole">
+                <Form.Label>Roles</Form.Label>
+                {roles.map((role) => (
+                    <Form.Check
+                    key={role.value}
+                    type="switch"
+                    className="role-check"
+                    id={`role-${role.value}`}
+                    label={role.name}
+                    checked={selectedRoles.includes(role.value)}
+                    onChange={() => handleRoleChange(role.value)}
+                    disabled={isPending || role.value == 'sys:super_admin' || role.value == 'sys:admin'}
+                    />
+                ))}
+                </Form.Group>
+
+                {/* <Form.Group controlId="formGridRole">
                     <Form.Label>Role</Form.Label>
                     {roles.map((role) => (
                         <>
@@ -200,7 +278,7 @@ const AdminUsersEntry = () => {
                             /> 
                         </>   
                     ))}
-                </Form.Group>
+                </Form.Group> */}
             </div>
         </Form>
     </>

@@ -1,10 +1,10 @@
 import apiClient from '../../../api/axiosClient';
 
-const ENDPOINT = '/api/blogs';
+const ENDPOINT = '/v1/admin/blog';
 
 export const blogService = {
   getAll: async () => {
-    return await apiClient.get(ENDPOINT, { skipAuth: true });
+    return await apiClient.get(ENDPOINT);
   },
 
   getById: async (id) => {
