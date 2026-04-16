@@ -31,6 +31,7 @@ import BotCommandsEntry from './pages/Bot Commands/BotCommandsEntry.jsx';
 import Dashboard from './pages/Dashboard/Dashboard.jsx';
 import ImageStorageDashboard from './pages/Image Storage/ImageStorageDashboard.jsx';
 import ImageStorageEntry from './pages/Image Storage/ImageStorageEntry.jsx';
+import ProfilePage from "./pages/Profile/ProfilePage.jsx";
 
 function App() {
   return (
@@ -46,7 +47,7 @@ function App() {
               {/* Add other public routes here */}
               <Route path="/blogs" element={<Blogs />} />
               <Route path="/blogs/:id" element={<BlogPage />} />
-              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/profile" element={<ProfilePage/>} />
             </Route>
 
             {/* GUEST ONLY ROUTES (Login/Register) 
