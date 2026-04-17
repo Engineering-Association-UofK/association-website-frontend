@@ -4,15 +4,11 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faFacebook, faInstagram, faLinkedin, faXTwitter} from '@fortawesome/free-brands-svg-icons';
-import { useGenerics } from '../features/generics/hooks/useGenerics';
 
 const Footer = () => {
     const { translations, language } = useLanguage();
     const isRtl = language === 'ar';
     const alignClass = isRtl ? 'text-md-end' : 'text-md-start';
-
-    const { data: generics } = useGenerics(['home_about']);
-    const getText = (key) => generics?.[key] || {};
 
     return (
         <footer className="text-light py-5 mt-auto" style={{ backgroundColor: '#003366' }}>
@@ -22,7 +18,7 @@ const Footer = () => {
                     <Col lg={3} md={6}>
                         <h5 className="fw-bold mb-3">{translations.navbar.brand}</h5>
                         <p className="text-white-50">
-                            {getText('home_about').body || "Loading about section..."}
+                            {"Loading about section..."}
                         </p>
                     </Col>
 

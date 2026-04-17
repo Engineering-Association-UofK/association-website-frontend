@@ -2,13 +2,10 @@ import React from 'react';
 import { Container, Button } from 'react-bootstrap';
 import { useLanguage } from '../../context/LanguageContext.jsx';
 import headerImg from '../../utils/images/home-page-header.jpg';
-import { useGalleryImage } from '../../features/gallery/hooks/useGallery.js';
-import EditContentButton from '../../components/EditContentButton.jsx';
 import {Link} from "react-router-dom";
 
-const HeroSection = ({title, subtitle, keyword, data}) => {
+const HeroSection = ({title, subtitle}) => {
     const { translations } = useLanguage();
-    const { data: heroImgData } = useGalleryImage('home_hero');
 
     return (
       <header
@@ -18,17 +15,12 @@ const HeroSection = ({title, subtitle, keyword, data}) => {
         <div
           className="position-absolute top-0 start-0 w-100 h-100 z-0"
           style={{
-            backgroundImage: `url(${heroImgData?.imageLink || headerImg})`,
+            backgroundImage: `url(${headerImg})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundAttachment: "fixed",
           }}
         >
-          <EditContentButton
-            keyword="home_hero"
-            currentData={heroImgData}
-            type="image"
-          />
         </div>
 
         <div
@@ -43,9 +35,6 @@ const HeroSection = ({title, subtitle, keyword, data}) => {
         <Container className="position-relative z-2 text-center text-white">
           <h1 className="display-4 display-md-2 fw-bold mb-4 text-shadow">
             {title}
-            {keyword && (
-              <EditContentButton keyword={keyword} currentData={data} />
-            )}
           </h1>
           <p className="lead mb-5 fs-5 fs-md-3 text-shadow opacity-90">
             {subtitle}
