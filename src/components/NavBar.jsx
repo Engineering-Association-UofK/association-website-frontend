@@ -136,29 +136,25 @@ const NavigationBar = () => {
                 />
             )}
 
-            <Navbar variant="dark" expand="lg" expanded={expanded} onToggle={setExpanded} className="shadow-sm py-3 sticky-top" style={{ backgroundColor: '#003366', zIndex: 1040 }}>
-                <Container>
-                    <Navbar.Brand as={Link} to="/" className="fw-bold text-white fs-4 fs-lg-3 d-flex align-items-center" onClick={() => setExpanded(false)}>
+            <Navbar variant="light" expand="lg" expanded={expanded} onToggle={setExpanded} className="shadow-sm py-2 sticky-top" style={{ background: language === 'ar' ? 'linear-gradient(270deg, #e0f7fa 0%, #ffffff 50%)' : 'linear-gradient(90deg, #e0f7fa 0%, #ffffff 50%)', zIndex: 1040 }}>
+                <Container fluid className="px-3 px-lg-5 d-flex flex-wrap align-items-center">
+                    {/* Logo */}
+                    <Navbar.Brand as={Link} to="/" className="d-flex align-items-center me-1 me-lg-4 py-0" onClick={() => setExpanded(false)}>
                         <img
-                            src="/favicon.ico"
+                            src={language === 'ar' ? '/Logo-ar.png' : '/Logo-en.png'}
                             alt="Logo"
-                            className="me-2 rounded-circle bg-white p-1"
-                            style={{ width: '32px', height: '32px' }}
+                            style={{ height: '40px', width: 'auto', objectFit: 'contain', mixBlendMode: 'multiply' }}
                         />
-                        {translations.navbar.brand}
                     </Navbar.Brand>
 
-                    {/* 
-                        MOBILE: Language switcher and hamburger toggle are placed on the right side.
-                        The language dropdown is only visible on small screens (d-lg-none). 
-                    */}
-                    <div className="d-flex align-items-center order-lg-last ms-auto ms-lg-0 gap-2">
-                        <Dropdown className="d-lg-none">
+                    {/* Right side: Language + Login/Join + Hamburger (always visible) */}
+                    <div className="d-flex align-items-center ms-auto gap-1 gap-lg-3 order-lg-last">
+                        <Dropdown>
                             <Dropdown.Toggle
                                 variant="light"
-                                id="dropdown-language-mobile"
-                                className="rounded-pill px-3 fw-bold shadow-sm text-primary"
-                                size="sm"
+                                id="dropdown-language"
+                                className="rounded-pill px-2 px-lg-4 fw-bold shadow-sm border-0 bg-white"
+                                style={{ color: '#22B2E6' }}
                             >
                                 {currentLabel}
                             </Dropdown.Toggle>
@@ -168,58 +164,36 @@ const NavigationBar = () => {
                             </Dropdown.Menu>
                         </Dropdown>
 
-                        {/* MOBILE: The hamburger button that toggles the collapsed menu. */}
-                        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                        {user ? (
+                            <button onClick={() => { logout(); setExpanded(false); }} className="btn fw-bold px-2 px-lg-3 py-1 py-lg-2 rounded-1 shadow-sm border-0" style={{ backgroundColor: '#22B2E6', color: 'white', whiteSpace: 'nowrap' }}>
+                                {translations.navbar.logout}
+                            </button>
+                        ) : (
+                            <Link to="/login" className="btn fw-bold px-2 px-lg-3 py-1 py-lg-2 rounded-1 shadow-sm border-0" onClick={() => setExpanded(false)} style={{ backgroundColor: '#22B2E6', color: 'white', whiteSpace: 'nowrap' }}>
+                                {translations.navbar.login}
+                            </Link>
+                        )}
+
+                        <Navbar.Toggle aria-controls="basic-navbar-nav" className="ms-0 ms-lg-1 px-1 px-lg-2" />
                     </div>
 
-                    <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="ms-auto align-items-center py-3 py-lg-0">
-                            <Nav.Link as={NavLink} to="/" end className="mx-2 fw-medium text-white" onClick={() => setExpanded(false)}>
+                    {/* Nav tabs - left side next to logo on desktop, drops below on mobile */}
+                    <Navbar.Collapse id="basic-navbar-nav" className="order-last order-lg-0">
+                        <Nav className="align-items-start align-items-lg-center py-3 py-lg-0 gap-lg-3">
+                            <Nav.Link as={NavLink} to="/" end className="fw-medium text-dark" onClick={() => setExpanded(false)}>
                                 {translations.navbar.home}
                             </Nav.Link>
-
-                            {/* 
-                                MOBILE: Conditional rendering based on screen width.
-                                - Desktop (>992px) uses a hover dropdown (DesktopAboutDropDown).
-                                - Mobile (≤992px) uses a simple vertical list (MobileAboutDropDown) inside the collapsed navbar.
-                                This ensures touch‑friendly navigation on small devices. 
-                            */}
-                            { isDesktop ? <DesktopAboutDropDown /> : <MobileAboutDropDown /> }
-
-                            <Nav.Link as={NavLink} to="/blogs" className="mx-2 fw-medium" onClick={() => setExpanded(false)}>
+                            <Nav.Link as={NavLink} to="/about" className="fw-medium text-dark" onClick={() => setExpanded(false)}>
+                                {translations.navbar.about}
+                            </Nav.Link>
+                            <Nav.Link as={NavLink} to="/blogs" className="fw-medium text-dark" onClick={() => setExpanded(false)}>
                                 {translations.navbar.blogs}
                             </Nav.Link>
-
-                            {isAdmin && (
-                                <Nav.Link as={NavLink} to="/admin" className="mx-2 fw-medium" onClick={() => setExpanded(false)}>
+                            {user?.type === 'admin' && (
+                                <Nav.Link as={NavLink} to="/admin" className="fw-medium text-dark" onClick={() => setExpanded(false)}>
                                     {translations.navbar.admin}
                                 </Nav.Link>
                             )}
-
-                            {user ? (
-                                <Nav.Link onClick={() => { logout(); setExpanded(false); }} className="mx-2 fw-medium" style={{ cursor: 'pointer' }}>
-                                    {translations.navbar.logout}
-                                </Nav.Link>
-                            ) : (
-                                <Nav.Link as={NavLink} to="/login" className="mx-2 fw-medium" onClick={() => setExpanded(false)}>
-                                    {translations.navbar.login}
-                                </Nav.Link>
-                            )}
-
-                            {/* Desktop language switcher (hidden on mobile). */}
-                            <Dropdown className="d-none d-lg-block ms-lg-3">
-                                <Dropdown.Toggle
-                                    variant="light"
-                                    id="dropdown-language-desktop"
-                                    className="rounded-pill px-4 fw-bold shadow-sm text-primary"
-                                >
-                                    {currentLabel}
-                                </Dropdown.Toggle>
-                                <Dropdown.Menu align="end">
-                                    <Dropdown.Item onClick={() => switchLanguage('en')} active={language === 'en'}>English (EN)</Dropdown.Item>
-                                    <Dropdown.Item onClick={() => switchLanguage('ar')} active={language === 'ar'}>Arabic (AR)</Dropdown.Item>
-                                </Dropdown.Menu>
-                            </Dropdown>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
