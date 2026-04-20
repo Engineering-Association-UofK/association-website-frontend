@@ -1,21 +1,18 @@
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
-import { LanguageProvider } from "./context/LanguageContext";
-import Home from "./pages/Home/Home";
-import About from "./pages/About/About";
-import AdminLayout from "./pages/Admin/AdminLayout";
-import BlogsDashboard from "./pages/Blogs/BlogsDashboard";
-import Blogs from "./pages/Blogs/Blogs.jsx";
-import BlogsEntry from "./pages/Blogs/BlogsEntry";
-import GalleryDashboard from "./pages/Gallery/GalleryDashboard";
-import GalleryEntry from "./pages/Gallery/GalleryEntry";
-import MainLayout from "./layouts/MainLayout";
-import StandaloneLayout from "./layouts/StandaloneLayout";
-import "./App.css";
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { LanguageProvider } from './context/LanguageContext';
+import Home from './pages/Home/Home';
+import AssociationAbout from './pages/About/association/About.jsx';
+import OraganizationStructureAbout from './pages/About/oraganizationStructure/About.jsx';
+import ThirtiethCouncilAbout from './pages/About/thirtiethCouncil/About.jsx';
+import AdminLayout from './pages/Admin/AdminLayout';
+import BlogsDashboard from './pages/Blogs/BlogsDashboard';
+import Blogs from './pages/Blogs/Blogs.jsx';
+import BlogsEntry from './pages/Blogs/BlogsEntry';
+import GalleryDashboard from './pages/Gallery/GalleryDashboard';
+import GalleryEntry from './pages/Gallery/GalleryEntry';
+import MainLayout from './layouts/MainLayout';
+import StandaloneLayout from './layouts/StandaloneLayout';
+import './App.css';
 import RegisterForm from "./components/RegisterForm.jsx";
 import LoginForm from "./components/LoginForm.jsx";
 import BlogPage from "./pages/Blogs/BlogPage.jsx";
@@ -43,7 +40,9 @@ function App() {
             {/* Main Layout containing NavBar and Footer */}
             <Route element={<MainLayout />}>
               <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
+              <Route path="/about/association" element={<AssociationAbout />} />
+              <Route path="/about/oraganizationStructure" element={<OraganizationStructureAbout />} />
+              <Route path="/about/thirtiethCouncil" element={<ThirtiethCouncilAbout />} />
               {/* Add other public routes here */}
               <Route path="/blogs" element={<Blogs />} />
               <Route path="/blogs/:id" element={<BlogPage />} />
