@@ -8,6 +8,12 @@
         "thirtiethCouncil": "Thirtieth Council",
         "initiatives": "Initiatives",
         "blogs": "Posts",
+        "posts": {
+            "news": "News",
+            "issues": "Issues",
+            "blogs": "Blog",
+            "help": "Donations"
+        },
         "gallery": "Gallery",
         "forms": "Forms",
         "admin": "Admin",

@@ -121,10 +121,10 @@ const NavigationBar = () => {
   ];
 
   const postsItems = [
-    { to: '/posts/news', label: 'News' },
-    { to: '/posts/events', label: 'Events' },
-    { to: '/posts/announcements', label: 'Announcements' },
-    { to: '/posts/resources', label: 'Resources' },
+    { to: '/posts/news', label: translations.navbar.posts.news },
+    { to: '/posts/events', label: translations.navbar.posts.issues },
+    { to: '/posts/announcements', label: translations.navbar.posts.blogs },
+    { to: '/posts/resources', label: translations.navbar.posts.help },
   ];
 
   return (
