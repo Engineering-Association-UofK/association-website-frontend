@@ -1,34 +1,15 @@
 import React from 'react';
 import { Container, Row, Col, Card, Spinner } from 'react-bootstrap';
-import { useGenerics } from '../../features/generics/hooks/useGenerics.js';
-import EditContentButton from '../../components/EditContentButton.jsx';
 
 const InitiativesSection = () => {
-    
-    // Define the keywords we need for this section
-    const keywords = ['home_initiatives_intro', 'home_initiative_1', 'home_initiative_2', 'home_initiative_3'];
-    const { data: generics, isLoading } = useGenerics(keywords);
-
-    // Helper to safely get data
-    const getText = (key) => generics?.[key] || {};
-
-    if (isLoading) {
-        return (
-            <section className="py-5 bg-light text-center">
-                <Spinner animation="border" variant="primary" />
-            </section>
-        );
-    }
-
     return (
         <section className="py-5 bg-light">
             <Container>
                 <div className="text-center mb-5">
                     <h2 className="text-primary fw-bold">
-                        {getText('home_initiatives_intro').title}
-                        <EditContentButton keyword="home_initiatives_intro" currentData={getText('home_initiatives_intro')} />
+                        {'home_initiatives_intro'}
                     </h2>
-                    <p className="text-muted w-75 mx-auto">{getText('home_initiatives_intro').body}</p>
+                    <p className="text-muted w-75 mx-auto">{'home_initiatives_intro'}</p>
                 </div>
                 
                 <Row>
@@ -40,11 +21,10 @@ const InitiativesSection = () => {
                                         <span className="fs-3">{index + 1}</span>
                                     </div>
                                     <Card.Title className="fw-bold">
-                                        {getText(key).title || `Initiative ${index + 1}`}
-                                        <EditContentButton keyword={key} currentData={getText(key)} />
+                                        {`Initiative ${index + 1}`}
                                     </Card.Title>
                                     <Card.Text className="text-muted">
-                                        {getText(key).body || "Loading initiative details..."}
+                                        {"Loading initiative details..."}
                                     </Card.Text>
                                 </Card.Body>
                             </Card>

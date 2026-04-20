@@ -4,15 +4,11 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faFacebook, faInstagram, faLinkedin, faXTwitter} from '@fortawesome/free-brands-svg-icons';
-import { useGenerics } from '../features/generics/hooks/useGenerics';
 
 const Footer = () => {
     const { translations, language } = useLanguage();
     const isRtl = language === 'ar';
     const alignClass = isRtl ? 'text-md-end' : 'text-md-start';
-
-    const { data: generics } = useGenerics(['home_about']);
-    const getText = (key) => generics?.[key] || {};
 
     return (
         <>
@@ -110,7 +106,7 @@ const Footer = () => {
                                 {translations.navbar.brand}
                             </h5>
                             <p className="text-secondary-custom small">
-                                {getText('home_about').body || "Loading about section..."}
+                                {"Loading about section..."}
                             </p>
                         </Col>
 

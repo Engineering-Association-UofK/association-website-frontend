@@ -3,10 +3,9 @@ import { Container, Button } from 'react-bootstrap';
 import { useLanguage } from '../../context/LanguageContext.jsx';
 import headerImg from '../../utils/images/home-page-header.jpg';
 import { useGalleryImage } from '../../features/gallery/hooks/useGallery.js';
-import EditContentButton from '../../components/EditContentButton.jsx';
 import {Link} from "react-router-dom";
 
-const HeroSection = ({title, subtitle, keyword, data}) => {
+const HeroSection = ({title, subtitle}) => {
     const { translations } = useLanguage();
     const { data: heroImgData } = useGalleryImage('home_hero');
 
@@ -21,7 +20,6 @@ const HeroSection = ({title, subtitle, keyword, data}) => {
                     backgroundAttachment: 'fixed'
                 }}
             >
-                <EditContentButton keyword="home_hero" currentData={heroImgData} type="image" />
             </div>
 
             <div
@@ -35,7 +33,6 @@ const HeroSection = ({title, subtitle, keyword, data}) => {
             <Container className="position-relative z-2 text-center text-white">
                 <h1 className="display-4 display-md-2 fw-bold mb-4 text-shadow">
                     {title}
-                    {keyword && <EditContentButton keyword={keyword} currentData={data} />}
                 </h1>
                 <p className="lead mb-5 fs-5 fs-md-3 text-shadow opacity-90">{subtitle}</p>
                 <Button as={Link} to="/about" variant="primary" size="lg" className="rounded-pill px-5 py-3 fs-5 fw-bold shadow-lg hover-scale">
