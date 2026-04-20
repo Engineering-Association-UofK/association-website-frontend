@@ -21,7 +21,8 @@ const ProtectedRoute = ({ allowedRoles }) => {
 
     // Logged In but Wrong Role? -> Go to Home
     // (e.g. Student tries to access /admin)
-    if (allowedRoles && !allowedRoles.includes(user.type)) {
+    
+    if (allowedRoles && !user.roles?.some((r) => allowedRoles.includes(r))) {
         return <Navigate to="/" replace />;
     }
 

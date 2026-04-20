@@ -3,22 +3,91 @@ import { Navbar, Nav, Container, Dropdown } from 'react-bootstrap';
 import { Link, NavLink } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
+import { ADMIN_ROLES } from '../utils/roles';
 
 const NavigationBar = () => {
     const { translations, switchLanguage, language } = useLanguage();
 
+    // --- Desktop dropdown hover state (for "About" menu) ---
+    const [showAboutDropdown, setShowAboutDropdown] = useState(false);
+    let timeoutId;
+
+    const handleMouseEnter = () => {
+        clearTimeout(timeoutId);
+        setShowAboutDropdown(true);
+    };
+
+    const handleMouseLeave = () => {
+        timeoutId = setTimeout(() => setShowAboutDropdown(false), 150);
+    };
+
     const currentLabel = language === 'en' ? 'EN' : 'AR';
     const { user, logout } = useAuth();
-    const [expanded, setExpanded] = useState(false);
 
+    // expanded = whether the mobile navbar collapse is open (used for mobile backdrop & body scroll lock)
+    const [expanded, setExpanded] = useState(false);
+    const isAdmin = user?.roles?.some((r) => ADMIN_ROLES.includes(r));
+
+    // MOBILE: When the collapsed navbar is open, prevent body scrolling and show a dark backdrop.
     useEffect(() => {
         if (expanded) {
-            document.body.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden'; // lock background scroll
         } else {
             document.body.style.overflow = 'unset';
         }
         return () => { document.body.style.overflow = 'unset'; };
     }, [expanded]);
+
+    // MOBILE: Detect if viewport is desktop (>=992px) to switch between hover dropdown and stacked links.
+    const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 992);
+
+    useEffect(() => {
+        const handleResize = () => setIsDesktop(window.innerWidth >= 992);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    // --- Desktop version of About dropdown (hover‑based, absolute positioned) ---
+    const DesktopAboutDropDown = () => {
+        return (
+            <div className="mx-2 position-relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+                <div className={`fw-medium text-white text-center ${language === 'ar' ? 'text-end' : ''}`} style={{ cursor: 'pointer', padding: '0.5rem 0', display: 'inline-block', width: '100%' }}>
+                    {translations.navbar.about}
+                </div>
+                {showAboutDropdown && (
+                    <div className="position-absolute mt-2 shadow-sm rounded-3 custom-about-dropdown" style={{ zIndex: 1050, right: language === 'ar' ? 'auto' : '0', left: language === 'ar' ? '0' : 'auto', transform: language === 'ar' ? 'translateX(-40%)' : 'translateX(40%)', backgroundColor: '#0c64bb' }}>
+                        <NavLink to="/about/association" end className="dropdown-item-custom" onClick={() => { setExpanded(false); setShowAboutDropdown(false); }}>
+                            {translations.navbar.association}
+                        </NavLink>
+                        <NavLink to="/about/oraganizationStructure" className="dropdown-item-custom" onClick={() => { setExpanded(false); setShowAboutDropdown(false); }}>
+                            {translations.navbar.oraganizationStructure}
+                        </NavLink>
+                        <NavLink to="/about/thirtiethCouncil" className="dropdown-item-custom" onClick={() => { setExpanded(false); setShowAboutDropdown(false); }}>
+                            {translations.navbar.thirtiethCouncil}
+                        </NavLink>
+                    </div>
+                )}
+            </div>
+        );
+    };
+
+    // --- MOBILE: About menu becomes a vertical list of Nav.Link elements inside the collapsed navbar.
+    // This avoids hover complexity on touch devices and makes tapping easier.
+    const MobileAboutDropDown = () => {
+        return (
+            <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+                <Nav.Link as={NavLink} to="/about/association" end className="mx-2 fw-medium text-white" onClick={() => setExpanded(false)}>
+                    {translations.navbar.association}
+                </Nav.Link>
+                <Nav.Link as={NavLink} to="/about/oraganizationStructure" end className="mx-2 fw-medium text-white" onClick={() => setExpanded(false)}>
+                    {translations.navbar.oraganizationStructure}
+                </Nav.Link>
+                <Nav.Link as={NavLink} to="/about/thirtiethCouncil" end className="mx-2 fw-medium text-white" onClick={() => setExpanded(false)}>
+                    {translations.navbar.thirtiethCouncil}
+                </Nav.Link>
+            </div>
+        );
+    };
 
     return (
         <>
@@ -28,9 +97,37 @@ const NavigationBar = () => {
                     from { opacity: 0; }
                     to { opacity: 0.5; }
                 }
+                .custom-about-dropdown {
+                    border: none !important;
+                    min-width: 180px;
+                    text-align: center;
+                }
+                .custom-about-dropdown .dropdown-item-custom {
+                    color: #ffffff !important;
+                    text-align: center;
+                    padding: 0.5rem 1rem;
+                    transition: background 0.2s;
+                    display: block;
+                    text-decoration: none;
+                }
+                .custom-about-dropdown .dropdown-item-custom:hover,
+                .custom-about-dropdown .dropdown-item-custom:focus {
+                    background-color: #0d6efd !important;
+                    color: #ffffff !important;
+                    border-radius: 0.25rem;
+                }
+                .custom-about-dropdown .dropdown-item-custom.active {
+                    background-color: #0d6efd !important;
+                    color: #ffffff !important;
+                }
             `}
             </style>
+
             {/* Backdrop for mobile menu */}
+            {/* 
+                MOBILE: Dark semi‑transparent backdrop that appears when the collapsed navbar is open.
+                Clicking it closes the navbar (sets expanded = false). 
+            */}
             {expanded && (
                 <div
                     className="position-fixed top-0 start-0 w-100 h-100 bg-dark"

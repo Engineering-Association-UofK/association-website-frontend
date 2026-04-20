@@ -1,29 +1,37 @@
 import apiClient from '../../../api/axiosClient';
 
-const ENDPOINT = '/admin';
+const ENDPOINT = '/v1/admin';
 
 export const adminUsersService = {
   getAll: async () => {
-    return await apiClient.get(`${ENDPOINT}/get`);
+    return await apiClient.get(`${ENDPOINT}`);
   },
 
-  getById: async (id) => {
-    return await apiClient.get(`${ENDPOINT}/get/${id}`);
+  // getById: async (id) => {
+  //   return await apiClient.get(`${ENDPOINT}/${id}`);
+  // },
+
+  // getByUsername: async (username) => {
+  //   return await apiClient.get(`${ENDPOINT}/username/${username}`);
+  // },
+
+  makeManager: async ({id}) => {
+    return await apiClient.post(`${ENDPOINT}/add-manager/${id}`);
   },
 
-  create: async (data) => {
-    return await apiClient.post(`${ENDPOINT}/add`, data);
+  promote: async (user_id) => {
+    return await apiClient.post(`${ENDPOINT}/${user_id}`);
   },
 
   update: async (data) => {
-    return await apiClient.put(`${ENDPOINT}/update`, data);
+    return await apiClient.put(`${ENDPOINT}`, data);
   },
 
-  updateEmail: async (data) => {
-    return await apiClient.put(`${ENDPOINT}/update-email`, data);
-  },
+  // updateEmail: async (data) => {
+  //   return await apiClient.put(`${ENDPOINT}/update-email`, data);
+  // },
 
   delete: async (id) => {
-    return await apiClient.delete(`${ENDPOINT}/delete/${id}`);
+    return await apiClient.delete(`${ENDPOINT}/${id}`);
   },
 };

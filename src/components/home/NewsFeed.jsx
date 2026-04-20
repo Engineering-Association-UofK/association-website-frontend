@@ -43,10 +43,10 @@ const NewsFeed = ({ start = 0, end = 3, card = true }) => {
                                         className="bg-secondary"
                                         style={{
                                             height: '200px',
-                                            backgroundImage: item.imageLink ? `url(${item.imageLink})` : 'none',
+                                            backgroundImage: item.image?.url ? `url(${item.image?.url})` : 'none',
                                             backgroundSize: 'cover',
                                             backgroundPosition: 'center',
-                                            backgroundColor: item.imageLink ? 'transparent' : '#6c757d'
+                                            backgroundColor: item.image?.url ? 'transparent' : '#6c757d'
                                         }}
                                     ></div>
                                     <Card.Body>
@@ -81,10 +81,10 @@ const NewsFeed = ({ start = 0, end = 3, card = true }) => {
                                             style={{
                                                 height: '100%',
                                                 minHeight: '120px',
-                                                backgroundImage: item.imageLink ? `url(${item.imageLink})` : 'none',
+                                                backgroundImage: item.image?.url ? `url(${item.image?.url})` : 'none',
                                                 backgroundSize: 'cover',
                                                 backgroundPosition: 'center',
-                                                backgroundColor: item.imageLink ? 'transparent' : '#6c757d'
+                                                backgroundColor: item.image?.url ? 'transparent' : '#6c757d'
                                             }}
                                         />
                                     </Col>

@@ -29,7 +29,10 @@ ul .nav-link.active {
 .table-wrapper {
     overflow-x: hidden;
     overflow-y: auto;
-    height: calc(100dvh - 55px - 48px - 42px - 32px);
+    height: calc(100dvh - 55px - 48px - 42px - 17px);
+}
+.table-wrapper .table {
+    margin-bottom: 0;
 }
 .table-wrapper::-webkit-scrollbar-thumb {
     width: 8px;

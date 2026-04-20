@@ -1,0 +1,18 @@
+.pickerModalBody :global(.nav-link.active) {
+    color: #495057 !important; 
+    background-color: #fff !important;
+    border-color: #dee2e6 #dee2e6 #fff !important;
+}
+.pickerModalBody :global(.nav-link)::after {
+    display: none !important;
+    content: none !important;
+}
+.pickerModalBody :global(.nav-link) {
+    color: var(--primary-color);
+}
+.pickerModalBody :global(.nav-link:hover) {
+    border-color: #e9ecef #e9ecef #dee2e6;
+}
+.scrollableContainer{
+    height: 55dvh !important;
+}

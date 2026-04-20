@@ -41,7 +41,7 @@ const BlogPage = () => {
                     height: '50vh',
                     minHeight: '400px',
                     backgroundColor: '#003366', // Fallback color
-                    backgroundImage: blog.imageLink ? `url(${blog.imageLink})` : 'none',
+                    backgroundImage: blog.image?.url ? `url(${blog.image?.url})` : 'none',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center'
                 }}
