@@ -8,11 +8,11 @@ export const useProfile = () => {
   const [userData, setUserData] = useState({
     id: 0,
     uni_id: 0,
-    name_ar: "محمد كمال الدين",
-    name_en: "mohammed kamal ",
-    phone: "+00971...",
-    department: "Computer",
-    gender: "Mail",
+    name_ar: "",
+    name_en: "",
+    phone: ".",
+    department: "",
+    gender: "",
     email: "Test@gmail.org", // مضاف للعرض فقط
   });
 
@@ -42,17 +42,32 @@ export const useProfile = () => {
     }
   };
 
+  // src/hooks/useProfile.js
+
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
-        const [profileRes, certRes] = await Promise.all([
-          accountService.getProfile(),
-          accountService.getCertificates(),
-        ]);
-        setUserData(profileRes.data);
-        setCertificates(certRes.data || []);
+        // طلب بيانات البروفايل
+        const profileRes = await accountService.getProfile();
+        if (profileRes?.data) {
+          setUserData(profileRes.data);
+        }
+
+        try {
+          const certRes = await accountService.getCertificates({
+            page: 1,
+            limit: 10,
+          });
+          setCertificates(certRes.data || []);
+        } catch (certErr) {
+          console.error("Certificates fetch failed", certErr);
+          setCertificates([]); // نضمن إنها مصفوفة فاضية مش undefined
+        }
       } catch (err) {
-        console.error("Error fetching account data", err);
+        console.error("Profile fetch failed", err);
+        // هنا المراجع طلب إننا نعرض Error بدل القيم الافتراضية
+        setUserData(null);
       } finally {
         setLoading(false);
       }
@@ -97,4 +112,4 @@ export const useProfile = () => {
     setPasswordData,
     handlePasswordUpdate,
   };
-};
+};;

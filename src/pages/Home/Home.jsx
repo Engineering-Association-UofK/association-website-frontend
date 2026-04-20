@@ -1,5 +1,5 @@
-import React from 'react';
-import './Home.css';
+import React from "react";
+import "./Home.css";
 
 // Components
 import HeroSection from "../../components/home/HeroSection.jsx";
@@ -8,23 +8,26 @@ import InitiativesSection from "../../components/home/InitiativesSection.jsx";
 import NewsFeed from "../../components/home/NewsFeed.jsx";
 import Gallery from "../../components/Gallery.jsx";
 import ContactSection from "../../components/home/ContactSection.jsx";
-import {Spinner} from "react-bootstrap";
-import Skeleton_profilePage from '../../components/Skeleton_profilePage.jsx';
+import { Spinner } from "react-bootstrap";
+import Skeleton from "../../components/Skeleton.jsx";
 
 const Home = () => {
-    return (
-        <div className="home-page">
-            <HeroSection 
-                title={"Engineering Association"} 
-                subtitle={"Loading hero section..."}
-            />
-            <AboutSection title={"About error"} description={"Loading about section..."}/>
-            <Gallery />
-            <InitiativesSection />
-            <NewsFeed />
-            <ContactSection />
-        </div>
-    );
+  return (
+    <div className="home-page">
+      <HeroSection
+        title={"Engineering Association"}
+        subtitle={"Loading hero section..."}
+      />
+      <AboutSection
+        title={"About error"}
+        description={"Loading about section..."}
+      />
+      <Gallery />
+      <InitiativesSection />
+      <NewsFeed />
+      <ContactSection />
+    </div>
+  );
 };
 
 export default Home;

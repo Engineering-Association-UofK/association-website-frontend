@@ -1,25 +1,22 @@
-
-export default function Skeleton_profilePage() {
+export default function Skeleton() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#fcfdfb] animate-in fade-in duration-1000">
       <div className="text-center">
-        {/* حاوية الشعار مع حركة النبض والتدرج الخفيف */}
         <div className="relative inline-flex items-center justify-center p-6 bg-white rounded-full shadow-[0_0_0_1px_rgba(14,15,12,0.1)] border-4 border-[#e2f6d5]">
-          {/* الشعار الحقيقي - قم باستبدال المسار بالمسار الصحيح لشعارك */}
           {/* <img src="/path-to-your-sea-logo.svg" alt="SEA Logo" className="w-24 h-24" /> */}
 
-          {/* مؤقت: نص الشعار كأنيميشن نبض */}
           <div className="text-5xl font-black text-[#0e0f0c] aspect-square flex items-center uppercase tracking-tighter animate-pulse scale-105 transition-transform duration-1000">
-            IEEE
+            SEA
             {/* <br /> <br /> */}
           </div>
 
-          {/* تدرج هادئ خلف الشعار (اختياري) */}
           <div className="absolute inset-0 bg-white rounded-full opacity-50 blur-xl"></div>
         </div>
 
         {/* نص مساعد هادئ (اختياري) */}
-        <p className=" font-semibold text-gray-500 text-sm tracking-widest uppercase mt-4">Connecting to IEEE-backend...</p>
+        <p className=" font-semibold text-gray-500 text-sm tracking-widest uppercase mt-4">
+          Connecting to SEA-server...
+        </p>
       </div>
     </div>
   );

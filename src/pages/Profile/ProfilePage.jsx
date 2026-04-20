@@ -1,7 +1,7 @@
 import React from "react";
 import { useProfile } from "../../hooks/useProfile";
 import { useState } from "react";
-import Skeleton_profilePage from "../../components/Skeleton_profilePage";
+import Skeleton from "../../components/Skeleton";
 
 const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState("details");
@@ -22,9 +22,24 @@ const ProfilePage = () => {
   if (loading)
     return (
       <>
-        <Skeleton_profilePage/>
+        <Skeleton />
       </>
     );
+  console.log(userData);
+  
+  if (!userData) {
+    return (
+      <div className="text-center p-20 ">
+        <h2 className="text-2xl font-bold">Failed to load profile data.</h2>
+        <button
+          onClick={() => window.location.reload()}
+          className="mt-4 underline"
+        >
+          Try Again
+        </button>
+      </div>
+    );
+  }
 
   const styles = {
     heading:

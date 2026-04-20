@@ -1,55 +1,55 @@
-import React from 'react';
-import { Container, Alert, Spinner } from 'react-bootstrap';
-import { useLanguage } from '../context/LanguageContext.jsx';
-import { useGallery } from '../hooks/useGallery.js';
-import Skeleton_profilePage from './Skeleton_profilePage.jsx';
+import React from "react";
+import { Container, Alert, Spinner } from "react-bootstrap";
+import { useLanguage } from "../context/LanguageContext.jsx";
+import { useGallery } from "../hooks/useGallery.js";
+import Skeleton from "./Skeleton.jsx";
 
 const Gallery = () => {
-    const { translations, language } = useLanguage();
-    const isRtl = language === 'ar';
-    
-    const { images, loading, error } = useGallery();
+  const { translations, language } = useLanguage();
+  const isRtl = language === "ar";
 
-    if (loading) {
-        return (
-            <Container className="py-5 text-center">
-                {/* <Spinner animation="border" role="status" variant="primary">
+  const { images, loading, error } = useGallery();
+
+  if (loading) {
+    return (
+      <Container className="py-5 text-center">
+        {/* <Spinner animation="border" role="status" variant="primary">
                     <span className="visually-hidden">{translations.gallery.loading}</span>
                 </Spinner> */}
-                <Skeleton_profilePage/>
-            </Container>
-        );
-    }
+        <Skeleton />
+      </Container>
+    );
+  }
 
-    if (error) {
-        return (
-            <Container className="py-5 text-center">
-                <div className="text-center text-muted py-5">
-                    <h4>No photos available at the moment.</h4>
-                </div>
-            </Container>
-        );
-    }
-
-    let displayImages = [];
-    if (images.length > 0) {
-        let loopSet = [...images];
-        while (loopSet.length < 6) {
-            loopSet = [...loopSet, ...images];
-        }
-        displayImages = [...loopSet, ...loopSet];
-    }
-
+  if (error) {
     return (
-        <section className="py-5 overflow-hidden">
-            <Container fluid>
-                {images.length > 0 ? (
-                    <>
-                        <style>
-                            {`
+      <Container className="py-5 text-center">
+        <div className="text-center text-muted py-5">
+          <h4>No photos available at the moment.</h4>
+        </div>
+      </Container>
+    );
+  }
+
+  let displayImages = [];
+  if (images.length > 0) {
+    let loopSet = [...images];
+    while (loopSet.length < 6) {
+      loopSet = [...loopSet, ...images];
+    }
+    displayImages = [...loopSet, ...loopSet];
+  }
+
+  return (
+    <section className="py-5 overflow-hidden">
+      <Container fluid>
+        {images.length > 0 ? (
+          <>
+            <style>
+              {`
                                 @keyframes scroll {
                                     0% { transform: translateX(0); }
-                                    100% { transform: translateX(${isRtl ? '50%' : '-50%'}); }
+                                    100% { transform: translateX(${isRtl ? "50%" : "-50%"}); }
                                 }
                                 .marquee-track {
                                     display: flex;
@@ -70,47 +70,52 @@ const Gallery = () => {
                                     box-shadow: 0 10px 20px rgba(0,0,0,0.2) !important;
                                 }
                             `}
-                        </style>
-                        <div
-                            className="d-flex overflow-hidden w-100 py-4"
-                        >
-                            <div className="marquee-track">
-                                {displayImages.map((img, index) => (
-                                <div
-                                    key={`${img.id || index}-${index}`}
-                                    className="gallery-card position-relative shadow rounded-4 overflow-hidden flex-shrink-0"
-                                    style={{
-                                        width: '350px',
-                                        height: '450px',
-                                        cursor: 'pointer'
-                                    }}
-                                >
-                                    <img
-                                        src={img.url}
-                                        alt={img.alt || `Gallery image ${index + 1}`}
-                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                    />
-                                    {img.alt && (
-                                        <div
-                                            className="position-absolute bottom-0 start-0 w-100 p-3"
-                                            style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)' }}
-                                        >
-                                            <h5 className="text-white mb-0 fw-bold">{img.alt}</h5>
-                                        </div>
-                                    )}
-                                </div>
-                            ))}
-                            </div>
-                        </div>
-                    </>
-                ) : (
-                    <div className="text-center text-muted py-5">
-                        <h4>{translations.gallery.noPhotos}</h4>
-                    </div>
-                )}
-            </Container>
-        </section>
-    );
+            </style>
+            <div className="d-flex overflow-hidden w-100 py-4">
+              <div className="marquee-track">
+                {displayImages.map((img, index) => (
+                  <div
+                    key={`${img.id || index}-${index}`}
+                    className="gallery-card position-relative shadow rounded-4 overflow-hidden flex-shrink-0"
+                    style={{
+                      width: "350px",
+                      height: "450px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <img
+                      src={img.url}
+                      alt={img.alt || `Gallery image ${index + 1}`}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
+                    />
+                    {img.alt && (
+                      <div
+                        className="position-absolute bottom-0 start-0 w-100 p-3"
+                        style={{
+                          background:
+                            "linear-gradient(to top, rgba(0,0,0,0.8), transparent)",
+                        }}
+                      >
+                        <h5 className="text-white mb-0 fw-bold">{img.alt}</h5>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="text-center text-muted py-5">
+            <h4>{translations.gallery.noPhotos}</h4>
+          </div>
+        )}
+      </Container>
+    </section>
+  );
 };
 
 export default Gallery;

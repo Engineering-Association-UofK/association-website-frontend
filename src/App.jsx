@@ -41,12 +41,18 @@ function App() {
             <Route element={<MainLayout />}>
               <Route path="/" element={<Home />} />
               <Route path="/about/association" element={<AssociationAbout />} />
-              <Route path="/about/oraganizationStructure" element={<OraganizationStructureAbout />} />
-              <Route path="/about/thirtiethCouncil" element={<ThirtiethCouncilAbout />} />
+              <Route
+                path="/about/oraganizationStructure"
+                element={<OraganizationStructureAbout />}
+              />
+              <Route
+                path="/about/thirtiethCouncil"
+                element={<ThirtiethCouncilAbout />}
+              />
               {/* Add other public routes here */}
               <Route path="/blogs" element={<Blogs />} />
               <Route path="/blogs/:id" element={<BlogPage />} />
-              <Route path="/profile" element={<ProfilePage/>} />
+              <Route path="/profile" element={<ProfilePage />} />
             </Route>
 
             {/* GUEST ONLY ROUTES (Login/Register) 
@@ -63,8 +69,8 @@ function App() {
                 - Only users with role 'admin' can enter */}
             {/* Admin Routes wrapped in StandaloneLayout so they have the Back button */}
             {/* <Route element={<StandaloneLayout />} > */}
-              <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
-                <Route path="/admin" element={<AdminLayout />}>
+            <Route element={<ProtectedRoute allowedRoles={["sys:admin"]} />}>
+              <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<Navigate to="dashboard" replace />} />
                 <Route path="dashboard" element={<Dashboard />} />
                 <Route path="blogs" element={<BlogsDashboard />} />
