@@ -29,6 +29,7 @@ import Dashboard from './pages/Dashboard/Dashboard.jsx';
 import ImageStorageDashboard from './pages/Image Storage/ImageStorageDashboard.jsx';
 import ImageStorageEntry from './pages/Image Storage/ImageStorageEntry.jsx';
 import ProfilePage from "./pages/Profile/ProfilePage.jsx";
+import { CONFIG } from "./config";
 
 function App() {
   return (
@@ -69,7 +70,7 @@ function App() {
                 - Only users with role 'admin' can enter */}
             {/* Admin Routes wrapped in StandaloneLayout so they have the Back button */}
             {/* <Route element={<StandaloneLayout />} > */}
-            <Route element={<ProtectedRoute allowedRoles={["sys:admin"]} />}>
+            <Route element={<ProtectedRoute allowedRoles={[CONFIG.ADMIN]} />}>
               <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<Navigate to="dashboard" replace />} />
                 <Route path="dashboard" element={<Dashboard />} />
