@@ -439,20 +439,20 @@ const RegisterForm = () => {
   };
 
   const inputStyles =
-    "w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#9fe870] focus:border-transparent outline-none transition-all bg-gray-50/50";
+    "w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0b5ed7] focus:border-transparent outline-none transition-all bg-gray-50/50";
   const labelStyles =
     "block mb-1.5 text-sm font-bold text-gray-700 uppercase tracking-wider";
 
   return (
-    <div className="min-h-screen bg-[#fcfdfb] flex items-center justify-center p-4 ">
+    <div className="min-h-screen bg-[#fcfdfb] flex items-center justify-center p-2 ">
       <div className="max-w-2xl w-full bg-white rounded-[30px] shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-gray-100 p-8 md:p-12">
         {/* Progress Bar */}
         <div className="flex items-center justify-center gap-4 mb-10">
           <div
-            className={`h-2 w-20 rounded-full ${step >= 1 ? "bg-[#9fe870]" : "bg-gray-100"}`}
+            className={`h-2 w-20 rounded-full ${step >= 1 ? "bg-[#0b5ed7]" : "bg-gray-100"}`}
           ></div>
           <div
-            className={`h-2 w-20 rounded-full ${step >= 2 ? "bg-[#9fe870]" : "bg-gray-100"}`}
+            className={`h-2 w-20 rounded-full ${step >= 2 ? "bg-[#0b5ed7]" : "bg-gray-100"}`}
           ></div>
         </div>
 
@@ -526,7 +526,8 @@ const RegisterForm = () => {
               </div>
               <button
                 type="submit"
-                className="w-full bg-[#0e0f0c] text-[#9fe870] font-black py-4 rounded-full hover:scale-[1.02] transition-transform"
+                className="w-full bg-[#0b5ed7] text-white font-black py-4  hover:scale-[1.02] transition-transform"
+                style={{ borderRadius: "20px" }}
               >
                 CONTINUE TO PERSONAL INFO
               </button>
@@ -661,13 +662,15 @@ const RegisterForm = () => {
                   type="button"
                   onClick={prevStep}
                   className="flex-1 bg-gray-100 text-gray-600 font-bold py-4 rounded-full hover:bg-gray-200 transition-all"
+                  style={{ borderRadius: "20px" }}
                 >
                   BACK
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="flex-[2] bg-[#9fe870] text-[#163300] font-black py-4 rounded-full hover:scale-[1.02] transition-transform disabled:opacity-50"
+                  className="flex-2 bg-[#0b5ed7] text-white font-black py-4  hover:scale-[1.02] transition-transform disabled:opacity-50"
+                  style={{ borderRadius: "20px" }}
                 >
                   {loading ? translations.register.loading : "CREATE ACCOUNT"}
                 </button>

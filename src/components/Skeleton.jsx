@@ -15,7 +15,7 @@ export default function Skeleton() {
 
         {/* نص مساعد هادئ (اختياري) */}
         <p className=" font-semibold text-gray-500 text-sm tracking-widest uppercase mt-4">
-          Connecting to SEA-server...
+          Connecting to SEA-backend...
         </p>
       </div>
     </div>
