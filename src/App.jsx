@@ -30,6 +30,7 @@ import ImageStorageDashboard from './pages/Image Storage/ImageStorageDashboard.j
 import ImageStorageEntry from './pages/Image Storage/ImageStorageEntry.jsx';
 import ProfilePage from "./pages/Profile/ProfilePage.jsx";
 import { CONFIG } from "./config";
+import EventsPage from "./pages/Event/EventsPage.jsx";
 
 function App() {
   return (
@@ -54,6 +55,7 @@ function App() {
               <Route path="/blogs" element={<Blogs />} />
               <Route path="/blogs/:id" element={<BlogPage />} />
               <Route path="/profile" element={<ProfilePage />} />
+              <Route path='/event' element={<EventsPage/>} />
             </Route>
 
             {/* GUEST ONLY ROUTES (Login/Register) 
