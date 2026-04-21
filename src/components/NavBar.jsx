@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   Navbar,
   Nav,
@@ -20,11 +20,6 @@ const NavigationBar = () => {
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const handleClose = () => setShowOffcanvas(false);
   const handleShow = () => setShowOffcanvas(true);
-
-  // Lock body scroll when offcanvas is open
-  useEffect(() => {
-    document.body.style.overflow = showOffcanvas ? 'hidden' : 'unset';
-  }, [showOffcanvas]);
 
   // Hover timeout for desktop dropdowns
   const timeoutRef = useRef(null);
