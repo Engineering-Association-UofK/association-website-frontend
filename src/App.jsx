@@ -28,7 +28,9 @@ import BotCommandsEntry from './pages/Bot Commands/BotCommandsEntry.jsx';
 import Dashboard from './pages/Dashboard/Dashboard.jsx';
 import ImageStorageDashboard from './pages/Image Storage/ImageStorageDashboard.jsx';
 import ImageStorageEntry from './pages/Image Storage/ImageStorageEntry.jsx';
-import { CONFIG } from './config';
+import ProfilePage from "./pages/Profile/ProfilePage.jsx";
+import { CONFIG } from "./config";
+import EventsPage from "./pages/Event/EventsPage.jsx";
 
 function App() {
   return (
@@ -41,13 +43,20 @@ function App() {
             <Route element={<MainLayout />}>
               <Route path="/" element={<Home />} />
               <Route path="/about/association" element={<AssociationAbout />} />
-              <Route path="/about/oraganizationStructure" element={<OraganizationStructureAbout />} />
-              <Route path="/about/thirtiethCouncil" element={<ThirtiethCouncilAbout />} />
+              <Route
+                path="/about/oraganizationStructure"
+                element={<OraganizationStructureAbout />}
+              />
+              <Route
+                path="/about/thirtiethCouncil"
+                element={<ThirtiethCouncilAbout />}
+              />
               {/* Add other public routes here */}
               <Route path="/blogs" element={<Blogs />} />
               <Route path="/blogs/:id" element={<BlogPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path='/event' element={<EventsPage/>} />
             </Route>
-
 
             {/* GUEST ONLY ROUTES (Login/Register) 
               - Logged in users get kicked out to /admin or / */}
@@ -63,24 +72,30 @@ function App() {
                 - Only users with role 'admin' can enter */}
             {/* Admin Routes wrapped in StandaloneLayout so they have the Back button */}
             {/* <Route element={<StandaloneLayout />} > */}
-              <Route element={<ProtectedRoute allowedRoles={CONFIG.ADMIN_ROLES} />}>
-                <Route path="/admin" element={<AdminLayout />}>
+            <Route element={<ProtectedRoute allowedRoles={[CONFIG.ADMIN]} />}>
+              <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<Navigate to="dashboard" replace />} />
-                  <Route path="dashboard" element={<Dashboard />} />
-                  <Route path="blogs" element={<BlogsDashboard />} />
-                  <Route path="blogs/:id" element={<BlogsEntry />} />
-                  {/* <Route path="gallery" element={<GalleryDashboard />} />
+                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="blogs" element={<BlogsDashboard />} />
+                <Route path="blogs/:id" element={<BlogsEntry />} />
+                {/* <Route path="gallery" element={<GalleryDashboard />} />
                   <Route path="gallery/:id" element={<GalleryEntry />} /> */}
-                  <Route path="admin-users" element={<AdminUsersDashboard />} />
-                  <Route path="admin-users/:id" element={<AdminUsersEntry />} />
-                  <Route path="admin-profile" element={<AdminProfile />} />
-                  <Route path="change-password" element={<ChangePassword />} />
-                  <Route path="bot-commands" element={<BotCommandsDashboard />} />
-                  <Route path="bot-commands/:id" element={<BotCommandsEntry />} />
-                  <Route path="image-storage" element={<ImageStorageDashboard />} />
-                  <Route path="image-storage/:id" element={<ImageStorageEntry />} />
-                </Route>
+                <Route path="admin-users" element={<AdminUsersDashboard />} />
+                <Route path="admin-users/:id" element={<AdminUsersEntry />} />
+                <Route path="admin-profile" element={<AdminProfile />} />
+                <Route path="change-password" element={<ChangePassword />} />
+                <Route path="bot-commands" element={<BotCommandsDashboard />} />
+                <Route path="bot-commands/:id" element={<BotCommandsEntry />} />
+                <Route
+                  path="image-storage"
+                  element={<ImageStorageDashboard />}
+                />
+                <Route
+                  path="image-storage/:id"
+                  element={<ImageStorageEntry />}
+                />
               </Route>
+            </Route>
             {/* </Route> */}
             {/* STUDENT ROUTES (Future) */}
             {/* 
@@ -90,7 +105,7 @@ function App() {
               </Route>
             </Route> 
             */}
-            <Route path='*' element={<Navigate to={'/'} />} />
+            <Route path="*" element={<Navigate to={"/"} />} />
           </Routes>
         </Router>
       </LanguageProvider>

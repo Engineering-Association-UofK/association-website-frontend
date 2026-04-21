@@ -1,5 +1,5 @@
-import React from 'react';
-import './Home.css';
+import React from "react";
+import "./Home.css";
 
 // Components
 import HeroSection from "../../components/home/HeroSection.jsx";

@@ -9,7 +9,7 @@ const StandaloneLayout = () => {
         <div className="min-vh-100 bg-light">
             <Container className="py-3">
                 <Link to="/">
-                    <Button variant="link" className="text-decoration-none text-secondary fw-bold p-0 mb-3 hover-scale">
+                    <Button variant="link" className="text-decoration-none  text-secondary fw-bold p-0 mb-3 hover-scale">
                         <FontAwesomeIcon icon={faArrowLeft} className="me-2" />
                         Back
                     </Button>

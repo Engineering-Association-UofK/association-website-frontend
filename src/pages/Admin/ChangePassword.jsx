@@ -67,7 +67,7 @@ const ChangePassword = () => {
 
   return (
     <>
-        <div className="d-flex justify-content-between align-items-center mb-4">
+          <div className="d-flex justify-content-between align-items-center mb-4 ">
             <h4>Change Password</h4>
         </div>
 
