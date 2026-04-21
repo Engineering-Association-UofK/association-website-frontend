@@ -9,6 +9,7 @@ import NewsFeed from "../../components/home/NewsFeed.jsx";
 import Gallery from "../../components/Gallery.jsx";
 import ContactSection from "../../components/home/ContactSection.jsx";
 import {Spinner} from "react-bootstrap";
+import SecretariatShowcase from '../../components/secretariat/SecretariatShowcase.jsx';
 
 const Home = () => {
 
@@ -21,6 +22,7 @@ const Home = () => {
             <AboutSection title={"About error"} description={"Loading about section..."}/>
             <Gallery />
             <InitiativesSection />
+            <SecretariatShowcase />
             <NewsFeed />
             <ContactSection />
         </div>

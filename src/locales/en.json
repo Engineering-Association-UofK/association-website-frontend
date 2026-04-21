@@ -101,5 +101,41 @@
         "sending": "Sending...",
         "success": "Thank you! Feedback received.",
         "error": "Something went wrong. Please try again."
+    },
+    "secretariats": {
+        "title": "Association Secretariats",
+        "readMore": "Read More",
+        "media": {
+            "name": "Media Secretariat",
+            "desc": "The secretariat responsible for highlighting the association's identity and communicating its activities creatively. It reflects the true student environment and fosters effective communication with both the university community and the public. It strives to produce professional content that expresses the spirit of the college while serving as an incubator for developing members' media skills and technical proficiency."
+        },
+        "academic": {
+            "name": "Academic Secretariat",
+            "desc": "The primary pillar dedicated to supporting and enriching the educational journey of college students. It works to overcome academic obstacles and create an integrated environment that extends beyond the classroom to develop research and technical skills, aiming to achieve excellence in both university academics and professional career paths."
+        },
+        "sports": {
+            "name": "Sports Secretariat",
+            "desc": "Responsible for activating and establishing a culture of physical and mental fitness within the college community. This secretariat manages all sporting activities, provides direct supervision of the teams representing the college in university tournaments, and raises awareness regarding the importance of physical activity as an essential part of the quality of university life."
+        },
+        "external": {
+            "name": "External Relations",
+            "desc": "The bridge connecting Engineering students to the academic and professional world beyond the university. It creates real opportunities through partnerships with international universities, organizations, and professional institutions, providing scholarships, training, and development events that open new horizons for students to build strong career paths while still in school."
+        },
+        "cultural": {
+            "name": "Cultural Secretariat",
+            "desc": "A creative incubator aimed at enriching the university experience by creating interactive spaces centered around art, literature, and knowledge. Acting as an umbrella for specialized clubs, it fosters a sense of belonging and solidifies free expression, serving as a bridge that connects the engineering community with its broader cultural surroundings."
+        },
+        "social": {
+            "name": "Social Secretariat",
+            "desc": "The humanitarian and service-oriented pillar of the association, promoting values of solidarity and cooperation within the college. It works to improve the university environment—both physically and socially—through its various offices, supporting students in need and ensuring a supportive academic atmosphere defined by responsibility and mutual synergy."
+        },
+        "financial": {
+            "name": "Financial Secretariat",
+            "desc": "Tasked with full oversight of financial resources and the management of all incoming and outgoing cash flows. The secretariat aims to ensure the highest levels of transparency by preparing estimated budgets and accounting schedules, while developing strategies to enhance the association's financial resources to ensure the sustainability of its initiatives."
+        },
+        "general": {
+            "name": "General Secretariat",
+            "desc": "The vital heart of the Engineering Steering Association, responsible for coordinating between various secretariats and chairing the executive committee. It organizes inter-secretariat relations, approves plans and programs, and acts as the most dynamic body, transforming organizational visions into a cohesive institutional reality."
+        }
     }
 }
