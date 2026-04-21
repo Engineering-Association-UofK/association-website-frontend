@@ -1,35 +1,51 @@
 import React from 'react';
-import { Container, Row, Col, Card, Spinner } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
+import { useLanguage } from '../../context/LanguageContext';
+import { FaRocket, FaLightbulb, FaUsers } from 'react-icons/fa'; // Context-relevant icons
+import './InitiativesSection.css';
 
 const InitiativesSection = () => {
+    const { translations, language } = useLanguage();
+    const isRtl = language === 'ar';
+
+    const icons = [FaRocket, FaLightbulb, FaUsers];
+    const initiativeKeys = ['initiative1', 'initiative2', 'initiative3'];
+
     return (
-        <section className="py-5 bg-light">
+        <section className={`initiatives-section ${isRtl ? 'rtl' : 'ltr'}`}>
             <Container>
-                <div className="text-center mb-5">
-                    <h2 className="text-primary fw-bold">
-                        {'home_initiatives_intro'}
-                    </h2>
-                    <p className="text-muted w-75 mx-auto">{'initiatives_intro'}</p>
+                <div className="initiatives-header">
+                    <span className="pre-title">{translations.home.initiatives.badge || 'Current Projects'}</span>
+                    <h2 className="fw-bold">{translations.home.initiatives.title}</h2>
+                    <p className="text-muted mx-auto">{translations.home.initiatives.subtitle}</p>
                 </div>
                 
-                <Row>
-                    {['home_initiative_1', 'home_initiative_2', 'home_initiative_3'].map((key, index) => (
-                        <Col md={4} key={key} className="mb-4">
-                            <Card className="h-100 shadow-sm border-0 hover-card">
-                                <Card.Body className="text-center p-4">
-                                    <div className="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center mb-3" style={{ width: '60px', height: '60px' }}>
-                                        <span className="fs-3">{index + 1}</span>
+                <Row className="g-4">
+                    {initiativeKeys.map((itemKey, index) => {
+                        const Icon = icons[index];
+                        const data = translations.home.initiatives[itemKey];
+                        
+                        return (
+                            <Col lg={4} md={6} key={itemKey}>
+                                <div className="initiative-card">
+                                    <div className="card-top-accent" />
+                                    <div className="initiative-icon-box">
+                                        <Icon />
                                     </div>
-                                    <Card.Title className="fw-bold">
-                                        {`Initiative ${index + 1}`}
-                                    </Card.Title>
-                                    <Card.Text className="text-muted">
-                                        {"Loading initiative details..."}
-                                    </Card.Text>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                    ))}
+                                    <div className="initiative-content">
+                                        <h4 className="fw-bold">{data.title}</h4>
+                                        <p>{data.desc}</p>
+                                    </div>
+                                    <div className="initiative-footer">
+                                        <span className="explore-link">
+                                            {translations.home.initiatives.learnMore || 'Learn More'} 
+                                            <span className="arrow">→</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </Col>
+                        );
+                    })}
                 </Row>
             </Container>
         </section>

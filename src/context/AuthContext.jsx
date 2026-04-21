@@ -49,11 +49,8 @@ export const AuthProvider = ({ children }) => {
       // Handle Storage Choice
       const storage = rememberMe ? localStorage : sessionStorage;
       storage.setItem('sea-token', token);
-      // storage.setItem('roles', decodedToken?.roles);
       const userToSet = { 
         user_id: decodedToken?.user_id,
-        username: decodedToken?.username,
-        email: decodedToken?.email,
         roles: decodedToken?.roles, 
       }
       setUser(userToSet);

@@ -4,7 +4,7 @@
 
 
 :root {
-  --primary-color: #0d6efd;
+  --primary-color: #22B2E6;
   --secondary-color: #6c757d;
   --fg-color-light: #fff;
 }
@@ -16,7 +16,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #f8f9fa;
+  background-color: #fcfdfe;
 }
 
 h1,
@@ -70,7 +70,7 @@ h6 {
 }
 
 .nav-link.active {
-  color: #fff !important;
+  color: var(--primary-color) !important;
   font-weight: 700;
 }
 

@@ -1,0 +1,127 @@
+.about-section {
+    padding: 100px 0;
+    overflow: hidden;
+}
+
+/* --- Text Styling --- */
+.section-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    background: rgba(34, 178, 230, 0.1);
+    color: #22B2E6;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1.5rem;
+}
+
+.about-content h2 {
+    color: #0f172a;
+    line-height: 1.2;
+}
+
+.about-description {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: #475569;
+    margin-bottom: 2rem;
+}
+
+.about-features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.feature-dot {
+    width: 8px;
+    height: 8px;
+    background: #22B2E6;
+    border-radius: 50%;
+}
+
+/* --- Image & Decoration --- */
+.about-image-wrapper {
+    position: relative;
+    padding: 20px;
+}
+
+.main-image-container {
+    position: relative;
+    z-index: 2;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+.about-main-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.main-image-container:hover .about-main-image {
+    transform: scale(1.05);
+}
+
+.experience-card {
+    position: absolute;
+    bottom: 30px;
+    left: -30px;
+    background: #ffffff;
+    padding: 20px 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    z-index: 3;
+}
+
+.exp-number {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #22B2E6;
+    line-height: 1;
+}
+
+.exp-text {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #64748b;
+}
+
+/* --- RTL Fixes --- */
+.rtl .experience-card {
+    left: auto;
+    right: -30px;
+}
+
+.rtl .feature-item {
+    flex-direction: row-reverse;
+}
+
+/* --- Responsive --- */
+@media (max-width: 991px) {
+    .about-section { padding: 60px 0; }
+    .experience-card {
+        left: 20px;
+        bottom: 20px;
+    }
+    .rtl .experience-card {
+        right: 20px;
+    }
+    .about-features {
+        grid-template-columns: 1fr;
+    }
+}
