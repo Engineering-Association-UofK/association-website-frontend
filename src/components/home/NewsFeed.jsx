@@ -32,7 +32,7 @@ const NewsFeed = ({ start = 0, end = 3, card = true }) => {
     return (
         <section className="py-5">
             <Container>
-                <h2 className="text-center mb-5 text-primary fw-bold">{translations.home.news.title}</h2>
+                <h2 className="text-center mb-5 fw-bold">{translations.home.news.title}</h2>
 
                 <Row className="d-none d-md-flex">
                     {newsItems.length > 0 ? (

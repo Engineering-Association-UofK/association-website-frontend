@@ -23,7 +23,34 @@
     },
     "home": {
         "hero": {
-            "cta": "Learn More"
+            "badge": "Since 2019",
+            "title": "Steering Engineering Association",
+            "subtitle": "The student's voice, the spirit of engineering, and the future of innovation.",
+            "cta": "Learn More",
+            "secondaryCta": "Our Team"
+        },
+        "about": {
+            "badge": "Since 2019",
+            "title": "About Us",
+            "subtitle": "The Steering Engineering Association is a student organization dedicated to representing engineering students and enhancing their university experience through organizing events, initiatives, and providing academic and social support. We work to build a strong and collaborative student community that contributes to developing students' skills and achieving their academic and professional goals.",
+            "feature1": "Excellence in Engineering",
+            "feature2": "Student-Led Innovation"
+        },
+        "initiatives": {
+            "title": "Initiatives",
+            "subtitle": "Discover the initiatives and events organized by the association to enhance the student experience in the Faculty of Engineering.",
+            "initiative1": {
+                "title": "Academic Mentorship Initiative",
+                "desc": "The association offers an academic guidance program aimed at supporting new students in adapting to university life and providing academic advice through experienced students."
+            },
+            "initiative2": {
+                "title": "Professional Workshop Series",
+                "desc": "The association organizes a series of workshops focused on developing professional skills, such as CV writing, interview preparation, and effective communication."
+            },
+            "initiative3": {
+                "title": "Mental Health Initiative",
+                "desc": "The association seeks to promote mental health awareness by organizing events and workshops aimed at supporting students in dealing with academic and life pressures."
+            }
         },
         "news": {
             "title": "Latest News",
@@ -137,5 +164,15 @@
             "name": "General Secretariat",
             "desc": "The vital heart of the Engineering Steering Association, responsible for coordinating between various secretariats and chairing the executive committee. It organizes inter-secretariat relations, approves plans and programs, and acts as the most dynamic body, transforming organizational visions into a cohesive institutional reality."
         }
+    },
+    "statistics": {
+        "title": "Our Impact in Numbers",
+        "subtitle": "Statistics that reflect our growth and community reach",
+        "students": "Active Students",
+        "workshops": "Workshops",
+        "events": "Events",
+        "partners": "Partners",
+        "projects": "Student Projects",
+        "volunteers": "Volunteers"
     }
 }

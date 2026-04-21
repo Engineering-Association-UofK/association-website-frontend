@@ -2,44 +2,58 @@ import React from 'react';
 import { Container, Button } from 'react-bootstrap';
 import { useLanguage } from '../../context/LanguageContext.jsx';
 import headerImg from '../../utils/images/home-page-header.jpg';
-import { useGalleryImage } from '../../features/gallery/hooks/useGallery.js';
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
+import './HeroSection.css';
 
-const HeroSection = ({title, subtitle}) => {
-    const { translations } = useLanguage();
-    const { data: heroImgData } = useGalleryImage('home_hero');
+const HeroSection = () => {
+    const { translations, language } = useLanguage();
+    const isRtl = language === 'ar';
 
     return (
-        <header className="position-relative d-flex align-items-center justify-content-center overflow-hidden" style={{ minHeight: '100vh' }}>
-            <div
-                className="position-absolute top-0 start-0 w-100 h-100 z-0"
-                style={{
-                    backgroundImage: `url(${heroImgData?.imageLink || headerImg})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    backgroundAttachment: 'fixed'
-                }}
-            >
-            </div>
+        <section className={`hero-wrapper ${isRtl ? 'rtl' : 'ltr'}`}>
+            {/* Background Layer */}
+            <div 
+                className="hero-bg" 
+                style={{ backgroundImage: `url(${headerImg})` }} 
+            />
+            
+            <div className="hero-overlay" />
 
-            <div
-                className="position-absolute top-0 start-0 w-100 h-100 z-1"
-                style={{
-                    background: 'linear-gradient(135deg, rgba(0, 51, 102, 0.85) 0%, rgba(0, 0, 0, 0.6) 100%)',
-                    pointerEvents: 'none'
-                }}
-            ></div>
-
-            <Container className="position-relative z-2 text-center text-white">
-                <h1 className="display-4 display-md-2 fw-bold mb-4 text-shadow">
-                    {title}
-                </h1>
-                <p className="lead mb-5 fs-5 fs-md-3 text-shadow opacity-90">{subtitle}</p>
-                <Button as={Link} to="/about" variant="primary" size="lg" className="rounded-pill px-5 py-3 fs-5 fw-bold shadow-lg hover-scale">
-                    {translations.home.hero.cta}
-                </Button>
+            <Container className="hero-container">
+                <div className="hero-content">
+                    <div className="hero-badge animate-fade-in">
+                        {translations.home.hero.badge}
+                    </div>
+                    
+                    <h1 className="hero-title animate-slide-up">
+                        {translations.home.hero.title}
+                    </h1>
+                    
+                    <p className="hero-subtitle animate-slide-up-delayed">
+                        {translations.home.hero.subtitle}
+                    </p>
+                    
+                    <div className="hero-actions animate-fade-in-delayed">
+                        <Button 
+                            as={Link} 
+                            to="/about/association" 
+                            className="hero-btn-primary"
+                        >
+                            {translations.home.hero.cta}
+                        </Button>
+                        <Button 
+                            as={Link} 
+                            to="/about/thirtiethCouncil" 
+                            className="hero-btn-outline"
+                        >
+                            {translations.home.hero.secondaryCta}
+                        </Button>
+                    </div>
+                </div>
             </Container>
-        </header>
+
+            <div className="hero-bottom-shape" />
+        </section>
     );
 };
 
