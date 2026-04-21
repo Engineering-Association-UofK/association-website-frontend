@@ -81,7 +81,6 @@ const SecretariatShowcase = () => {
                   <div className="card-icon" style={{ color: sec.accentColor }}><Icon /></div>
                   <h3 className="card-title">{name}</h3>
                   
-                  {/* We render the full text but use CSS to mask/clamp it for side cards */}
                   <div className="card-description-wrapper">
                     <p className="card-description">{desc}</p>
                   </div>
