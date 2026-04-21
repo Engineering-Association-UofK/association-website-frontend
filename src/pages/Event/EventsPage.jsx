@@ -239,7 +239,7 @@
 
 // export default EventsPage;
 import React, { useState, useEffect, useCallback } from "react";
-import { eventService } from "../../api/event.service";
+import { eventService  } from "../../api/event.service";
 
 const EventsPage = () => {
   const [events, setEvents] = useState([]);
