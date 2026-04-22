@@ -452,7 +452,7 @@ const RegisterForm = () => {
     "block mb-1.5 text-sm font-bold text-gray-700 uppercase tracking-wider";
 
   return (
-    <div className="min-h-screen bg-[#fcfdfb] flex items-center justify-center p-2 ">
+    <div className="min-h-screen flex items-center justify-center p-2 ">
       <div className="max-w-2xl w-full bg-white rounded-[30px] shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-gray-100 p-8 md:p-12">
         {/* Progress Bar */}
         <div className="flex items-center justify-center gap-4 mb-10">
@@ -526,7 +526,7 @@ const RegisterForm = () => {
                   name="passcode"
                   required
                   className={inputStyles}
-                  placeholder="Enter your 4-digit passcode"
+                  placeholder="Enter your passcode"
                   value={formData.passcode}
                   onChange={handleChange}
                 />
