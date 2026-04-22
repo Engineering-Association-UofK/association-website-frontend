@@ -1,41 +1,57 @@
-import React from 'react';
-import { Container, Row, Col, Card, Spinner, Alert } from 'react-bootstrap';
-import { useCmsBlogs } from '../../../features/blogs/hooks/useBlogs';
+import React, { useState, useEffect } from 'react';
+import { Container, Row, Col, Card, Spinner, Alert, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { useBlogs } from '../../../features/blogs/hooks/useBlogs';
+import "./Blogs.css";
+
+// Card Skeleton
+const SkeletonCard = () => (
+  <Col md={6} lg={4}>
+    <Card className="h-100 shadow-sm border-0">
+      <div style={{ height: '220px', backgroundColor: '#e9ecef' }} className="rounded-top skeleton-animation"></div>
+      <Card.Body>
+        <div style={{ height: '1.5rem', width: '80%', backgroundColor: '#e9ecef', marginBottom: '0.5rem' }} className="skeleton-animation"></div>
+        <div style={{ height: '1rem', width: '60%', backgroundColor: '#e9ecef', marginBottom: '0.5rem' }} className="skeleton-animation"></div>
+        <div style={{ height: '3rem', width: '100%', backgroundColor: '#e9ecef' }} className="skeleton-animation"></div>
+      </Card.Body>
+    </Card>
+  </Col>
+);
 
 const Blogs = () => {
-  const { data, isLoading, error } = useCmsBlogs('BLOG', 1, 10);
+  const [page, setPage] = useState(1);
+  const [allPosts, setAllPosts] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
+  const { data, isLoading, error, isFetching } = useBlogs('BLOG', page, 10); // Fetch 10 of `BLOG`s
 
-  React.useEffect(() => {
-    if (data) console.log('Blogs data:', data);
-    if (error) console.error('Error fetching blogs:', error);
-  }, [data, error]);
+  // add new data when it completely fetched
+  useEffect(() => {
+    if (data?.posts) {
+      if (page === 1) {
+        setAllPosts(data.posts);
+      } else {
+        setAllPosts(prev => [...prev, ...data.posts]);
+      }
+      setHasMore(page < data.pages);
+    }
+  }, [data, page]);
 
-  if (isLoading) {
+  const loadMore = () => {
+    if (hasMore && !isFetching) {
+      setPage(prev => prev + 1);
+    }
+  };
+
+  // just show the skelton on loading and error states
+  if ((isLoading || error) && page === 1 && allPosts.length === 0) {
     return (
       <Container className="py-5 text-center">
-        <Spinner animation="border" variant="primary" />
-        <p className="mt-2">Loading blogs...</p>
-      </Container>
-    );
-  }
-
-  if (error) {
-    return (
-      <Container className="py-5">
-        <Alert variant="danger">
-          <Alert.Heading>Error loading blogs</Alert.Heading>
-          <p>{error.message || 'Something went wrong. Please try again later.'}</p>
-        </Alert>
-      </Container>
-    );
-  }
-
-  const blogs = data?.posts || [];
-
-  if (blogs.length === 0) {
-    return (
-      <Container className="py-5 text-center">
-        <Alert variant="info">No blogs found.</Alert>
+        <Row className="g-4">
+          {[...Array(3)].map((_, i) => <SkeletonCard key={`skeleton-${i}`} />)}
+        </Row>
+        <div className='py-5 '>
+          <Spinner animation="border" variant="primary" />
+        </div>
       </Container>
     );
   }
@@ -43,32 +59,76 @@ const Blogs = () => {
   return (
     <Container className="py-5">
       <h1 className="text-center fw-bold mb-5 text-primary">Blogs</h1>
+
       <Row className="g-4">
-        {blogs.map((blog, idx) => (
+        {allPosts.map((blog, idx) => (
           <Col md={6} lg={4} key={blog.slug || idx}>
-            <Card className="h-100 shadow-sm border-0">
+            <Card className="h-100 shadow-sm border-0 hover-card">
               {blog.image_url && (
                 <Card.Img
                   variant="top"
-                  src={blog.image_url}
-                  style={{ height: '200px', objectFit: 'cover' }}
+                  src={blog.image_url || `https://placehold.co/600x400/e2e8f0/1e293b?text=${blog.slug}`}
+                  style={{ height: '220px', objectFit: 'cover' }}
+                  className="rounded-top"
                 />
               )}
-              <Card.Body>
-                <Card.Title>{blog.title}</Card.Title>
-                <Card.Text className="text-muted">
-                  <small>By {blog.author_name}</small>
-                  <br />
-                  <small>{new Date(blog.updated_at).toLocaleDateString()}</small>
-                </Card.Text>
-                <Card.Text className="text-muted">
-                  {blog.excerpt || 'Click to read more...'}
-                </Card.Text>
+              <Card.Body className="d-flex flex-column">
+                <Card.Title className="fw-bold text-primary">{blog.title}</Card.Title>
+                <div className="text-muted small mb-3">
+                  <i className="bi bi-person-circle me-1"></i> {blog.author_name}
+                </div>
+                <div className="text-muted small mb-3">
+                  <i className="bi bi-calendar3 me-1"></i> {new Date(blog.updated_at).toLocaleDateString()}
+                </div>
+                <Link to={`/posts/${blog.slug}`} className="btn btn-outline-primary rounded-pill mt-2">
+                  Read More <i className="bi bi-arrow-right ms-1"></i>
+                </Link>
               </Card.Body>
             </Card>
           </Col>
         ))}
+
+        {isFetching && page > 1 && (
+          <>
+            {[...Array(3)].map((_, i) => <SkeletonCard key={`skeleton-${i}`} />)}
+          </>
+        )}
       </Row>
+
+      {error && page > 1 && (
+        <Alert variant="danger" className="mt-4">
+          Failed to load more posts. Please try again.
+        </Alert>
+      )}
+
+      {hasMore && (
+        <div className="text-center mt-5">
+          <Button
+            variant="primary"
+            onClick={loadMore}
+            disabled={isFetching}
+            className="rounded-pill px-4 py-2"
+          >
+            {isFetching ? (
+              <>
+                <Spinner as="span" animation="border" size="sm" className="me-2" />
+                Loading...
+              </>
+            ) : (
+              <>
+                Load More <i className="bi bi-chevron-down ms-2"></i>
+              </>
+            )}
+          </Button>
+        </div>
+      )}
+
+      {!hasMore && allPosts.length > 0 && (
+        <div className="text-center mt-5 text-muted">
+          <i className="bi bi-check-circle-fill text-primary me-2"></i>
+          You've reached the end
+        </div>
+      )}
     </Container>
   );
 };

@@ -7,8 +7,9 @@ import ThirtiethCouncilAbout from './pages/About/thirtiethCouncil/About.jsx';
 import AdminLayout from './pages/Admin/AdminLayout';
 import Blogs from "./pages/Blogs/blog/Blogs.jsx"
 import Donation from "./pages/Blogs/donation/Donation.jsx"
-import Issues from "./pages/Blogs/issues/Issues.js"
-import News from "./pages/Blogs/news/News.js"
+import Issues from "./pages/Blogs/issues/Issues.jsx"
+import News from "./pages/Blogs/news/News.jsx"
+import Post from "./pages/Blogs/post/Post.jsx"
 import GalleryDashboard from './pages/Gallery/GalleryDashboard';
 import GalleryEntry from './pages/Gallery/GalleryEntry';
 import MainLayout from './layouts/MainLayout';
@@ -48,6 +49,7 @@ function App() {
               <Route path="/posts/resources" element={<Donation />} />
               <Route path="/posts/events" element={<Issues />} />
               <Route path="/posts/news" element={<News />} />
+              <Route path="/posts/:slug" element={<Post />} /> { /* view posts */}
             </Route>
 
 
