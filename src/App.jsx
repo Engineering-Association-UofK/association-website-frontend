@@ -5,9 +5,10 @@ import AssociationAbout from './pages/About/association/About.jsx';
 import OraganizationStructureAbout from './pages/About/oraganizationStructure/About.jsx';
 import ThirtiethCouncilAbout from './pages/About/thirtiethCouncil/About.jsx';
 import AdminLayout from './pages/Admin/AdminLayout';
-import BlogsDashboard from './pages/Blogs/BlogsDashboard';
-import Blogs from './pages/Blogs/Blogs.jsx';
-import BlogsEntry from './pages/Blogs/BlogsEntry';
+import Blogs from "./pages/Blogs/blog/Blogs.jsx"
+import Donation from "./pages/Blogs/donation/Donation.jsx"
+import Issues from "./pages/Blogs/issues/Issues.js"
+import News from "./pages/Blogs/news/News.js"
 import GalleryDashboard from './pages/Gallery/GalleryDashboard';
 import GalleryEntry from './pages/Gallery/GalleryEntry';
 import MainLayout from './layouts/MainLayout';
@@ -15,7 +16,6 @@ import StandaloneLayout from './layouts/StandaloneLayout';
 import './App.css';
 import RegisterForm from "./components/RegisterForm.jsx";
 import LoginForm from "./components/LoginForm.jsx";
-import BlogPage from "./pages/Blogs/BlogPage.jsx";
 import { AuthProvider } from './context/AuthContext.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import PublicOnlyRoute from './components/PublicOnlyRoute.jsx';
@@ -40,12 +40,14 @@ function App() {
             {/* Main Layout containing NavBar and Footer */}
             <Route element={<MainLayout />}>
               <Route path="/" element={<Home />} />
+              {/* Add other public routes here */}
               <Route path="/about/association" element={<AssociationAbout />} />
               <Route path="/about/oraganizationStructure" element={<OraganizationStructureAbout />} />
               <Route path="/about/thirtiethCouncil" element={<ThirtiethCouncilAbout />} />
-              {/* Add other public routes here */}
-              <Route path="/blogs" element={<Blogs />} />
-              <Route path="/blogs/:id" element={<BlogPage />} />
+              <Route path="/posts/announcements" element={<Blogs />} />
+              <Route path="/posts/resources" element={<Donation />} />
+              <Route path="/posts/events" element={<Issues />} />
+              <Route path="/posts/news" element={<News />} />
             </Route>
 
 
@@ -67,8 +69,8 @@ function App() {
                 <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<Navigate to="dashboard" replace />} />
                   <Route path="dashboard" element={<Dashboard />} />
-                  <Route path="blogs" element={<BlogsDashboard />} />
-                  <Route path="blogs/:id" element={<BlogsEntry />} />
+                  {/* <Route path="blogs" element={<BlogsDashboard />} /> */}
+                  {/* <Route path="blogs/:id" element={<BlogsEntry />} /> */}
                   {/* <Route path="gallery" element={<GalleryDashboard />} />
                   <Route path="gallery/:id" element={<GalleryEntry />} /> */}
                   <Route path="admin-users" element={<AdminUsersDashboard />} />
