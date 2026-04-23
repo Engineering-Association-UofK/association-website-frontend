@@ -183,8 +183,9 @@ function CertificatesList({ certificates, loading, error }) {
     return (
       <div className="bg-[#f8f9f7] rounded-[40px] p-16 text-center border-2 border-dashed border-gray-200">
         <h2 className="text-3xl font-black mb-3 italic">{t.noCerts}</h2>
-        <button className="bg-[#0e0f0c] text-[#0d6efd] font-bold py-4 px-10 rounded-full mt-4">
-          {t.explore}
+        <button className="bg-[#0e0f0c] text-[#9fe870] font-bold py-4 px-10 rounded-full mt-4">
+          {/* Explore Courses */}
+          {t.exploreCourses}
         </button>
       </div>
     );
