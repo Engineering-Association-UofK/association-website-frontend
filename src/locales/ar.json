@@ -190,5 +190,23 @@
         "partners": "شريك",
         "projects": "مشروع طلابي",
         "volunteers": "متطوع"
-    }
+    },
+    "profile": {
+    "title": "الملف الشخصي",
+    "settings": "الإعدادات",
+    "detailsTab": "التفاصيل",
+    "certificatesTab": "الشهادات",
+    "personalInfo": "المعلومات الشخصية",
+    "nameAr": "الاسم (بالعربية)",
+    "email": "البريد الإلكتروني",
+    "phone": "رقم الهاتف",
+    "department": "القسم",
+    "loadingProfile": "جاري تحميل الملف الشخصي...",
+    "loadingCerts": "جاري تحميل الشهادات...",
+    "noCerts": "لا توجد شهادات بعد",
+    "exploreCourses": "استكشف الكورسات",
+    "certId": "رقم الشهادة",
+    "grade": "الدرجة",
+    "issueDate": "تاريخ الإصدار"
+}
 }
