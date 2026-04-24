@@ -47,7 +47,7 @@ const Blogs = () => {
     return (
       <Container className="py-5 text-center">
         <Row className="g-4">
-          {[...Array(3)].map((_, i) => <SkeletonCard key={`skeleton-${i}`} />)}
+          {[...Array(9)].map((_, i) => <SkeletonCard key={`skeleton-${i}`} />)}
         </Row>
         <div className='py-5 '>
           <Spinner animation="border" variant="primary" />
@@ -80,7 +80,7 @@ const Blogs = () => {
                 <div className="text-muted small mb-3">
                   <i className="bi bi-calendar3 me-1"></i> {new Date(blog.updated_at).toLocaleDateString()}
                 </div>
-                <Link to={`/posts/${blog.slug}`} className="btn btn-outline-primary rounded-pill mt-2">
+                <Link to={`/posts/announcements/${blog.slug}`} className="btn btn-outline-primary rounded-pill mt-2">
                   Read More <i className="bi bi-arrow-right ms-1"></i>
                 </Link>
               </Card.Body>

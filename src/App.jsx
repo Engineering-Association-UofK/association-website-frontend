@@ -49,7 +49,7 @@ function App() {
               <Route path="/posts/resources" element={<Donation />} />
               <Route path="/posts/events" element={<Issues />} />
               <Route path="/posts/news" element={<News />} />
-              <Route path="/posts/:slug" element={<Post />} /> { /* view posts */}
+              <Route path="/posts/:type/:slug" element={<Post />} /> { /* view posts */}
             </Route>
 
 

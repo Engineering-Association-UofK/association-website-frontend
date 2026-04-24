@@ -19,8 +19,15 @@ const PostSkeleton = () => (
 );
 
 const Post = () => {
-  const { slug } = useParams();
+  const { type, slug } = useParams();
   const { data: post, isLoading, error } = usePost(slug);
+
+  const backNavigation = {
+    news: { path: '/posts/news', label: 'news' },
+    announcements: { path: '/posts/announcements', label: 'blogs' },
+    resources: { path: '/posts/resources', label: 'donations' },
+    events: { path: '/posts/events', label: 'issues' },
+  };
 
   if (isLoading) {
     return (
@@ -41,7 +48,9 @@ const Post = () => {
         <Alert variant="danger">
           <Alert.Heading>Error</Alert.Heading>
           <p>{error.response?.data?.message || error.message || 'Failed to load blog post'}</p>
-          <Link to="/posts/announcements" className="btn btn-outline-primary">Back to Blogs</Link>
+          <Link to={backNavigation[type]?.path || '/posts/news'} className="btn btn-outline-primary">
+            Back to {backNavigation[type]?.label || 'news'}
+          </Link>
         </Alert>
       </Container>
     );
@@ -50,22 +59,16 @@ const Post = () => {
   if (!post) return null;
 
   return (
-    <article className="py-5 bg-light">
+    <article className="py-5 bg-light" style={{ backgroundImage: `url(${post.image_url})`, backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative', zIndex: 0}}>
+      {post.image_url && <div style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'white', opacity: 0.4, zIndex: 1, zIndex: '-1'}}></div>}
+
       <Container>
-        <Link to="/posts/announcements" className="btn btn-outline-secondary rounded-pill mb-4">
-          <i className="bi bi-arrow-left me-2"></i> Back to Blogs
+        <Link to={backNavigation[type]?.path || '/posts/news'} className="btn btn-outline-secondary rounded-pill mb-4">
+          <i className="bi bi-arrow-left me-2"></i> Back to {backNavigation[type]?.label || 'news'}
         </Link>
 
         <div className="bg-white rounded-4 shadow-sm overflow-hidden">
-          {post.image_url && (
-            <img
-              src={post.image_url || `https://placehold.co/600x400/e2e8f0/1e293b?text=${post.title}`}
-              alt={post.title}
-              className="w-100"
-              style={{ maxHeight: '500px', objectFit: 'cover' }}
-            />
-          )}
-          <div className="p-4 p-lg-5">
+          <div className="position-relative p-4 p-lg-5" style={{ zIndex: 2 }}>
             <h1 className="display-5 fw-bold text-primary mb-3">{post.title}</h1>
             <div
               className="blog-content"
