@@ -126,35 +126,48 @@ const NavigationBar = () => {
     <>
       <style>
         {`
+          /* Desktop Hover Dropdown */
           @media (min-width: 992px) {
             .dropdown:hover .dropdown-menu {
               display: block;
               margin-top: 0;
             }
-            .dropdown-toggle::after {
-              display: inline-block;
-              margin-left: 0.255em;
-              vertical-align: 0.255em;
-              content: "";
-              border-top: 0.3em solid;
-              border-right: 0.3em solid transparent;
-              border-bottom: 0;
-              border-left: 0.3em solid transparent;
-            }
           }
-          .nav-link.active, .dropdown-item.active {
-            background-color: #22B2E6 !important;
-            color: white !important;
+
+          .desktop-nav .nav-link, 
+          .desktop-nav .dropdown-toggle {
+            color: #333 !important;
+            border-bottom: 2px solid transparent;
+            padding-bottom: 2px !important;
+            transition: all 0.2s ease-in-out;
           }
-          .dropdown-item:active {
-            background-color: #22B2E6 !important;
+
+          /* Simple Hover & Active Underline */
+          .desktop-nav .nav-link:hover,
+          .desktop-nav .nav-link.active,
+          .desktop-nav .dropdown-toggle:hover {
+            color: #22B2E6 !important;
           }
-          /* Make desktop nav horizontal */
+
+          .language-toggle {
+            color: #22B2E6 !important;
+            text-decoration: none !important;
+            border: none !important;
+          }
+
+          /* Dropdown Menu Styling */
+          .dropdown-item {
+            transition: background 0.2s;
+          }
+          .dropdown-item.active {
+            background-color: #f8f9fa !important;
+            color: #22B2E6 !important;
+            font-weight: bold !important;
+          }
+
           .desktop-nav {
             display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 0.5rem;
+            gap: 20px;
           }
         `}
       </style>
@@ -189,7 +202,7 @@ const NavigationBar = () => {
             <Dropdown>
               <Dropdown.Toggle
                 variant="link"
-                className="text-decoration-none fw-bold p-0 border-0 d-flex align-items-center"
+                className="language-toggle text-decoration-none fw-bold p-0 border-0 d-flex align-items-center"
                 style={{ color: '#22B2E6', fontSize: '0.95rem' }}
               >
                 <i className="bi bi-translate me-1"></i> {currentLabel}
