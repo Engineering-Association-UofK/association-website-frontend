@@ -97,7 +97,7 @@ const Footer = () => {
                 `}
             </style>
 
-            <footer className={`footer-light py-5 mt-auto ${isRtl ? 'rtl' : 'ltr'}`}>
+            <footer className={`footer-light pt-5 pb-1 mt-auto ${isRtl ? 'rtl' : 'ltr'}`}>
                 <Container>
                     <Row className="gy-4">
                         {/* Brand & About */}
