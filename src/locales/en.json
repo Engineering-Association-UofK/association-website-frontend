@@ -188,5 +188,23 @@
         "partners": "Partners",
         "projects": "Student Projects",
         "volunteers": "Volunteers"
-    }
+    },
+    "profile": {
+    "title": "PROFILE",
+    "settings": "SETTINGS",
+    "detailsTab": "Details",
+    "certificatesTab": "Certificates",
+    "personalInfo": "Personal Info",
+    "nameAr": "Name (Arabic)",
+    "email": "Email",
+    "phone": "Phone",
+    "department": "Department",
+    "loadingProfile": "Loading Profile...",
+    "loadingCerts": "Loading Certificates...",
+    "noCerts": "No Certificates Yet",
+    "exploreCourses": "Explore Courses",
+    "certId": "Certificate ID",
+    "grade": "Grade",
+    "issueDate": "Issue Date"
+}
 }
