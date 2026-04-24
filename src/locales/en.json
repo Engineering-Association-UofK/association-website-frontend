@@ -88,20 +88,34 @@
         "register": "Register",
         "error": "Login failed. Please check your credentials."
     },
-    "register": {
-        "title": "Register",
-        "username": "Username",
-        "email": "Email Address",
-        "emailExample": "name@example.com",
-        "password": "Password",
-        "confirmPassword": "Confirm Password",
-        "remember": "Remember Me",
-        "forgotPassword": "Forgot Password?",
-        "register": "Register",
-        "loading": "Registering...",
-        "haveAccount": "Already have an account?",
-        "login": "Login"
-    },
+"register": {
+    "title": "Create New Account",
+    "username": "Username",
+    "email": "Email Address",
+    "emailExample": "name@example.com",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "remember": "Remember Me",
+    "forgotPassword": "Forgot Password?",
+    "register": "Register",
+    "loading": "Registering...",
+    "haveAccount": "Already have an account?",
+    "login": "Login",
+
+    "studentIndex": "Student Index Number",
+    "uniId": "University / National ID",
+    "passcode": "Passcode",
+    "passcodeHelp": "The passcode you received from the Steering Engineering Association.",
+    "nameEn": "Full Name (English)",
+    "nameAr": "Full Name (Arabic)",
+    "gender": "Gender",
+    "male": "Male",
+    "female": "Female",
+    "department": "Department",
+    "phone": "Phone Number",
+    "next": "Next",
+    "back": "Back"
+},
     "footer": {
         "contact": "Contact Us",
         "follow": "Follow Us",
@@ -174,5 +188,23 @@
         "partners": "Partners",
         "projects": "Student Projects",
         "volunteers": "Volunteers"
-    }
+    },
+    "profile": {
+    "title": "PROFILE",
+    "settings": "SETTINGS",
+    "detailsTab": "Details",
+    "certificatesTab": "Certificates",
+    "personalInfo": "Personal Info",
+    "nameAr": "Name (Arabic)",
+    "email": "Email",
+    "phone": "Phone",
+    "department": "Department",
+    "loadingProfile": "Loading Profile...",
+    "loadingCerts": "Loading Certificates...",
+    "noCerts": "No Certificates Yet",
+    "exploreCourses": "Explore Courses",
+    "certId": "Certificate ID",
+    "grade": "Grade",
+    "issueDate": "Issue Date"
+}
 }
