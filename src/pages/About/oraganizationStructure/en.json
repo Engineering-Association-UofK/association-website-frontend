@@ -1,0 +1,202 @@
+{
+  "mediaSecretariat": {
+    "title": "Media Secretariat",
+    "description": "The secretariat concerned with highlighting the association's identity and conveying its activities and initiatives creatively, reflecting the true image of the student environment, and contributing to effective communication with the university community and the external environment. It seeks to produce professional media content that expresses the spirit of the faculty and enhances its institutional presence, while serving as an incubator for developing members' skills and training them in the latest media technologies to improve organizational performance.",
+    "offices": [
+      {
+        "name": "Management and Strategic Planning",
+        "icon": "bi-diagram-3",
+        "description": "Responsible for building and developing media plans, coordinating efforts among secretariat offices, ensuring content consistency with strategic goals, and evaluating media performance for content efficiency."
+      },
+      {
+        "name": "Content Writing",
+        "icon": "bi-pencil",
+        "description": "Specializes in crafting the linguistic message of the association by formulating texts that express the faculty's values and vision, editing textual content for digital platforms, official reports, and video scripts in a clear, engaging, persuasive style."
+      },
+      {
+        "name": "Design Office",
+        "icon": "bi-brush",
+        "description": "Handles the visual translation of ideas, converting abstract concepts into creative designs that support the association's visual identity and enhance its impact, by innovating visual templates for media campaigns and periodic publications."
+      },
+      {
+        "name": "Editing Office",
+        "icon": "bi-film",
+        "description": "Produces dynamic visual content that documents activities and presents university projects and events with an innovative, attractive visual perspective by producing professional videos and motion graphics."
+      },
+      {
+        "name": "Documentation Office",
+        "icon": "bi-camera",
+        "description": "Serves as the visual memory of the association, documenting moments through a professional lens and capturing university life in all its details to produce authentic visual content that immortalizes activities and events, providing a rich media archive."
+      }
+    ]
+  },
+  "academicSecretariat": {
+    "title": "Academic Secretariat",
+    "description": "The primary pillar responsible for supporting and enriching the educational journey of faculty students, removing educational obstacles, and creating an integrated environment that goes beyond lecture halls to develop skills and research aspects, in order to achieve academic and professional excellence.",
+    "offices": [
+      {
+        "name": "Academic Development Office",
+        "icon": "bi-book",
+        "description": "Specializes in developing students' academic experience by helping them effectively understand academic requirements through initiatives such as guidance, counseling, and resource provision, to overcome various academic challenges and enhance academic achievement."
+      },
+      {
+        "name": "Activities and Training Office",
+        "icon": "bi-trophy",
+        "description": "Seeks to present theoretical knowledge in an innovative applied format, honing students' technical and professional skills and developing their intellect and character according to their professional future requirements."
+      },
+      {
+        "name": "Scientific Research Office",
+        "icon": "bi-flask",
+        "description": "Works to instill and cement a culture of research and innovation among students, through its introductory and applied programs that develop students' research skills and their abilities in scientific inquiry and analysis, contributing to building a creative university community capable of producing original engineering and cognitive solutions."
+      }
+    ]
+  },
+  "sportsSecretariat": {
+    "title": "Sports Secretariat",
+    "description": "The sports secretariat is responsible for activating and establishing physical and mental culture within the faculty community, managing and overseeing all sports activities, directly supervising the teams representing the faculty in university forums, and raising awareness about the importance of physical activity and its history as an integral part of university life quality.",
+    "offices": [
+      {
+        "name": "Team Sports Office",
+        "icon": "bi-people",
+        "description": "Specializes in organizing and managing events, technical and administrative supervision of team sports such as football, basketball, and volleyball, which enhance team spirit and cooperation among students."
+      },
+      {
+        "name": "Chess Club",
+        "icon": "bi-trophy",
+        "description": "Represents the intellectual face of sports activity, focusing on developing strategic thinking and logical analysis skills by holding training sessions, organizing friendly matches, and conducting internal tournaments."
+      },
+      {
+        "name": "Table Tennis Club",
+        "icon": "bi-award",
+        "description": "Provides a vibrant sports environment for table tennis enthusiasts by organizing competitive leagues for faculty students, supervising their training, and coordinating friendly matches among them."
+      }
+    ]
+  },
+  "externalRelationsSecretariat": {
+    "title": "External Relations",
+    "description": "The interface connecting Engineering faculty students to the academic and professional world beyond the university. The secretariat seeks to create real opportunities for students through partnerships with universities, international organizations, and professional institutions, alongside providing grants, training, and developmental activities that open new horizons for students and help them build a strong professional path from their study seats.",
+    "offices": [
+      {
+        "name": "External Communication Office",
+        "icon": "bi-globe",
+        "description": "Builds bridges of communication with institutions inside and outside Sudan by establishing a network of international relations and partnerships that serve students, searches for collaborative and training opportunities, grants and fellowships, and organizes informational events to help students discover global opportunities and apply for them professionally."
+      },
+      {
+        "name": "Joint Work Office",
+        "icon": "bi-people",
+        "description": "Works in an integrative spirit within the association by coordinating with other secretariats to ensure efficient implementation of joint programs. The office contributes to planning student projects, coordinating events, and unifying efforts to serve the Engineering faculty community, enhancing internal cooperation and increasing the secretariat's impact at the association level."
+      }
+    ]
+  },
+  "culturalSecretariat": {
+    "title": "Cultural Secretariat",
+    "description": "The cultural secretariat is the creative incubator aimed at enriching the university life experience by creating interactive spaces that bring students together around the values of art, literature, and knowledge. It serves as a supporting and organizing umbrella for the work of specialized clubs, seeking to strengthen the spirit of belonging and enhance free expression skills, acting as a bridge connecting the engineering community with its cultural environment.",
+    "clubs": [
+      {
+        "name": "Literary Club",
+        "icon": "bi-feather",
+        "description": "A platform that brings together word lovers (poets, readers, and writers) in an environment that encourages reception and expression, aiming to discover and refine literary talents and contribute to producing the cultural magazine and newspaper."
+      },
+      {
+        "name": "Artistic Club",
+        "icon": "bi-palette",
+        "description": "A space bringing together fans of visual and performing arts (drawing, photography, singing, theater, and music), allowing members to express their artistic vision in innovative ways."
+      },
+      {
+        "name": "Scientific Club",
+        "icon": "bi-flask",
+        "description": "A destination for those interested in research and discovery, presenting content that links theoretical and social sciences with daily life in an interactive manner, simplifying science and spreading scientific awareness."
+      },
+      {
+        "name": "Debate Club",
+        "icon": "bi-mic",
+        "description": "A space for enhancing critical thinking and developing speech and persuasion skills, contributing to building analytical and logical discussion abilities on intellectual and social issues."
+      },
+      {
+        "name": "Languages Club",
+        "icon": "bi-translate",
+        "description": "A window to the world that provides opportunities to learn new languages and discover different cultures, expanding communication horizons and cultural openness."
+      },
+      {
+        "name": "Podcast Committee",
+        "icon": "bi-headphones",
+        "description": "A voice platform documenting human and creative experiences within the engineering community, highlighting the inspiration and ambitions that shape the human face of engineering."
+      }
+    ]
+  },
+  "financialSecretariat": {
+    "title": "Financial Secretariat",
+    "description": "Responsible for full supervision of financial resources and controlling incoming and outgoing cash flows. The secretariat aims to ensure the highest levels of transparency by preparing estimated budgets and accounting schedules, as well as developing strategies to enhance the association's financial resources to ensure continuity of its activities and initiatives.",
+    "offices": [
+      {
+        "name": "Financial Monitoring Office",
+        "icon": "bi-calculator",
+        "description": "Represents the central accounting and supervisory unit of the association, specializing in organizing and controlling all financial data, documentation and archiving of purchases, with periodic follow‑up of financial work across all association secretariats to ensure execution accuracy and adherence to approved budgets, providing periodic financial reports to management."
+      },
+      {
+        "name": "Projects and Partnerships Office",
+        "icon": " bi-piggy-bank",
+        "description": "Concerned with financial research and development from a 'community entrepreneurship' perspective, finding creative ways to reduce operational expenses without compromising activity quality, and increasing financial inputs to the association through innovative investment initiatives, thus supporting the association's financial independence."
+      }
+    ]
+  },
+  "generalSecretariat": {
+    "title": "General Secretariat",
+    "description": "The general secretariat is the beating heart of the Engineering Association, responsible for coordination between the different secretariats, chairing the executive committee, organizing the relationship between secretariats, and approving their plans, visions, and programs. It is the most dynamic body, working to transform organizational visions into an interconnected institutional reality.",
+    "offices": [
+      {
+        "name": "Awareness Office",
+        "icon": "bi-megaphone",
+        "description": "Raises awareness among association members about public work and union work in universities and their benefits, simplifies concepts related to levels of public work at the university – from the batch family up to the University of Khartoum Students' Union – and will be responsible for formulating the vision of Engineering faculty students for the return of the University of Khartoum Students' Union."
+      },
+      {
+        "name": "Technical Office",
+        "icon": "bi-laptop",
+        "description": "The digital arm of the association, responsible for building and developing its technological infrastructure. It is responsible for creating and managing the association's website, which will be a space for association members and its various structures, and will contain several sections for automating the association's systems and internal procedures."
+      }
+    ]
+  },
+  "socialSecretariat": {
+    "title": "Social Secretariat",
+    "description": "The humanitarian and service pillar of the association, promoting the values of solidarity and cooperation within the faculty community, improving the university environment materially and morally through its various offices, supporting needy students, and providing a conducive study environment dominated by a spirit of responsibility and mutual support.",
+    "offices": [
+      {
+        "name": "Social Activity Office",
+        "icon": "bi-heart",
+        "description": "Considered the beating heart of the secretariat, it plans and implements all social activities in the faculty, from registering new students to the annual Engineering faculty Ramadan Iftar and many other events."
+      },
+      {
+        "name": "Social Support Fund Office",
+        "icon": "bi-hand-thumbs-up",
+        "description": "Specializes in the affairs of needy students to improve their conditions, collecting donations from charitable organizations and delivering them to beneficiaries, in addition to implementing the association's charitable projects."
+      },
+      {
+        "name": "Mosque and Rest Area Office",
+        "icon": "bi-building",
+        "description": "Prepares the mosque and rest area environment, fixes any problems or malfunctions, and supervises the religious and awareness programs and lessons held there."
+      },
+      {
+        "name": "Services Office",
+        "icon": "bi-droplet",
+        "description": "A direct service role, divided into two main sections: (water and restrooms). It collaborates with the Mosque Office in maintaining water connections and drinking water coolers, distinguished by its immediate tangible results."
+      },
+      {
+        "name": "University Environment Office",
+        "icon": "bi-tree",
+        "description": "Closely linked to the Services Office, it cares for the faculty's aesthetics – cleanliness, decoration, murals, tree planting – and looks after shade structures and green spaces to add elegance to the university environment."
+      }
+    ]
+  },
+  "executiveCommittee": {
+    "title": "Executive Committee",
+    "description": "The executive committee is the practical and administrative arm of the Engineering Association, responsible for planning, coordinating, and implementing all activities and projects that serve the Engineering faculty community. It comprises eight specialized secretariats working in harmony and integration under an administrative structure, striving to achieve the vision of Engineering faculty students in building a pioneering and integrated university environment."
+  },
+  "thirtyCouncil": {
+    "title": "Thirty Council",
+    "description": "The highest legislative and supervisory authority within the Engineering Association after the General Assembly. The council consists of 30 members elected through free and fair elections held at the beginning of each academic year. Council members elect 11 among themselves to fill the positions of the Executive Committee, who are entrusted with transforming the association's plans and visions into tangible executive reality."
+  },
+  "joinSection": {
+    "title": "Join Section",
+    "description": "The secretariats and their offices periodically open application doors for ambitious students wishing to actively contribute to the faculty community. Do not miss the opportunity to develop your skills and work within our team; register and create your account on the website now to receive notifications of admission openings as soon as they are announced, and to be among the first applicants to contribute to building the renaissance of our Engineering faculty community."
+  }
+}
