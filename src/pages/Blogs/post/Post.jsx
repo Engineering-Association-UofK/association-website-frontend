@@ -60,7 +60,7 @@ const Post = () => {
 
   return (
     <article className="py-5 bg-light" style={{ backgroundImage: `url(${post.image_url})`, backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative', zIndex: 0}}>
-      {post.image_url && <div style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'white', opacity: 0.4, zIndex: -1}}></div>}
+      {post.image_url && <div style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'white', opacity: 0.4, zIndex: '-1'}}></div>}
 
       <Container>
         <Link to={backNavigation[type]?.path || '/posts/news'} className="btn btn-outline-secondary rounded-pill mb-4">
