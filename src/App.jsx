@@ -36,7 +36,7 @@ import ImageStorageDashboard from "./pages/Image Storage/ImageStorageDashboard.j
 import ImageStorageEntry from "./pages/Image Storage/ImageStorageEntry.jsx";
 import { CONFIG } from "./config";
 import ProfilePage from "./pages/Profile/ProfilePage.jsx";
-
+import UsersDashboard from './pages/Users/UsersDashboard.jsx';
 
 function App() {
   return (
@@ -88,21 +88,24 @@ function App() {
                   {/* <Route path="blogs/:id" element={<BlogsEntry />} /> */}
                   {/* <Route path="gallery" element={<GalleryDashboard />} />
                   <Route path="gallery/:id" element={<GalleryEntry />} /> */}
-                <Route path="admin-users" element={<AdminUsersDashboard />} />
-                <Route path="admin-users/:id" element={<AdminUsersEntry />} />
-                <Route path="admin-profile" element={<AdminProfile />} />
-                <Route path="change-password" element={<ChangePassword />} />
-                <Route path="bot-commands" element={<BotCommandsDashboard />} />
-                <Route path="bot-commands/:id" element={<BotCommandsEntry />} />
-                <Route
-                  path="image-storage"
-                  element={<ImageStorageDashboard />}
-                />
-                <Route
-                  path="image-storage/:id"
-                  element={<ImageStorageEntry />}
-                />
-              </Route>
+                  <Route element={<ProtectedRoute allowedRoles={["sys:super_admin", "sys:admin_manager"]} />}>
+                    <Route path="admin-users" element={<AdminUsersDashboard />} />
+                    <Route path="admin-users/:id" element={<AdminUsersEntry />} />
+                  </Route>
+                  <Route path="users" element={<UsersDashboard />} />
+                  <Route path="admin-profile" element={<AdminProfile />} />
+                  <Route path="change-password" element={<ChangePassword />} />
+                  <Route path="bot-commands" element={<BotCommandsDashboard />} />
+                  <Route path="bot-commands/:id" element={<BotCommandsEntry />} />
+                  <Route
+                    path="image-storage"
+                    element={<ImageStorageDashboard />}
+                  />
+                  <Route
+                    path="image-storage/:id"
+                    element={<ImageStorageEntry />}
+                  />
+                </Route>
             </Route>
             {/* </Route> */}
             {/* STUDENT ROUTES (Future) */}

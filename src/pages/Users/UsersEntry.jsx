@@ -6,23 +6,21 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner';
 import Alert from 'react-bootstrap/Alert';
-import { useUpdateAdminUser } from '../../features/admin users/hooks/useAdminUsers';
+import { useUpdateUser } from '../../features/users/hooks/useUsers';
 import { roles } from '../../utils/roles';
-import './AdminUsers.css'
+import './Users.css'
 
-const AdminUsersEntry = () => {
+const UsersEntry = () => {
 
   const { id } = useParams();
   
   const navigate = useNavigate();
   const location = useLocation();
 
-  const userFromState = location.state?.user;
+  // const userFromState = location.state?.user;
 
 //   const isEditMode = id && id !== '0';
-
-//   const createMutation = useCreateAdminUser();
-  const updateMutation = useUpdateAdminUser();
+  const updateMutation = useUpdateUser();
 
 //   const { 
 //       data: fetchedAdminUser, 
@@ -285,4 +283,4 @@ const AdminUsersEntry = () => {
   )
 }
 
-export default AdminUsersEntry
+export default UsersEntry

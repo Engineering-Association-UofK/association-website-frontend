@@ -69,20 +69,20 @@ export const useUpdateAdminUser = () => {
   });
 };
 
-// // Hook to UPDATE a admin user email
-// export const useUpdateAdminUserEmail = () => {
-//   const queryClient = useQueryClient();
+// Hook to UPDATE a admin user email
+export const useUpdateAdminUserEmail = () => {
+  const queryClient = useQueryClient();
 
-//   return useMutation({
-//     mutationFn: ({data}) => adminUsersService.updateEmail(data),
-//     onSuccess: (data, variables) => {
-//       // Refresh the list
-//       queryClient.invalidateQueries(['adminUsers', 'list']);
-//       // Refresh the specific admin user details
-//       queryClient.invalidateQueries(['adminUsers', 'detail', variables.id]);
-//     },
-//   });
-// };
+  return useMutation({
+    mutationFn: ({data}) => adminUsersService.updateEmail(data),
+    onSuccess: (data, variables) => {
+      // Refresh the list
+      queryClient.invalidateQueries(['adminUsers', 'list']);
+      // Refresh the specific admin user details
+      queryClient.invalidateQueries(['adminUsers', 'detail', variables.id]);
+    },
+  });
+};
 
 // Hook to DELETE a admin user
 export const useDeleteAdminUser = () => {

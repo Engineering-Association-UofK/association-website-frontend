@@ -8,7 +8,7 @@ import AdminSidebar from '../../components/AdminSidebar'
 const AdminLayout = () => {
   return (
     <div className="min-vh-100 bg-light">
-        <div className="py-3">
+        <div className="pt-3">
             <Link to="/" className='px-3'>
                 <Button variant="link" className="text-decoration-none text-secondary fw-bold p-0 hover-scale">
                     <FontAwesomeIcon icon={faArrowLeft} className="me-2" />

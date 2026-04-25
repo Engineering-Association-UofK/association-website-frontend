@@ -1,6 +1,7 @@
 export const roles = [
     {value: "sys:super_admin", name: "Super Admin"},
     {value: "sys:admin", name: "Admin"},
+    {value: "sys:admin_manager", name: "Admins Manager"},
     {value: "sys:user_manager", name: "Users Manager"},
     {value: "sys:tech_support", name: "Technical Support"},
     {value: "content:blog_manager", name: "Blogs Manager"},
