@@ -29,3 +29,22 @@
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
+
+.cards-container {
+  display: flex;
+  gap: 40px;
+  align-items: stretch;
+  justify-content: space-around;
+  align-content: center;
+  flex-wrap: wrap;
+}
+
+.card {
+  max-width: 85vw;
+}
+
+@media (max-width: 1000px) {
+  .cards-container {
+    gap: 20px;
+  }
+}
