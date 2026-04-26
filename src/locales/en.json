@@ -205,6 +205,20 @@
     "exploreCourses": "Explore Courses",
     "certId": "Certificate ID",
     "grade": "Grade",
-    "issueDate": "Issue Date"
+    "issueDate": "Issue Date",
+    "securityTab": "Security",
+
+    "password":{
+        "securityTab": "Security",
+        "securityTitle": "Security Settings",
+        "oldPassword": "Old Password",
+        "newPassword": "New Password",
+        "confirmPassword": "Confirm Password",
+        "updateBtn": "Update Password",
+        "updatingBtn": "Updating...",
+        "passwordMismatch": "New passwords do not match",
+        "updateSuccess": "Password updated successfully!",
+        "networkError": "Network error, please try again later"
+    }
 }
 }
