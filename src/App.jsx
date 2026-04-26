@@ -36,6 +36,8 @@ import ImageStorageDashboard from "./pages/Image Storage/ImageStorageDashboard.j
 import ImageStorageEntry from "./pages/Image Storage/ImageStorageEntry.jsx";
 import { CONFIG } from "./config";
 import ProfilePage from "./pages/Profile/ProfilePage.jsx";
+import ScrollToTop from "./components/ScrollToTop";
+import ScrollToTopButton from "./components/ScrollToTopButton.jsx";
 
 
 function App() {
@@ -43,6 +45,7 @@ function App() {
     <AuthProvider>
       <LanguageProvider>
         <Router>
+          <ScrollToTop />
           <Routes>
             {/* PUBLIC ROUTES (Accessible by everyone) */}
             {/* Main Layout containing NavBar and Footer */}
@@ -112,6 +115,7 @@ function App() {
             */}
             <Route path="*" element={<Navigate to={"/"} />} />
           </Routes>
+          <ScrollToTopButton />
         </Router>
       </LanguageProvider>
     </AuthProvider>
