@@ -63,10 +63,7 @@ function App() {
             {/* GUEST ONLY ROUTES (Login/Register) 
               - Logged in users get kicked out to /admin or / */}
             {/* Standalone Layout containing only Back to Home button */}
-            <Route
-              element={<StandaloneLayout />}
-               
-            >
+            <Route element={<StandaloneLayout />}>
               <Route element={<PublicOnlyRoute />}>
                 <Route path="/login" element={<LoginForm />} />
                 <Route path="/register" element={<RegisterForm />} />

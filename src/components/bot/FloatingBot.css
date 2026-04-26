@@ -10,6 +10,12 @@
     z-index: 1050;
 }
 
+[dir="rtl"] .floating-bot-container {
+    right: auto;
+    left: 25px;
+    bottom: auto;
+}
+
 /* Chat Window Structure */
 .chat-window {
     width: 360px;

@@ -1,18 +1,46 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useBot } from '../../hooks/useBot.js';
+import { useBot, useGoBack } from '../../features/bot/hooks/useBot.js'; 
 import { useLanguage } from '../../context/LanguageContext';
 import { useAuth } from '../../context/AuthContext';
 import './FloatingBot.css';
 
+const getSessionId = () => {
+    let sid = sessionStorage.getItem('bot_session_id');
+    if (!sid) {
+        sid = crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).substring(2);
+        sessionStorage.setItem('bot_session_id', sid);
+    }
+    return sid;
+};
+
 const FloatingBot = () => {
+    // UI State
     const [isOpen, setIsOpen] = useState(false);
     const [isClosing, setIsClosing] = useState(false);
     const [showHelp, setShowHelp] = useState(false);
 
+    // Chat State
+    const [sessionId, setSessionId] = useState(getSessionId());
+    const [messages, setMessages] = useState([]);
+    const [currentOptions, setCurrentOptions] = useState([]);
+    const [nodeType, setNodeType] = useState('message'); // 'message', 'input', or 'action'
+    const [inputValue, setInputValue] = useState('');
+    const [botError, setBotError] = useState(null);
+
     const { language, translations } = useLanguage();
     const { isAuthenticated } = useAuth();
-
     const dir = language === 'ar' ? 'rtl' : 'ltr';
+
+    const messagesEndRef = useRef(null);
+
+    // Mutations
+    const botMutation = useBot();
+    const goBackMutation = useGoBack();
+
+    const loading = botMutation.isPending || botMutation.isLoading || 
+                    goBackMutation.isPending || goBackMutation.isLoading;
+                    
+    const isFinal = currentOptions.length === 0 && messages.length > 0 && nodeType !== 'input';
 
     useEffect(() => {
         if (!isAuthenticated) {
@@ -23,8 +51,79 @@ const FloatingBot = () => {
         }
     }, [isAuthenticated]);
 
-    const { messages, options, loading, isFinal, sendMessage, resetBot } = useBot(language);
-    const messagesEndRef = useRef(null);
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages, loading, botError]);
+
+    // Handle incoming response
+    const handleBotResponse = (response) => {
+        const payload = response.data || response; 
+        
+        setMessages(prev => [...prev, { sender: 'bot', text: payload.content }]);
+        setCurrentOptions(payload.options || []);
+        setNodeType(payload.node_type || 'message');
+        setBotError(null);
+    };
+
+    const handleBotError = (err) => {
+        setBotError(translations.bot?.error || "Something went wrong. Please try again.");
+    };
+
+    // Handle user choices or inputs
+    const handleUserReply = (keyword, label, userInput = "") => {
+        // Display what the user typed or clicked
+        const displayText = userInput ? userInput : label;
+        setMessages(prev => [...prev, { sender: 'user', text: displayText }]);
+        
+        setCurrentOptions([]); 
+        setInputValue("");
+        setBotError(null);
+        
+        botMutation.mutate(
+            { sessionId, keyword, input: userInput, language },
+            { 
+                onSuccess: handleBotResponse,
+                onError: handleBotError
+            }
+        );
+    };
+
+    // Handle Back Navigation
+    const handleGoBack = () => {
+        setCurrentOptions([]);
+        setBotError(null);
+        goBackMutation.mutate(
+            { sessionId, keyword: 'back', input: '', language },
+            { 
+                onSuccess: (res) => {
+                    // Remove last user-bot pair to mimic going backward visually
+                    setMessages(prev => prev.length > 2 ? prev.slice(0, -3) : prev);
+                    handleBotResponse(res);
+                },
+                onError: handleBotError
+            }
+        );
+    };
+
+    // Start completely over
+    const resetBot = () => {
+        const newSid = crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).substring(2);
+        sessionStorage.setItem('bot_session_id', newSid);
+        setSessionId(newSid);
+        setMessages([]);
+        setCurrentOptions([]);
+        setNodeType('message');
+        setInputValue("");
+        setBotError(null);
+        
+        botMutation.mutate(
+            { sessionId: newSid, keyword: '@root', input: "", language },
+            { 
+                onSuccess: handleBotResponse,
+                onError: handleBotError
+            }
+        );
+    };
 
     const toggleBot = () => {
         if (showHelp) setShowHelp(false); 
@@ -34,7 +133,7 @@ const FloatingBot = () => {
         setIsOpen(newState);
         
         if (newState && messages.length === 0) {
-            sendMessage('@root');
+            resetBot();
         }
     };
 
@@ -45,9 +144,11 @@ const FloatingBot = () => {
         }
     };
 
-    useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, [messages, loading]);
+    const handleInputKeyPress = (e) => {
+        if (e.key === 'Enter' && inputValue.trim() && currentOptions.length > 0) {
+            handleUserReply(currentOptions[0].keyword, '', inputValue.trim());
+        }
+    };
 
     const origin = dir === 'rtl' ? 'bottom left' : 'bottom right';
 
@@ -57,7 +158,6 @@ const FloatingBot = () => {
             style={{ direction: dir }}
             dir={dir}
         >
-            
             {(isOpen || isClosing) && (
                 <div
                     className={`chat-window mb-3 shadow-lg ${isClosing ? 'bot-window-exit' : 'bot-window-enter'}`}
@@ -96,6 +196,7 @@ const FloatingBot = () => {
                                 </div>
                             </div>
                         ))}
+                        
                         {loading && (
                             <div className="d-flex justify-content-start mb-3">
                                 <div className="msg-bubble msg-bot shadow-sm d-flex gap-1 align-items-center">
@@ -105,25 +206,69 @@ const FloatingBot = () => {
                                 </div>
                             </div>
                         )}
+
+                        {/* Error Handling UI */}
+                        {botError && (
+                            <div className="d-flex justify-content-center mb-3">
+                                <span className="badge bg-danger p-2 shadow-sm rounded-pill fw-medium">
+                                    <i className="bi bi-exclamation-triangle me-1"></i> {botError}
+                                </span>
+                            </div>
+                        )}
                         <div ref={messagesEndRef} />
                     </div>
 
                     {/* Footer / Options */}
                     <div className="chat-footer">
-                        <div className="d-flex flex-wrap gap-2 justify-content-center">
-                            {options.map((opt, idx) => (
-                                <button 
-                                    key={idx} 
-                                    className="btn btn-sm rounded-pill bot-options-btn px-3 py-2"
-                                    onClick={() => sendMessage(opt.keyword, opt.trigger)}
+                        {/* 1. If type is INPUT */}
+                        {nodeType === 'input' && currentOptions.length > 0 && (
+                            <div className="d-flex w-100 gap-2 mb-2">
+                                <input 
+                                    type="text" 
+                                    className="form-control form-control-sm rounded-pill px-3 shadow-none border-secondary" 
+                                    value={inputValue}
+                                    onChange={(e) => setInputValue(e.target.value)}
+                                    onKeyPress={handleInputKeyPress}
+                                    placeholder={translations.bot?.typeHere || "Type your response..."}
                                     disabled={loading}
+                                />
+                                <button 
+                                    className="btn btn-primary btn-sm rounded-pill px-3 fw-bold"
+                                    style={{ backgroundColor: '#22B2E6', border: 'none' }}
+                                    onClick={() => handleUserReply(currentOptions[0].keyword, '', inputValue.trim())}
+                                    disabled={loading || !inputValue.trim()}
                                 >
-                                    {opt.trigger}
+                                    {currentOptions[0].label || "Send"}
                                 </button>
-                            ))}
+                            </div>
+                        )}
+
+                        {/* 2. If type is MESSAGE (Render Buttons) */}
+                        {nodeType === 'message' && (
+                            <div className="d-flex flex-wrap gap-2 justify-content-center">
+                                {currentOptions.map((opt, idx) => (
+                                    <button 
+                                        key={idx} 
+                                        className="btn btn-sm rounded-pill bot-options-btn px-3 py-2"
+                                        onClick={() => handleUserReply(opt.keyword, opt.label, "")}
+                                        disabled={loading}
+                                    >
+                                        {opt.label}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+
+                        {/* 3. Global Footer Actions (Back / Restart) */}
+                        <div className="d-flex w-100 gap-2 mt-1 justify-content-center">
+                            {messages.length > 2 && !isFinal && (
+                                <button className="btn w-100 rounded-pill bot-restart-btn px-3 py-2" onClick={handleGoBack} disabled={loading}>
+                                    <i className={`bi bi-arrow-${dir === 'rtl' ? 'right' : 'left'} me-1`}></i> {translations.bot?.back || "Back"}
+                                </button>
+                            )}
                             {isFinal && (
-                                <button className="btn w-100 rounded-pill bot-restart-btn px-3 py-2 mt-1" onClick={resetBot}>
-                                    <i className="bi bi-arrow-counterclockwise me-2"></i> Start Over
+                                <button className="btn w-100 rounded-pill bot-restart-btn px-3 py-2" onClick={resetBot} disabled={loading}>
+                                    <i className="bi bi-arrow-counterclockwise me-1"></i> {translations.bot?.startOver || "Start Over"}
                                 </button>
                             )}
                         </div>
@@ -131,14 +276,10 @@ const FloatingBot = () => {
                 </div>
             )}
 
-            
             {!isOpen && (
                 <div className="bot-fab-idle position-relative">
                     {!isOpen && !isClosing && showHelp && (
-                        <div
-                            className="bot-help-bubble shadow-sm"
-                            onClick={toggleBot}
-                        >
+                        <div className="bot-help-bubble shadow-sm" onClick={toggleBot}>
                             {translations.bot?.needHelp || "Need help?"} 👋
                         </div>
                     )}
