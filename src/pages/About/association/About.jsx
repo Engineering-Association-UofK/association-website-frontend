@@ -14,23 +14,20 @@ const AssociationAbout = () => {
             <div className="about-page-container">
                 {/* first section */}
                 <section className="identity-section mb-5">
-                    <div className="identity-card">
-                        <div className={`identity-grid ${language === 'ar' ? 'rtl-grid' : ''}`}>
-                            {/* TODO: uofk image */}
-                            <div className="identity-image">
-                                <img
-                                    src="https://placehold.co/600x400/e2e8f0/1e293b?text=Identity+Image"
-                                    alt={content.identity.title}
-                                />
-                            </div>
-                            <div className="identity-content">
-                                <h2 className="fw-bold mb-4 text-primary">
-                                    {content.identity.title}
-                                </h2>
-                                <div className="text-muted" style={{ lineHeight: 1.7, whiteSpace: 'pre-line' }}>
-                                    {content.identity.text}
-                                </div>
-                            </div>
+                    {/* TODO: uofk image */}
+                    <div className="identity-image">
+                        <img
+                            src="https://placehold.co/600x400/e2e8f0/1e293b?text=Identity+Image"
+                            alt={content.identity.title}
+                            style={{width: '100%', borderRadius: "15px"}}
+                        />
+                    </div>
+                    <div className="identity-content">
+                        <h2 className="fw-bold mb-4 text-primary">
+                            {content.identity.title}
+                        </h2>
+                        <div className="text-muted" style={{ lineHeight: 1.7, whiteSpace: 'pre-line' }}>
+                            {content.identity.text}
                         </div>
                     </div>
                 </section>
@@ -48,7 +45,7 @@ const AssociationAbout = () => {
                                         <Card.Body className="p-4">
                                             <div className="d-flex align-items-center mb-3">
                                                 <i className={`${item.icon} fs-2 text-primary me-3`}></i> {/* TODO replace these if needed*/}
-                                                {(language === 'ar') && <p style={{width: '10px', height: '10px'}}></p>} {/* this is my way to add extram margin XD*/}
+                                                {(language === 'ar') && <p style={{ width: '10px', height: '10px' }}></p>} {/* this is my way to add extram margin XD*/}
                                                 <Card.Title className="fw-bold text-primary mb-0">
                                                     {item.title}
                                                 </Card.Title>
@@ -57,7 +54,7 @@ const AssociationAbout = () => {
                                                 {item.points.map((point, pIdx) => (
                                                     <li key={pIdx} className="mb-2 d-flex">
                                                         <i className="bi bi-check-circle-fill text-primary me-2 mt-1" style={{ fontSize: '0.8rem' }}></i>
-                                                        {(language === 'ar') && <p style={{width: '20px', height: '10px'}}></p>}
+                                                        {(language === 'ar') && <p style={{ width: '20px', height: '10px' }}></p>}
                                                         <span style={{ lineHeight: 1.5 }}>{point}</span>
                                                     </li>
                                                 ))}
