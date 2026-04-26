@@ -19,7 +19,12 @@
         "admin": "Admin",
         "login": "Login",
         "logout": "Logout",
-        "language": "العربية"
+        "language": "العربية",
+        "userMenu": {
+            "profile": "Profile",
+            "settings": "Settings",
+            "helpSupport": "Help & Support"
+        }
     },
     "home": {
         "hero": {

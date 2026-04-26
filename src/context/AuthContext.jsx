@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { authService } from '../features/auth/api/auth.service';
+import { userService } from '../features/auth/api/user.service';
 
 const AuthContext = createContext(null);
   
@@ -22,14 +23,37 @@ const parseJwt = (token) => {
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
-    // const token = localStorage.getItem('sea-token') || sessionStorage.getItem('sea-token');
-    // console.log('sss', JSON.parse(localStorage.getItem('sea-user') || sessionStorage.getItem('sea-user')) || null, token);
     return JSON.parse(localStorage.getItem('sea-user') || sessionStorage.getItem('sea-user')) || null;
   });
 
   const [loading, setLoading] = useState(false);
-  // const [changePasswordLoading, setChangePasswordLoading] = useState(false);
   
+  // Fetch user profile on mount if user exists but profile data is missing
+  useEffect(() => {
+    if (user?.user_id && !user.name_en) {
+      fetchUserProfile(user.user_id);
+    }
+  }, []);
+
+  const fetchUserProfile = async (userId) => {
+    try {
+      const profile = await userService.getUserProfile(userId);
+      const updatedUser = {
+        ...user,
+        ...JSON.parse(localStorage.getItem('sea-user') || sessionStorage.getItem('sea-user')),
+        name_en: profile?.name_en || '',
+        name_ar: profile?.name_ar || '',
+        avatar_url: profile?.avatar_url || null,
+      };
+      setUser(updatedUser);
+      // Persist to same storage
+      const storage = localStorage.getItem('sea-user') ? localStorage : sessionStorage;
+      storage.setItem('sea-user', JSON.stringify(updatedUser));
+    } catch (error) {
+      console.error('Failed to fetch user profile:', error);
+    }
+  };
+
   const login = async ({ username, password, rememberMe }) => {
     setLoading(true);
     try {
@@ -55,6 +79,22 @@ export const AuthProvider = ({ children }) => {
       }
       setUser(userToSet);
       storage.setItem('sea-user', JSON.stringify(userToSet));
+
+      // Fetch profile data (name, avatar) in the background
+      try {
+        const profile = await userService.getUserProfile(decodedToken?.user_id);
+        const enrichedUser = {
+          ...userToSet,
+          name_en: profile?.name_en || '',
+          name_ar: profile?.name_ar || '',
+          avatar_url: profile?.avatar_url || null,
+        };
+        setUser(enrichedUser);
+        storage.setItem('sea-user', JSON.stringify(enrichedUser));
+      } catch (profileErr) {
+        console.error('Failed to fetch profile after login:', profileErr);
+      }
+
       return { success: true };
     } catch (error) {
       const errorData = error.response?.data;
@@ -92,31 +132,18 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Helper to find token in either storage
-  // const getStoredToken = () => localStorage.getItem('sea-token') || sessionStorage.getItem('sea-token');
-
-
-  // const changePassword = async ({ oldPassword, newPassword, confirmPassword }) => {
-  //   setChangePasswordLoading(true);
-  //   try {
-  //     await authService.changePassword({ oldPassword, newPassword, confirmPassword });
-  //     return { success: true, message: "Password updated successfully" };
-  //   } catch (error) {
-  //     const errorData = error.response?.data;
-  //     const msg = errorData?.message || errorData?.error || (typeof errorData === 'string' ? errorData : "") || "Failed to update password";
-  //     return { success: false, message: msg };
-  //   } finally {
-  //     setChangePasswordLoading(false);
-  //   }
-  // };
-
+  // Update cached user profile data (after avatar upload, name change, etc.)
+  const updateUserProfile = (updates) => {
+    const updatedUser = { ...user, ...updates };
+    setUser(updatedUser);
+    const storage = localStorage.getItem('sea-user') ? localStorage : sessionStorage;
+    storage.setItem('sea-user', JSON.stringify(updatedUser));
+  };
 
   const logout = () => {
     localStorage.removeItem('sea-token');
-    // localStorage.removeItem('role');
     localStorage.removeItem('sea-user');
     sessionStorage.removeItem('sea-token');
-    // sessionStorage.removeItem('role');
     sessionStorage.removeItem('sea-user');
     setUser(null);
   };
@@ -129,13 +156,12 @@ export const AuthProvider = ({ children }) => {
       value={{ 
         user, 
         loading, 
-        // changePasswordLoading, 
         login, 
         register, 
         logout, 
         sendCode, 
         verifyCode, 
-        // changePassword, 
+        updateUserProfile,
         hasRole,
         isAuthenticated: !!user }}>
       {children}

@@ -47,7 +47,7 @@ const LoginForm = () => {
         const result = await login({ username, password, rememberMe });
 
         if (result.success) {
-            navigate('/admin');
+            navigate('/');
         } else if (result.status === 'verification_needed') {
             setPendingUserId(result.user_id);
             setIsVerifying(true);

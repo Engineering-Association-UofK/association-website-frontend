@@ -10,6 +10,7 @@ import { Link, NavLink } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { ADMIN_ROLES } from '../utils/roles';
+import UserDropdownMenu from './UserDropdownMenu';
 
 const NavigationBar = () => {
   const { translations, switchLanguage, language } = useLanguage();
@@ -206,13 +207,7 @@ const NavigationBar = () => {
 
             <div className="d-none d-lg-block">
               {user ? (
-                <button
-                  onClick={logout}
-                  className="btn fw-bold px-4 py-2 rounded-1 shadow-sm border-0 text-white"
-                  style={{ backgroundColor: '#22B2E6' }}
-                >
-                  {translations.navbar.logout}
-                </button>
+                <UserDropdownMenu />
               ) : (
                 <Link
                   to="/login"
@@ -261,16 +256,7 @@ const NavigationBar = () => {
 
               <div className="mt-auto pt-4 border-top">
                 {user ? (
-                  <button
-                    onClick={() => {
-                      logout();
-                      handleClose();
-                    }}
-                    className="btn w-100 fw-bold py-3 rounded-2 shadow-sm border-0 text-white"
-                    style={{ backgroundColor: '#22B2E6' }}
-                  >
-                    {translations.navbar.logout}
-                  </button>
+                  <UserDropdownMenu isMobile onItemClick={handleClose} />
                 ) : (
                   <Link
                     to="/login"

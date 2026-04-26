@@ -28,6 +28,9 @@ import BotCommandsEntry from './pages/Bot Commands/BotCommandsEntry.jsx';
 import Dashboard from './pages/Dashboard/Dashboard.jsx';
 import ImageStorageDashboard from './pages/Image Storage/ImageStorageDashboard.jsx';
 import ImageStorageEntry from './pages/Image Storage/ImageStorageEntry.jsx';
+import ProfilePage from './pages/Profile/ProfilePage.jsx';
+import SettingsPage from './pages/Settings/SettingsPage.jsx';
+import HelpSupportPage from './pages/HelpSupport/HelpSupportPage.jsx';
 import { CONFIG } from './config';
 
 function App() {
@@ -46,6 +49,15 @@ function App() {
               {/* Add other public routes here */}
               <Route path="/blogs" element={<Blogs />} />
               <Route path="/blogs/:id" element={<BlogPage />} />
+              <Route path="/help" element={<HelpSupportPage />} />
+            </Route>
+
+            {/* AUTHENTICATED USER ROUTES (Profile, Settings) */}
+            <Route element={<MainLayout />}>
+              <Route element={<ProtectedRoute />}>
+                <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/settings" element={<SettingsPage />} />
+              </Route>
             </Route>
 
 

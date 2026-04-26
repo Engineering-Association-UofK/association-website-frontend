@@ -19,7 +19,12 @@
         "admin": "المسؤول",
         "login": "تسجيل الدخول",
         "logout": "تسجيل الخروج",
-        "language": "English"
+        "language": "English",
+        "userMenu": {
+            "profile": "الملف الشخصي",
+            "settings": "الإعدادات",
+            "helpSupport": "المساعدة والدعم"
+        }
     },
     "home": {
         "hero": {
