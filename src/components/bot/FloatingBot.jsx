@@ -223,14 +223,25 @@ const FloatingBot = () => {
                         {/* 1. If type is INPUT */}
                         {nodeType === 'input' && currentOptions.length > 0 && (
                             <div className="d-flex w-100 gap-2 mb-2">
-                                <input 
-                                    type="text" 
-                                    className="form-control form-control-sm rounded-pill px-3 shadow-none border-secondary" 
+                                <textarea 
+                                    className="form-control form-control-sm rounded-4 px-3 py-2 shadow-none border-secondary bot-textarea" 
+                                    rows="1"
                                     value={inputValue}
-                                    onChange={(e) => setInputValue(e.target.value)}
-                                    onKeyPress={handleInputKeyPress}
-                                    placeholder={translations.bot?.typeHere || "Type your response..."}
+                                    onChange={(e) => {
+                                        setInputValue(e.target.value);
+                                        // Auto-expand logic
+                                        e.target.style.height = 'inherit';
+                                        e.target.style.height = `${Math.min(e.target.scrollHeight, 120)}px`;
+                                    }}
+                                    onKeyDown={(e) => {
+                                        // Allow Enter for new lines, but Cmd/Ctrl+Enter to send
+                                        if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+                                            handleUserReply(currentOptions[0].keyword, '', inputValue.trim());
+                                        }
+                                    }}
+                                    placeholder={translations.bot?.typeHere || "Type your detailed feedback..."}
                                     disabled={loading}
+                                    style={{ resize: 'none', overflowY: 'auto' }}
                                 />
                                 <button 
                                     className="btn btn-primary btn-sm rounded-pill px-3 fw-bold"
