@@ -54,9 +54,14 @@
 // export default ProfilePage;
 
 import React, { useState } from "react";
-import { useProfileData, useCertificates } from "../../hooks/useProfile";
+import {
+  useProfileData,
+  useCertificates,
+  useUpdatePassword,
+} from "../../hooks/useProfile";
 import SEA_loading from "../../components/ui/SEA_loading";
 import { useLanguage } from "../../context/LanguageContext";
+
 import { Fragment } from "react";
 
 // مكون تفاصيل الملف الشخصي
@@ -67,7 +72,7 @@ function ProfileDetails({ profile, loading, error }) {
     return (
       <div className="p-10 text-center text-gray-500 font-bold">
         {/* Loading Profile... */}
-        {t.loadingProfile}
+        <SEA_loading />
       </div>
     );
   if (error)
@@ -170,7 +175,7 @@ function CertificatesList({ certificates, loading, error }) {
     return (
       <div className="p-10 text-center text-gray-500 font-bold">
         {/* Loading Certificates... */}
-        {t.loading}
+      <SEA_loading/>
       </div>
     );
 
@@ -277,9 +282,194 @@ function CertificatesList({ certificates, loading, error }) {
   );
 }
 
+// password change
+
+function PasswordSettings() {
+  const { translations } = useLanguage();
+  const t = translations.profile.password;
+
+  const { updatePassword, loading, status, resetStatus } = useUpdatePassword();
+
+  const [formData, setFormData] = useState({
+    old_password: "",
+    new_password: "",
+    confirm_password: "",
+  });
+
+  const styles = {
+    card: "bg-white rounded-[30px] p-8 shadow-[0_0_0_1px_rgba(14,15,12,0.12)]",
+    input:
+      "w-full p-4 border border-[rgba(14,15,12,0.2)] rounded-[12px] outline-none font-semibold focus:border-[#0d6efd] transition-all",
+    label:
+      "block mb-2 font-bold text-xs text-gray-400 uppercase tracking-widest",
+    btn: "bg-[#0e0f0c] text-[#9fe870] font-black py-4 px-10 rounded-xl mt-6 hover:opacity-90 disabled:opacity-50 transition-all uppercase tracking-widest text-xs",
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const isSuccess = await updatePassword(formData);
+
+    if (isSuccess) {
+      setFormData({ old_password: "", new_password: "", confirm_password: "" });
+
+      setTimeout(resetStatus, 3000);
+    }
+  };
+  // return (
+  //   <div className="max-w-2xl">
+  //     <div className={styles.card}>
+  //       <h2 className="text-2xl font-black mb-8 italic uppercase">
+  //         Security Settings
+  //       </h2>
+
+  //       <form onSubmit={handleSubmit} className="space-y-6">
+  //         <div>
+  //           <label className={styles.label}>Old Password</label>
+  //           <input
+  //             type="password"
+  //             className={styles.input}
+  //             value={formData.old_password}
+  //             onChange={(e) =>
+  //               setFormData({ ...formData, old_password: e.target.value })
+  //             }
+  //             required
+  //           />
+  //         </div>
+
+  //         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+  //           <div>
+  //             <label className={styles.label}>New Password</label>
+  //             <input
+  //               type="password"
+  //               className={styles.input}
+  //               value={formData.new_password}
+  //               onChange={(e) =>
+  //                 setFormData({ ...formData, new_password: e.target.value })
+  //               }
+  //               required
+  //             />
+  //           </div>
+  //           <div>
+  //             <label className={styles.label}>Confirm New Password</label>
+  //             <input
+  //               type="password"
+  //               className={styles.input}
+  //               value={formData.confirm_password}
+  //               onChange={(e) =>
+  //                 setFormData({ ...formData, confirm_password: e.target.value })
+  //               }
+  //               required
+  //             />
+  //           </div>
+  //         </div>
+
+  //         {status.msg && (
+  //           <div
+  //             className={`p-4 rounded-xl font-bold text-sm ${status.type === "success" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}
+  //           >
+  //             {status.msg}
+  //           </div>
+  //         )}
+
+  //         <button
+  //           type="submit"
+  //           disabled={status.loading}
+  //           className={styles.btn}
+  //         >
+  //           {status.loading ? "Updating..." : "Update Password"}
+  //         </button>
+  //       </form>
+  //     </div>
+  //   </div>
+  // );
+
+  if (loading) {
+    <Fragment>
+      <SEA_loading />
+    </Fragment>;
+  }
+
+  return (
+    <div className="max-w-2xl">
+      <div className={styles.card}>
+        <h2 className="text-2xl font-black mb-8 italic uppercase">
+          {t.securityTitle}
+        </h2>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label className={styles.label}>{t.oldPassword}</label>
+            <input
+              type="password"
+              placeholder="********"
+              className={styles.input}
+              value={formData.old_password}
+              onChange={(e) => {
+                resetStatus();
+                setFormData({ ...formData, old_password: e.target.value });
+              }}
+              required
+              disabled={loading}
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className={styles.label}>{t.newPassword}</label>
+              <input
+                type="password"
+                placeholder="********"
+                className={styles.input}
+                value={formData.new_password}
+                onChange={(e) =>
+                  setFormData({ ...formData, new_password: e.target.value })
+                }
+                required
+                disabled={loading}
+              />
+            </div>
+            {/* تأكيد كلمة المرور */}
+            <div>
+              <label className={styles.label}>{t.confirmPassword}</label>
+              <input
+                type="password"
+                placeholder="********"
+                className={styles.input}
+                value={formData.confirm_password}
+                onChange={(e) =>
+                  setFormData({ ...formData, confirm_password: e.target.value })
+                }
+                required
+                disabled={loading}
+              />
+            </div>
+          </div>
+
+          {/* عرض الحالة (نجاح / فشل) */}
+          {status.msg && (
+            <div
+              className={`p-4 rounded-xl font-bold text-sm animate-pulse ${
+                status.type === "success"
+                  ? "bg-green-100 text-green-700"
+                  : "bg-red-100 text-red-700"
+              }`}
+            >
+              {status.msg}
+            </div>
+          )}
+
+          <button type="submit" disabled={loading} className={styles.btn}>
+            {loading ? t.updatingBtn : t.updateBtn}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
+
 export default function ProfilePage() {
-    const { translations } = useLanguage(); 
-    const t = translations.profile;
+  const { translations } = useLanguage();
+  const t = translations.profile;
 
   const [activeTab, setActiveTab] = useState("details");
 
@@ -303,13 +493,17 @@ export default function ProfilePage() {
         </h1>
 
         <div className="flex gap-8 mb-10 border-b border-gray-100">
-          {["details", "certificates"].map((tab) => (
+          {[
+            { id: "details", label: t.detailsTab },
+            { id: "certificates", label: t.certificatesTab },
+            { id: "security", label: t.securityTab },
+          ].map((tab) => (
             <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={styles.tabBtn(activeTab === tab)}
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={styles.tabBtn(activeTab === tab.id)}
             >
-              {tab}
+              {tab.label}
             </button>
           ))}
         </div>
@@ -329,6 +523,8 @@ export default function ProfilePage() {
             error={certsHook.error}
           />
         )}
+
+        {activeTab === "security" && <PasswordSettings />}
       </div>
     </div>
   );

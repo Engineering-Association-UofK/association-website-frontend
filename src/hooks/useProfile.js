@@ -1,5 +1,3 @@
-
-
 // import apiClient from "../api/axiosClient";
 
 // let profilePromise = null;
@@ -31,9 +29,11 @@
 //   return certificatesPromise;
 // };
 
-
 import { useState, useEffect } from "react";
 import apiClient from "../api/axiosClient";
+import { useLanguage } from "../context/LanguageContext";
+
+
 
 // 1. Hook الخاص ببيانات الملف الشخصي
 export const useProfileData = () => {
@@ -48,7 +48,7 @@ export const useProfileData = () => {
       setProfile(response.data || response);
       setError(null);
     } catch (err) {
-      console.error("Profile Fetch Error:", err);      
+      console.error("Profile Fetch Error:", err);
       setError(err.response?.data?.message || "Network Error");
     } finally {
       setLoading(false);
@@ -92,4 +92,46 @@ export const useCertificates = () => {
     error,
     refreshCertificates: fetchCertificates,
   };
+};
+
+export const useUpdatePassword = () => {
+
+  
+const { translations } = useLanguage();
+const t = translations.profile.password;
+  
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState({ msg: "", type: "" });
+
+  const updatePassword = async (passwordData) => {
+    if (passwordData.new_password !== passwordData.confirm_password) {
+      setStatus({ msg: t.passwordMismatch, type: "error" });
+      return false;
+    }
+
+    setLoading(true);
+    setStatus({ msg: "", type: "" });
+
+    try {
+      const response = await apiClient.put(
+        "/v1/account/password",
+        passwordData,
+      );
+      setStatus({
+        msg: response.data?.message || t.updateSuccess,
+        type: "success",
+      });
+      setLoading(false);
+      return true; // نجاح
+    } catch (err) {
+      const errorMsg = err.response?.data?.message || t.networkError;
+      setStatus({ msg: errorMsg, type: "error" });
+      setLoading(false);
+      return false; // فشل
+    }
+  };
+
+  const resetStatus = () => setStatus({ msg: "", type: "" });
+
+  return { updatePassword, loading, status, resetStatus };
 };
