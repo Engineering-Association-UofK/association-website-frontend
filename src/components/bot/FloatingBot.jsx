@@ -243,7 +243,7 @@ const FloatingBot = () => {
                             </div>
                         )}
 
-                        {/* 2. If type is MESSAGE (Render Buttons) */}
+                        {/* If type is MESSAGE (Render Buttons) */}
                         {nodeType === 'message' && (
                             <div className="d-flex flex-wrap gap-2 justify-content-center">
                                 {currentOptions.map((opt, idx) => (
@@ -259,13 +259,8 @@ const FloatingBot = () => {
                             </div>
                         )}
 
-                        {/* 3. Global Footer Actions (Back / Restart) */}
+                        {/* Global Footer Actions (Back / Restart) */}
                         <div className="d-flex w-100 gap-2 mt-1 justify-content-center">
-                            {messages.length > 2 && !isFinal && (
-                                <button className="btn w-100 rounded-pill bot-restart-btn px-3 py-2" onClick={handleGoBack} disabled={loading}>
-                                    <i className={`bi bi-arrow-${dir === 'rtl' ? 'right' : 'left'} me-1`}></i> {translations.bot?.back || "Back"}
-                                </button>
-                            )}
                             {isFinal && (
                                 <button className="btn w-100 rounded-pill bot-restart-btn px-3 py-2" onClick={resetBot} disabled={loading}>
                                     <i className="bi bi-arrow-counterclockwise me-1"></i> {translations.bot?.startOver || "Start Over"}
