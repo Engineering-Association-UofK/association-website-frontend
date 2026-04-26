@@ -249,3 +249,24 @@
     from { opacity: 0; transform: translateY(10px) scale(0.8); }
     to { opacity: 1; transform: translateY(0) scale(1); }
 }
+
+@media (max-width: 480px) {
+    .chat-window {
+        width: calc(100vw - 40px);
+        height: calc(100vh - 100px);
+        bottom: 30px;
+        position: fixed;
+    }
+
+    [dir="ltr"] .chat-window {
+        right: 20px;
+    }
+
+    [dir="rtl"] .chat-window {
+        left: 20px;
+    }
+
+    .bot-help-bubble {
+        display: none;
+    }
+}
