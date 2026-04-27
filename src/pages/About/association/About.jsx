@@ -41,7 +41,7 @@ const AssociationAbout = () => {
                         {content.objectives.list.map((item, idx) => {
                             return (
                                 <Col key={idx} md={6} className='mx-auto'>
-                                    <Card className="objective-card h-100 shadow-sm border-0">
+                                    <div className="objective-card h-100 shadow-sm border-0">
                                         <Card.Body className="p-4">
                                             <div className="d-flex align-items-center mb-3">
                                                 <i className={`${item.icon} fs-2 text-primary me-3`}></i> {/* TODO replace these if needed*/}
@@ -60,7 +60,7 @@ const AssociationAbout = () => {
                                                 ))}
                                             </ul>
                                         </Card.Body>
-                                    </Card>
+                                    </div>
                                 </Col>
                             );
                         })}
@@ -72,7 +72,7 @@ const AssociationAbout = () => {
                     <h2 className="text-center fw-bold mb-5 text-primary">
                         {content.trusteeTitle}
                     </h2>
-                    <Row className="g-4">
+                    <Row className="g-4 trustee-cards-container">
                         {content.cards.map((card, idx) => (
                             <Col md={6} lg={3} key={idx}>
                                 <Card className="trustee-card h-100 shadow-sm border-0 text-center">

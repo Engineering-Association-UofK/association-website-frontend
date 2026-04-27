@@ -3,6 +3,7 @@ import { Container, Row, Col, Card, Spinner, Alert, Button } from 'react-bootstr
 import { Link } from 'react-router-dom';
 import { useBlogs } from '../../../features/blogs/hooks/useBlogs';
 import "./Blogs.css";
+import { useLanguage } from '../../../context/LanguageContext';
 
 // Card Skeleton
 const SkeletonCard = () => (
@@ -23,6 +24,7 @@ const Blogs = () => {
   const [allPosts, setAllPosts] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const { data, isLoading, error, isFetching } = useBlogs('BLOG', page, 10); // Fetch 10 of `BLOG`s
+  const { language } = useLanguage();
 
   // add new data when it completely fetched
   useEffect(() => {
@@ -60,10 +62,10 @@ const Blogs = () => {
     <Container className="py-5">
       <h1 className="text-center fw-bold mb-5 text-primary">Blogs</h1>
 
-      <Row className="g-4">
+      <div className="g-4 cards-container">
         {allPosts.map((blog, idx) => (
-          <Col md={6} lg={4} key={blog.slug || idx}>
-            <Card className="h-100 shadow-sm border-0 hover-card">
+          <div key={blog.slug || idx}>
+            <div className="card h-100 shadow-sm border-0 hover-card">
               {blog.image_url && (
                 <Card.Img
                   variant="top"
@@ -81,11 +83,11 @@ const Blogs = () => {
                   <i className="bi bi-calendar3 me-1"></i> {new Date(blog.updated_at).toLocaleDateString()}
                 </div>
                 <Link to={`/posts/announcements/${blog.slug}`} className="btn btn-outline-primary rounded-pill mt-2">
-                  Read More <i className="bi bi-arrow-right ms-1"></i>
+                  {language == 'en' ? "Read More" : "قراءة المزيد"} <i className={'bi bi-ardiv-' + (language == 'en' ?  'right' : 'left' ) + ' ms-1'}></i>
                 </Link>
               </Card.Body>
-            </Card>
-          </Col>
+            </div>
+          </div>
         ))}
 
         {isFetching && page > 1 && (
@@ -93,7 +95,7 @@ const Blogs = () => {
             {[...Array(3)].map((_, i) => <SkeletonCard key={`skeleton-${i}`} />)}
           </>
         )}
-      </Row>
+      </div>
 
       {error && page > 1 && (
         <Alert variant="danger" className="mt-4">

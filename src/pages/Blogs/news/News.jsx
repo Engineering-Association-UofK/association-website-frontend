@@ -3,6 +3,7 @@ import { Container, Row, Col, Card, Spinner, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useBlogs } from '../../../features/blogs/hooks/useBlogs';
 import "./News.css";
+import { useLanguage } from '../../../context/LanguageContext';
 
 // Card-Skeleton for main large card
 const CardSkeleton = () => (
@@ -36,6 +37,7 @@ const News = () => {
   const [allPosts, setAllPosts] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const { data, isLoading, error, isFetching } = useBlogs('NEWS', page, 10);
+  const { language } = useLanguage();
 
   // add new posts when fetched...
   useEffect(() => {
@@ -92,119 +94,101 @@ const News = () => {
     <Container className="py-5">
       <h1 className="text-center fw-bold mb-5 text-primary">Latest News</h1>
 
-      {/* The Card and the 3 thumbnails */}
-      {allPosts.length > 0 && (
-        <Row className="g-4 mb-5">
-          {/* Big Card... */}
-          <Col lg={7}>
-            {firstPost ? (
-              <Card className="h-100 shadow-sm border-0 hover-card" style={{ borderRadius: "1rem" }}>
-                <Card.Img
-                  variant="top"
-                  src={firstPost.image_url || `https://placehold.co/600x400/e2e8f0/1e293b?text=${firstPost.title}`}
+
+      {/*the first section: big card + 3 thumbnails*/}
+      <section className='hero-section'>
+        {firstPost && <div className="card main-card">
+          <div className="main-card-img">
+            <img 
+              src={firstPost.image_url || `https://placehold.co/600x400/e2e8f0/1e293b?text=${firstPost.title}`} 
+              style={{width: '100%', maxHeight: '40vh'}}
+            />
+          </div>
+          <div className="main-card-content">
+            <h2 className='main-card-title'>{firstPost.title}</h2>
+            <p className="main-card-text text-muted">
+              {firstPost.summary}
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'row', gap: '1rem' }} className="small mb-3">
+              <div><i className="bi bi-person-circle me-1"></i> {firstPost.author_name}</div>
+              <div><i className="bi bi-calendar3 me-1"></i> {new Date(firstPost.updated_at).toLocaleDateString()}</div>
+            </div>
+            <Link to={`/posts/news/${firstPost.slug}`} className="main-card-btn btn-outline-primary rounded-pill">
+              {language == 'en' ? 'Continue Reading' : 'واصل القراءة'} <i className={"bi bi-arrow-" + (language == 'en' ? 'right' : 'left') + " ms-1"}></i>
+            </Link>
+          </div>
+        </div>
+        }
+        {tSidePosts && <div className='cards-container'>
+          {tSidePosts.map((post) => (
+            <div className="card thumbnail-card">
+              <div className="card-img">
+                <img
+                  src={post.image_url || `https://placehold.co/600x400/e2e8f0/1e293b?text=${post.title}`}
                   style={{ height: '350px', objectFit: 'cover', borderRadius: "1rem" }}
                 />
-                <Card.Body>
-                  <Card.Title className="fw-bold text-primary fs-3">{firstPost.title}</Card.Title>
-                  <Card.Text className="text-muted">
-                    {firstPost.summary || "No Summary Available"}
-                  </Card.Text>
-                  <div className="text-muted small mb-3">
-                    <i className="bi bi-person-circle me-1"></i> {firstPost.author_name}
-                    <span className="mx-2">•</span>
-                    <i className="bi bi-calendar3 me-1"></i> {new Date(firstPost.updated_at).toLocaleDateString()}
-                  </div>
-                  <Link to={`/posts/news/${firstPost.slug}`} className="btn btn-outline-primary rounded-pill">
-                    Continue Reading <i className="bi bi-arrow-right ms-1"></i>
-                  </Link>
-                </Card.Body>
-              </Card>
-            ) : (
-              <CardSkeleton />
-            )}
-          </Col>
-
-          {/* Right column: 3 stacked thumbnails (lg=5) */}
-          <Col lg={5}>
-            {tSidePosts.length === 3 ? (
-              <div className="d-flex flex-column gap-3">
-                {tSidePosts.map((post) => (
-                  <Card key={post.slug} className="shadow-sm border-0 hover-card" style={{ borderRadius: "1rem" }}>
-                    <Row className="g-0">
-                      <Col xs={4}>
-                        <Card.Img
-                          src={post.image_url || `https://placehold.co/600x400/e2e8f0/1e293b?text=${post.title}`}
-                          style={{ height: '100%', maxHeight: "200px", objectFit: 'cover', borderRadius: '0.8rem' }}
-                        />
-                      </Col>
-                      <Col xs={8}>
-                        <Card.Body>
-                          <Card.Title className="fw-bold text-primary fs-6">{post.title}</Card.Title>
-                          <Card.Text className="text-muted">
-                            {post.summary
-                              ? (post.summary.length > 60
-                                ? post.summary.slice(0, 60) + '...'
-                                : post.summary)
-                              : "No Summary Available"}
-                          </Card.Text>
-                          <Link to={`/posts/news/${post.slug}`} className="btn btn-outline-primary rounded-pill">
-                            Continue Reading <i className="bi bi-arrow-right ms-1"></i>
-                          </Link>
-                        </Card.Body>
-                      </Col>
-                    </Row>
-                  </Card>
-                ))}
               </div>
-            ) : (
-              <ThumbnailSkeleton />
-            )}
-          </Col>
-        </Row>
-      )}
-
-      {/* the rest normal thumbnails*/}
-      {thumbnailPosts.length > 0 && (
-        <div className="mt-5">
-          <h3 className="fw-bold mb-4 text-secondary">More News</h3>
-          <Row className="g-4">
-            {thumbnailPosts.map((post) => (
-              <Col xs={12} lg={6} key={post.slug}>
-                <Card className="shadow-sm border-0 h-100 hover-card" style={{ borderRadius: "1rem" }}>
-                  <Row className="g-0 h-100">
-                    <Col xs={4}>
-                      <Card.Img
-                        src={post.image_url || `https://placehold.co/600x400/e2e8f0/1e293b?text=${post.title}`}
-                        style={{ height: '100%', maxHeight: "200px", objectFit: 'cover', borderRadius: '0.8rem' }}
-                      />
-                    </Col>
-                    <Col xs={8}>
-                      <Card.Body>
-                        <Card.Title className="fw-bold text-primary fs-6">{post.title}</Card.Title>
-                        <Card.Text className="text-muted">
-                          {post.summary
-                            ? (post.summary.length > 60
-                              ? post.summary.slice(0, 60) + '...'
-                              : post.summary)
-                            : "No Summary Available"}
-                        </Card.Text>
-                        <div className="text-muted small mb-3">
-                          <i className="bi bi-person-circle me-1"></i> {firstPost.author_name}
-                          <span className="mx-2">•</span>
-                          <i className="bi bi-calendar3 me-1"></i> {new Date(firstPost.updated_at).toLocaleDateString()}
-                        </div>
-                        <Link to={`/posts/news/${post.slug}`} className="btn btn-outline-primary rounded-pill">
-                          Continue Reading <i className="bi bi-arrow-right ms-1"></i>
-                        </Link>
-                      </Card.Body>
-                    </Col>
-                  </Row>
-                </Card>
-              </Col>
-            ))}
-          </Row>
+              <div className="card-content">
+                <h2 className='card-title'>{post.title}</h2>
+                <p className="card-text text-muted">
+                  {post.summary
+                    ? (post.summary.length > 60
+                      ? post.summary.slice(0, 60) + '...'
+                      : post.summary)
+                    : "No Summary Available"}
+                </p>
+                <div className="text-muted small mb-3">
+                  <i className="bi bi-person-circle me-1"></i> {post.author_name}
+                  <span className="mx-2"></span>
+                  <i className="bi bi-calendar3 me-1"></i> {new Date(post.updated_at).toLocaleDateString()}
+                </div>
+                <Link to={`/posts/news/${post.slug}`} className="btn btn-outline-primary rounded-pill">
+                  Continue Reading <i className="bi bi-arrow-right ms-1"></i>
+                </Link>
+              </div>
+            </div>))
+          }
         </div>
-      )}
+        }
+      </section>
+
+
+
+      {/*the 2nd section: cards*/}
+      <section className='thumbnails-section'>
+        {thumbnailPosts && <div className='cards-container'>
+          {thumbnailPosts.map((post) => (
+            <div className="card thumbnail-card">
+              <div className="card-img">
+                <img
+                  src={post.image_url || `https://placehold.co/600x400/e2e8f0/1e293b?text=${post.title}`}
+                  style={{ height: '350px', objectFit: 'cover', borderRadius: "1rem" }}
+                />
+              </div>
+              <div className="card-content">
+                <h2 className='card-title'>{post.title}</h2>
+                <p className="card-text text-muted">
+                  {post.summary
+                    ? (post.summary.length > 60
+                      ? post.summary.slice(0, 60) + '...'
+                      : post.summary)
+                    : "No Summary Available"}
+                </p>
+                <div className="text-muted small mb-3">
+                  <i className="bi bi-person-circle me-1"></i> {post.author_name}
+                  <span className="mx-2"></span>
+                  <i className="bi bi-calendar3 me-1"></i> {new Date(post.updated_at).toLocaleDateString()}
+                </div>
+                <Link to={`/posts/news/${post.slug}`} className="btn btn-outline-primary rounded-pill">
+                  Continue Reading <i className="bi bi-arrow-right ms-1"></i>
+                </Link>
+              </div>
+            </div>))
+          }
+        </div>}
+      </section>
+
+
 
 
       {/* skeleton when loading more data */}
