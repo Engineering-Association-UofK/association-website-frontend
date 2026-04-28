@@ -1,6 +1,7 @@
 import apiClient from '../../../api/axiosClient';
 
 const ENDPOINT = '/v1/open/bot';
+const API_URL = '/v1/admin/bot';
 
 export const botService = {
   /**
@@ -18,12 +19,15 @@ export const botService = {
     });
   },
 
-  goBack: (sessionId, keyword, input, language) => {
-    return apiClient.post(`${ENDPOINT}/back`, {
-      session_id: sessionId,
-      keyword: keyword,
-      input: input,
-      language: language
-    });
+  gerGraph: () => {
+    return apiClient.get(`${API_URL}/graph`);
+  },
+
+  updateGraph: (data) => {
+    return apiClient.put(`${API_URL}/graph`, data);
+  },
+
+  resetBot: () => {
+    return apiClient.post(`${API_URL}/reset`);
   },
 };
