@@ -33,8 +33,6 @@ import { useState, useEffect } from "react";
 import apiClient from "../api/axiosClient";
 import { useLanguage } from "../context/LanguageContext";
 
-
-
 // 1. Hook الخاص ببيانات الملف الشخصي
 export const useProfileData = () => {
   const [profile, setProfile] = useState(null);
@@ -62,7 +60,6 @@ export const useProfileData = () => {
   return { profile, loading, error, refreshProfile: fetchProfile };
 };
 
-// 2. Hook الخاص بالشهادات
 export const useCertificates = () => {
   const [certificates, setCertificates] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -95,11 +92,9 @@ export const useCertificates = () => {
 };
 
 export const useUpdatePassword = () => {
+  const { translations } = useLanguage();
+  const t = translations.profile.password;
 
-  
-const { translations } = useLanguage();
-const t = translations.profile.password;
-  
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState({ msg: "", type: "" });
 
@@ -134,4 +129,79 @@ const t = translations.profile.password;
   const resetStatus = () => setStatus({ msg: "", type: "" });
 
   return { updatePassword, loading, status, resetStatus };
+};
+
+
+export const useUpdateProfilePicture = () => {
+  // const { translations } = useLanguage();
+  // const t = translations.profile;
+
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState({ msg: "", type: "" });
+
+  const updatePicture = async (file) => {
+    if (!file) return false;
+
+    setLoading(true);
+    setStatus({ msg: "", type: "" });
+
+    const formData = new FormData();
+    formData.append("picture", file);
+
+    try {
+      const response = await apiClient.put("/v1/account/picture", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      setStatus({
+        msg: response.data?.message || "تم تحديث الصورة بنجاح",
+        type: "success",
+      });
+      setLoading(false);
+      return true;
+    } catch (err) {
+      const errorMsg = err.response?.data?.message || "فشل تحديث الصورة";
+      setStatus({ msg: errorMsg, type: "error" });
+      setLoading(false);
+      return false;
+    }
+  };
+
+  const resetStatus = () => setStatus({ msg: "", type: "" });
+
+  return { updatePicture, loading, status, resetStatus };
+};
+
+
+export const useUpdateProfileData = () => {
+  // const { translations } = useLanguage();
+  // const t = translations.profile;
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState({ msg: "", type: "" });
+
+  const updateProfile = async (profileData) => {
+    setLoading(true);
+    setStatus({ msg: "", type: "" });
+
+    try {
+      const response = await apiClient.put("/v1/account", profileData);
+      setStatus({
+        msg: response.data?.message || "تم تحديث البيانات بنجاح",
+        type: "success",
+      });
+      setLoading(false);
+      return true;
+    } catch (err) {
+      const errorMsg = err.response?.data?.message || "حدث خطأ أثناء التحديث";
+      setStatus({ msg: errorMsg, type: "error" });
+      setLoading(false);
+      return false;
+    }
+  };
+
+  const resetStatus = () => setStatus({ msg: "", type: "" });
+
+  return { updateProfile, loading, status, resetStatus };
 };

@@ -208,6 +208,9 @@
     "grade": "Grade",
     "issueDate": "Issue Date",
     "securityTab": "Security",
+    "saving":"Saving...",
+    "save":"save",
+
 
     "password":{
         "securityTab": "Security",

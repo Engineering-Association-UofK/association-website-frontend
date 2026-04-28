@@ -207,6 +207,8 @@
     "grade": "الدرجة",
     "issueDate": "تاريخ الإصدار",
     "securityTab": "الأمان",
+    "saving":"جاري الحفظ...",
+    "save":"تم الحفظ",
 
     "password":{
         "securityTab": "الأمان",
