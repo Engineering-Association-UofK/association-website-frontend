@@ -1,71 +1,8 @@
-:root {
-  --primary: #0d6efd;
-  --primary-dark: #0a58ca;
-  --gray-light: #f8f9fa;
-  --gray-border: #e9ecef;
-  --text-muted: #6c757d;
-  --shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-  --shadow-md: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-  --border-radius: 1rem;
+.hover-card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
-* {
-  box-sizing: border-box;
-}
-
-body {
-  overflow-x: hidden;
-}
-
-
-
-.card {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  min-width: 540px;
-  margin: auto;
-}
-
-.card .btn {
-  align-self: flex-end;
-}
-
-.main-card .card-content {
-  justify-content: flex-start;
-}
-
-.hero-section {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: stretch;
-  
-  gap: 1.5rem;
-  margin-bottom: 3rem;
-}
-
-.main-card .card-img {
-  flex: none;
-}
-
-.main-card .card-img img {
-  max-width: 100%;
-  max-height: 100%;
-}
-
-.main-card {
-  flex: 1 1 calc(50% - 1.5rem);
-  min-width: 250px;
-  background: #fff;
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow-sm);
-  overflow: hidden;
-  transition: transform 0.2s, box-shadow 0.2s;
-  display: flex;
-  flex-direction: column;
-}
-
-.main-card:hover {
+.hover-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
 }
