@@ -208,10 +208,10 @@
     "certId": "رقم الشهادة",
     "grade": "الدرجة",
     "issueDate": "تاريخ الإصدار",
-    "securityTab": "الأمان",
-    "saving":"جاري الحفظ...",
-    "save":"تم الحفظ",
-
+    "UniversityID":"الرقم الجامعي",
+    "editProfile":"تعديل البيانات",
+    "cancel":"إلغاء",
+    "Gender":"الجنس",
     "password":{
         "securityTab": "الأمان",
         "securityTitle": "إعدادات الأمان",

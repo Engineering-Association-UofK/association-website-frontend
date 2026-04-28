@@ -207,8 +207,10 @@
     "grade": "Grade",
     "issueDate": "Issue Date",
     "securityTab": "Security",
-    "saving":"Saving...",
-    "save":"save",
+    "UniversityID":"University ID",
+    "editProfile":"Edit Profile",
+    "cancel":"Cancel",
+    "Gender":"Gender",
 
 
     "password":{

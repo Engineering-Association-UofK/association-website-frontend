@@ -23,8 +23,6 @@ import { BsCameraFill } from "react-icons/bs";
 //     resetStatus
 //   } = useUpdateProfilePicture();
 
-
-
 //   const handleFileChange = async (e) => {
 //     const file = e.target.files[0];
 //     if (file) {
@@ -155,11 +153,21 @@ import { BsCameraFill } from "react-icons/bs";
 //   );
 // }
 
+const DEPARTMENTS = [
+  { value: "surveying", label: "Surveying Engineering" },
+  { value: "agricultural", label: "Agricultural Engineering" },
+  { value: "civil", label: "Civil Engineering" },
+  { value: "electrical", label: "Electrical and Electronics Engineering" },
+  { value: "mechanical", label: "Mechanical Engineering" },
+  { value: "mining", label: "Mining Engineering" },
+  { value: "chemical", label: "Chemical Engineering" },
+  { value: "petroleum", label: "Petroleum Engineering" },
+];
+
 function ProfileDetails({ profile, loading, error, refreshProfile }) {
   const { translations } = useLanguage();
   const t = translations.profile;
 
-  // Hooks التحديث
   const {
     updatePicture,
     loading: updatingPic,
@@ -174,7 +182,6 @@ function ProfileDetails({ profile, loading, error, refreshProfile }) {
     resetStatus: resetDataStatus,
   } = useUpdateProfileData();
 
-  // حالة التحكم في وضع التعديل والبيانات المحلية
   const [isEditMode, setIsEditMode] = useState(false);
   const [formData, setFormData] = useState({});
 
@@ -185,13 +192,11 @@ function ProfileDetails({ profile, loading, error, refreshProfile }) {
       phone: profile?.phone || "",
       department: profile?.department || "",
       gender: profile?.gender || "male",
-      uni_id: profile?.uni_id || 0,
-      id: profile?.id 
+      uni_id: Number(profile?.uni_id) || 0,
+      id: Number(profile?.id) || 0,
     });
     setIsEditMode(true);
   };
-  
-  
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
@@ -211,8 +216,9 @@ function ProfileDetails({ profile, loading, error, refreshProfile }) {
         resetDataStatus();
       }, 2000);
     } else {
-      setTimeout(resetDataStatus, 3000);
+      setTimeout(resetDataStatus, 4000);
     }
+
   };
 
   if (loading)
@@ -279,10 +285,12 @@ function ProfileDetails({ profile, loading, error, refreshProfile }) {
               </div>
             )}
           </div>
-
           <h3 className="font-black text-xl">{profile?.name_en}</h3>
           <p className="text-[#868685] font-bold text-sm uppercase tracking-wider">
             {profile?.department}
+          </p>
+          <p className="text-[#868685] font-bold text-sm uppercase tracking-wider">
+            id:{profile?.id}
           </p>
         </div>
       </div>
@@ -297,7 +305,7 @@ function ProfileDetails({ profile, loading, error, refreshProfile }) {
                 onClick={handleStartEdit}
                 className="text-[#0d6efd] font-bold text-sm border-b-2 border-[#0d6efd] hover:text-[#0b5ed7] transition-colors"
               >
-                {t.editProfile || "تعديل البيانات"}
+                {t.editProfile}
               </button>
             ) : (
               <div className="flex gap-3">
@@ -306,14 +314,14 @@ function ProfileDetails({ profile, loading, error, refreshProfile }) {
                     setIsEditMode(false);
                     resetDataStatus();
                   }}
-                  className="text-gray-400 font-bold text-xs uppercase hover:text-red-500"
+                  className=" font-bold text-xs uppercase text-red-500"
                 >
                   {t.cancel || "إلغاء"}
                 </button>
                 <button
                   onClick={handleSaveData}
                   disabled={updatingData}
-                  className={`${styles.actionBtn} bg-[#0e0f0c] text-[#9fe870] disabled:opacity-50`}
+                  className={`${styles.actionBtn} bg-[#0e0f0c] text-white disabled:opacity-50`}
                 >
                   {updatingData ? t.saving || "جاري الحفظ..." : t.save || "حفظ"}
                 </button>
@@ -346,6 +354,22 @@ function ProfileDetails({ profile, loading, error, refreshProfile }) {
                 disabled={!isEditMode}
               />
             </div>
+
+            <div>
+              <label className={styles.label}>(t.Gender)</label>
+              <select
+                className={styles.input}
+                value={isEditMode ? formData.gender : profile?.gender}
+                onChange={(e) =>
+                  setFormData({ ...formData, gender: e.target.value })
+                }
+                disabled={!isEditMode}
+              >
+                <option value="male">ذكر (Male)</option>
+                <option value="female">أنثى (Female)</option>
+              </select>
+            </div>
+
             <div>
               <label className={styles.label}>{t.phone}</label>
               <input
@@ -357,10 +381,24 @@ function ProfileDetails({ profile, loading, error, refreshProfile }) {
                 disabled={!isEditMode}
               />
             </div>
+
+            <div>
+              <label className={styles.label}>{t.UniversityID}</label>
+              <input
+                type="number"
+                className={styles.input}
+                value={isEditMode ? formData.uni_id : profile?.uni_id || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, uni_id: e.target.value })
+                }
+                disabled={!isEditMode}
+              />
+            </div>
+
             <div>
               <label className={styles.label}>{t.department}</label>
-              <input
-                className={styles.input}
+              <select
+                className={`${styles.input} appearance-none bg-white`}
                 value={
                   isEditMode ? formData.department : profile?.department || ""
                 }
@@ -368,16 +406,42 @@ function ProfileDetails({ profile, loading, error, refreshProfile }) {
                   setFormData({ ...formData, department: e.target.value })
                 }
                 disabled={!isEditMode}
-              />
+              >
+                <option value="" disabled>
+                  Select Department
+                </option>
+                {DEPARTMENTS.map((dept) => (
+                  <option key={dept.value} value={dept.value}>
+                    {dept.label}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
-
-          {/* رسائل حالة تحديث البيانات النصية */}
           {dataStatus.msg && (
             <div
-              className={`mt-6 p-4 rounded-xl font-bold text-sm text-center animate-pulse ${dataStatus.type === "success" ? "bg-green-50 text-green-600" : "bg-red-50 text-red-600"}`}
+              className={`mt-6 p-4 rounded-xl font-bold text-sm text-center transition-all ${
+                dataStatus.type === "success"
+                  ? "bg-green-50 text-green-600 border border-green-100"
+                  : "bg-red-50 text-red-600 border border-red-100 shadow-sm"
+              }`}
             >
-              {dataStatus.msg}
+              <div className="flex items-center justify-center gap-2">
+                {dataStatus.type === "error" && (
+                  <svg
+                    className="w-5 h-5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                )}
+                <span>{dataStatus.msg}</span>
+              </div>
             </div>
           )}
         </div>
@@ -386,8 +450,7 @@ function ProfileDetails({ profile, loading, error, refreshProfile }) {
   );
 }
 
-
-function CertificatesList({ certificates, loading, error, }) {
+function CertificatesList({ certificates, loading, error }) {
   const { translations, language } = useLanguage(); //
   const t = translations.profile;
   const formatDate = (dateString) => {
@@ -404,7 +467,7 @@ function CertificatesList({ certificates, loading, error, }) {
     return (
       <div className="p-10 text-center text-gray-500 font-bold">
         {/* Loading Certificates... */}
-      <SEA_loading/>
+        <SEA_loading />
       </div>
     );
 
