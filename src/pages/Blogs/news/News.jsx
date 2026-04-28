@@ -3,6 +3,7 @@ import { Container, Row, Col, Card, Spinner, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useBlogs } from '../../../features/blogs/hooks/useBlogs';
 import "./News.css";
+import { useLanguage } from '../../../context/LanguageContext';
 
 // Card-Skeleton for main large card
 const CardSkeleton = () => (
@@ -32,6 +33,7 @@ const ThumbnailSkeleton = () => (
 );
 
 const News = () => {
+  const { language } = useLanguage();
   const [page, setPage] = useState(1);
   const [allPosts, setAllPosts] = useState([]);
   const [hasMore, setHasMore] = useState(true);
@@ -90,19 +92,21 @@ const News = () => {
 
   return (
     <Container className="py-5">
-      <h1 className="text-center fw-bold mb-5 text-primary">Latest News</h1>
+      <h1 className="text-center fw-bold mb-5 text-primary">
+        {language == 'en' ? 'Latest News' : 'اخر الاخبار'}
+      </h1>
 
       {/* The Card and the 3 thumbnails */}
       {allPosts.length > 0 && (
         <Row className="g-4 mb-5">
           {/* Big Card... */}
-          <Col lg={7}>
+          <Col>
             {firstPost ? (
               <Card className="h-100 shadow-sm border-0 hover-card" style={{ borderRadius: "1rem" }}>
                 <Card.Img
                   variant="top"
                   src={firstPost.image_url || `https://placehold.co/600x400/e2e8f0/1e293b?text=${firstPost.title}`}
-                  style={{ height: '350px', objectFit: 'cover', borderRadius: "1rem" }}
+                  style={{ height: '350px', maxHeight: '70vw', objectFit: 'cover', borderRadius: "1rem" }}
                 />
                 <Card.Body>
                   <Card.Title className="fw-bold text-primary fs-3">{firstPost.title}</Card.Title>
@@ -115,7 +119,7 @@ const News = () => {
                     <i className="bi bi-calendar3 me-1"></i> {new Date(firstPost.updated_at).toLocaleDateString()}
                   </div>
                   <Link to={`/posts/news/${firstPost.slug}`} className="btn btn-outline-primary rounded-pill">
-                    Continue Reading <i className="bi bi-arrow-right ms-1"></i>
+                    {language == 'en' ? 'Continue Reading' : 'مواصلة القراءة'} <i className={"bi bi-arrow-" + (language == 'en' ? 'right' : 'left') + " ms-1"}></i>
                   </Link>
                 </Card.Body>
               </Card>
@@ -125,7 +129,7 @@ const News = () => {
           </Col>
 
           {/* Right column: 3 stacked thumbnails (lg=5) */}
-          <Col lg={5}>
+          <Col>
             {tSidePosts.length === 3 ? (
               <div className="d-flex flex-column gap-3">
                 {tSidePosts.map((post) => (
@@ -147,8 +151,13 @@ const News = () => {
                                 : post.summary)
                               : "No Summary Available"}
                           </Card.Text>
+                          <div className="text-muted small mb-3">
+                            <i className="bi bi-person-circle me-1"></i> {firstPost.author_name}
+                            <span className="mx-2">•</span>
+                            <i className="bi bi-calendar3 me-1"></i> {new Date(firstPost.updated_at).toLocaleDateString()}
+                          </div>
                           <Link to={`/posts/news/${post.slug}`} className="btn btn-outline-primary rounded-pill">
-                            Continue Reading <i className="bi bi-arrow-right ms-1"></i>
+                            {language == 'en' ? 'Continue Reading' : 'مواصلة القراءة'} <i className={"bi bi-arrow-" + (language == 'en' ? 'right' : 'left') + " ms-1"}></i>
                           </Link>
                         </Card.Body>
                       </Col>
@@ -166,7 +175,6 @@ const News = () => {
       {/* the rest normal thumbnails*/}
       {thumbnailPosts.length > 0 && (
         <div className="mt-5">
-          <h3 className="fw-bold mb-4 text-secondary">More News</h3>
           <Row className="g-4">
             {thumbnailPosts.map((post) => (
               <Col xs={12} lg={6} key={post.slug}>
@@ -194,7 +202,7 @@ const News = () => {
                           <i className="bi bi-calendar3 me-1"></i> {new Date(firstPost.updated_at).toLocaleDateString()}
                         </div>
                         <Link to={`/posts/news/${post.slug}`} className="btn btn-outline-primary rounded-pill">
-                          Continue Reading <i className="bi bi-arrow-right ms-1"></i>
+                          {language == 'en' ? 'Continue Reading' : 'مواصلة القراءة'} <i className={"bi bi-arrow-" + (language == 'en' ? 'right' : 'left') + " ms-1"}></i>
                         </Link>
                       </Card.Body>
                     </Col>
@@ -232,11 +240,11 @@ const News = () => {
             {isFetching ? (
               <>
                 <Spinner as="span" animation="border" size="sm" className="me-2" />
-                Loading...
+                {language == 'en' ? 'Loading...' : 'يتم التحميل...'}
               </>
             ) : (
               <>
-                Load More News <i className="bi bi-chevron-down ms-2"></i>
+                {language == 'en' ? 'Load More News' : 'اظهار المزيد'} <i className="bi bi-chevron-down ms-2"></i>
               </>
             )}
           </Button>
