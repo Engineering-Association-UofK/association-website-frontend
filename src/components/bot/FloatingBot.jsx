@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useBot, useGoBack } from '../../features/bot/hooks/useBot.js'; 
+import { useBot } from '../../features/bot/hooks/useBot.js'; 
 import { useLanguage } from '../../context/LanguageContext';
 import { useAuth } from '../../context/AuthContext';
 import './FloatingBot.css';
@@ -35,10 +35,8 @@ const FloatingBot = () => {
 
     // Mutations
     const botMutation = useBot();
-    const goBackMutation = useGoBack();
 
-    const loading = botMutation.isPending || botMutation.isLoading || 
-                    goBackMutation.isPending || goBackMutation.isLoading;
+    const loading = botMutation.isPending || botMutation.isLoading;
                     
     const isFinal = currentOptions.length === 0 && messages.length > 0 && nodeType !== 'input';
 
@@ -83,23 +81,6 @@ const FloatingBot = () => {
             { sessionId, keyword, input: userInput, language },
             { 
                 onSuccess: handleBotResponse,
-                onError: handleBotError
-            }
-        );
-    };
-
-    // Handle Back Navigation
-    const handleGoBack = () => {
-        setCurrentOptions([]);
-        setBotError(null);
-        goBackMutation.mutate(
-            { sessionId, keyword: 'back', input: '', language },
-            { 
-                onSuccess: (res) => {
-                    // Remove last user-bot pair to mimic going backward visually
-                    setMessages(prev => prev.length > 2 ? prev.slice(0, -3) : prev);
-                    handleBotResponse(res);
-                },
                 onError: handleBotError
             }
         );
@@ -254,23 +235,22 @@ const FloatingBot = () => {
                             </div>
                         )}
 
-                        {/* If type is MESSAGE (Render Buttons) */}
-                        {nodeType === 'message' && (
-                            <div className="d-flex flex-wrap gap-2 justify-content-center">
-                                {currentOptions.map((opt, idx) => (
-                                    <button 
-                                        key={idx} 
-                                        className="btn btn-sm rounded-pill bot-options-btn px-3 py-2"
-                                        onClick={() => handleUserReply(opt.keyword, opt.label, "")}
-                                        disabled={loading}
-                                    >
-                                        {opt.label}
-                                    </button>
-                                ))}
-                            </div>
-                        )}
+                        
+                        <div className="d-flex flex-wrap gap-2 justify-content-center">
+                            {currentOptions.map((opt, idx) => (
+                                <button 
+                                    key={idx} 
+                                    className="btn btn-sm rounded-pill bot-options-btn px-3 py-2"
+                                    onClick={() => handleUserReply(opt.keyword, opt.label, "")}
+                                    disabled={loading}
+                                >
+                                    {opt.label}
+                                </button>
+                            ))}
+                        </div>
+                        
 
-                        {/* Global Footer Actions (Back / Restart) */}
+                        {/* Global Footer Actions (Back) */}
                         <div className="d-flex w-100 gap-2 mt-1 justify-content-center">
                             {isFinal && (
                                 <button className="btn w-100 rounded-pill bot-restart-btn px-3 py-2" onClick={resetBot} disabled={loading}>
