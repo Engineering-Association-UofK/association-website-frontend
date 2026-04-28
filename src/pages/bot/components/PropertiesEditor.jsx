@@ -123,14 +123,13 @@ const PropertiesEditor = ({
           </section>
 
           {/* Action Configuration */}
-          {type === 'action' && (
+          {type === 'action' && !selectedNode.data.is_locked && (
             <section className="mb-4">
               <Form.Label className="small-caps text-muted mb-2">System Trigger</Form.Label>
               <div className="p-3 border-warning border rounded bg-warning-subtle shadow-sm">
                 <Form.Group className="mb-3">
                   <Form.Label className="small fw-bold">Action Type</Form.Label>
                   <Form.Select size="sm" value={data.action?.type || ""} onChange={(e) => handleActionUpdate('type', e.target.value)}>
-                    <option value="">None</option>
                     <option value="redirect">Redirect</option>
                   </Form.Select>
                 </Form.Group>
@@ -148,11 +147,17 @@ const PropertiesEditor = ({
             </section>
           )}
 
-          <div className="mt-5 border-top pt-4 text-center">
-            <Button variant="link" className="text-danger small p-0 fw-bold" onClick={() => onDeleteNode(selectedNode.id)}>
-              <i className="bi bi-trash3 me-1"></i> DELETE THIS NODE
-            </Button>
-          </div>
+          { !selectedNode.data.is_locked && (
+            <div className="mt-5 border-top pt-4 text-center">
+              <Button 
+                variant="link" 
+                className="text-danger small p-0 fw-bold" 
+                onClick={() => onDeleteNode(selectedNode.id)
+              }>
+                <i className="bi bi-trash3 me-1"></i> DELETE THIS NODE
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     );
