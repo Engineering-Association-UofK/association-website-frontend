@@ -29,8 +29,6 @@ import AdminUsersDashboard from "./pages/Admin Users/AdminUsersDashboard.jsx";
 import AdminUsersEntry from "./pages/Admin Users/AdminUsersEntry.jsx";
 import AdminProfile from "./pages/Admin Profile/AdminProfile.jsx";
 import ChangePassword from "./pages/Admin/ChangePassword.jsx";
-import BotCommandsDashboard from "./pages/Bot Commands/BotCommandsDashboard.jsx";
-import BotCommandsEntry from "./pages/Bot Commands/BotCommandsEntry.jsx";
 import Dashboard from "./pages/Dashboard/Dashboard.jsx";
 import ImageStorageDashboard from "./pages/Image Storage/ImageStorageDashboard.jsx";
 import ImageStorageEntry from "./pages/Image Storage/ImageStorageEntry.jsx";
@@ -93,8 +91,6 @@ function App() {
                 <Route path="admin-users/:id" element={<AdminUsersEntry />} />
                 <Route path="admin-profile" element={<AdminProfile />} />
                 <Route path="change-password" element={<ChangePassword />} />
-                <Route path="bot-commands" element={<BotCommandsDashboard />} />
-                <Route path="bot-commands/:id" element={<BotCommandsEntry />} />
                 <Route
                   path="image-storage"
                   element={<ImageStorageDashboard />}

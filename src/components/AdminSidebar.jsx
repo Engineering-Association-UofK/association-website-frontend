@@ -59,12 +59,6 @@ const AdminSidebar = () => {
             </NavLink>
           </li>
           <li className="nav-item"> 
-            <NavLink to="/admin/bot-commands" className="nav-link">
-              <i className="bi pe-none bi-chat me-2"></i>
-              <div>Bot Commands</div>
-            </NavLink>
-          </li>
-          <li className="nav-item"> 
             <NavLink to="/admin/image-storage" className="nav-link">
               <i className="bi pe-none bi-images me-2"></i>
               <div>Images Storage</div>
@@ -72,7 +66,7 @@ const AdminSidebar = () => {
           </li>
           <li className="nav-item"> 
             <NavLink to="/admin/bot" className="nav-link">
-              <i className="bi pe-none bi-images me-2"></i>
+              <i className="bi pe-none bi-robot me-2"></i>
               <div>Bot</div>
             </NavLink>
           </li>
