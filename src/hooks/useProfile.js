@@ -33,8 +33,6 @@ import { useState, useEffect } from "react";
 import apiClient from "../api/axiosClient";
 import { useLanguage } from "../context/LanguageContext";
 
-
-
 // 1. Hook الخاص ببيانات الملف الشخصي
 export const useProfileData = () => {
   const [profile, setProfile] = useState(null);
@@ -95,11 +93,9 @@ export const useCertificates = () => {
 };
 
 export const useUpdatePassword = () => {
+  const { translations } = useLanguage();
+  const t = translations.profile.password;
 
-  
-const { translations } = useLanguage();
-const t = translations.profile.password;
-  
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState({ msg: "", type: "" });
 
@@ -139,8 +135,8 @@ const t = translations.profile.password;
 // أضف هذا الـ Hook في نهاية ملف useProfile.js
 
 export const useUpdateProfilePicture = () => {
-  const { translations } = useLanguage();
-  const t = translations.profile; 
+  // const { translations } = useLanguage();
+  // const t = translations.profile;
 
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState({ msg: "", type: "" });
@@ -178,4 +174,37 @@ export const useUpdateProfilePicture = () => {
   const resetStatus = () => setStatus({ msg: "", type: "" });
 
   return { updatePicture, loading, status, resetStatus };
+};
+
+// أضف هذا في نهاية ملف useProfile.js
+
+export const useUpdateProfileData = () => {
+  // const { translations } = useLanguage();
+  // const t = translations.profile;
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState({ msg: "", type: "" });
+
+  const updateProfile = async (profileData) => {
+    setLoading(true);
+    setStatus({ msg: "", type: "" });
+
+    try {
+      const response = await apiClient.put("/v1/account", profileData);
+      setStatus({
+        msg: response.data?.message || "تم تحديث البيانات بنجاح",
+        type: "success",
+      });
+      setLoading(false);
+      return true;
+    } catch (err) {
+      const errorMsg = err.response?.data?.message || "حدث خطأ أثناء التحديث";
+      setStatus({ msg: errorMsg, type: "error" });
+      setLoading(false);
+      return false;
+    }
+  };
+
+  const resetStatus = () => setStatus({ msg: "", type: "" });
+
+  return { updateProfile, loading, status, resetStatus };
 };

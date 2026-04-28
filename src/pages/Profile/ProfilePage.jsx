@@ -4,6 +4,7 @@ import {
   useCertificates,
   useUpdatePassword,
   useUpdateProfilePicture,
+  useUpdateProfileData,
 } from "../../hooks/useProfile";
 import SEA_loading from "../../components/ui/SEA_loading";
 import { useLanguage } from "../../context/LanguageContext";
@@ -11,62 +12,235 @@ import { useLanguage } from "../../context/LanguageContext";
 import { Fragment } from "react";
 import { BsCameraFill } from "react-icons/bs";
 
+// function ProfileDetails({ profile, loading, error, refreshProfile }) {
+//   const { translations } = useLanguage();
+//   const t = translations.profile;
+
+//   const {
+//     updatePicture,
+//     loading: updating,
+//     status,
+//     resetStatus
+//   } = useUpdateProfilePicture();
+
+
+
+//   const handleFileChange = async (e) => {
+//     const file = e.target.files[0];
+//     if (file) {
+//       const success = await updatePicture(file);
+//       if (success && refreshProfile) {
+//         refreshProfile();
+//       }
+//       setTimeout(() => {
+//         resetStatus();
+//       }, 2000);
+//     }
+//   };
+
+//   if (loading)
+//     return (
+//       <div className="p-10 text-center text-gray-500 font-bold">
+//         {/* Loading Profile... */}
+//         <SEA_loading />
+//       </div>
+//     );
+
+//   if (error)
+//     return (
+//       <div className="p-10 text-center text-red-500 font-bold">{error}</div>
+//     );
+
+//   if (!profile) return null;
+
+//   const styles = {
+//     card: "bg-white rounded-[30px] p-8 shadow-[0_0_0_1px_rgba(14,15,12,0.12)]",
+//     input:
+//       "w-full p-4 border border-[rgba(14,15,12,0.2)] rounded-[12px] outline-none font-semibold disabled:bg-gray-50",
+//     label:
+//       "block mb-2 font-bold text-xs text-gray-400 uppercase tracking-widest",
+//     uploadOverlay:
+//       "absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer rounded-full",
+//   };
+
+//   return (
+//     <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+//       <div className="space-y-6">
+//         <div className={`${styles.card} text-center`}>
+//           <div className="relative w-40 h-40 mx-auto group">
+//             <div className="w-full h-full rounded-full bg-[#e2f6d5] border-4 border-[#0d6efd] flex items-center justify-center overflow-hidden shadow-inner">
+//               {updating ? (
+//                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#0d6efd]"></div>
+//               ) : profile?.profile_pic ? (
+//                 <img
+//                   src={profile.profile_pic}
+//                   alt="profile"
+//                   className="w-full h-full object-cover"
+//                 />
+//               ) : (
+//                 <span className="text-4xl font-black uppercase text-[#0d6efd]">
+//                   {profile?.name_en?.substring(0, 2)}
+//                 </span>
+//               )}
+//             </div>
+
+//             <label className="absolute bottom-1 right-1 flex items-center justify-center p-2 bg-[#0d6efd] rounded-full border-3 border-white cursor-pointer hover:bg-[#0b5ed7] transition-all shadow-lg group-hover:scale-110">
+//               <input
+//                 type="file"
+//                 className="hidden"
+//                 accept="image/*"
+//                 onChange={handleFileChange}
+//                 disabled={updating}
+//               />
+//               <BsCameraFill size={20} className="text-white" />
+//             </label>
+//           </div>
+
+//           <div className="my-3 ">
+
+//             {status.msg && (
+//               <div
+//                 className={`text-xs font-bold animate-fade-in ${status.type === "success" ? "text-green-600" : "text-red-600"}`}
+//               >
+//                 {status.msg}
+//               </div>
+//             )}
+//           </div>
+
+//           <h3 className="mt-4 font-black text-xl">{profile?.name_en}</h3>
+//           <p className="text-[#868685] font-bold">{profile?.department}</p>
+//         </div>
+//       </div>
+
+//       <div className="lg:col-span-2">
+//         <div className={styles.card}>
+//           <h2 className="text-2xl font-black mb-8">{t.personalInfo}</h2>
+//           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+//             <div>
+//               <label className={styles.label}>{t.nameAr}</label>
+//               <input
+//                 className={styles.input}
+//                 value={profile?.name_ar || ""}
+//                 disabled
+//               />
+//             </div>
+//             <div>
+//               <label className={styles.label}>{t.email}</label>
+//               <input
+//                 className={styles.input}
+//                 value={profile?.email || ""}
+//                 disabled
+//               />
+//             </div>
+//             <div>
+//               <label className={styles.label}>{t.phone}</label>
+//               <input
+//                 className={styles.input}
+//                 value={profile?.phone || ""}
+//                 disabled
+//               />
+//             </div>
+//             <div>
+//               <label className={styles.label}>{t.department}</label>
+//               <input
+//                 className={styles.input}
+//                 value={profile?.department || ""}
+//                 disabled
+//               />
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
 function ProfileDetails({ profile, loading, error, refreshProfile }) {
   const { translations } = useLanguage();
   const t = translations.profile;
 
+  // Hooks التحديث
   const {
     updatePicture,
-    loading: updating,
-    status,
-    resetStatus
+    loading: updatingPic,
+    status: picStatus,
+    resetStatus: resetPicStatus,
   } = useUpdateProfilePicture();
+
+  const {
+    updateProfile,
+    loading: updatingData,
+    status: dataStatus,
+    resetStatus: resetDataStatus,
+  } = useUpdateProfileData();
+
+  // حالة التحكم في وضع التعديل والبيانات المحلية
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [formData, setFormData] = useState({});
+
+  const handleStartEdit = () => {
+    setFormData({
+      name_ar: profile?.name_ar || "",
+      name_en: profile?.name_en || "",
+      phone: profile?.phone || "",
+      department: profile?.department || "",
+      gender: profile?.gender || "male",
+      uni_id: profile?.uni_id || 0,
+    });
+    setIsEditMode(true);
+  };
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
       const success = await updatePicture(file);
-      if (success && refreshProfile) {
-        refreshProfile(); 
-      }
+      if (success && refreshProfile) refreshProfile();
+      setTimeout(resetPicStatus, 3000);
+    }
+  };
+
+  const handleSaveData = async () => {
+    const success = await updateProfile(formData);
+    if (success) {
+      if (refreshProfile) refreshProfile();
       setTimeout(() => {
-        resetStatus();
+        setIsEditMode(false);
+        resetDataStatus();
       }, 2000);
+    } else {
+      setTimeout(resetDataStatus, 3000);
     }
   };
 
   if (loading)
     return (
-      <div className="p-10 text-center text-gray-500 font-bold">
-        {/* Loading Profile... */}
+      <div className="p-10 text-center">
         <SEA_loading />
       </div>
     );
-
   if (error)
     return (
       <div className="p-10 text-center text-red-500 font-bold">{error}</div>
     );
-
   if (!profile) return null;
 
   const styles = {
     card: "bg-white rounded-[30px] p-8 shadow-[0_0_0_1px_rgba(14,15,12,0.12)]",
     input:
-      "w-full p-4 border border-[rgba(14,15,12,0.2)] rounded-[12px] outline-none font-semibold disabled:bg-gray-50",
+      "w-full p-4 border border-[rgba(14,15,12,0.2)] rounded-[12px] outline-none font-semibold transition-all focus:border-[#0d6efd] disabled:bg-gray-50 disabled:text-gray-500",
     label:
       "block mb-2 font-bold text-xs text-gray-400 uppercase tracking-widest",
-    uploadOverlay:
-      "absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer rounded-full",
+    actionBtn:
+      "font-black py-2 px-6 rounded-xl transition-all uppercase text-xs tracking-widest",
   };
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
       <div className="space-y-6">
         <div className={`${styles.card} text-center`}>
-          <div className="relative w-40 h-40 mx-auto group">
+          <div className="relative w-40 h-40 mx-auto group mb-4">
             <div className="w-full h-full rounded-full bg-[#e2f6d5] border-4 border-[#0d6efd] flex items-center justify-center overflow-hidden shadow-inner">
-              {updating ? (
+              {updatingPic ? (
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#0d6efd]"></div>
               ) : profile?.profile_pic ? (
                 <img
@@ -87,70 +261,128 @@ function ProfileDetails({ profile, loading, error, refreshProfile }) {
                 className="hidden"
                 accept="image/*"
                 onChange={handleFileChange}
-                disabled={updating}
+                disabled={updatingPic}
               />
               <BsCameraFill size={20} className="text-white" />
             </label>
           </div>
 
-          <div className="my-3 ">
-
-            {status.msg && (
+          <div className="h-6 mb-2">
+            {picStatus.msg && (
               <div
-                className={`text-xs font-bold animate-fade-in ${status.type === "success" ? "text-green-600" : "text-red-600"}`}
+                className={`text-[10px] font-bold animate-fade-in ${picStatus.type === "success" ? "text-green-600" : "text-red-600"}`}
               >
-                {status.msg}
+                {picStatus.msg}
               </div>
             )}
           </div>
 
-          <h3 className="mt-4 font-black text-xl">{profile?.name_en}</h3>
-          <p className="text-[#868685] font-bold">{profile?.department}</p>
+          <h3 className="font-black text-xl">{profile?.name_en}</h3>
+          <p className="text-[#868685] font-bold text-sm uppercase tracking-wider">
+            {profile?.department}
+          </p>
         </div>
       </div>
 
       <div className="lg:col-span-2">
         <div className={styles.card}>
-          <h2 className="text-2xl font-black mb-8">{t.personalInfo}</h2>
+          <div className="flex justify-between items-center mb-8">
+            <h2 className="text-2xl font-black">{t.personalInfo}</h2>
+
+            {!isEditMode ? (
+              <button
+                onClick={handleStartEdit}
+                className="text-[#0d6efd] font-bold text-sm border-b-2 border-[#0d6efd] hover:text-[#0b5ed7] transition-colors"
+              >
+                {t.editProfile || "تعديل البيانات"}
+              </button>
+            ) : (
+              <div className="flex gap-3">
+                <button
+                  onClick={() => {
+                    setIsEditMode(false);
+                    resetDataStatus();
+                  }}
+                  className="text-gray-400 font-bold text-xs uppercase hover:text-red-500"
+                >
+                  {t.cancel || "إلغاء"}
+                </button>
+                <button
+                  onClick={handleSaveData}
+                  disabled={updatingData}
+                  className={`${styles.actionBtn} bg-[#0e0f0c] text-[#9fe870] disabled:opacity-50`}
+                >
+                  {updatingData ? t.saving || "جاري الحفظ..." : t.save || "حفظ"}
+                </button>
+              </div>
+            )}
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className={styles.label}>{t.nameAr}</label>
               <input
                 className={styles.input}
-                value={profile?.name_ar || ""}
-                disabled
+                value={isEditMode ? formData.name_ar : profile?.name_ar || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, name_ar: e.target.value })
+                }
+                disabled={!isEditMode}
               />
             </div>
             <div>
-              <label className={styles.label}>{t.email}</label>
+              <label className={styles.label}>
+                {t.nameEn || "English Name"}
+              </label>
               <input
                 className={styles.input}
-                value={profile?.email || ""}
-                disabled
+                value={isEditMode ? formData.name_en : profile?.name_en || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, name_en: e.target.value })
+                }
+                disabled={!isEditMode}
               />
             </div>
             <div>
               <label className={styles.label}>{t.phone}</label>
               <input
                 className={styles.input}
-                value={profile?.phone || ""}
-                disabled
+                value={isEditMode ? formData.phone : profile?.phone || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, phone: e.target.value })
+                }
+                disabled={!isEditMode}
               />
             </div>
             <div>
               <label className={styles.label}>{t.department}</label>
               <input
                 className={styles.input}
-                value={profile?.department || ""}
-                disabled
+                value={
+                  isEditMode ? formData.department : profile?.department || ""
+                }
+                onChange={(e) =>
+                  setFormData({ ...formData, department: e.target.value })
+                }
+                disabled={!isEditMode}
               />
             </div>
           </div>
+
+          {/* رسائل حالة تحديث البيانات النصية */}
+          {dataStatus.msg && (
+            <div
+              className={`mt-6 p-4 rounded-xl font-bold text-sm text-center animate-pulse ${dataStatus.type === "success" ? "bg-green-50 text-green-600" : "bg-red-50 text-red-600"}`}
+            >
+              {dataStatus.msg}
+            </div>
+          )}
         </div>
       </div>
     </div>
   );
 }
+
 
 function CertificatesList({ certificates, loading, error, }) {
   const { translations, language } = useLanguage(); //
