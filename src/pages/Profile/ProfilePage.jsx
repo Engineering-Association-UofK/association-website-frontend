@@ -190,7 +190,7 @@ function ProfileDetails({ profile, loading, error, refreshProfile }) {
     });
     setIsEditMode(true);
   };
-  console.log(profile.id);
+  
   
 
   const handleFileChange = async (e) => {
