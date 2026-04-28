@@ -38,6 +38,7 @@ import { CONFIG } from "./config";
 import ProfilePage from "./pages/Profile/ProfilePage.jsx";
 import ScrollToTop from "./components/ScrollToTop";
 import ScrollToTopButton from "./components/ScrollToTopButton.jsx";
+import AdminBotEditor from "./pages/bot/AdminBotEditor.jsx";
 
 
 function App() {
@@ -102,6 +103,8 @@ function App() {
                   path="image-storage/:id"
                   element={<ImageStorageEntry />}
                 />
+                <Route path="bot" element={<AdminBotEditor />} />
+                <Route path="*" element={<Navigate to="/admin/dashboard" />} />
               </Route>
             </Route>
             {/* </Route> */}

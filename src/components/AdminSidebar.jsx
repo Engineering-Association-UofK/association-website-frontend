@@ -70,6 +70,12 @@ const AdminSidebar = () => {
               <div>Images Storage</div>
             </NavLink>
           </li>
+          <li className="nav-item"> 
+            <NavLink to="/admin/bot" className="nav-link">
+              <i className="bi pe-none bi-images me-2"></i>
+              <div>Bot</div>
+            </NavLink>
+          </li>
         </ul> 
         <hr></hr> 
         <div className="d-flex align-items-center justify-content-between">
