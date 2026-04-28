@@ -4,5 +4,53 @@
 
 .hover-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+.card {
+  width: 100%;;
+}
+
+.col-lg-7, .col-lg-6, .col-lg-5 {
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 590px) {
+  .card .row{
+    gap: 10px !important;
+    align-items: center;
+  }
+
+  div.col-8 {
+    width: calc(75% -  11px);
+  }
+
+  .card-body {
+    padding: 0.5rem 0;
+  }
+
+  .card-title {
+    font-size: 0.9rem !important;
+    margin-bottom: 0.3rem;
+  }
+
+  .card-text {
+    /* display: none; */
+    font-size: 0.7rem !important;
+    margin-bottom: 0.5rem;
+  }
+
+  .card-body .btn {
+    padding: 3px 14px;
+  }
+
+  .card-body div.text-muted.small.mb-3 {
+    display: none;
+  }
+
+  .card-body .btn, .card-body div.text-muted.small.mb-3 {
+    font-size: 0.7rem !important;
+    margin-bottom: 0.2rem !important;
+  }
 }

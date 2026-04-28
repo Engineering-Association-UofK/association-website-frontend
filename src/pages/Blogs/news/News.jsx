@@ -131,10 +131,10 @@ const News = () => {
                 {tSidePosts.map((post) => (
                   <Card key={post.slug} className="shadow-sm border-0 hover-card" style={{ borderRadius: "1rem" }}>
                     <Row className="g-0">
-                      <Col xs={4}>
+                      <Col xs={3}>
                         <Card.Img
                           src={post.image_url || `https://placehold.co/600x400/e2e8f0/1e293b?text=${post.title}`}
-                          style={{ height: '100%', maxHeight: "200px", objectFit: 'cover', borderRadius: '0.8rem' }}
+                          style={{ maxHeight: "200px", objectFit: 'cover', borderRadius: '0.8rem' }}
                         />
                       </Col>
                       <Col xs={8}>
@@ -172,10 +172,10 @@ const News = () => {
               <Col xs={12} lg={6} key={post.slug}>
                 <Card className="shadow-sm border-0 h-100 hover-card" style={{ borderRadius: "1rem" }}>
                   <Row className="g-0 h-100">
-                    <Col xs={4}>
+                    <Col xs={3}>
                       <Card.Img
                         src={post.image_url || `https://placehold.co/600x400/e2e8f0/1e293b?text=${post.title}`}
-                        style={{ height: '100%', maxHeight: "200px", objectFit: 'cover', borderRadius: '0.8rem' }}
+                        style={{ maxHeight: "200px", objectFit: 'cover', borderRadius: '0.8rem' }}
                       />
                     </Col>
                     <Col xs={8}>
