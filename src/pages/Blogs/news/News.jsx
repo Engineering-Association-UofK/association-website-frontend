@@ -38,6 +38,7 @@ const News = () => {
   const [allPosts, setAllPosts] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const { data, isLoading, error, isFetching } = useBlogs('NEWS', page, 10);
+  const { language } = useLanguage();
 
   // add new posts when fetched...
   useEffect(() => {
@@ -212,7 +213,46 @@ const News = () => {
             ))}
           </Row>
         </div>
-      )}
+        }
+      </section>
+
+
+
+      {/*the 2nd section: cards*/}
+      <section className='thumbnails-section'>
+        {thumbnailPosts && <div className='cards-container'>
+          {thumbnailPosts.map((post) => (
+            <div className="card thumbnail-card">
+              <div className="card-img">
+                <img
+                  src={post.image_url || `https://placehold.co/600x400/e2e8f0/1e293b?text=${post.title}`}
+                  style={{ height: '350px', objectFit: 'cover', borderRadius: "1rem" }}
+                />
+              </div>
+              <div className="card-content">
+                <h2 className='card-title'>{post.title}</h2>
+                <p className="card-text text-muted">
+                  {post.summary
+                    ? (post.summary.length > 60
+                      ? post.summary.slice(0, 60) + '...'
+                      : post.summary)
+                    : "No Summary Available"}
+                </p>
+                <div className="text-muted small mb-3">
+                  <i className="bi bi-person-circle me-1"></i> {post.author_name}
+                  <span className="mx-2"></span>
+                  <i className="bi bi-calendar3 me-1"></i> {new Date(post.updated_at).toLocaleDateString()}
+                </div>
+                <Link to={`/posts/news/${post.slug}`} className="btn btn-outline-primary rounded-pill">
+                  Continue Reading <i className="bi bi-arrow-right ms-1"></i>
+                </Link>
+              </div>
+            </div>))
+          }
+        </div>}
+      </section>
+
+
 
 
       {/* skeleton when loading more data */}
