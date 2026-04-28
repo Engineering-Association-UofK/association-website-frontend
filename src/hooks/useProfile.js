@@ -60,7 +60,6 @@ export const useProfileData = () => {
   return { profile, loading, error, refreshProfile: fetchProfile };
 };
 
-// 2. Hook الخاص بالشهادات
 export const useCertificates = () => {
   const [certificates, setCertificates] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -132,7 +131,6 @@ export const useUpdatePassword = () => {
   return { updatePassword, loading, status, resetStatus };
 };
 
-// أضف هذا الـ Hook في نهاية ملف useProfile.js
 
 export const useUpdateProfilePicture = () => {
   // const { translations } = useLanguage();
@@ -176,7 +174,6 @@ export const useUpdateProfilePicture = () => {
   return { updatePicture, loading, status, resetStatus };
 };
 
-// أضف هذا في نهاية ملف useProfile.js
 
 export const useUpdateProfileData = () => {
   // const { translations } = useLanguage();

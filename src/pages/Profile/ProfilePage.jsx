@@ -186,9 +186,12 @@ function ProfileDetails({ profile, loading, error, refreshProfile }) {
       department: profile?.department || "",
       gender: profile?.gender || "male",
       uni_id: profile?.uni_id || 0,
+      id: profile?.id 
     });
     setIsEditMode(true);
   };
+  console.log(profile.id);
+  
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
