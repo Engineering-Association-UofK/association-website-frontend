@@ -67,6 +67,12 @@ identity-contentidentity-content.about-page {
     flex-shrink: 0;
 }
 
+.trustee-cards-container {
+    gap: 20px;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
 @media (max-width: 992px) {
     .identity-grid {
         grid-template-columns: 1fr;
@@ -84,6 +90,9 @@ identity-contentidentity-content.about-page {
     .about-page-container {
         max-width: 95%;
     }
+    .objective-card, .trustee-card {
+        max-width: 80vw;
+    }
 }
 
 @media (max-width: 576px) {
@@ -94,3 +103,6 @@ identity-contentidentity-content.about-page {
         padding: 1rem;
     }
 }
+
+
+
