@@ -135,3 +135,47 @@ const t = translations.profile.password;
 
   return { updatePassword, loading, status, resetStatus };
 };
+
+// أضف هذا الـ Hook في نهاية ملف useProfile.js
+
+export const useUpdateProfilePicture = () => {
+  const { translations } = useLanguage();
+  const t = translations.profile; 
+
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState({ msg: "", type: "" });
+
+  const updatePicture = async (file) => {
+    if (!file) return false;
+
+    setLoading(true);
+    setStatus({ msg: "", type: "" });
+
+    const formData = new FormData();
+    formData.append("picture", file);
+
+    try {
+      const response = await apiClient.put("/v1/account/picture", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      setStatus({
+        msg: response.data?.message || "تم تحديث الصورة بنجاح",
+        type: "success",
+      });
+      setLoading(false);
+      return true;
+    } catch (err) {
+      const errorMsg = err.response?.data?.message || "فشل تحديث الصورة";
+      setStatus({ msg: errorMsg, type: "error" });
+      setLoading(false);
+      return false;
+    }
+  };
+
+  const resetStatus = () => setStatus({ msg: "", type: "" });
+
+  return { updatePicture, loading, status, resetStatus };
+};

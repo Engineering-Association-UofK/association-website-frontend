@@ -1,73 +1,40 @@
-// import React from "react";
-// import { useProfile } from '../../hooks/useProfile';
-
-// const ProfilePage = () => {
-//   const { profile, loading, error } = useProfile();
-
-//   if (loading) return <div className="text-center p-5">جاري التحميل...</div>;
-//   if (error) return <div className="text-red-500 text-center p-5">{error}</div>;
-
-//   return (
-//     <div className="max-w-2xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-10">
-//       <h2 className="text-2xl font-bold mb-6 text-center">الملف الشخصي</h2>
-
-//       <div className="flex flex-col items-center mb-6">
-//         {/* عرض الصورة الشخصية أو صورة افتراضية */}
-//         <img
-//           src={profile?.profile_pic || "https://via.placeholder.com/150"}
-//           alt="Profile"
-//           className="w-32 h-32 rounded-full border-4 border-blue-500 object-cover"
-//         />
-//         <h3 className="mt-4 text-xl font-semibold">{profile?.name_ar}</h3>
-//         <p className="text-gray-500">{profile?.department}</p>
-//       </div>
-
-//       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-//         <div className="border-b pb-2">
-//           <span className="block text-sm text-gray-400">اسم المستخدم</span>
-//           <span className="font-medium">{profile?.username}</span>
-//         </div>
-//         <div className="border-b pb-2">
-//           <span className="block text-sm text-gray-400">الرقم الجامعي</span>
-//           <span className="font-medium">{profile?.uni_id}</span>
-//         </div>
-//         <div className="border-b pb-2">
-//           <span className="block text-sm text-gray-400">البريد الإلكتروني</span>
-//           <span className="font-medium">{profile?.email}</span>
-//         </div>
-//         <div className="border-b pb-2">
-//           <span className="block text-sm text-gray-400">رقم الهاتف</span>
-//           <span className="font-medium">{profile?.phone}</span>
-//         </div>
-//       </div>
-
-//       <button
-//         className="mt-8 w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
-//         onClick={() => alert("سنقوم ببرمجة التعديل في الخطوة القادمة!")}
-//       >
-//         تعديل البيانات
-//       </button>
-//     </div>
-//   );
-// };
-
-// export default ProfilePage;
-
 import React, { useState } from "react";
 import {
   useProfileData,
   useCertificates,
   useUpdatePassword,
+  useUpdateProfilePicture,
 } from "../../hooks/useProfile";
 import SEA_loading from "../../components/ui/SEA_loading";
 import { useLanguage } from "../../context/LanguageContext";
 
 import { Fragment } from "react";
+import { BsCameraFill } from "react-icons/bs";
 
-// مكون تفاصيل الملف الشخصي
-function ProfileDetails({ profile, loading, error }) {
+function ProfileDetails({ profile, loading, error, refreshProfile }) {
   const { translations } = useLanguage();
   const t = translations.profile;
+
+  const {
+    updatePicture,
+    loading: updating,
+    status,
+    resetStatus
+  } = useUpdateProfilePicture();
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const success = await updatePicture(file);
+      if (success && refreshProfile) {
+        refreshProfile(); 
+      }
+      setTimeout(() => {
+        resetStatus();
+      }, 2000);
+    }
+  };
+
   if (loading)
     return (
       <div className="p-10 text-center text-gray-500 font-bold">
@@ -75,6 +42,7 @@ function ProfileDetails({ profile, loading, error }) {
         <SEA_loading />
       </div>
     );
+
   if (error)
     return (
       <div className="p-10 text-center text-red-500 font-bold">{error}</div>
@@ -88,27 +56,54 @@ function ProfileDetails({ profile, loading, error }) {
       "w-full p-4 border border-[rgba(14,15,12,0.2)] rounded-[12px] outline-none font-semibold disabled:bg-gray-50",
     label:
       "block mb-2 font-bold text-xs text-gray-400 uppercase tracking-widest",
+    uploadOverlay:
+      "absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer rounded-full",
   };
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
       <div className="space-y-6">
         <div className={`${styles.card} text-center`}>
-          <div className="relative w-40 h-40 mx-auto">
-            <div className="w-full h-full rounded-full bg-[#e2f6d5] border-4 border-[#0d6efd] flex items-center justify-center overflow-hidden">
-              {profile?.profile_pic ? (
+          <div className="relative w-40 h-40 mx-auto group">
+            <div className="w-full h-full rounded-full bg-[#e2f6d5] border-4 border-[#0d6efd] flex items-center justify-center overflow-hidden shadow-inner">
+              {updating ? (
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#0d6efd]"></div>
+              ) : profile?.profile_pic ? (
                 <img
                   src={profile.profile_pic}
                   alt="profile"
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <span className="text-4xl font-black uppercase">
+                <span className="text-4xl font-black uppercase text-[#0d6efd]">
                   {profile?.name_en?.substring(0, 2)}
                 </span>
               )}
             </div>
+
+            <label className="absolute bottom-1 right-1 flex items-center justify-center p-2 bg-[#0d6efd] rounded-full border-3 border-white cursor-pointer hover:bg-[#0b5ed7] transition-all shadow-lg group-hover:scale-110">
+              <input
+                type="file"
+                className="hidden"
+                accept="image/*"
+                onChange={handleFileChange}
+                disabled={updating}
+              />
+              <BsCameraFill size={20} className="text-white" />
+            </label>
           </div>
+
+          <div className="my-3 ">
+
+            {status.msg && (
+              <div
+                className={`text-xs font-bold animate-fade-in ${status.type === "success" ? "text-green-600" : "text-red-600"}`}
+              >
+                {status.msg}
+              </div>
+            )}
+          </div>
+
           <h3 className="mt-4 font-black text-xl">{profile?.name_en}</h3>
           <p className="text-[#868685] font-bold">{profile?.department}</p>
         </div>
@@ -157,8 +152,7 @@ function ProfileDetails({ profile, loading, error }) {
   );
 }
 
-// مكون قائمة الشهادات
-function CertificatesList({ certificates, loading, error }) {
+function CertificatesList({ certificates, loading, error, }) {
   const { translations, language } = useLanguage(); //
   const t = translations.profile;
   const formatDate = (dateString) => {
@@ -513,6 +507,7 @@ export default function ProfilePage() {
             profile={profileHook.profile}
             loading={profileHook.loading}
             error={profileHook.error}
+            refreshProfile={profileHook.refreshProfile}
           />
         )}
 
