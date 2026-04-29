@@ -194,10 +194,21 @@ export const useUpdateProfileData = () => {
       setLoading(false);
       return true;
     } catch (err) {
-      const errorMsg = err.response?.data?.message || "حدث خطأ أثناء التحديث";
-      setStatus({ msg: errorMsg, type: "error" });
-      setLoading(false);
+      // const errorMsg = err.response?.data?.message || "حدث خطأ أثناء التحديث";
+      // setStatus({ msg: errorMsg, type: "error" });
+      // setLoading(false);
+      // return false;
+      const serverResponse = err.response?.data;
+      let fullErrorMessage = serverResponse?.message || "حدث خطأ أثناء التحديث";  
+      if (serverResponse?.errors) {
+
+        const fieldErrors = Object.values(serverResponse.errors).join(", ");
+        fullErrorMessage = `${serverResponse.message}: ${fieldErrors}`;
+      }
+      setStatus({ msg: fullErrorMessage, type: "error" });
+      setLoading(false);      
       return false;
+
     }
   };
 
