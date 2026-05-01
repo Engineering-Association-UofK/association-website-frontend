@@ -19,7 +19,10 @@
         "admin": "المسؤول",
         "login": "تسجيل الدخول",
         "logout": "تسجيل الخروج",
-        "language": "English"
+        "language": "English",
+        "userMenu": {
+            "profile": "الملف الشخصي"
+        }
     },
     "home": {
         "hero": {
@@ -101,7 +104,6 @@
         "loading": "يتم التسجيل...",
         "haveAccount": "هل لديك حساب؟",
         "login": "تسجيل الدخول",
-
         "studentIndex": "رقم المسجل (Index)",
         "uniId": "الرقم الجامعي ",
         "passcode": "رمز المرور (Passcode)",
@@ -190,38 +192,37 @@
         "volunteers": "متطوع"
     },
     "profile": {
-    "title": "الملف الشخصي",
-    "settings": "الإعدادات",
-    "detailsTab": "التفاصيل",
-    "certificatesTab": "الشهادات",
-    "personalInfo": "المعلومات الشخصية",
-    "nameAr": "الاسم (بالعربية)",
-    "email": "البريد الإلكتروني",
-    "phone": "رقم الهاتف",
-    "department": "القسم",
-    "loadingProfile": "جاري تحميل الملف الشخصي...",
-    "loadingCerts": "جاري تحميل الشهادات...",
-    "noCerts": "لا توجد شهادات بعد",
-    "exploreCourses": "استكشف الكورسات",
-    "certId": "رقم الشهادة",
-    "grade": "الدرجة",
-    "issueDate": "تاريخ الإصدار",
-    "UniversityID":"الرقم الجامعي",
-    "editProfile":"تعديل البيانات",
-    "cancel":"إلغاء",
-    "Gender":"الجنس",
-    "password":{
-        "securityTab": "الأمان",
-        "securityTitle": "إعدادات الأمان",
-        "oldPassword": "كلمة المرور القديمة",
-        "newPassword": "كلمة المرور الجديدة",
-        "confirmPassword": "تأكيد كلمة المرور",
-        "updateBtn": "تحديث كلمة المرور",
-        "updatingBtn": "جاري التحديث...",
-        "passwordMismatch": "كلمات المرور الجديدة غير متطابقة",
-        "updateSuccess": "تم تحديث كلمة المرور بنجاح!",
-        "networkError": "حدث خطأ في الشبكة، حاول لاحقاً"
-
+        "title": "الملف الشخصي",
+        "settings": "الإعدادات",
+        "detailsTab": "التفاصيل",
+        "certificatesTab": "الشهادات",
+        "personalInfo": "المعلومات الشخصية",
+        "nameAr": "الاسم (بالعربية)",
+        "email": "البريد الإلكتروني",
+        "phone": "رقم الهاتف",
+        "department": "القسم",
+        "loadingProfile": "جاري تحميل الملف الشخصي...",
+        "loadingCerts": "جاري تحميل الشهادات...",
+        "noCerts": "لا توجد شهادات بعد",
+        "exploreCourses": "استكشف الكورسات",
+        "certId": "رقم الشهادة",
+        "grade": "الدرجة",
+        "issueDate": "تاريخ الإصدار",
+        "UniversityID": "الرقم الجامعي",
+        "editProfile": "تعديل البيانات",
+        "cancel": "إلغاء",
+        "Gender": "الجنس",
+        "password": {
+            "securityTab": "الأمان",
+            "securityTitle": "إعدادات الأمان",
+            "oldPassword": "كلمة المرور القديمة",
+            "newPassword": "كلمة المرور الجديدة",
+            "confirmPassword": "تأكيد كلمة المرور",
+            "updateBtn": "تحديث كلمة المرور",
+            "updatingBtn": "جاري التحديث...",
+            "passwordMismatch": "كلمات المرور الجديدة غير متطابقة",
+            "updateSuccess": "تم تحديث كلمة المرور بنجاح!",
+            "networkError": "حدث خطأ في الشبكة، حاول لاحقاً"
+        }
     }
-}
 }
