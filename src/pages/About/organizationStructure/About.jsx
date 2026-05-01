@@ -5,7 +5,7 @@ import ar from './ar.json';
 import en from './en.json';
 import './About.css';
 
-const OraganizationStructureAbout = () => {
+const OrganizationStructureAbout = () => {
   const { language } = useLanguage();
   const content = language === 'en' ? en : ar;
   const isRtl = language === 'ar';
@@ -123,4 +123,4 @@ const OraganizationStructureAbout = () => {
   );
 };
 
-export default OraganizationStructureAbout;
+export default OrganizationStructureAbout;

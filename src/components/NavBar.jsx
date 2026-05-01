@@ -112,15 +112,15 @@ const NavigationBar = () => {
   // Define dropdown items
   const aboutItems = [
     { to: '/about/association', end: true, label: translations.navbar.association },
-    { to: '/about/oraganizationStructure', label: translations.navbar.oraganizationStructure },
-    { to: '/about/councilofthirty', label: translations.navbar.councilofthirty },
+    { to: '/about/organization-structure', label: translations.navbar.organizationStructure },
+    { to: '/about/council-of-thirty', label: translations.navbar.councilOfThirty },
   ];
 
   const postsItems = [
     { to: '/posts/news', label: translations.navbar.posts.news },
-    { to: '/posts/events', label: translations.navbar.posts.issues },
-    { to: '/posts/announcements', label: translations.navbar.posts.blogs },
-    { to: '/posts/resources', label: translations.navbar.posts.help },
+    { to: '/posts/issues', label: translations.navbar.posts.issues },
+    { to: '/posts/blogs', label: translations.navbar.posts.blogs },
+    { to: '/posts/donations', label: translations.navbar.posts.donations },
   ];
 
   return (

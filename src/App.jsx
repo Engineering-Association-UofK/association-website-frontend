@@ -7,7 +7,7 @@ import {
 import { LanguageProvider } from "./context/LanguageContext";
 import Home from "./pages/Home/Home";
 import AssociationAbout from "./pages/About/association/About.jsx";
-import OraganizationStructureAbout from "./pages/About/oraganizationStructure/About.jsx";
+import OrganizationStructureAbout from "./pages/About/organizationStructure/About.jsx";
 import ThirtiethCouncilAbout from "./pages/About/CouncilOfThirty/About.jsx";
 import AdminLayout from "./pages/Admin/AdminLayout";
 import Blogs from "./pages/Blogs/blog/Blogs.jsx";
@@ -53,11 +53,11 @@ function App() {
               <Route path="/" element={<Home />} />
               {/* Add other public routes here */}
               <Route path="/about/association" element={<AssociationAbout />} />
-              <Route path="/about/oraganizationStructure" element={<OraganizationStructureAbout />} />
-              <Route path="/about/councilofthirty" element={<ThirtiethCouncilAbout />} />
-              <Route path="/posts/announcements" element={<Blogs />} />
-              <Route path="/posts/resources" element={<Donation />} />
-              <Route path="/posts/events" element={<Issues />} />
+              <Route path="/about/organization-structure" element={<OrganizationStructureAbout />} />
+              <Route path="/about/council-of-thirty" element={<ThirtiethCouncilAbout />} />
+              <Route path="/posts/blogs" element={<Blogs />} />
+              <Route path="/posts/donations" element={<Donation />} />
+              <Route path="/posts/issues" element={<Issues />} />
               <Route path="/posts/news" element={<News />} />
               <Route path="/posts/:type/:slug" element={<Post />} /> { /* view posts */}
             </Route>

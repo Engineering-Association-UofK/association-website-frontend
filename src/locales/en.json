@@ -3,19 +3,19 @@
         "brand": "Steering Engineering Association",
         "home": "Home",
         "about": "About",
+        "forms": "Forms",
         "association": "Association",
-        "oraganizationStructure": "Organization Structure",
-        "councilofthirty": "The Council of Thirty",
+        "organizationStructure": "Organization Structure",
+        "councilOfThirty": "The Council of Thirty",
         "initiatives": "Initiatives",
         "blogs": "Posts",
         "posts": {
             "news": "News",
             "issues": "Issues",
             "blogs": "Blog",
-            "help": "Donations"
+            "donations": "Donations"
         },
         "gallery": "Gallery",
-        "forms": "Forms",
         "admin": "Admin",
         "login": "Login",
         "logout": "Logout",

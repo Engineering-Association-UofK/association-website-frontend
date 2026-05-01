@@ -2,18 +2,18 @@
     "navbar": {
         "brand": "الجمعية الهندسية التسييرية",
         "home": "الرئيسية",
+        "about": "من نحن",
         "forms": "النماذج",
         "association": "الجمعية",
-        "oraganizationStructure": "هيكل المنظمة",
-        "councilofthirty": "المجلس الثلاثيني",
-        "about": "من نحن",
+        "organizationStructure": "هيكل المنظمة",
+        "councilOfThirty": "المجلس الثلاثيني",
         "initiatives": "المبادرات",
         "blogs": "المواضيع",
         "posts": {
             "news": "الأخبار",
             "issues": "القضايا",
             "blogs": "المدونة",
-            "help": "التبرعات"
+            "donations": "التبرعات"
         },
         "gallery": "المعرض",
         "admin": "المسؤول",
