@@ -119,6 +119,8 @@
         "back": "Back"
     },
     "footer": {
+        "brand": "Steering Engineering Association",
+        "description": "The Steering Engineering Association is a student organization dedicated to representing engineering students and enhancing their university experience through organizing events, initiatives, and providing academic and social support.",
         "contact": "Contact Us",
         "follow": "Follow Us",
         "rights": "All rights reserved.",
