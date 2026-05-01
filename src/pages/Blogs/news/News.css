@@ -55,14 +55,8 @@ div.col-8 {
   .row:not(:first-child) .hover-card.card,
   .mt-5 .hover-card.card,
   .d-flex.flex-column.gap-3 .hover-card.card {
-    border: none !important;
     background: transparent !important;
-    box-shadow: none !important;
     transform: none !important;
-    border-bottom: 1px solid #eee !important;
-    border-radius: 0 !important;
-    margin: 0rem;
-    padding: 0rem;
   }
 
   .mt-5 .col-lg-6 {
