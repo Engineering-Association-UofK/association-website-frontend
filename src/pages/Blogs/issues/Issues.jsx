@@ -5,8 +5,21 @@ import { useBlogs } from '../../../features/blogs/hooks/useBlogs';
 import { useLanguage } from '../../../context/LanguageContext';
 import './Issues.css';
 
-const SkeletonCard = () => (
-    <Col md={6} lg={4}>
+const formatDate = (dateString, language) => {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.toLocaleString(language === 'en' ? 'en-US' : 'ar-EG', { month: 'short' });
+    return `${day} ${month}`;
+};
+
+const SkeletonCard = ({ isMobile }) => (
+    <Col md={6} lg={4}>   
+        {isMobile && (
+            <div className="timeline" style={{width: "20px", height: '100%'}}>
+                <div style={{ height: '100%', width: '5px', backgroundColor: '#e9ecef' }} className="skeleton-animation"></div>
+                <div style={{ height: '1rem', width: '1rem', backgroundColor: '#e9ecef', position: 'relative', borderRadius: '50%', bottom: '100%', left: '-5px' }} className="skeleton-animation"></div>
+            </div>
+        )}
         <Card className="h-100 shadow-sm border-0">
             <Card.Body>
                 <div style={{ height: '1.5rem', width: '100%', backgroundColor: '#e9ecef', marginBottom: '0.5rem' }} className="skeleton-animation"></div>
@@ -23,6 +36,14 @@ const Issues = () => {
     const [hasMore, setHasMore] = useState(true);
     const { data, isLoading, error, isFetching } = useBlogs('ISSUES', page, 10);
     const { language } = useLanguage();
+    const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
+
+    useEffect(() => {
+        const handleResize = () => { setIsMobile(window.innerWidth < 768); };
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
 
     useEffect(() => {
         if (data?.posts) {
@@ -40,7 +61,7 @@ const Issues = () => {
         return (
             <Container className="py-5 text-center">
                 <Row className="g-4">
-                    {[...Array(12)].map((_, i) => <SkeletonCard key={`skeleton-${i}`} />)}
+                    {[...Array(12)].map((_, i) => <SkeletonCard isMobile={isMobile} key={`skeleton-${i}`} />)}
                 </Row>
                 <div className="py-5">
                     <Spinner animation="border" variant="primary" />
