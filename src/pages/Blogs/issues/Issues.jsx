@@ -12,14 +12,12 @@ const formatDate = (dateString, language) => {
     return `${day} ${month}`;
 };
 
-const SkeletonCard = ({ isMobile }) => (
+const SkeletonCard = () => (
     <Col md={6} lg={4}>
-        {isMobile && (
-            <div className="timeline" style={{ width: "20px", height: '120%' }}>
-                <div style={{ height: '100%', width: '5px', backgroundColor: '#e9ecef' }} className="skeleton-animation"></div>
-                <div style={{ height: '1rem', width: '1rem', backgroundColor: '#e9ecef', position: 'relative', borderRadius: '50%', bottom: '100%', left: '-5px' }} className="skeleton-animation"></div>
-            </div>
-        )}
+        <div className="timeline" style={{ width: "20px", height: '120%' }}>
+            <div style={{ height: '100%', width: '5px', backgroundColor: '#e9ecef' }} className="skeleton-animation"></div>
+            <div style={{ height: '1rem', width: '1rem', backgroundColor: '#e9ecef', position: 'relative', borderRadius: '50%', bottom: '100%', left: '-5px' }} className="skeleton-animation"></div>
+        </div>
         <Card className="h-100 shadow-sm border-0">
             <Card.Body>
                 <div style={{ height: '1.5rem', width: '100%', backgroundColor: '#e9ecef', marginBottom: '0.5rem' }} className="skeleton-animation"></div>
@@ -36,14 +34,6 @@ const Issues = () => {
     const [hasMore, setHasMore] = useState(true);
     const { data, isLoading, error, isFetching } = useBlogs('ISSUES', page, 10);
     const { language } = useLanguage();
-    const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
-
-    useEffect(() => {
-        const handleResize = () => { setIsMobile(window.innerWidth < 768); };
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
 
     useEffect(() => {
         if (data?.posts) {
@@ -61,7 +51,7 @@ const Issues = () => {
         return (
             <Container className="py-5 text-center">
                 <Row className="g-4">
-                    {[...Array(12)].map((_, i) => <SkeletonCard isMobile={isMobile} key={`skeleton-${i}`} />)}
+                    {[...Array(12)].map((_, i) => <SkeletonCard key={`skeleton-${i}`} />)}
                 </Row>
                 <div className="py-5">
                     <Spinner animation="border" variant="primary" />
@@ -77,39 +67,41 @@ const Issues = () => {
             </h1>
 
             <Row className="g-4">
-                {allPosts.map((post, idx) => (
-                    <Col md={6} lg={4} key={post.slug}>
-                        {isMobile && (
-                            <div className="timeline" style={{ width: "20px", height: '120%' }}>
+                {allPosts.map((post, idx) => {
+                    const currentDate = new Date(post.updated_at).toLocaleDateString();
+                    const prevDate = idx > 0 ? new Date(allPosts[idx - 1].updated_at).toLocaleDateString() : null;
+                    const showMarker = idx === 0 || currentDate !== prevDate;
+                    return (
+                        <div key={post.slug} style={{ display: 'flex', gap: '2rem', width: '100%' }}>
+                            <div style={{ width: "5px", height: '120%' }}>
                                 <div style={{ height: '100%', width: '5px', backgroundColor: '#66a3ff', borderRadius: '10px' }}></div>
-                                { ( new Date(allPosts[idx - 1]?.updated_at).toLocaleDateString() != new Date(post.updated_at).toLocaleDateString() ) && (
+                                {showMarker && (
                                     <div style={{ height: '1rem', width: '1rem', position: 'relative', bottom: '100%' }}>
                                         <div style={{ height: '1rem', width: '1rem', backgroundColor: '#0d6efd', position: 'relative', borderRadius: '50%', bottom: 'calc(100% - 0.7rem)', left: '-5px' }}></div>
                                         <div style={{ height: '1.5rem', width: '4rem', position: "relative", top: '-1.3rem', left: '15px' }}>{formatDate(new Date(post.updated_at).toLocaleDateString(), language)}</div>
                                     </div>
                                 )}
                             </div>
-                        )}
-                        <Card className="h-100 shadow-sm border-0 hover-card" style={{ marginBottom: '0rem' }}>
-                            <Card.Body className="d-flex flex-column">
-                                <Card.Title className="fw-bold text-primary">{post.title}</Card.Title>
-                                <Card.Text className="text-muted">{
-                                    post.summary.length > 80 ? post.summary.slice(0, 70) + '...' : post.summary
-                                        || 'No summary available.'
-                                }</Card.Text>
-                                <div className="text-muted small mb-3 author">
-                                    <i className="bi bi-person-circle me-1"></i> {post.author_name}
-                                    <span className="mx-2">•</span>
-                                    <i className="bi bi-calendar3 me-1"></i> {new Date(post.updated_at).toLocaleDateString()}
+                            <div className="card h-100 shadow-sm border-0 hover-card" >
+                                <div className="card-body d-flex flex-column">
+                                    <h5 className="card-title fw-bold text-primary">{post.title}</h5>
+                                    <p className="card-text text-muted">
+                                        {post.summary || 'No summary available.'}
+                                    </p>
+                                    <div className="text-muted small mb-3 author">
+                                        <i className="bi bi-person-circle me-1"></i> {post.author_name}
+                                        <span className="mx-2">•</span>
+                                        <i className="bi bi-calendar3 me-1"></i> {new Date(post.updated_at).toLocaleDateString()}
+                                    </div>
+                                    <Link to={`/posts/issues/${post.slug}`} className="btn btn-outline-primary rounded-pill mt-auto align-self-start">
+                                        {language === 'en' ? 'Read More' : 'اقرأ المزيد'}
+                                        <i className={`bi bi-arrow-${language === 'en' ? 'right' : 'left'} ms-1`}></i>
+                                    </Link>
                                 </div>
-                                <Link to={`/posts/issues/${post.slug}`} className="btn btn-outline-primary rounded-pill mt-auto">
-                                    {language === 'en' ? 'Read More' : 'اقرأ المزيد'}
-                                    <i className={`bi bi-arrow-${language === 'en' ? 'right' : 'left'} ms-1`}></i>
-                                </Link>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                ))}
+                            </div>
+                        </div>
+                    )
+                })}
 
                 {isFetching && page > 1 && (
                     <>
