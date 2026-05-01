@@ -19,7 +19,10 @@
         "admin": "Admin",
         "login": "Login",
         "logout": "Logout",
-        "language": "العربية"
+        "language": "العربية",
+        "userMenu": {
+            "profile": "Profile"
+        }
     },
     "home": {
         "hero": {
@@ -101,7 +104,6 @@
         "loading": "Registering...",
         "haveAccount": "Already have an account?",
         "login": "Login",
-
         "studentIndex": "Student Index Number",
         "uniId": "University / National ID",
         "passcode": "Passcode",
@@ -191,40 +193,38 @@
         "volunteers": "Volunteers"
     },
     "profile": {
-    "title": "PROFILE",
-    "settings": "SETTINGS",
-    "detailsTab": "Details",
-    "certificatesTab": "Certificates",
-    "personalInfo": "Personal Info",
-    "nameAr": "Name (Arabic)",
-    "email": "Email",
-    "phone": "Phone",
-    "department": "Department",
-    "loadingProfile": "Loading Profile...",
-    "loadingCerts": "Loading Certificates...",
-    "noCerts": "No Certificates Yet",
-    "exploreCourses": "Explore Courses",
-    "certId": "Certificate ID",
-    "grade": "Grade",
-    "issueDate": "Issue Date",
-    "securityTab": "Security",
-    "UniversityID":"University ID",
-    "editProfile":"Edit Profile",
-    "cancel":"Cancel",
-    "Gender":"Gender",
-
-
-    "password":{
+        "title": "PROFILE",
+        "settings": "SETTINGS",
+        "detailsTab": "Details",
+        "certificatesTab": "Certificates",
+        "personalInfo": "Personal Info",
+        "nameAr": "Name (Arabic)",
+        "email": "Email",
+        "phone": "Phone",
+        "department": "Department",
+        "loadingProfile": "Loading Profile...",
+        "loadingCerts": "Loading Certificates...",
+        "noCerts": "No Certificates Yet",
+        "exploreCourses": "Explore Courses",
+        "certId": "Certificate ID",
+        "grade": "Grade",
+        "issueDate": "Issue Date",
         "securityTab": "Security",
-        "securityTitle": "Security Settings",
-        "oldPassword": "Old Password",
-        "newPassword": "New Password",
-        "confirmPassword": "Confirm Password",
-        "updateBtn": "Update Password",
-        "updatingBtn": "Updating...",
-        "passwordMismatch": "New passwords do not match",
-        "updateSuccess": "Password updated successfully!",
-        "networkError": "Network error, please try again later"
+        "UniversityID": "University ID",
+        "editProfile": "Edit Profile",
+        "cancel": "Cancel",
+        "Gender": "Gender",
+        "password": {
+            "securityTab": "Security",
+            "securityTitle": "Security Settings",
+            "oldPassword": "Old Password",
+            "newPassword": "New Password",
+            "confirmPassword": "Confirm Password",
+            "updateBtn": "Update Password",
+            "updatingBtn": "Updating...",
+            "passwordMismatch": "New passwords do not match",
+            "updateSuccess": "Password updated successfully!",
+            "networkError": "Network error, please try again later"
+        }
     }
-}
 }
