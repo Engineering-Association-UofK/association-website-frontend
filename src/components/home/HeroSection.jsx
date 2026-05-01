@@ -44,13 +44,13 @@ const HeroSection = () => {
                         >
                             {translations.home.hero.cta}
                         </Button>
-                        <Button 
+                        {/* <Button 
                             as={Link} 
                             to="/about/thirtiethCouncil" 
                             className="hero-btn-outline"
                         >
                             {translations.home.hero.secondaryCta}
-                        </Button>
+                        </Button> */}
                     </div>
                 </div>
             </Container>
