@@ -216,3 +216,30 @@ export const useUpdateProfileData = () => {
 
   return { updateProfile, loading, status, resetStatus };
 };
+
+export const useAccountSummary = () => {
+  const [summary, setSummary] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchSummary = async () => {
+    setLoading(true);
+    try {
+      const response = await apiClient.get("/v1/account/summary");
+      // Adjusting based on your API response structure (response.data vs response)
+      setSummary(response.data || response);
+      setError(null);
+    } catch (err) {
+      console.error("Summary Fetch Error:", err);
+      setError(err.response?.data?.message || "Network Error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchSummary();
+  }, []);
+
+  return { summary, loading, error, refreshSummary: fetchSummary };
+};

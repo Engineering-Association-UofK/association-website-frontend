@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
+import { useAccountSummary } from '../hooks/useProfile';
 import './UserDropdownMenu.css';
 
 const UserDropdownMenu = ({ isMobile = false, onItemClick }) => {
@@ -11,27 +12,28 @@ const UserDropdownMenu = ({ isMobile = false, onItemClick }) => {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
 
-    // Get user display name based on language
-    const displayName = language === 'ar'
-        ? (user?.name_ar || user?.name_en || '')
-        : (user?.name_en || user?.name_ar || '');
+    const { summary, loading } = useAccountSummary();
 
-    // Generate initials from name
+    const currentName = summary?.username || (language === 'ar'
+        ? (user?.name_ar || user?.name_en || '')
+        : (user?.name_en || user?.name_ar || ''));
+        
+    const avatarUrl = summary?.profile_pic || user?.avatar_url;
+    const studentIndex = summary?.id;
+    const studentEmail = summary?.email;
+
     const getInitials = () => {
-        const name = user?.name_en || user?.name_ar || '';
-        if (!name) return '?';
-        const parts = name.trim().split(/\s+/);
+        if (!currentName) return '?';
+        const parts = currentName.trim().split(/\s+/);
         if (parts.length >= 2) {
             return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
         }
         return parts[0][0]?.toUpperCase() || '?';
     };
 
-    const avatarUrl = user?.avatar_url;
     const initials = getInitials();
     const menuItems = translations.navbar?.userMenu || {};
 
-    // Close dropdown when clicking outside
     useEffect(() => {
         const handleClickOutside = (e) => {
             if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -54,11 +56,11 @@ const UserDropdownMenu = ({ isMobile = false, onItemClick }) => {
         if (onItemClick) onItemClick();
     };
 
-    // Avatar element (reused)
+    // Reusable Avatar
     const AvatarCircle = ({ size = 'default', className = '' }) => (
         <div className={`${size === 'large' ? 'user-dropdown-header-avatar' : size === 'mobile' ? 'mobile-user-avatar' : 'user-avatar'} ${className}`}>
             {avatarUrl ? (
-                <img src={avatarUrl} alt={displayName} />
+                <img src={avatarUrl} alt={currentName} />
             ) : (
                 initials
             )}
@@ -72,10 +74,14 @@ const UserDropdownMenu = ({ isMobile = false, onItemClick }) => {
                 <div className="mobile-user-header">
                     <AvatarCircle size="mobile" />
                     <div className="mobile-user-info">
-                        <div className="mobile-user-name">{displayName || 'User'}</div>
-                        <div className="mobile-user-role">
-                            {user?.roles?.[0]?.replace('sys:', '').replace('_', ' ') || 'Member'}
+                        <div className="mobile-user-name">
+                            {currentName || 'Loading...'}
                         </div>
+                        {studentIndex && (
+                            <div className="mobile-user-index">
+                                <span className="index-badge">Index: {studentIndex}</span>
+                            </div>
+                        )}
                     </div>
                 </div>
 
@@ -83,14 +89,10 @@ const UserDropdownMenu = ({ isMobile = false, onItemClick }) => {
                     <i className="bi bi-person"></i>
                     {menuItems.profile || 'Profile'}
                 </Link>
-                <Link to="/settings" className="mobile-menu-item" onClick={handleItemClick}>
+                {/* <Link to="/settings" className="mobile-menu-item" onClick={handleItemClick}>
                     <i className="bi bi-gear"></i>
                     {menuItems.settings || 'Settings'}
-                </Link>
-                <Link to="/help" className="mobile-menu-item" onClick={handleItemClick}>
-                    <i className="bi bi-question-circle"></i>
-                    {menuItems.helpSupport || 'Help & Support'}
-                </Link>
+                </Link> */}
 
                 <button className="mobile-menu-item logout-item" onClick={handleLogout}>
                     <i className="bi bi-box-arrow-right"></i>
@@ -111,38 +113,71 @@ const UserDropdownMenu = ({ isMobile = false, onItemClick }) => {
                 id="user-dropdown-trigger"
             >
                 <AvatarCircle />
-                <span className="user-trigger-name">{displayName || 'User'}</span>
+                <span className="user-trigger-name">{currentName || 'User'}</span>
                 <i className={`bi bi-chevron-down user-trigger-chevron ${isOpen ? 'open' : ''}`}></i>
             </button>
 
             {isOpen && (
                 <>
                     <div className="user-dropdown-overlay" onClick={() => setIsOpen(false)} />
-                    <div className="user-dropdown-menu" role="menu" aria-labelledby="user-dropdown-trigger">
-                        {/* Header */}
+                    <div className="user-dropdown-menu shadow-lg" role="menu" aria-labelledby="user-dropdown-trigger">
+                        
+                        {/* Header Profile Card */}
                         <div className="user-dropdown-header">
                             <AvatarCircle size="large" />
                             <div className="user-dropdown-header-info">
-                                <div className="user-dropdown-header-name">{displayName || 'User'}</div>
-                                <div className="user-dropdown-header-role">
-                                    {user?.roles?.[0]?.replace('sys:', '').replace('_', ' ') || 'Member'}
+                                <div className="user-dropdown-header-name" title={currentName}>
+                                    {currentName || 'Loading...'}
                                 </div>
+                                
+                                {loading ? (
+                                    <div className="loading-skeleton"></div>
+                                ) : (
+                                    <>
+                                        {studentIndex && (
+                                            <div className="user-dropdown-header-index mt-1">
+                                                <span className="index-badge px-2 py-1 rounded-pill">
+                                                    <i className="bi bi-hash me-1"></i>{studentIndex}
+                                                </span>
+                                            </div>
+                                        )}
+                                        {studentEmail && (
+                                            <div className="user-dropdown-header-email text-muted mt-1" title={studentEmail}>
+                                                {studentEmail}
+                                            </div>
+                                        )}
+                                    </>
+                                )}
                             </div>
                         </div>
 
-                        {/* Menu Items */}
-                        <Link to="/profile" className="user-dropdown-item" role="menuitem" onClick={handleItemClick}>
-                            <i className="bi bi-person"></i>
-                            {menuItems.profile || 'Profile'}
-                        </Link>
-
-
                         <div className="user-dropdown-divider" />
 
-                        <button className="user-dropdown-item logout-item" role="menuitem" onClick={handleLogout}>
-                            <i className="bi bi-box-arrow-right"></i>
-                            {translations.navbar?.logout || 'Logout'}
-                        </button>
+                        {/* Menu Items */}
+                        <div className="menu-items-container px-2 pb-2">
+                            <Link to="/profile" className="user-dropdown-item" role="menuitem" onClick={handleItemClick}>
+                                <div className="item-icon-wrapper">
+                                    <i className="bi bi-person"></i>
+                                </div>
+                                {menuItems.profile || 'Profile'}
+                            </Link>
+
+                            {/* <Link to="/settings" className="user-dropdown-item" role="menuitem" onClick={handleItemClick}>
+                                <div className="item-icon-wrapper">
+                                    <i className="bi bi-gear"></i>
+                                </div>
+                                {menuItems.settings || 'Settings'}
+                            </Link> */}
+
+                            <div className="user-dropdown-divider my-2" />
+
+                            <button className="user-dropdown-item logout-item" role="menuitem" onClick={handleLogout}>
+                                <div className="item-icon-wrapper">
+                                    <i className="bi bi-box-arrow-right"></i>
+                                </div>
+                                {translations.navbar?.logout || 'Logout'}
+                            </button>
+                        </div>
                     </div>
                 </>
             )}
