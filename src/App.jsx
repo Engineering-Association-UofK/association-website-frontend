@@ -8,7 +8,7 @@ import { LanguageProvider } from "./context/LanguageContext";
 import Home from "./pages/Home/Home";
 import AssociationAbout from "./pages/About/association/About.jsx";
 import OraganizationStructureAbout from "./pages/About/oraganizationStructure/About.jsx";
-import ThirtiethCouncilAbout from "./pages/About/thirtiethCouncil/About.jsx";
+import ThirtiethCouncilAbout from "./pages/About/CouncilOfThirty/About.jsx";
 import AdminLayout from "./pages/Admin/AdminLayout";
 import Blogs from "./pages/Blogs/blog/Blogs.jsx";
 import Donation from "./pages/Blogs/donation/Donation.jsx";
@@ -54,7 +54,7 @@ function App() {
               {/* Add other public routes here */}
               <Route path="/about/association" element={<AssociationAbout />} />
               <Route path="/about/oraganizationStructure" element={<OraganizationStructureAbout />} />
-              <Route path="/about/thirtiethCouncil" element={<ThirtiethCouncilAbout />} />
+              <Route path="/about/councilofthirty" element={<ThirtiethCouncilAbout />} />
               <Route path="/posts/announcements" element={<Blogs />} />
               <Route path="/posts/resources" element={<Donation />} />
               <Route path="/posts/events" element={<Issues />} />

@@ -1,5 +1,5 @@
-import React from 'react';
-import { Card } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Container, Row, Col, Card, Nav, Tab } from 'react-bootstrap';
 import { useLanguage } from '../../../context/LanguageContext';
 import ar from './ar.json';
 import en from './en.json';
@@ -8,83 +8,118 @@ import './About.css';
 const OraganizationStructureAbout = () => {
   const { language } = useLanguage();
   const content = language === 'en' ? en : ar;
+  const isRtl = language === 'ar';
 
-  // functions to add section (the are all simiral XD)
-  const renderSection = (title, description, items) => {
-    return (
-      <section className="structure-section mb-5">
-        <h2 className="text-center fw-bold mb-3 text-primary">{title}</h2>
-        <p className="text-center text-muted mb-4 card-desdcription">
-          {description}
-        </p>
-        <div className='cards-container'>
-          {items.map((item, idx) => (
-            <div className="text-center card">
-              <Card.Body className="p-4">
-                <div className="mb-3">
-                  <i className={`${item.icon} fs-1 text-primary`}></i>
-                </div>
-                <Card.Title className="fw-bold text-primary">{item.name}</Card.Title>
-                <Card.Text className="text-muted">{item.description}</Card.Text>
-              </Card.Body>
-            </div>
-          ))}
-        </div>
-      </section>
-    );
-  };
+  // Grouping secretariats so we can map them into Tabs cleanly
+  const secretariats = [
+    { id: 'media', data: content.mediaSecretariat, items: content.mediaSecretariat.offices },
+    { id: 'academic', data: content.academicSecretariat, items: content.academicSecretariat.offices },
+    { id: 'sports', data: content.sportsSecretariat, items: content.sportsSecretariat.offices },
+    { id: 'external', data: content.externalRelationsSecretariat, items: content.externalRelationsSecretariat.offices },
+    { id: 'cultural', data: content.culturalSecretariat, items: content.culturalSecretariat.clubs }, // Note: uses clubs
+    { id: 'financial', data: content.financialSecretariat, items: content.financialSecretariat.offices },
+    { id: 'general', data: content.generalSecretariat, items: content.generalSecretariat.offices },
+    { id: 'social', data: content.socialSecretariat, items: content.socialSecretariat.offices },
+  ];
 
-  const renderCard = (card) => {
-    return (
-      <div className="text-center card big">
-        <Card.Body className="p-4">
-          <Card.Title className="fw-bold text-primary title">{card.title}</Card.Title>
-          <Card.Text className="text-muted">{card.description}</Card.Text>
-        </Card.Body>
-      </div>
-    );
-  };
+  const renderTopCard = (card) => (
+    <Card className="h-100 shadow-sm border-0 rounded-4 text-center top-tier-card">
+      <Card.Body className="p-4 p-lg-5 d-flex flex-column justify-content-center align-items-center">
+        <Card.Title className="fw-bold section-title mb-3 fs-3">
+            {card.title}
+        </Card.Title>
+        <div className="title-underline mb-4"></div>
+        <Card.Text className="text-muted fs-5 lh-base">
+            {card.description}
+        </Card.Text>
+      </Card.Body>
+    </Card>
+  );
 
   return (
-    <div className="structure-page">
-      {/*moved the style here becuase it dependce on the lang :(*/}
-      <style>
-        {`
-        .card.big .title::after {
-          content: ' ';
-          width: 120px;
-          height: 4px;
-          display: block;
-          position: relative;
-          background-color: rgba(var(--bs-primary-rgb), var(--bs-text-opacity));
-          ${language === 'en' ? 'left' : 'right'}: 50%;
-          top: 4px;
-          border-radius: 20px;
-          transform: translateX(${language === 'en' ? '-50%' : '50%'});
-        }
-        `}
-      </style>
+    <div className={`structure-page py-5 bg-light ${isRtl ? 'rtl' : 'ltr'}`} dir={isRtl ? 'rtl' : 'ltr'}>
+      <Container>
+        
+        {/* Top Leadership Section (Thirty Council & Exec Committee) */}
+        <Row className="g-4 mb-5">
+          <Col md={6}>
+            {renderTopCard(content.thirtyCouncil)}
+          </Col>
+          <Col md={6}>
+            {renderTopCard(content.executiveCommittee)}
+          </Col>
+        </Row>
 
-      {renderCard(content.thirtyCouncil)}
+        {/* Organizational Structure - Tabbed Section */}
+        <div className="mt-5 pt-4">
+            <div className="text-center mb-5">
+                <h2 className="fw-bold section-title d-inline-block position-relative">
+                    {language === 'en' ? 'Organizational Structure' : 'الهيكل التنظيمي'}
+                    <div className="title-underline mx-auto mt-2"></div>
+                </h2>
+            </div>
 
-      {renderCard(content.executiveCommittee)}
+            <Tab.Container defaultActiveKey={secretariats[0].id}>
+                {/* Scrollable Nav Pills for Mobile, wrapped cleanly for desktop */}
+                <div className="nav-pills-wrapper mb-5">
+                    <Nav variant="pills" className="flex-nowrap flex-md-wrap justify-content-md-center gap-2 pb-2 pb-md-0 px-2 px-md-0">
+                        {secretariats.map((sec) => (
+                            <Nav.Item key={sec.id}>
+                                <Nav.Link eventKey={sec.id} className="rounded-pill px-4 py-2 fw-semibold text-nowrap text-center">
+                                    {sec.data.title}
+                                </Nav.Link>
+                            </Nav.Item>
+                        ))}
+                    </Nav>
+                </div>
 
-      <h1 className="text-center fw-bold mb-5 text-primary" style={{ marginTop: "80px" }}>
-        {language === 'en' ? 'Organizational Structure' : 'الهيكل التنظيمي'}
-      </h1>
+                <Tab.Content>
+                    {secretariats.map((sec) => (
+                        <Tab.Pane eventKey={sec.id} key={sec.id} className="fade-in-tab">
+                            <div className="text-center mb-4 max-w-700 mx-auto">
+                                <h4 className="fw-bold text-dark mb-3">{sec.data.title}</h4>
+                                <p className="text-muted fs-6 lh-lg">{sec.data.description}</p>
+                            </div>
 
-      {/* These are the sections*/}
-      {renderSection(content.mediaSecretariat.title, content.mediaSecretariat.description, content.mediaSecretariat.offices)}
-      {renderSection(content.academicSecretariat.title, content.academicSecretariat.description, content.academicSecretariat.offices)}
-      {renderSection(content.sportsSecretariat.title, content.sportsSecretariat.description, content.sportsSecretariat.offices)}
-      {renderSection(content.externalRelationsSecretariat.title, content.externalRelationsSecretariat.description, content.externalRelationsSecretariat.offices)}
-      {renderSection(content.culturalSecretariat.title, content.culturalSecretariat.description, content.culturalSecretariat.clubs)}
-      {renderSection(content.financialSecretariat.title, content.financialSecretariat.description, content.financialSecretariat.offices)}
-      {renderSection(content.generalSecretariat.title, content.generalSecretariat.description, content.generalSecretariat.offices)}
-      {renderSection(content.socialSecretariat.title, content.socialSecretariat.description, content.socialSecretariat.offices)}
+                            <Row className="g-4 justify-content-center">
+                                {sec.items.map((item, idx) => (
+                                    <Col xs={12} sm={6} lg={4} key={idx}>
+                                        <Card className="h-100 shadow-sm border-0 rounded-4 structure-card transition-hover">
+                                            <Card.Body className="p-4 text-center d-flex flex-column">
+                                                <div className="icon-wrapper mb-3 mx-auto shadow-sm">
+                                                    <i className={`${item.icon || 'bi bi-building'} fs-3 text-white`}></i>
+                                                </div>
+                                                <Card.Title className="fw-bold text-dark mb-3 fs-5">
+                                                    {item.name}
+                                                </Card.Title>
+                                                <Card.Text className="text-muted flex-grow-1" style={{ fontSize: '0.9rem' }}>
+                                                    {item.description}
+                                                </Card.Text>
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                ))}
+                            </Row>
+                        </Tab.Pane>
+                    ))}
+                </Tab.Content>
+            </Tab.Container>
+        </div>
 
-      {renderCard(content.joinSection)}
+        {/* Join Section (CTA Banner) */}
+        <div className="mt-5 pt-5">
+            <Card className="border-0 rounded-4 shadow cta-card text-white text-center overflow-hidden position-relative">
+                <div className="cta-overlay"></div>
+                <Card.Body className="p-5 position-relative z-index-1">
+                    <Card.Title className="fw-bold fs-2 mb-3">{content.joinSection.title}</Card.Title>
+                    <Card.Text className="fs-5 mb-0" style={{ opacity: 0.9 }}>
+                        {content.joinSection.description}
+                    </Card.Text>
+                </Card.Body>
+            </Card>
+        </div>
 
+      </Container>
     </div>
   );
 };

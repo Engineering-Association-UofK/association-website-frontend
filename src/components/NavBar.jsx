@@ -112,7 +112,7 @@ const NavigationBar = () => {
   const aboutItems = [
     { to: '/about/association', end: true, label: translations.navbar.association },
     { to: '/about/oraganizationStructure', label: translations.navbar.oraganizationStructure },
-    { to: '/about/thirtiethCouncil', label: translations.navbar.thirtiethCouncil },
+    { to: '/about/councilofthirty', label: translations.navbar.councilofthirty },
   ];
 
   const postsItems = [
