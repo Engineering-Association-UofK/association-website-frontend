@@ -15,16 +15,16 @@ const AboutSection = () => {
                     {/* Text Content */}
                     <Col lg={6} className="mb-5 mb-lg-0">
                         <div className="about-content">
-                            <span className="section-badge">
+                            {/* <span className="section-badge">
                                 {translations.home.about.badge || 'Since 19XX'}
-                            </span>
+                            </span> */}
                             <h2 className="display-5 fw-bold mb-4">
                                 {translations.home.about.title}
                             </h2>
                             <p className="about-description">
                                 {translations.home.about.subtitle}
                             </p>
-                            <div className="about-features">
+                            {/* <div className="about-features">
                                 <div className="feature-item">
                                     <div className="feature-dot" />
                                     <span>{translations.home.about.feature1}</span>
@@ -33,7 +33,7 @@ const AboutSection = () => {
                                     <div className="feature-dot" />
                                     <span>{translations.home.about.feature2}</span>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </Col>
 
@@ -45,10 +45,10 @@ const AboutSection = () => {
                                 alt="About Us" 
                                 className="about-main-image"
                             />
-                            <div className="experience-card">
+                            {/* <div className="experience-card">
                                 <span className="exp-number">25+</span>
                                 <span className="exp-text">Years of Impact</span>
-                            </div>
+                            </div> */}
                         </div>
                         <div className="image-decoration" />
                     </Col>
