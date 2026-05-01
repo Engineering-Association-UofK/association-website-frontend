@@ -77,15 +77,20 @@ const Issues = () => {
             </h1>
 
             <Row className="g-4">
-                {allPosts.map((post) => (
+                {allPosts.map((post, idx) => (
                     <Col md={6} lg={4} key={post.slug}>
                         {isMobile && (
                             <div className="timeline" style={{ width: "20px", height: '120%' }}>
-                                <div style={{ height: '100%', width: '5px', backgroundColor: '#66a3ff' }}></div>
-                                <div style={{ height: '1rem', width: '1rem', backgroundColor: '#0d6efd', position: 'relative', borderRadius: '50%', bottom: '100%', left: '-5px' }}></div>
+                                <div style={{ height: '100%', width: '5px', backgroundColor: '#66a3ff', borderRadius: '10px' }}></div>
+                                { ( new Date(allPosts[idx - 1]?.updated_at).toLocaleDateString() != new Date(post.updated_at).toLocaleDateString() ) && (
+                                    <div style={{ height: '1rem', width: '1rem', position: 'relative', bottom: '100%' }}>
+                                        <div style={{ height: '1rem', width: '1rem', backgroundColor: '#0d6efd', position: 'relative', borderRadius: '50%', bottom: 'calc(100% - 0.7rem)', left: '-5px' }}></div>
+                                        <div style={{ height: '1.5rem', width: '4rem', position: "relative", top: '-1.3rem', left: '15px' }}>{formatDate(new Date(post.updated_at).toLocaleDateString(), language)}</div>
+                                    </div>
+                                )}
                             </div>
                         )}
-                        <Card className="h-100 shadow-sm border-0 hover-card">
+                        <Card className="h-100 shadow-sm border-0 hover-card" style={{ marginBottom: '0rem' }}>
                             <Card.Body className="d-flex flex-column">
                                 <Card.Title className="fw-bold text-primary">{post.title}</Card.Title>
                                 <Card.Text className="text-muted">{
