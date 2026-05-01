@@ -13,9 +13,9 @@ const formatDate = (dateString, language) => {
 };
 
 const SkeletonCard = ({ isMobile }) => (
-    <Col md={6} lg={4}>   
+    <Col md={6} lg={4}>
         {isMobile && (
-            <div className="timeline" style={{width: "20px", height: '100%'}}>
+            <div className="timeline" style={{ width: "20px", height: '120%' }}>
                 <div style={{ height: '100%', width: '5px', backgroundColor: '#e9ecef' }} className="skeleton-animation"></div>
                 <div style={{ height: '1rem', width: '1rem', backgroundColor: '#e9ecef', position: 'relative', borderRadius: '50%', bottom: '100%', left: '-5px' }} className="skeleton-animation"></div>
             </div>
@@ -79,6 +79,12 @@ const Issues = () => {
             <Row className="g-4">
                 {allPosts.map((post) => (
                     <Col md={6} lg={4} key={post.slug}>
+                        {isMobile && (
+                            <div className="timeline" style={{ width: "20px", height: '120%' }}>
+                                <div style={{ height: '100%', width: '5px', backgroundColor: '#66a3ff' }}></div>
+                                <div style={{ height: '1rem', width: '1rem', backgroundColor: '#0d6efd', position: 'relative', borderRadius: '50%', bottom: '100%', left: '-5px' }}></div>
+                            </div>
+                        )}
                         <Card className="h-100 shadow-sm border-0 hover-card">
                             <Card.Body className="d-flex flex-column">
                                 <Card.Title className="fw-bold text-primary">{post.title}</Card.Title>
