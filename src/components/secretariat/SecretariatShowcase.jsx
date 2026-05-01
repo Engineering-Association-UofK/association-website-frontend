@@ -88,7 +88,9 @@ const SecretariatShowcase = () => {
                     <p className="card-description">{desc}</p>
                   </div>
 
-                  
+                  {/* <Link to="/about/oraganizationStructure" className="read-more-btn" >
+                    {translations.secretariats?.readMore || 'Read More'} →
+                  </Link> */}
                 </div>
                 
               </div>
