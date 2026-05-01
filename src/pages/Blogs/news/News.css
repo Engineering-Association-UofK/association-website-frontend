@@ -57,9 +57,6 @@ div.col-8 {
   .d-flex.flex-column.gap-3 .hover-card.card {
     background: transparent !important;
     transform: none !important;
-    border-bottom: 1px solid #eee !important;
-    margin: 0rem;
-    padding: 0rem;
   }
 
   .mt-5 .col-lg-6 {
