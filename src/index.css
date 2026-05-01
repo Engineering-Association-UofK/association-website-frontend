@@ -10,6 +10,30 @@
   color: var(--primary-color) !important;
 }
 
+.nav-pills .nav-link,
+.nav-pills .nav-link.active,
+.nav-pills .nav-item {
+    text-decoration: none !important;
+    border-bottom: 0 !important;
+    border-bottom-width: 0 !important;
+    border-bottom-style: none !important;
+    box-shadow: none !important;
+}
+
+.nav-pills .nav-link::after,
+.nav-pills .nav-link::before {
+    display: none !important;
+    content: none !important;
+    height: 0 !important;
+}
+
+.nav-pills .nav-link:hover,
+.nav-pills .nav-link:focus,
+.nav-pills .nav-link:active {
+    text-decoration: none !important;
+    border-bottom: none !important;
+}
+
 body {
   font-family: 'Montserrat', sans-serif;
   margin: 0;

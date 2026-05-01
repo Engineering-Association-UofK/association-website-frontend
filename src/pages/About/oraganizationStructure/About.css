@@ -36,12 +36,40 @@
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08) !important;
 }
 
-/* Tab/Pill Navigation */
+/* Base wrapper styles */
 .nav-pills-wrapper {
-    /* Allow horizontal scrolling on small screens, hide scrollbar */
+    position: relative;
     overflow-x: auto;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE/Edge */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    transition: mask-image 0.3s ease;
+}
+
+/* LTR Fade (Fade out on the right) */
+.ltr .nav-pills-wrapper {
+    mask-image: linear-gradient(to right, black 80%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, black 80%, transparent 100%);
+    padding-right: 50px;
+    padding-left: 0;
+}
+
+/* RTL Fade (Fade out on the left) */
+.rtl .nav-pills-wrapper {
+    mask-image: linear-gradient(to left, black 80%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to left, black 80%, transparent 100%);
+    padding-left: 50px;
+    padding-right: 0;
+}
+
+/* Disable fade on desktop so centering works perfectly */
+@media (min-width: 768px) {
+    .ltr .nav-pills-wrapper, 
+    .rtl .nav-pills-wrapper {
+        mask-image: none;
+        -webkit-mask-image: none;
+        padding-left: 0;
+        padding-right: 0;
+    }
 }
 
 .nav-pills-wrapper::-webkit-scrollbar {
@@ -67,7 +95,7 @@
     box-shadow: 0 4px 10px rgba(34, 178, 230, 0.3);
 }
 
-/* Structure Cards (Offices/Clubs) */
+/* Structure Cards */
 .structure-card {
     background-color: #ffffff;
     transition: transform 0.3s ease, box-shadow 0.3s ease;

@@ -10,20 +10,19 @@ const OraganizationStructureAbout = () => {
   const content = language === 'en' ? en : ar;
   const isRtl = language === 'ar';
 
-  // Grouping secretariats so we can map them into Tabs cleanly
   const secretariats = [
     { id: 'media', data: content.mediaSecretariat, items: content.mediaSecretariat.offices },
     { id: 'academic', data: content.academicSecretariat, items: content.academicSecretariat.offices },
     { id: 'sports', data: content.sportsSecretariat, items: content.sportsSecretariat.offices },
     { id: 'external', data: content.externalRelationsSecretariat, items: content.externalRelationsSecretariat.offices },
-    { id: 'cultural', data: content.culturalSecretariat, items: content.culturalSecretariat.clubs }, // Note: uses clubs
+    { id: 'cultural', data: content.culturalSecretariat, items: content.culturalSecretariat.clubs },
     { id: 'financial', data: content.financialSecretariat, items: content.financialSecretariat.offices },
     { id: 'general', data: content.generalSecretariat, items: content.generalSecretariat.offices },
     { id: 'social', data: content.socialSecretariat, items: content.socialSecretariat.offices },
   ];
 
   const renderTopCard = (card) => (
-    <Card className="h-100 shadow-sm border-0 rounded-4 text-center top-tier-card">
+    <Card className="h-100 shadow-sm border-0 rounded-4 text-center top-tier-card w-100">
       <Card.Body className="p-4 p-lg-5 d-flex flex-column justify-content-center align-items-center">
         <Card.Title className="fw-bold section-title mb-3 fs-3">
             {card.title}
@@ -40,17 +39,15 @@ const OraganizationStructureAbout = () => {
     <div className={`structure-page py-5 bg-light ${isRtl ? 'rtl' : 'ltr'}`} dir={isRtl ? 'rtl' : 'ltr'}>
       <Container>
         
-        {/* Top Leadership Section (Thirty Council & Exec Committee) */}
-        <Row className="g-4 mb-5">
-          <Col md={6}>
+        <Row className="g-4 mb-5 justify-content-center">
+          <Col xs={12} lg={6}>
             {renderTopCard(content.thirtyCouncil)}
           </Col>
-          <Col md={6}>
+          <Col xs={12} lg={6}>
             {renderTopCard(content.executiveCommittee)}
           </Col>
         </Row>
 
-        {/* Organizational Structure - Tabbed Section */}
         <div className="mt-5 pt-4">
             <div className="text-center mb-5">
                 <h2 className="fw-bold section-title d-inline-block position-relative">
@@ -60,7 +57,6 @@ const OraganizationStructureAbout = () => {
             </div>
 
             <Tab.Container defaultActiveKey={secretariats[0].id}>
-                {/* Scrollable Nav Pills for Mobile, wrapped cleanly for desktop */}
                 <div className="nav-pills-wrapper mb-5">
                     <Nav variant="pills" className="flex-nowrap flex-md-wrap justify-content-md-center gap-2 pb-2 pb-md-0 px-2 px-md-0">
                         {secretariats.map((sec) => (
@@ -84,7 +80,7 @@ const OraganizationStructureAbout = () => {
                             <Row className="g-4 justify-content-center">
                                 {sec.items.map((item, idx) => (
                                     <Col xs={12} sm={6} lg={4} key={idx}>
-                                        <Card className="h-100 shadow-sm border-0 rounded-4 structure-card transition-hover">
+                                        <Card className="h-100 shadow-sm border-0 rounded-4 structure-card transition-hover w-100">
                                             <Card.Body className="p-4 text-center d-flex flex-column">
                                                 <div className="icon-wrapper mb-3 mx-auto shadow-sm">
                                                     <i className={`${item.icon || 'bi bi-building'} fs-3 text-white`}></i>
@@ -106,17 +102,20 @@ const OraganizationStructureAbout = () => {
             </Tab.Container>
         </div>
 
-        {/* Join Section (CTA Banner) */}
         <div className="mt-5 pt-5">
-            <Card className="border-0 rounded-4 shadow cta-card text-white text-center overflow-hidden position-relative">
-                <div className="cta-overlay"></div>
-                <Card.Body className="p-5 position-relative z-index-1">
-                    <Card.Title className="fw-bold fs-2 mb-3">{content.joinSection.title}</Card.Title>
-                    <Card.Text className="fs-5 mb-0" style={{ opacity: 0.9 }}>
-                        {content.joinSection.description}
-                    </Card.Text>
-                </Card.Body>
-            </Card>
+            <Row className="justify-content-center">
+                <Col xs={12}>
+                    <Card className="border-0 rounded-4 shadow cta-card text-white text-center overflow-hidden position-relative w-100">
+                        <div className="cta-overlay"></div>
+                        <Card.Body className="p-5 position-relative z-index-1">
+                            <Card.Title className="fw-bold fs-2 mb-3">{content.joinSection.title}</Card.Title>
+                            <Card.Text className="fs-5 mb-0" style={{ opacity: 0.9 }}>
+                                {content.joinSection.description}
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
         </div>
 
       </Container>
