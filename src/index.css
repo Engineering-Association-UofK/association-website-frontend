@@ -6,6 +6,10 @@
   --fg-color-light: #fff;
 }
 
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
 body {
   font-family: 'Montserrat', sans-serif;
   margin: 0;
