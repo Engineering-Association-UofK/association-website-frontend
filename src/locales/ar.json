@@ -212,6 +212,18 @@
     "editProfile":"تعديل البيانات",
     "cancel":"إلغاء",
     "Gender":"الجنس",
+    "accountTab":"الحساب",
+        "securityTab": "الأمان",
+        "ussernameedit":"أدخل اسم المستخدم الجديد ",
+    "emailnew":"البريد الإلكتروني الجديد",
+    "enternewname":"تغيير البريد الإلكتروني ",
+    "UpdateName":"تغيير اسم المستخدم",
+    "Updateuse": "تحديث اسم المستخدم",
+    "Updateemail": "تحديث الايميل",
+    "saving":"جاري الحقظ...",
+    "save":"حفظ",
+
+"crunt":"الحالي",
     "password":{
         "securityTab": "الأمان",
         "securityTitle": "إعدادات الأمان",
