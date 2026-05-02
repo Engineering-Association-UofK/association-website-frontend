@@ -14,9 +14,11 @@ const InitiativesSection = () => {
     return (
         <section className={`initiatives-section ${isRtl ? 'rtl' : 'ltr'}`}>
             <Container>
-                <div className="initiatives-header">
-                    <span className="pre-title">{translations.home.initiatives.badge || 'Current Projects'}</span>
+                <div className="statistics-header">
+                    {/* <span className="pre-title">{translations.home.initiatives.badge || 'Current Projects'}</span> */}
                     <h2 className="fw-bold">{translations.home.initiatives.title}</h2>
+                    <div className="title-underline" />
+                    <p></p>
                     <p className="text-muted mx-auto">{translations.home.initiatives.subtitle}</p>
                 </div>
                 
@@ -36,12 +38,12 @@ const InitiativesSection = () => {
                                         <h4 className="fw-bold">{data.title}</h4>
                                         <p>{data.desc}</p>
                                     </div>
-                                    <div className="initiative-footer">
+                                    {/* <div className="initiative-footer">
                                         <span className="explore-link">
                                             {translations.home.initiatives.learnMore || 'Learn More'} 
                                             <span className="arrow">→</span>
                                         </span>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </Col>
                         );

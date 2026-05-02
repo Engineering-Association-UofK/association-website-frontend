@@ -21,8 +21,8 @@ const Statistics = () => {
     { key: 'students', icon: FaUsers, suffix: '+' },
     { key: 'workshops', icon: FaLaptop, suffix: '+' },
     { key: 'events', icon: FaCalendarAlt, suffix: '+' },
-    { key: 'partners', icon: FaHandshake, suffix: '' },
-    { key: 'projects', icon: FaAward, suffix: '' },
+    // { key: 'partners', icon: FaHandshake, suffix: '' },
+    // { key: 'projects', icon: FaAward, suffix: '' },
     { key: 'volunteers', icon: FaGlobe, suffix: '+' },
   ];
 
@@ -75,7 +75,7 @@ const Statistics = () => {
           <div className="underline" />
         </div>
 
-        <Row className="justify-content-center">
+        <Row className="justify-content-center g-5">
           {statsConfig.map((stat) => {
             const IconComponent = stat.icon;
             return (

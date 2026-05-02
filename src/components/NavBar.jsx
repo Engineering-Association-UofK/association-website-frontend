@@ -10,6 +10,7 @@ import { Link, NavLink } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { ADMIN_ROLES } from '../utils/roles';
+import UserDropdownMenu from './UserDropdownMenu';
 
 const NavigationBar = () => {
   const { translations, switchLanguage, language } = useLanguage();
@@ -111,50 +112,63 @@ const NavigationBar = () => {
   // Define dropdown items
   const aboutItems = [
     { to: '/about/association', end: true, label: translations.navbar.association },
-    { to: '/about/oraganizationStructure', label: translations.navbar.oraganizationStructure },
-    { to: '/about/thirtiethCouncil', label: translations.navbar.thirtiethCouncil },
+    { to: '/about/organization-structure', label: translations.navbar.organizationStructure },
+    { to: '/about/council-of-thirty', label: translations.navbar.councilOfThirty },
   ];
 
   const postsItems = [
     { to: '/posts/news', label: translations.navbar.posts.news },
-    { to: '/posts/events', label: translations.navbar.posts.issues },
-    { to: '/posts/announcements', label: translations.navbar.posts.blogs },
-    { to: '/posts/resources', label: translations.navbar.posts.help },
+    { to: '/posts/issues', label: translations.navbar.posts.issues },
+    { to: '/posts/blogs', label: translations.navbar.posts.blogs },
+    { to: '/posts/donations', label: translations.navbar.posts.donations },
   ];
 
   return (
     <>
       <style>
         {`
+          /* Desktop Hover Dropdown */
           @media (min-width: 992px) {
             .dropdown:hover .dropdown-menu {
               display: block;
               margin-top: 0;
             }
-            .dropdown-toggle::after {
-              display: inline-block;
-              margin-left: 0.255em;
-              vertical-align: 0.255em;
-              content: "";
-              border-top: 0.3em solid;
-              border-right: 0.3em solid transparent;
-              border-bottom: 0;
-              border-left: 0.3em solid transparent;
-            }
           }
-          .nav-link.active, .dropdown-item.active {
-            background-color: #22B2E6 !important;
-            color: white !important;
+
+          .desktop-nav .nav-link, 
+          .desktop-nav .dropdown-toggle {
+            color: #333 !important;
+            border-bottom: 2px solid transparent;
+            padding-bottom: 2px !important;
+            transition: all 0.2s ease-in-out;
           }
-          .dropdown-item:active {
-            background-color: #22B2E6 !important;
+
+          /* Simple Hover & Active Underline */
+          .desktop-nav .nav-link:hover,
+          .desktop-nav .nav-link.active,
+          .desktop-nav .dropdown-toggle:hover {
+            color: #22B2E6 !important;
           }
-          /* Make desktop nav horizontal */
+
+          .language-toggle {
+            color: #22B2E6 !important;
+            text-decoration: none !important;
+            border: none !important;
+          }
+
+          /* Dropdown Menu Styling */
+          .dropdown-item {
+            transition: background 0.2s;
+          }
+          .dropdown-item.active {
+            background-color: #f8f9fa !important;
+            color: #22B2E6 !important;
+            font-weight: bold !important;
+          }
+
           .desktop-nav {
             display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 0.5rem;
+            gap: 20px;
           }
         `}
       </style>
@@ -189,7 +203,7 @@ const NavigationBar = () => {
             <Dropdown>
               <Dropdown.Toggle
                 variant="link"
-                className="text-decoration-none fw-bold p-0 border-0 d-flex align-items-center"
+                className="language-toggle text-decoration-none fw-bold p-0 border-0 d-flex align-items-center"
                 style={{ color: '#22B2E6', fontSize: '0.95rem' }}
               >
                 <i className="bi bi-translate me-1"></i> {currentLabel}
@@ -206,13 +220,7 @@ const NavigationBar = () => {
 
             <div className="d-none d-lg-block">
               {user ? (
-                <button
-                  onClick={logout}
-                  className="btn fw-bold px-4 py-2 rounded-1 shadow-sm border-0 text-white"
-                  style={{ backgroundColor: '#22B2E6' }}
-                >
-                  {translations.navbar.logout}
-                </button>
+                <UserDropdownMenu />
               ) : (
                 <Link
                   to="/login"
@@ -261,16 +269,7 @@ const NavigationBar = () => {
 
               <div className="mt-auto pt-4 border-top">
                 {user ? (
-                  <button
-                    onClick={() => {
-                      logout();
-                      handleClose();
-                    }}
-                    className="btn w-100 fw-bold py-3 rounded-2 shadow-sm border-0 text-white"
-                    style={{ backgroundColor: '#22B2E6' }}
-                  >
-                    {translations.navbar.logout}
-                  </button>
+                  <UserDropdownMenu isMobile onItemClick={handleClose} />
                 ) : (
                   <Link
                     to="/login"

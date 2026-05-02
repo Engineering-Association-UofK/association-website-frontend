@@ -18,9 +18,19 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    transform: scale(1.1); 
+    background-image: var(--hero-img-v);
+    transition: background-image 0.3s ease-in-out;
     z-index: 0;
+    background-attachment: fixed;
 }
+
+@media (max-width: 768px) {
+    .hero-bg {
+        background-image: var(--hero-img-h);
+    }
+}
+
+/* --- Hero Content --- */
 
 .hero-overlay {
     position: absolute;
