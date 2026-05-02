@@ -94,7 +94,7 @@ const Issues = () => {
                                     </div>
                                 ) : (
                                     <div className="timeline-left">
-                                        <div className="timeline-dot" style={{ backgroundColor: 'none !important', borderColor: 'none !important', boxShadow: 'none !important'}}></div>
+                                        <div className="timeline-dot" style={{ display: 'none', backgroundColor: 'transparent', borderColor: 'transparent', boxShadow: '0 0 0 2px transparent' }}></div>
                                         <div className="timeline-date">
                                         </div>
                                     </div>
