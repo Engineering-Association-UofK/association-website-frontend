@@ -24,9 +24,9 @@ const HeroSection = () => {
 
             <Container className="hero-container">
                 <div className="hero-content">
-                    <div className="hero-badge animate-fade-in">
+                    {/* <div className="hero-badge animate-fade-in">
                         {translations.home.hero.badge}
-                    </div>
+                    </div> */}
                     
                     <h1 className="hero-title animate-slide-up">
                         {translations.home.hero.title}
@@ -44,13 +44,13 @@ const HeroSection = () => {
                         >
                             {translations.home.hero.cta}
                         </Button>
-                        <Button 
+                        {/* <Button 
                             as={Link} 
                             to="/about/thirtiethCouncil" 
                             className="hero-btn-outline"
                         >
                             {translations.home.hero.secondaryCta}
-                        </Button>
+                        </Button> */}
                     </div>
                 </div>
             </Container>

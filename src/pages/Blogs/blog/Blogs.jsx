@@ -3,6 +3,7 @@ import { Container, Row, Col, Card, Spinner, Alert, Button } from 'react-bootstr
 import { Link } from 'react-router-dom';
 import { useBlogs } from '../../../features/blogs/hooks/useBlogs';
 import "./Blogs.css";
+import { useLanguage } from '../../../context/LanguageContext';
 
 // Card Skeleton
 const SkeletonCard = () => (
@@ -23,23 +24,19 @@ const Blogs = () => {
   const [allPosts, setAllPosts] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const { data, isLoading, error, isFetching } = useBlogs('BLOG', page, 10); // Fetch 10 of `BLOG`s
+  const { language } = useLanguage();
 
   // add new data when it completely fetched
   useEffect(() => {
     if (data?.posts) {
-      if (page === 1) {
-        setAllPosts(data.posts);
-      } else {
-        setAllPosts(prev => [...prev, ...data.posts]);
-      }
+      if (page === 1) setAllPosts(data.posts);
+      else setAllPosts(prev => [...prev, ...data.posts]);
       setHasMore(page < data.pages);
     }
   }, [data, page]);
 
   const loadMore = () => {
-    if (hasMore && !isFetching) {
-      setPage(prev => prev + 1);
-    }
+    if (hasMore && !isFetching) setPage(prev => prev + 1);
   };
 
   // just show the skelton on loading and error states
@@ -49,7 +46,7 @@ const Blogs = () => {
         <Row className="g-4">
           {[...Array(9)].map((_, i) => <SkeletonCard key={`skeleton-${i}`} />)}
         </Row>
-        <div className='py-5 '>
+        <div className="py-5">
           <Spinner animation="border" variant="primary" />
         </div>
       </Container>
@@ -58,19 +55,22 @@ const Blogs = () => {
 
   return (
     <Container className="py-5">
-      <h1 className="text-center fw-bold mb-5 text-primary">Blogs</h1>
+      <h1 className="text-center fw-bold mb-5 text-primary">
+        {language === 'en' ? "Blogs" : "المقالات"}
+      </h1>
 
       <Row className="g-4">
-        {allPosts.map((blog, idx) => (
-          <Col md={6} lg={4} key={blog.slug || idx}>
+        {allPosts.map((blog) => (
+          <Col md={6} lg={4} key={blog.slug}>
             <Card className="h-100 shadow-sm border-0 hover-card">
               {blog.image_url && (
-                <Card.Img
-                  variant="top"
-                  src={blog.image_url || `https://placehold.co/600x400/e2e8f0/1e293b?text=${blog.slug}`}
-                  style={{ height: '220px', objectFit: 'cover' }}
-                  className="rounded-top"
-                />
+                <div className="card-img-top-wrapper">
+                  <Card.Img
+                    variant="top"
+                    src={blog.image_url}
+                    className="card-img-uniform"
+                  />
+                </div>
               )}
               <Card.Body className="d-flex flex-column">
                 <Card.Title className="fw-bold text-primary">{blog.title}</Card.Title>
@@ -80,8 +80,9 @@ const Blogs = () => {
                 <div className="text-muted small mb-3">
                   <i className="bi bi-calendar3 me-1"></i> {new Date(blog.updated_at).toLocaleDateString()}
                 </div>
-                <Link to={`/posts/announcements/${blog.slug}`} className="btn btn-outline-primary rounded-pill mt-2">
-                  Read More <i className="bi bi-arrow-right ms-1"></i>
+                <Link to={`/posts/announcements/${blog.slug}`} className="btn btn-outline-primary rounded-pill mt-auto">
+                  {language === 'en' ? "Read More" : "قراءة المزيد"}
+                  <i className={`bi bi-arrow-${language === 'en' ? 'right' : 'left'} ms-1`}></i>
                 </Link>
               </Card.Body>
             </Card>
@@ -90,7 +91,7 @@ const Blogs = () => {
 
         {isFetching && page > 1 && (
           <>
-            {[...Array(3)].map((_, i) => <SkeletonCard key={`skeleton-${i}`} />)}
+            {[...Array(3)].map((_, i) => <SkeletonCard key={`fetch-skeleton-${i}`} />)}
           </>
         )}
       </Row>
@@ -112,11 +113,12 @@ const Blogs = () => {
             {isFetching ? (
               <>
                 <Spinner as="span" animation="border" size="sm" className="me-2" />
-                Loading...
+                {language === 'en' ? "Loading..." : "يتم التحميل..."}
               </>
             ) : (
               <>
-                Load More <i className="bi bi-chevron-down ms-2"></i>
+                {language === 'en' ? "Load More" : "تحميل المزيد"}
+                <i className="bi bi-chevron-down ms-2"></i>
               </>
             )}
           </Button>
@@ -126,7 +128,7 @@ const Blogs = () => {
       {!hasMore && allPosts.length > 0 && (
         <div className="text-center mt-5 text-muted">
           <i className="bi bi-check-circle-fill text-primary me-2"></i>
-          You've reached the end
+          {language === 'en' ? "You've reached the end" : "لقد وصلت إلى النهاية"}
         </div>
       )}
     </Container>

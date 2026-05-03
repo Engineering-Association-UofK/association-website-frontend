@@ -1,9 +1,10 @@
 import React from 'react';
-import { Container, Row, Col, Card, Spinner, Alert, Button } from 'react-bootstrap';
+import { Container, Row, Col, Card, Alert, Button } from 'react-bootstrap';
 import { useLanguage } from '../../context/LanguageContext.jsx';
 import { Link } from 'react-router-dom';
 import { useBlogs } from '../../features/blogs/hooks/useBlogs.js';
 import { NewsSkeleton } from './NewsSkeleton.jsx';
+import './NewsFeed.css';
 
 const NewsFeed = ({ start = 0, end = 3 }) => {
     const { translations, language } = useLanguage();
@@ -14,9 +15,11 @@ const NewsFeed = ({ start = 0, end = 3 }) => {
 
     if (isLoading) {
         return (
-            <section className="py-5 bg-light">
+            <section className="news-feed-section py-5 bg-light">
                 <Container>
-                    <h2 className="fw-bold mb-5">{translations.home.news?.title || "Latest News"}</h2>
+                    <div className="d-flex justify-content-between align-items-center mb-5">
+                        <h2 className="section-title fw-bold mb-0">{translations.home.news?.title || "Latest News"}</h2>
+                    </div>
                     <NewsSkeleton />
                 </Container>
             </section>
@@ -26,7 +29,9 @@ const NewsFeed = ({ start = 0, end = 3 }) => {
     if (error) {
         return (
             <Container className="py-5">
-                <Alert variant="danger">Failed to load news.</Alert>
+                <Alert variant="danger" className="rounded-4 border-0 shadow-sm">
+                    Failed to load news. Please try again later.
+                </Alert>
             </Container>
         );
     }
@@ -34,55 +39,53 @@ const NewsFeed = ({ start = 0, end = 3 }) => {
     const newsItems = response?.posts.slice(start, end) || [];
 
     return (
-        <section className="py-5 bg-light">
+        <section className={`news-feed-section py-5 ${isRtl ? 'rtl' : 'ltr'}`}>
             <Container>
-                <div className="d-flex justify-content-between align-items-center mb-5">
-                    <h2 className="fw-bold mb-0 text-dark">
-                        {translations.home.news?.title || "Latest News"}
-                    </h2>
+                <div className="d-flex justify-content-between align-items-end mb-5">
+                    <div>
+                        <h2 className="section-title fw-bold mb-2">
+                            {translations.home.news?.title || "Latest News"}
+                        </h2>
+                        <div className="title-underline"></div>
+                    </div>
                     {/* View All Button (Desktop) */}
                     <Button 
                         as={Link} 
                         to="/posts/news" 
-                        variant="outline-primary" 
-                        className="d-none d-md-inline-block rounded-pill px-4 fw-medium"
+                        variant="primary"
+                        className="d-none d-md-inline-flex align-items-center gap-2 rounded-pill px-4 py-2 fw-semibold btn-view-all shadow-sm"
                     >
-                        {translations.home.news?.viewAll || "View All"} {arrow}
+                        {translations.home.news?.viewAll || "View All"} <span>{arrow}</span>
                     </Button>
                 </div>
 
                 {/* --- DESKTOP LAYOUT --- */}
-                <Row className="d-none d-md-flex">
+                <Row className="d-none d-md-flex g-4">
                     {newsItems.length > 0 ? (
                         newsItems.map((item) => (
-                            <Col md={4} key={item.id} className="mb-4">
-                                <Card className="h-100 shadow-sm border-0 transition-hover">
-                                    <div
-                                        className="bg-secondary"
-                                        style={{
-                                            height: '220px',
-                                            backgroundImage: item.image_url ? `url(${item.image_url})` : 'none',
-                                            backgroundSize: 'cover',
-                                            backgroundPosition: 'center',
-                                            backgroundColor: item.image_url ? 'transparent' : '#e9ecef',
-                                            borderTopLeftRadius: 'calc(0.375rem - 1px)',
-                                            borderTopRightRadius: 'calc(0.375rem - 1px)'
-                                        }}
-                                    />
+                            <Col md={4} key={item.id}>
+                                <Card className="news-card h-100 shadow-sm border-0 rounded-4 overflow-hidden text-decoration-none">
+                                    <div className="news-image-wrapper">
+                                        <div
+                                            className="news-image"
+                                            style={{ backgroundImage: `url(${item.image_url || '/placeholder-news.jpg'})` }}
+                                        />
+                                        <div className="news-date-badge shadow-sm">
+                                            {new Date(item.updated_at || item.created_at).toLocaleDateString(language === 'ar' ? 'ar-EG' : 'en-US', { day: 'numeric', month: 'short' })}
+                                        </div>
+                                    </div>
+                                    
                                     <Card.Body className="d-flex flex-column p-4">
-                                        <small className="text-primary fw-bold mb-2 text-uppercase" style={{ letterSpacing: '1px' }}>
-                                            {new Date(item.updated_at || item.created_at).toLocaleDateString(language === 'ar' ? 'ar-EG' : 'en-US')}
-                                        </small>
-                                        <Card.Title className="fw-bold mb-3 lh-base">
+                                        <Card.Title className="fw-bold mb-3 news-title">
                                             {item.title}
                                         </Card.Title>
-                                        <Card.Text className="text-muted text-truncate mb-4" style={{ WebkitLineClamp: 3, display: '-webkit-box', WebkitBoxOrient: 'vertical', whiteSpace: 'normal' }}>
+                                        <Card.Text className="text-muted mb-4 news-summary flex-grow-1">
                                             {item.summary}
                                         </Card.Text>
                                         
-                                        <div className="mt-auto">
-                                            <Link to={`/posts/news/${item.id}`} className="text-primary text-decoration-none fw-bold d-inline-flex align-items-center gap-2">
-                                                {translations.home.news?.readMore || "Read More"} <span>{arrow}</span>
+                                        <div className="mt-auto pt-3 border-top">
+                                            <Link to={`/posts/news/${item.slug}`} className="read-more-link fw-bold d-inline-flex align-items-center gap-2">
+                                                {translations.home.news?.readMore || "Read More"} <span className="arrow-icon">{arrow}</span>
                                             </Link>
                                         </div>
                                     </Card.Body>
@@ -90,8 +93,8 @@ const NewsFeed = ({ start = 0, end = 3 }) => {
                             </Col>
                         ))
                     ) : (
-                        <Col className="text-center py-4">
-                            <p className="text-muted fs-5">No news right now.</p>
+                        <Col className="text-center py-5">
+                            <p className="text-muted fs-5 mb-0">No news right now.</p>
                         </Col>
                     )}
                 </Row>
@@ -100,34 +103,28 @@ const NewsFeed = ({ start = 0, end = 3 }) => {
                 <div className="d-md-none d-flex flex-column gap-3">
                     {newsItems.length > 0 ? (
                         newsItems.map((item) => (
-                            <Card key={item.id} className="shadow-sm border-0 overflow-hidden">
-                                <Row className="g-0 align-items-stretch">
-                                    <Col xs={4}>
+                            <Card key={item.id} className="news-card-mobile shadow-sm border-0 rounded-4 overflow-hidden">
+                                <Row className="g-0 align-items-stretch h-100">
+                                    <Col xs={4} className="position-relative">
                                         <div 
-                                            style={{
-                                                height: '100%',
-                                                minHeight: '130px',
-                                                backgroundImage: item.image_url ? `url(${item.image_url})` : 'none',
-                                                backgroundSize: 'cover',
-                                                backgroundPosition: 'center',
-                                                backgroundColor: item.image_url ? 'transparent' : '#e9ecef'
-                                            }}
+                                            className="news-image-mobile h-100 w-100"
+                                            style={{ backgroundImage: `url(${item.image_url || '/placeholder-news.jpg'})` }}
                                         />
                                     </Col>
                                     <Col xs={8}>
-                                        <Card.Body className="p-3 h-100 d-flex flex-column">
-                                            <small className="text-primary fw-bold mb-1" style={{fontSize: '0.75rem'}}>
+                                        <Card.Body className="p-3 d-flex flex-column h-100">
+                                            <small className="news-date-text fw-bold mb-2 text-uppercase">
                                                 {new Date(item.updated_at || item.created_at).toLocaleDateString(language === 'ar' ? 'ar-EG' : 'en-US')}
                                             </small>
-                                            <Card.Title className="fw-bold mb-2 lh-sm" style={{fontSize: '0.95rem'}}>
+                                            <Card.Title className="fw-bold mb-2 news-title-mobile">
                                                 {item.title}
                                             </Card.Title>
-                                            <Card.Text className="text-muted mb-2 text-truncate" style={{ fontSize: '0.85rem' }}>
+                                            <Card.Text className="text-muted mb-3 news-summary-mobile flex-grow-1">
                                                 {item.summary}
                                             </Card.Text>
                                             
-                                            <Link to={`/posts/news/${item.id}`} className="text-primary text-decoration-none fw-bold small mt-auto d-inline-flex align-items-center gap-1">
-                                                {translations.home.news?.readMore || "Read More"} <span>{arrow}</span>
+                                            <Link to={`/posts/news/${item.id}`} className="read-more-link fw-bold small mt-auto d-inline-flex align-items-center gap-1">
+                                                {translations.home.news?.readMore || "Read More"} <span className="arrow-icon">{arrow}</span>
                                             </Link>
                                         </Card.Body>
                                     </Col>
@@ -135,13 +132,13 @@ const NewsFeed = ({ start = 0, end = 3 }) => {
                             </Card>
                         ))
                     ) : (
-                        <p className="text-center text-muted">No news right now</p>
+                        <p className="text-center text-muted py-4 mb-0">No news right now</p>
                     )}
                     
                     {/* View All Button (Mobile) */}
                     {newsItems.length > 0 && (
                         <div className="text-center mt-3">
-                            <Button as={Link} to="/posts/news" variant="outline-primary" className="w-100 rounded-pill py-2 fw-medium">
+                            <Button as={Link} to="/posts/news" variant="outline-primary" className="w-100 rounded-pill py-2 fw-semibold btn-view-all-mobile">
                                 {translations.home.news?.viewAll || "View All News"} {arrow}
                             </Button>
                         </div>

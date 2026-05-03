@@ -10,6 +10,7 @@ import { Link, NavLink } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { ADMIN_ROLES } from '../utils/roles';
+import UserDropdownMenu from './UserDropdownMenu';
 
 const NavigationBar = () => {
   const { translations, switchLanguage, language } = useLanguage();
@@ -111,15 +112,15 @@ const NavigationBar = () => {
   // Define dropdown items
   const aboutItems = [
     { to: '/about/association', end: true, label: translations.navbar.association },
-    { to: '/about/oraganizationStructure', label: translations.navbar.oraganizationStructure },
-    { to: '/about/thirtiethCouncil', label: translations.navbar.thirtiethCouncil },
+    { to: '/about/organization-structure', label: translations.navbar.organizationStructure },
+    { to: '/about/council-of-thirty', label: translations.navbar.councilOfThirty },
   ];
 
   const postsItems = [
     { to: '/posts/news', label: translations.navbar.posts.news },
-    { to: '/posts/events', label: translations.navbar.posts.issues },
-    { to: '/posts/announcements', label: translations.navbar.posts.blogs },
-    { to: '/posts/resources', label: translations.navbar.posts.help },
+    { to: '/posts/issues', label: translations.navbar.posts.issues },
+    { to: '/posts/blogs', label: translations.navbar.posts.blogs },
+    { to: '/posts/donations', label: translations.navbar.posts.donations },
   ];
 
   return (
@@ -219,13 +220,7 @@ const NavigationBar = () => {
 
             <div className="d-none d-lg-block">
               {user ? (
-                <button
-                  onClick={logout}
-                  className="btn fw-bold px-4 py-2 rounded-1 shadow-sm border-0 text-white"
-                  style={{ backgroundColor: '#22B2E6' }}
-                >
-                  {translations.navbar.logout}
-                </button>
+                <UserDropdownMenu />
               ) : (
                 <Link
                   to="/login"
@@ -274,16 +269,7 @@ const NavigationBar = () => {
 
               <div className="mt-auto pt-4 border-top">
                 {user ? (
-                  <button
-                    onClick={() => {
-                      logout();
-                      handleClose();
-                    }}
-                    className="btn w-100 fw-bold py-3 rounded-2 shadow-sm border-0 text-white"
-                    style={{ backgroundColor: '#22B2E6' }}
-                  >
-                    {translations.navbar.logout}
-                  </button>
+                  <UserDropdownMenu isMobile onItemClick={handleClose} />
                 ) : (
                   <Link
                     to="/login"

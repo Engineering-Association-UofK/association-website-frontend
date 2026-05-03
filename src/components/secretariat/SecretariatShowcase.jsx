@@ -15,15 +15,16 @@ const SecretariatShowcase = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
+
   const secretariats = [
-    { id: 'media', icon: FaNewspaper, accentColor: '#667eea' },
-    { id: 'academic', icon: FaGraduationCap, accentColor: '#f5576c' },
-    { id: 'sports', icon: FaFutbol, accentColor: '#4facfe' },
-    { id: 'external', icon: FaGlobe, accentColor: '#43e97b' },
-    { id: 'cultural', icon: FaPalette, accentColor: '#fa709a' },
-    { id: 'social', icon: FaHandsHelping, accentColor: '#a18cd1' },
-    { id: 'financial', icon: FaChartLine, accentColor: '#fcb69f' },
-    { id: 'general', icon: FaSitemap, accentColor: '#ff9a9e' },
+    { id: 'media', icon: FaNewspaper, accentColor: '#fb7184' }, // 667eea
+    { id: 'academic', icon: FaGraduationCap, accentColor: '#527ffc' }, // f5576c
+    { id: 'sports', icon: FaFutbol, accentColor: '#60c481' }, // 4facfe
+    { id: 'external', icon: FaGlobe, accentColor: '#3470a4' }, // 43e97b
+    { id: 'cultural', icon: FaPalette, accentColor: '#ff9549' }, // fa709a
+    { id: 'social', icon: FaHandsHelping, accentColor: '#cdb468' }, // a18cd1
+    { id: 'financial', icon: FaChartLine, accentColor: '#8c9259' }, // fcb69f
+    { id: 'general', icon: FaSitemap, accentColor: '#777777' }, // ff9a9e
   ];
 
   const total = secretariats.length;
@@ -80,22 +81,27 @@ const SecretariatShowcase = () => {
                 <div className="card-content">
                   <div className="card-icon" style={{ color: sec.accentColor }}><Icon /></div>
                   <h3 className="card-title">{name}</h3>
+
+                  <p></p>
                   
                   <div className="card-description-wrapper">
                     <p className="card-description">{desc}</p>
                   </div>
 
-                  <Link to="/about/oraganizationStructure" className="read-more-btn">
+                  {/* <Link to="/about/oraganizationStructure" className="read-more-btn" >
                     {translations.secretariats?.readMore || 'Read More'} →
-                  </Link>
+                  </Link> */}
                 </div>
+                
               </div>
             );
           })}
+          
         </div>
       </div>
 
       <div className="carousel-dots">
+        
         {secretariats.map((_, idx) => (
           <button
             key={idx}

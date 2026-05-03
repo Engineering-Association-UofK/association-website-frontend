@@ -46,7 +46,7 @@
 .card-top-accent {
     position: absolute;
     top: 0;
-    left: 0;
+    left: 0.25rem;
     width: 0;
     height: 4px;
     background: #22B2E6;
@@ -61,7 +61,7 @@
 }
 
 .initiative-card:hover .card-top-accent {
-    width: 100%;
+    width: 98%;
 }
 
 .initiative-icon-box {

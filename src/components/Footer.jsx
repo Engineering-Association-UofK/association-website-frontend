@@ -33,7 +33,7 @@ const Footer = () => {
                         border-radius: 2px;
                     }
                     /* RTL/LTR specific positioning */
-                    .ltr .footer-title::after {
+                    .ltr .footer-title::after  {
                         left: 0;
                     }
                     .rtl .footer-title::after {
@@ -103,10 +103,10 @@ const Footer = () => {
                         {/* Brand & About */}
                         <Col lg={3} md={6} className={`text-center ${alignClass}`}>
                             <h5 className="fw-bold mb-3 footer-title">
-                                {translations.navbar.brand}
+                                {translations.footer.brand}
                             </h5>
                             <p className="text-secondary-custom small">
-                                {"Loading about section..."}
+                                {translations.footer.description}
                             </p>
                         </Col>
 
@@ -147,15 +147,20 @@ const Footer = () => {
                             <ul className="list-unstyled text-secondary-custom small">
                                 <li className="mb-2 d-flex align-items-center justify-content-center justify-content-md-start">
                                     <i className={`bi bi-envelope ${isRtl ? 'ms-2' : 'me-2'}`} style={{ color: '#22B2E6' }}></i>
-                                    <span>{translations.footer.email}: sea@uofk.edu</span>
+                                    <span>{translations.footer.email}: <a href="mailto:sea@uofk.edu">sea@uofk.edu</a></span>
                                 </li>
                                 <li className="mb-2 d-flex align-items-center justify-content-center justify-content-md-start">
                                     <i className={`bi bi-telephone ${isRtl ? 'ms-2' : 'me-2'}`} style={{ color: '#22B2E6' }}></i>
-                                    <span>{translations.footer.phone}: +123 456 7890</span>
+                                    <span>{translations.footer.phone}: <a href="tel:+249963167780p101">+249 96 316 7780</a></span>
                                 </li>
                                 <li className="d-flex align-items-center justify-content-center justify-content-md-start">
                                     <i className={`bi bi-geo-alt ${isRtl ? 'ms-2' : 'me-2'}`} style={{ color: '#22B2E6' }}></i>
                                     <span>{translations.footer.locationName}: {translations.footer.location}</span>
+                                </li>
+                                { /* Postal Code */}
+                                <li className="mt-2 d-flex align-items-center justify-content-center justify-content-md-start">
+                                    <i className={`bi bi-mailbox ${isRtl ? 'ms-2' : 'me-2'}`} style={{ color: '#22B2E6' }}></i>
+                                    <span>{translations.footer.postalCodeName}: 11111</span>
                                 </li>
                             </ul>
                         </Col>
@@ -165,7 +170,7 @@ const Footer = () => {
                             <h6 className="fw-bold mb-3 footer-title">
                                 {translations.footer.follow}
                             </h6>
-                            <div className={`d-flex gap-2 ${isRtl ? 'justify-content-md-end' : 'justify-content-md-start'} justify-content-center`}>
+                            <div className={`d-flex gap-2 justify-content-md-start justify-content-center`}>
                                 <a href="https://www.facebook.com/UofKHandasa/about/" 
                                    className="social-icon" 
                                    target="_blank" 
