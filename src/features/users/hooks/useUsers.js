@@ -38,7 +38,7 @@ export const useSuspendUser = () => {
   const queryClient = useQueryClient();
  
   return useMutation({
-    mutationFn: (userId) => usersService.suspend(userId),
+    mutationFn: ({ user_id, reason, duration }) => usersService.suspend({ user_id, reason, duration }),
     onSuccess: () => {
       queryClient.invalidateQueries(USERS_KEYS.lists());
     },

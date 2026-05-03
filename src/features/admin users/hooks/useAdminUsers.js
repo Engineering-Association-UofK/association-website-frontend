@@ -5,16 +5,19 @@ import { adminUsersService } from '../api/adminUsers.service';
 export const ADMIN_USERS_KEYS = {
   all: ['adminUsers'],
   lists: () => [...ADMIN_USERS_KEYS.all, 'list'],
+  list: (page, limit) => [...ADMIN_USERS_KEYS.all, 'list', { page, limit }],
   detail: (id) => [...ADMIN_USERS_KEYS.all, 'detail', id],
 };
 
 // Hook for fetching all admin users
-export const useAdminUsers = () => {
+export const useAdminUsers = (page = 1, limit = 25) => {
   return useQuery({
-    queryKey: ADMIN_USERS_KEYS.lists(),
-    queryFn: () => adminUsersService.getAll(),
+    queryKey: ADMIN_USERS_KEYS.list(page, limit),
+    queryFn: () => adminUsersService.getAll({ page, limit }),
 
     staleTime: 0, 
+    // Keep previous page data visible while the next page loads
+    placeholderData: (prev) => prev,
   });
 };
 
@@ -41,14 +44,25 @@ export const usePromoteUser = () => {
   });
 };
 
-// Hook to Make an admin manager
-export const useMakeAdminManager = () => {
+// Hook to ADD an admin manager
+export const useAddAdminManager = () => {
   const queryClient = useQueryClient();
-
+ 
   return useMutation({
-    mutationFn: adminUsersService.makeManager,
+    mutationFn: (id) => adminUsersService.addManager(id),
     onSuccess: () => {
-      // Invalidates cache so the list updates automatically without a refresh
+      queryClient.invalidateQueries(ADMIN_USERS_KEYS.lists());
+    },
+  });
+};
+ 
+// Hook to REMOVE an admin manager
+export const useRemoveAdminManager = () => {
+  const queryClient = useQueryClient();
+ 
+  return useMutation({
+    mutationFn: (id) => adminUsersService.removeManager(id),
+    onSuccess: () => {
       queryClient.invalidateQueries(ADMIN_USERS_KEYS.lists());
     },
   });

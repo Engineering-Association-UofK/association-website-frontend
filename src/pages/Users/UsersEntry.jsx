@@ -6,9 +6,21 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner';
 import Alert from 'react-bootstrap/Alert';
-import { useUpdateUser } from '../../features/users/hooks/useUsers';
+import Badge from 'react-bootstrap/Badge';
+import { useUser, useUpdateUser } from '../../features/users/hooks/useUsers';
 import { roles } from '../../utils/roles';
-import './Users.css'
+import styles from'./Users.module.css'
+import { DEPARTMENTS } from '../../utils/departments';
+import { displayRole } from '../../utils/roles';
+
+const EMPTY_FORM = {
+  uni_id:     '',
+  name_ar:    '',
+  name_en:    '',
+  phone:      '',
+  department: '',
+  gender:     '',
+};
 
 const UsersEntry = () => {
 
@@ -17,125 +29,76 @@ const UsersEntry = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // const userFromState = location.state?.user;
+  const userFromState = location.state?.user;
 
-//   const isEditMode = id && id !== '0';
+  const { data: fetchedUser, isLoading, isError } = useUser(id);
   const updateMutation = useUpdateUser();
-
-//   const { 
-//       data: fetchedAdminUser, 
-//       isLoading: isLoadingData, 
-//       isError: isFetchError 
-//   } = useAdminUser(id);
-
- 
-  const [selectedRoles, setSelectedRoles] = useState([]);
-
   const isPending = updateMutation.isPending;
-  const error = updateMutation.error;
 
-//   const [formData, setFormData] = useState({
-//     id: 0,
-//     name: "",
-//     email: "",
-//     roles: [],
-//     password: "",
-//   });
+  const user = fetchedUser ?? userFromState;
 
-  // POPULATE FORM when data arrives
-//   useEffect(() => {
-//       // console.log("Fetched admin user: ", fetchedAdminUser);
-      
-//       if (fetchedAdminUser) {
-//           setFormData({
-//           id: fetchedAdminUser.id,
-//           name: fetchedAdminUser.name || '',
-//           email: fetchedAdminUser.email || '',
-//           roles: fetchedAdminUser.roles || [],
-//           password: fetchedAdminUser.password || '',
-//           });
-//       }
-//   }, [fetchedAdminUser]);
-  useEffect(() => {
-    if (userFromState?.roles) {
-      setSelectedRoles(userFromState.roles);
-    }
-  }, [userFromState]);
-
-//   const handleChange = (e) => {
-//   setFormData({
-//       ...formData,
-//       [e.target.name]: e.target.value
-//   });
-//   };
+  const [formData, setFormData] = useState(EMPTY_FORM);
  
-  const handleRoleChange = (roleValue) => {
-    setSelectedRoles((prev) =>
-      prev.includes(roleValue)
-        ? prev.filter((r) => r !== roleValue)
-        : [...prev, roleValue]
-    );
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        uni_id:     user.uni_id     ?? '',
+        name_ar:    user.name_ar    ?? '',
+        name_en:    user.name_en    ?? '',
+        phone:      user.phone      ?? '',
+        department: user.department ?? '',
+        gender:     user.gender     ?? '',
+      });
+    }
+  }, [user]);
+ 
+  const handleChange = (e) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
-  
-//   const handleRoleChange = (roleValue) => {
-//     const currentRoles = [...formData.roles];
-    
-//     if (currentRoles.includes(roleValue)) {
-//         setFormData({
-//             ...formData,
-//             roles: currentRoles.filter(r => r !== roleValue)
-//         });
-//     } else {
-//         setFormData({
-//             ...formData,
-//             roles: [...currentRoles, roleValue]
-//         });
-//     }
-//   };
 
   const handleSubmit = async (e) => {
       e.preventDefault();
-      console.log("Form Data: ", {id: Number(id), roles: selectedRoles});
+      // console.log("Form Data: ", {id: Number(id), roles: selectedRoles});
 
-    //   if (isEditMode) {
-          // UPDATE LOGIC
-          updateMutation.mutate({ data: { id: Number(id), roles: selectedRoles } }, {
-              onSuccess: () => navigate('/admin/admin-users'),
-              onError: (err) => console.error("Update failed", err)
-          });
-    //   } else {
-    //       // CREATE LOGIC
-    //       createMutation.mutate(formData, {
-    //           onSuccess: () => navigate('/admin/admin-users'),
-    //           onError: (err) => console.error("Create failed", err)
-    //       });
-    //   }
+      updateMutation.mutate({ 
+        data: { 
+          id: Number(id),
+          uni_id:     formData.uni_id,
+          name_ar:    formData.name_ar,
+          name_en:    formData.name_en,
+          phone:      formData.phone,
+          department: formData.department,
+          gender:     formData.gender 
+        } 
+      }, 
+      {
+        onSuccess: () => navigate('/admin/users'),
+        onError: (err) => console.error("Update failed", err)
+      });
   };
 
-//   // Show Loading screen while fetching initial data for Edit
-//   if (isEditMode && isLoadingData) {
-//       return (
-//           <div className="text-center mt-5">
-//               <Spinner animation="border" variant="primary" />
-//               <p>Loading admin user details...</p>
-//           </div>
-//       );
-//   }
-
-//   // Show Error if fetching failed
-//   if (isEditMode && isFetchError) {
-//       return <Alert variant="danger">Error loading admin user details.</Alert>;
-//   }
-  if (!userFromState) {
+  // ── Guard: no state and fetch also failed ──────────────────────────────────
+  if (!userFromState && isError) {
     return (
-      <Alert variant="warning">
-        No user data found.{' '}
-        <Alert.Link onClick={() => navigate('/admin/admin-users')}>
+      <Alert variant="danger">
+        Failed to load user.{' '}
+        <Alert.Link onClick={() => navigate('/admin/users')}>
           Go back to the list.
         </Alert.Link>
       </Alert>
     );
   }
+ 
+  // ── Loading: no state snapshot yet and fetch still in flight ──────────────
+  if (!userFromState && isLoading) {
+    return (
+      <div className="text-center mt-5">
+        <Spinner animation="border" variant="primary" />
+        <p>Loading user details...</p>
+      </div>
+    );
+  }
+ 
 
   return (
     <>
@@ -146,12 +109,15 @@ const UsersEntry = () => {
                         className='me-2' 
                         variant="outline-secondary" 
                         size="sm"
-                        onClick={() => navigate(`/admin/admin-users`)}
+                        onClick={() => navigate(`/admin/users`)}
                         disabled={isPending}
                     >
                         <i className="bi bi-arrow-left"></i>
                     </Button>
-                    <h4>Add admin user</h4>
+                    <h4>Edit user</h4>
+                    {isLoading && (
+                      <Spinner animation="border" size="sm" variant="secondary" className="ms-2" />
+                    )}
                 </div>
                 <div className="actions-wrapper">
                     <Button 
@@ -178,105 +144,159 @@ const UsersEntry = () => {
  
             {updateMutation.isError && (
                 <Alert variant="danger">
-                Failed to update roles: {updateMutation.error?.message}
+                {/* Failed to update user: {updateMutation.error?.message} */}
+                {updateMutation.error?.response?.data?.message || updateMutation.error?.message || 'Failed to update user.'}
                 </Alert>
             )}
 
             <div className="scrollable-container">
-                {/* <Form.Group className="mb-3" controlId="formGridName">
-                    <Form.Label>Name</Form.Label>
-                    <Form.Control 
-                        name="name"
-                        type="text" 
-                        placeholder="Enter name" 
-                        value={formData.name}
-                        onChange={handleChange}
-                        disabled={isPending || isEditMode}
-                    />
-                </Form.Group>
-
-                <Form.Group className="mb-3" controlId="formGridEmail">
+              
+              <Row className="mb-3">
+                <Col md={4}>
+                  <Form.Group>
+                    <Form.Label>Student Index (ID)</Form.Label>
+                    <Form.Control value={user?.id ?? '—'} disabled />
+                  </Form.Group>
+                </Col>
+                <Col md={4}>
+                  <Form.Group>
+                    <Form.Label>Username</Form.Label>
+                    <Form.Control value={user?.username || '—'} disabled />
+                  </Form.Group>
+                </Col>
+                <Col md={4}>
+                  <Form.Group>
                     <Form.Label>Email</Form.Label>
-                    <Form.Control 
-                        name="email"
-                        type="email" 
-                        placeholder="Enter email" 
-                        value={formData.email}
-                        onChange={handleChange}
-                        disabled={isPending}
+                    <Form.Control value={user?.email || '—'} disabled />
+                  </Form.Group>
+                </Col>
+              </Row>
+      
+              <Row className="mb-3">
+                <Col md={6}>
+                  <Form.Group>
+                    <Form.Label>Status</Form.Label>
+                    <div className="mt-1 d-flex gap-2">
+                      <Badge bg={user?.status === 'active' ? 'success' : 'danger'}>
+                        {user?.status ?? '—'}
+                      </Badge>
+                      {user?.verified && (
+                        <Badge bg="info">
+                          <i className="bi bi-patch-check-fill me-1" />
+                          Verified
+                        </Badge>
+                      )}
+                    </div>
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  {user?.roles?.length > 0 && (
+                    <Form.Group>
+                      <Form.Label>Roles</Form.Label>
+                      <div className="d-flex flex-wrap gap-2 mt-1">
+                        {user.roles.map((role) => (
+                          <Badge key={role} bg="secondary">{displayRole(role)}</Badge>
+                        ))}
+                      </div>
+                    </Form.Group>
+                  )}
+                </Col>
+              </Row>
+      
+              <hr />
+                    
+              <Row className="mb-3">
+                <Col md={6}>
+                  <Form.Group controlId="formNameAr">
+                    <Form.Label>Full Name (Arabic)</Form.Label>
+                    <Form.Control
+                      name="name_ar"
+                      type="text"
+                      placeholder="الاسم بالعربية"
+                      value={formData.name_ar}
+                      onChange={handleChange}
+                      disabled={isPending}
+                      dir="rtl"
                     />
-                </Form.Group>
-
-                <Form.Group className="mb-3" controlId="formGridPassword">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control 
-                        name="password"
-                        type="password" 
-                        placeholder="Enter password" 
-                        value={formData.password}
-                        onChange={handleChange}
-                        disabled={isPending}
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group controlId="formNameEn">
+                    <Form.Label>Full Name (English)</Form.Label>
+                    <Form.Control
+                      name="name_en"
+                      type="text"
+                      placeholder="Full name in English"
+                      value={formData.name_en}
+                      onChange={handleChange}
+                      disabled={isPending}
                     />
-                </Form.Group> */}
-
-                <Form.Group className="mb-3">
-                <Form.Label>Username</Form.Label>
-                <Form.Control value={userFromState.username || '—'} disabled />
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                <Form.Label>Index</Form.Label>
-                <Form.Control value={userFromState.id || '—'} disabled />
-                </Form.Group>
-        
-                <Form.Group className="mb-3">
-                <Form.Label>Name</Form.Label>
-                <Form.Control value={userFromState.name_ar || '—'} disabled />
-                </Form.Group>
-        
-                <Form.Group className="mb-3">
-                <Form.Label>Email</Form.Label>
-                <Form.Control value={userFromState.email || '—'} disabled />
-                </Form.Group>
-        
-                <Form.Group className="mb-3">
-                <Form.Label>Gender</Form.Label>
-                <Form.Control value={userFromState.gender || '—'} disabled />
-                </Form.Group>
-
-                <Form.Group controlId="formGridRole">
-                <Form.Label>Roles</Form.Label>
-                {roles.map((role) => (
-                    <Form.Check
-                    key={role.value}
-                    type="switch"
-                    className="role-check"
-                    id={`role-${role.value}`}
-                    label={role.name}
-                    checked={selectedRoles.includes(role.value)}
-                    onChange={() => handleRoleChange(role.value)}
-                    disabled={isPending || role.value == 'sys:super_admin' || role.value == 'sys:admin' || role.value == 'sys:admin_manager'}
+                  </Form.Group>
+                </Col>
+              </Row>
+      
+              <Row className="mb-3">
+                <Col md={6}>
+                  <Form.Group controlId="formUniId">
+                    <Form.Label>University ID</Form.Label>
+                    <Form.Control
+                      name="uni_id"
+                      type="number"
+                      placeholder="University ID"
+                      value={formData.uni_id}
+                      onChange={handleChange}
+                      disabled={isPending}
                     />
-                ))}
-                </Form.Group>
-
-                {/* <Form.Group controlId="formGridRole">
-                    <Form.Label>Role</Form.Label>
-                    {roles.map((role) => (
-                        <>
-                            <Form.Check 
-                                key={role.value}
-                                type="switch"
-                                className="role-check"
-                                id={`role-${role.value}`}
-                                label={role.name}
-                                checked={formData && formData.roles?.includes(role.value)}
-                                onChange={() => handleRoleChange(role.value)}
-                                disabled={isPending || role.value == 'ROLE_SUPER_ADMIN'}
-                            /> 
-                        </>   
-                    ))}
-                </Form.Group> */}
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group controlId="formPhone">
+                    <Form.Label>Phone</Form.Label>
+                    <Form.Control
+                      name="phone"
+                      type="tel"
+                      placeholder="e.g. 0912345678"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      disabled={isPending}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+      
+              <Row className="mb-3">
+                <Col md={6}>
+                  <Form.Group controlId="formDepartment">
+                    <Form.Label>Department</Form.Label>
+                    <Form.Select
+                      name="department"
+                      value={formData.department}
+                      onChange={handleChange}
+                      disabled={isPending}
+                    >
+                      <option value="">Select department</option>
+                      {DEPARTMENTS.map((d) => (
+                        <option key={d.value} value={d.value}>{d.label}</option>
+                      ))}
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group controlId="formGender">
+                    <Form.Label>Gender</Form.Label>
+                    <Form.Select
+                      name="gender"
+                      value={formData.gender}
+                      onChange={handleChange}
+                      disabled={isPending}
+                    >
+                      <option value="">Select gender</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+              </Row>
             </div>
         </Form>
     </>

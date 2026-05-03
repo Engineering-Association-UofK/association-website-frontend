@@ -37,6 +37,7 @@ import ImageStorageEntry from "./pages/Image Storage/ImageStorageEntry.jsx";
 import { CONFIG } from "./config";
 import ProfilePage from "./pages/Profile/ProfilePage.jsx";
 import UsersDashboard from './pages/Users/UsersDashboard.jsx';
+import UsersEntry from "./pages/Users/UsersEntry.jsx";
 
 function App() {
   return (
@@ -93,6 +94,7 @@ function App() {
                     <Route path="admin-users/:id" element={<AdminUsersEntry />} />
                   </Route>
                   <Route path="users" element={<UsersDashboard />} />
+                  <Route path="users/:id" element={<UsersEntry />} />
                   <Route path="admin-profile" element={<AdminProfile />} />
                   <Route path="change-password" element={<ChangePassword />} />
                   <Route path="bot-commands" element={<BotCommandsDashboard />} />

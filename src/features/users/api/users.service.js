@@ -24,8 +24,8 @@ export const usersService = {
     return await apiClient.put(`${ENDPOINT}`, data);
   },
 
-  suspend: async (userId) => {
-    return await apiClient.post(`${ENDPOINT}/suspend`, {userId, suspend: true});
+  suspend: async ({ user_id, reason, duration }) => {
+    return await apiClient.post(`${ENDPOINT}/suspend`, { user_id, reason, duration });
   },
 
   // assignPasscodes: async () => {
