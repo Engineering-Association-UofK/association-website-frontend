@@ -24,10 +24,14 @@ jobs:
         run: |
           echo "${{ secrets.ENV_FILE }}" > .env
 
+      - name: install pnpm
+        run: |
+          npm install -g pnpm
+
       - name: Install and Build
         run: |
-          npm install
-          npm run build
+          pnpm install
+          pnpm run build
 
       - name: Copy files to Server
         uses: appleboy/scp-action@master
