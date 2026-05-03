@@ -362,17 +362,19 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useLanguage } from "../context/LanguageContext";
 import { useAuth } from "../context/AuthContext.jsx";
+import { DEPARTMENTS } from '../utils/departments';
 
-const DEPARTMENTS = [
-  { value: "surveying", label: "Surveying Engineering" },
-  { value: "agricultural", label: "Agricultural Engineering" },
-  { value: "civil", label: "Civil Engineering" },
-  { value: "electrical", label: "Electrical and Electronics Engineering" },
-  { value: "mechanical", label: "Mechanical Engineering" },
-  { value: "mining", label: "Mining Engineering" },
-  { value: "chemical", label: "Chemical Engineering" },
-  { value: "petroleum", label: "Petroleum Engineering" },
-];
+
+// const DEPARTMENTS = [
+//   { value: "surveying", label: "Surveying Engineering" },
+//   { value: "agricultural", label: "Agricultural Engineering" },
+//   { value: "civil", label: "Civil Engineering" },
+//   { value: "electrical", label: "Electrical and Electronics Engineering" },
+//   { value: "mechanical", label: "Mechanical Engineering" },
+//   { value: "mining", label: "Mining Engineering" },
+//   { value: "chemical", label: "Chemical Engineering" },
+//   { value: "petroleum", label: "Petroleum Engineering" },
+// ];
 
 const INITIAL_FORM = {
   user_id: "",

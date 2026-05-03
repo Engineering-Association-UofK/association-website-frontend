@@ -32,7 +32,7 @@ const AdminSidebar = () => {
 
   return (
     <>
-      <div className="d-flex flex-column  p-3 bg-body-tertiary" style={{width: "200px", minWidth: "200px", marginBottom: '-16px', height: 'calc(100dvh - 42px - 16px)', borderRight: 'var(--bs-border-width) solid var(--bs-border-color)'}}> 
+      <div className="d-flex flex-column  p-3 bg-body-tertiary" style={{width: "200px", minWidth: "200px", marginBottom: '-16px', height: 'calc(100dvh - 43px)', borderRight: 'var(--bs-border-width) solid var(--bs-border-color)'}}> 
         <ul className="nav nav-pills flex-column mb-auto"> 
           <li className="nav-item"> 
             <NavLink to="/admin/dashboard" className="nav-link">
@@ -65,6 +65,9 @@ const AdminSidebar = () => {
             </NavLink>
           </li>
           <li className="nav-item"> 
+            <NavLink to="/admin/users" className="nav-link">
+              <i className="bi pe-none bi-person me-2"></i>
+              <div>Users</div>
             <NavLink to="/admin/bot" className="nav-link">
               <i className="bi pe-none bi-robot me-2"></i>
               <div>Bot</div>

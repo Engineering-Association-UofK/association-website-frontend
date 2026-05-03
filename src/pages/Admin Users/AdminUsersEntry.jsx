@@ -8,7 +8,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import Alert from 'react-bootstrap/Alert';
 import { useUpdateAdminUser } from '../../features/admin users/hooks/useAdminUsers';
 import { roles } from '../../utils/roles';
-import './AdminUsers.css'
+import styles from './AdminUsers.module.css'
 
 const AdminUsersEntry = () => {
 
@@ -252,12 +252,12 @@ const AdminUsersEntry = () => {
                     <Form.Check
                     key={role.value}
                     type="switch"
-                    className="role-check"
+                    className={styles.roleCheck}
                     id={`role-${role.value}`}
                     label={role.name}
                     checked={selectedRoles.includes(role.value)}
                     onChange={() => handleRoleChange(role.value)}
-                    disabled={isPending || role.value == 'sys:super_admin' || role.value == 'sys:admin'}
+                    disabled={isPending || role.value == 'sys:super_admin' || role.value == 'sys:admin' || role.value == 'sys:admin_manager'}
                     />
                 ))}
                 </Form.Group>
