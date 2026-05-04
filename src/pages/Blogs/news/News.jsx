@@ -19,7 +19,7 @@ const CardSkeleton = () => (
 
 // Thumbnail-Skeleton
 const ThumbnailSkeleton = () => (
-  <div className="d-flex flex-column gap-3">
+  <div className="d-flex flex-column gap-3 w-100">
     {[...Array(3)].map((_, i) => (
       <div key={i} className="d-flex gap-3">
         <div style={{ width: '120px', height: '120px', backgroundColor: '#e9ecef', borderRadius: '0.5rem' }} className="skeleton-animation"></div>
