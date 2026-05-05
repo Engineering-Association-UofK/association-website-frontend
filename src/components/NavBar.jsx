@@ -119,7 +119,7 @@ const NavigationBar = () => {
   const postsItems = [
     { to: '/posts/news', label: translations.navbar.posts.news },
     { to: '/posts/issues', label: translations.navbar.posts.issues },
-    { to: '/posts/blogs', label: translations.navbar.posts.blogs },
+    { to: '/posts/announcements', label: translations.navbar.posts.blogs },
     { to: '/posts/donations', label: translations.navbar.posts.donations },
   ];
 

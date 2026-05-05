@@ -57,7 +57,7 @@ function App() {
               <Route path="/about/association" element={<AssociationAbout />} />
               <Route path="/about/organization-structure" element={<OrganizationStructureAbout />} />
               <Route path="/about/council-of-thirty" element={<ThirtiethCouncilAbout />} />
-              <Route path="/posts/blogs" element={<Blogs />} />
+              <Route path="/posts/announcements" element={<Blogs />} />
               <Route path="/posts/donations" element={<Donation />} />
               <Route path="/posts/issues" element={<Issues />} />
               <Route path="/posts/news" element={<News />} />
