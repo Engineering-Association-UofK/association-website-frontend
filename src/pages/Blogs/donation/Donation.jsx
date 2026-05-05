@@ -31,8 +31,6 @@ const Donation = () => {
                 setAllPosts(prev => [...prev, ...data.posts]);
             }
             setHasMore(page < data.pages);
-            console.log(data);
-            
         }
     }, [data, page]);
 
