@@ -20,7 +20,7 @@ const Donation = () => {
     const [page, setPage] = useState(1);
     const [allPosts, setAllPosts] = useState([]);
     const [hasMore, setHasMore] = useState(true);
-    const { data, isLoading, error, isFetching } = useBlogs('BLOG', page, 10);
+    const { data, isLoading, error, isFetching } = useBlogs('DONATIONS', page, 10);
     const { language } = useLanguage();
 
     useEffect(() => {
@@ -68,7 +68,7 @@ const Donation = () => {
                 {allPosts.map((post) => (
                     <div key={post.slug} className="donation-card hover-card">
                         <img
-                            src={'https://placehold.co/400x400?text=Donation+Image' /*post.image_url | */}
+                            src={post.image_url | 'https://placehold.co/400x400?text=Donation+Image'}
                             className="donation-card-img"
                             alt={post.title}
                         />
