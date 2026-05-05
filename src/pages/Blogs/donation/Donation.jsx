@@ -6,12 +6,12 @@ import { useLanguage } from '../../../context/LanguageContext';
 import './Donation.css';
 
 const SkeletonCard = () => (
-    <div className="skeleton-row">
+    <div className="skeleton">
         <div className="skeleton-image skeleton-animation"></div>
         <div className="skeleton-content">
-            <div className="skeleton-line skeleton-animation" style={{ width: '40%' }}></div>
-            <div className="skeleton-line skeleton-animation" style={{ width: '80%' }}></div>
-            <div className="skeleton-line skeleton-animation" style={{ width: '60%', height: '0.6rem' }}></div>
+            <div className="skeleton-line skeleton-animation" style={{ width: '40%', height: '1.2rem' }}></div>
+            <div className="skeleton-line skeleton-animation" style={{ width: '80%', height: '1.4rem' }}></div>
+            <div className="skeleton-line skeleton-animation" style={{ width: '40%', height: '1rem' }}></div>
         </div>
     </div>
 );
