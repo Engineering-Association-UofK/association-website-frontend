@@ -20,7 +20,7 @@ const Donation = () => {
     const [page, setPage] = useState(1);
     const [allPosts, setAllPosts] = useState([]);
     const [hasMore, setHasMore] = useState(true);
-    const { data, isLoading, error, isFetching } = useBlogs('DONATIONS', page, 10);
+    const { data, isLoading, error, isFetching } = useBlogs('BLOG', page, 10);
     const { language } = useLanguage();
 
     useEffect(() => {

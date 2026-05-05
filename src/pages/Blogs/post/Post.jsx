@@ -25,7 +25,7 @@ const Post = () => {
   const backNavigation = {
     news: { path: '/posts/news', label: 'news' },
     announcements: { path: '/posts/announcements', label: 'blogs' },
-    resources: { path: '/posts/resources', label: 'donations' },
+    resources: { path: '/posts/donations', label: 'donations' },
     events: { path: '/posts/issues', label: 'issues' },
   };
 
