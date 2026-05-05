@@ -26,7 +26,7 @@ const Post = () => {
     news: { path: '/posts/news', label: 'news' },
     announcements: { path: '/posts/announcements', label: 'blogs' },
     resources: { path: '/posts/resources', label: 'donations' },
-    events: { path: '/posts/events', label: 'issues' },
+    events: { path: '/posts/issues', label: 'issues' },
   };
 
   if (isLoading) {
