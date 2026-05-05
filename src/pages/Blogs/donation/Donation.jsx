@@ -66,9 +66,9 @@ const Donation = () => {
 
             <div className="donation-grid">
                 {allPosts.map((post) => (
-                    <div key={post.slug} className="donation-card-row hover-card">
+                    <div key={post.slug} className="donation-card hover-card">
                         <img
-                            src={post.image_url | 'https://placehold.co/400x400?text=Donation+Image'}
+                            src={'https://placehold.co/400x400?text=Donation+Image' /*post.image_url | */}
                             className="donation-card-img"
                             alt={post.title}
                         />
