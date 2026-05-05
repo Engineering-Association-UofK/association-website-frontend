@@ -31,6 +31,8 @@ const Donation = () => {
                 setAllPosts(prev => [...prev, ...data.posts]);
             }
             setHasMore(page < data.pages);
+            console.log(data);
+            
         }
     }, [data, page]);
 
@@ -68,7 +70,7 @@ const Donation = () => {
                 {allPosts.map((post) => (
                     <div key={post.slug} className="donation-card hover-card">
                         <img
-                            src={post.image_url | 'https://placehold.co/400x400?text=Donation+Image'}
+                            src={post.image_url || 'https://placehold.co/400x400?text=Donation+Image'}
                             className="donation-card-img"
                             alt={post.title}
                         />
