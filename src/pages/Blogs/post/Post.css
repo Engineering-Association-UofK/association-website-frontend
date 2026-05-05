@@ -8,3 +8,26 @@
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
+
+.post-image-wrapper {
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  max-height: 200px;
+  background-color: #f8f9fa;
+}
+
+.post-image-wrapper.expanded {
+  max-height: 80vh;
+}
+
+.post-image {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  transition: transform 0.2s ease;
+}
+
+.post-image-wrapper:not(.expanded):hover {
+  opacity: 0.9;
+}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Container, Alert } from 'react-bootstrap';
 import { useParams, Link } from 'react-router-dom';
 import { usePost } from '../../../features/post/hooks/usePost';
@@ -21,6 +21,7 @@ const PostSkeleton = () => (
 const Post = () => {
   const { type, slug } = useParams();
   const { data: post, isLoading, error } = usePost(slug);
+  const [imageExpanded, setImageExpanded] = useState(false);
 
   const backNavigation = {
     news: { path: '/posts/news', label: 'news' },
@@ -58,17 +59,30 @@ const Post = () => {
 
   if (!post) return null;
 
-  return (
-    <article className="py-5 bg-light" style={{ backgroundImage: `url(${post.image_url})`, backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative', zIndex: 0}}>
-      {post.image_url && <div style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'white', opacity: 0.4, zIndex: '-1'}}></div>}
+  const toggleImage = () => setImageExpanded(!imageExpanded);
 
+  return (
+    <article className="py-5 bg-light">
       <Container>
         <Link to={backNavigation[type]?.path || '/posts/news'} className="btn btn-outline-secondary rounded-pill mb-4">
           <i className="bi bi-arrow-left me-2"></i> Back to {backNavigation[type]?.label || 'news'}
         </Link>
 
         <div className="bg-white rounded-4 shadow-sm overflow-hidden">
-          <div className="position-relative p-4 p-lg-5" style={{ zIndex: 2 }}>
+          {post.image_url && (
+            <div 
+              className={`post-image-wrapper ${imageExpanded ? 'expanded' : ''}`}
+              onClick={toggleImage}
+            >
+              <img 
+                src={'https://placehold.co/400x400?text=Donation+Image' /*post.image_url*/} 
+                alt={post.title}
+                className="post-image"
+              />
+            </div>
+          )}
+
+          <div className="position-relative p-4 p-lg-5">
             <h1 className="display-5 fw-bold text-primary mb-3">{post.title}</h1>
             <div
               className="blog-content"
