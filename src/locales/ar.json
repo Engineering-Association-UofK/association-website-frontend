@@ -218,6 +218,14 @@
     "Updateemail": "تحديث الايميل",
     "saving":"جاري الحقظ...",
     "save":"حفظ",
+    "Notifications":"الإشعارات",
+    "Nonotifications":"لا توجد إشعارات",
+    "Prev":"السابق",
+    "Next":"التالي",
+    "Marking":"جاري التحديث...",
+    "MarkAllAsRead":"تحديد الكل كمقروء",
+    "Delete":"حدف",
+    "MarkAsRead":"مقروء",
 
 "crunt":"الحالي",
     "password":{
@@ -233,4 +241,4 @@
         "networkError": "حدث خطأ في الشبكة، حاول لاحقاً"
 
     }
-}
+}}
