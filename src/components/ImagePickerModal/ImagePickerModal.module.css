@@ -14,5 +14,9 @@
     border-color: #e9ecef #e9ecef #dee2e6;
 }
 .scrollableContainer{
-    height: 55dvh !important;
+    height: calc(55dvh - 63px) !important;
 }
+/* .gridWrapper {
+    height: calc(100dvh - 55px - 48px - 42px - 64px);
+    margin-bottom: 0;
+} */

@@ -13,33 +13,39 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { useCreateImageStorageItem } from '../../features/image storage/hooks/useImageStorage';
 
 const ImageStorageEntry = () => {
-
-    const { id } = useParams();
     
     const navigate = useNavigate();
     const createMutation = useCreateImageStorageItem();
-    // const { upload, isUploading, uploadError } = useFileUpload();
 
-    const isPending = createMutation.isPending //|| isUploading;
+    const isPending = createMutation.isPending;
     const error = createMutation.error;
 
     const [formData, setFormData] = useState({
-        file_name: "test file name",
-        alt_text: "test alt",
+        file_name: "",
+        alt_text: "",
         imageLink: "",
     });
+ 
+    const handleChange = (e) => {
+      const { name, value } = e.target;
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Form Data: ", formData);
+        // console.log("Form Data: ", formData);
+        if (!formData.file_name.trim()) {
+            setValidationError('File name is required.');
+            return;
+        }
 
         try {
             // const { secureUrl, publicId } = await upload(formData.imageLink);
 
             const payload = {
                 file: formData.imageLink,
-                file_name: formData.file_name,
-                alt_text: formData.alt_text,
+                file_name: formData.file_name.trim(),
+                alt_text: formData.alt_text.trim(),
             };
 
             // CREATE LOGIC
@@ -85,9 +91,7 @@ const ImageStorageEntry = () => {
                                     aria-hidden="true"
                                     className="me-2"
                                     />
-
-                                    {/* {isUploading ? 'Uploading Image...' : 'Saving...'} */}
-                                    {'Saving...'}
+                                    Saving...
                                 </>
                             ) : (
                                 <i className="bi pe-none bi-floppy2-fill"></i>
@@ -118,6 +122,35 @@ const ImageStorageEntry = () => {
                         />
                     </Col>
                 </Row>
+ 
+                {/* File name */}
+                <Form.Group className="mb-3">
+                <Form.Label>File Name <span className="text-danger">*</span></Form.Label>
+                <Form.Control
+                    name="file_name"
+                    type="text"
+                    placeholder="Enter a file name"
+                    value={formData.file_name}
+                    onChange={handleChange}
+                    required
+                    disabled={isPending}
+                />
+                </Form.Group>
+
+                {/* Alt text */}
+                <Form.Group className="mb-3">
+                <Form.Label>
+                    Alt Text <span className="text-muted small">(optional — for accessibility)</span>
+                </Form.Label>
+                <Form.Control
+                    name="alt_text"
+                    type="text"
+                    placeholder="Describe the image for screen readers"
+                    value={formData.alt_text}
+                    onChange={handleChange}
+                    disabled={isPending}
+                />
+                </Form.Group>
             </div>
         </Form>
     </>

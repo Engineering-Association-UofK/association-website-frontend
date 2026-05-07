@@ -15,8 +15,8 @@ import Donation from "./pages/Blogs/donation/Donation.jsx";
 import Issues from "./pages/Blogs/issues/Issues.jsx";
 import News from "./pages/Blogs/news/News.jsx";
 import Post from "./pages/Blogs/post/Post.jsx";
-import GalleryDashboard from "./pages/Gallery/GalleryDashboard";
-import GalleryEntry from "./pages/Gallery/GalleryEntry";
+// import GalleryDashboard from "./pages/Gallery/GalleryDashboard";
+// import GalleryEntry from "./pages/Gallery/GalleryEntry";
 import MainLayout from "./layouts/MainLayout";
 import StandaloneLayout from "./layouts/StandaloneLayout";
 import "./App.css";
@@ -39,6 +39,8 @@ import UsersEntry from "./pages/Users/UsersEntry.jsx";
 import ScrollToTop from "./components/ScrollToTop";
 import ScrollToTopButton from "./components/ScrollToTopButton.jsx";
 import AdminBotEditor from "./pages/bot/AdminBotEditor.jsx";
+import PostsEntry from "./pages/Posts/PostsEntry.jsx";
+import PostsDashboard from "./pages/Posts/PostsDashboard.jsx";
 
 
 function App() {
@@ -85,8 +87,8 @@ function App() {
               <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<Navigate to="dashboard" replace />} />
                   <Route path="dashboard" element={<Dashboard />} />
-                  {/* <Route path="blogs" element={<BlogsDashboard />} /> */}
-                  {/* <Route path="blogs/:id" element={<BlogsEntry />} /> */}
+                  <Route path="posts" element={<PostsDashboard />} />
+                  <Route path="posts/:id" element={<PostsEntry />} />
                   {/* <Route path="gallery" element={<GalleryDashboard />} />
                   <Route path="gallery/:id" element={<GalleryEntry />} /> */}
 

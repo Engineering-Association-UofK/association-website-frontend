@@ -321,44 +321,6 @@ const AdminUsersDashboard = () => {
         </Modal.Footer>
       </Modal>
 
- 
-      {/* ── Promote User Modal ─────────────────────────────────────────────── */}
-      {/* <Modal show={showPromoteModal} onHide={handleClosePromoteModal} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Promote User to Admin</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <p className="text-muted">
-            Enter the student index number of the user you want to grant admin access to.
-          </p>
-          {promoteError && <Alert variant="danger">{promoteError}</Alert>}
-          <Form.Group controlId="promoteUserId">
-            <Form.Label>User ID</Form.Label>
-            <Form.Control
-              type="number"
-              placeholder="e.g. 195011"
-              value={promoteUserId}
-              onChange={(e) => setPromoteUserId(e.target.value)}
-              disabled={isPromoting}
-              autoFocus
-            />
-          </Form.Group>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClosePromoteModal} disabled={isPromoting}>
-            Cancel
-          </Button>
-          <Button variant="primary" onClick={handleConfirmPromote} disabled={isPromoting}>
-            {isPromoting ? (
-              <>
-                <Spinner as="span" animation="border" size="sm" className="me-2" />
-                Promoting...
-              </>
-            ) : 'Promote'}
-          </Button>
-        </Modal.Footer>
-      </Modal> */}
-
     </>
   )
 }
