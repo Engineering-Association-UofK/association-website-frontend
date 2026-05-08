@@ -286,7 +286,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import FormCard from './formcard';
+import FormCard from './FormCard';
 import { useLanguage } from '../../context/LanguageContext';
 import { endpoints, authFetch } from '../../config/api';
 

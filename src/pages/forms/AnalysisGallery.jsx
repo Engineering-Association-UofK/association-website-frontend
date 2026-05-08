@@ -128,7 +128,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Button, Spinner } from 'react-bootstrap';
-import FormCard from './formcard';
+import FormCard from './FormCard';
 import { endpoints, authFetch } from '../../config/api';
 
 const AnalysisGallery = () => {

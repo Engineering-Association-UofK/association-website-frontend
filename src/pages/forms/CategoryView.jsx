@@ -147,7 +147,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Spinner } from 'react-bootstrap';
 import { useLanguage } from '../../context/LanguageContext';
-import FormCard from './formcard';
+import FormCard from './FormCard';
 import { endpoints, authFetch } from '../../config/api';
 
 const CategoryView = () => {
