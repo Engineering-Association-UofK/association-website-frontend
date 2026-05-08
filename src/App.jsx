@@ -116,10 +116,11 @@ function App() {
                   />
                 <Route path="bot" element={<AdminBotEditor />} />
                 <Route path="*" element={<Navigate to="/admin/dashboard" />} />
-                  <Route path="forms" element={<FormsDashboard />} />
-                  <Route path="forms/:id" element={<FormEntry />} />
-                  <Route path="forms/analysis" element={<AnalysisGallery />} />
-                  <Route path="forms/analysis/:id" element={<FormAnalysisView />} />
+                <Route path="forms" element={<FormsDashboard />} />
+                  <Route path="forms/create" element={<FormEntry />} />
+                  <Route path="forms/edit/:id" element={<FormEntry />} />
+                <Route path="forms/analysis" element={<AnalysisGallery />} />
+                <Route path="forms/analysis/:id" element={<FormAnalysisView />} />
               </Route>
             </Route>
             {/* </Route> */}

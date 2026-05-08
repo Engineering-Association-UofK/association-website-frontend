@@ -134,22 +134,41 @@ import { endpoints, authFetch } from '../../config/api';
 const AnalysisGallery = () => {
   const navigate = useNavigate();
   const [forms, setForms] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalForms, setTotalForms] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchForms = async () => {
+    const fetchForms = async (pageToFetch = 0) => {
+      setLoading(true);
       try {
-        const res = await authFetch(endpoints.forms);
+        const res = await authFetch(`${endpoints.forms}?page=${pageToFetch}`);
+        
+        if (!res.ok) throw new Error(`Failed to fetch forms: ${res.status}`);
+        
         const data = await res.json();
-        setForms(Array.isArray(data) ? data : []);
+        
+        if (Array.isArray(data.forms) && data.forms.length > 0) {
+          const paginationData = data;
+          setForms(paginationData.forms || []);
+          setCurrentPage(paginationData.current || 0);
+          setTotalPages(paginationData.pages || 0);
+          setTotalForms(paginationData.total || 0);
+        } else {
+          setForms([]);
+        }
       } catch (err) {
-        console.error("Failed to load forms:", err);
+        console.error("Could not load forms:", err);
+        setForms([]);
       } finally {
         setLoading(false);
       }
     };
     fetchForms();
   }, []);
+
+  
 
   if (loading) return (
     <Container className="text-center py-5">
