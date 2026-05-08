@@ -41,17 +41,11 @@ const AdminSidebar = () => {
             </NavLink>
           </li> 
           <li className="nav-item"> 
-            <NavLink to="/admin/blogs" className="nav-link">
+            <NavLink to="/admin/posts" className="nav-link">
               <i className="bi pe-none bi-newspaper me-2"></i>
-              Blogs
+              Posts
             </NavLink>
           </li> 
-          {/* <li className="nav-item"> 
-            <NavLink to="/admin/gallery" className="nav-link">
-              <i className="bi pe-none bi-image me-2"></i>
-              Gallery
-            </NavLink>
-          </li> */}
           <li className="nav-item"> 
             <NavLink to="/admin/admin-users" className="nav-link">
               <i className="bi pe-none bi-person me-2"></i>

@@ -1,10 +1,14 @@
 import React, { useState } from "react";
-import { Alert, Button, Col, Image, Modal, Row, Spinner, Tab, Tabs } from "react-bootstrap";
+import { Alert, Button, Col, Image, Modal, Row, Spinner, Tab, Tabs, Form } from "react-bootstrap";
 import { useImageStorageItems } from "../../features/image storage/hooks/useImageStorage";
 import ImageUpload from "../ImageUpload";
 import styles from './ImagePickerModal.module.css'
+import TablePaginator from '../../components/TablePaginator.jsx';
 
 const PLACEHOLDER_IMG = "https://placehold.co/600x400?text=No+Image";
+const PAGE_LIMIT = 20;
+ 
+const UPLOAD_EMPTY = { file: null, file_name: '', alt_text: '' };
 
 /**
  * Props:
@@ -14,43 +18,30 @@ const PLACEHOLDER_IMG = "https://placehold.co/600x400?text=No+Image";
  * - disabled?: boolean
  */
 export default function ImagePickerModal({ show, onHide, onPick, disabled = false }) {
-  const [activeTab, setActiveTab] = useState("storage");
-
-  // Upload tab state
-  const [localFile, setLocalFile] = useState(null);
 
   // Storage tab state
   const [selectedId, setSelectedId] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
 
-  const { data: items = [], isLoading, isError, error, refetch } = useImageStorageItems();
-
+  const [page, setPage] = useState(1);
+  const { data, isLoading, isError, error, refetch, isFetching } = useImageStorageItems(page, PAGE_LIMIT);
+  const items = data?.images ?? [];
+  const totalPages = data?.Page ?? 1;
 
   const handleClose = () => {
-    // Reset ephemeral modal state on close for a clean reopen
-    setLocalFile(null);
     setSelectedId(null);
     setSelectedImage(null);
-    setActiveTab("storage");
     onHide();
   };
 
   const handleConfirm = () => {
     if (disabled) return;
-    if (activeTab === "upload") {
-      if (!localFile) return;
-      onPick(localFile);
-      handleClose();
-      return;
-    }
-    // storage
     if (!selectedImage) return;
     onPick(selectedImage);
     handleClose();
   };
 
-  const canConfirm =
-    !disabled && ((activeTab === "upload" && !!localFile) || (activeTab === "storage" && !!selectedImage));
+  const canConfirm = !disabled &&  !!selectedImage;
 
   return (
     <Modal show={show} onHide={handleClose} centered size="lg">
@@ -59,27 +50,26 @@ export default function ImagePickerModal({ show, onHide, onPick, disabled = fals
       </Modal.Header>
 
       <Modal.Body className={styles.pickerModalBody}>
-        <Tabs activeKey={activeTab} onSelect={(k) => setActiveTab(k || "storage")} className="mb-3">
-          <Tab eventKey="storage" title="Image storage">
-            {isLoading ? (
-              <div className="text-center py-5">
-                <Spinner animation="border" />
-                <div className="mt-2 text-muted">Loading images…</div>
-              </div>
-            ) : isError ? (
-              <Alert variant="danger" className="d-flex justify-content-between align-items-center">
-                <div>
-                  <div className="fw-bold">Failed to load image storage</div>
-                  <div className="small">{error?.message || "Something went wrong."}</div>
-                </div>
-                <Button variant="outline-danger" onClick={() => refetch()} disabled={disabled}>
-                  Try again
-                </Button>
-              </Alert>
-            ) : items.length === 0 ? (
-              <Alert variant="info">No images in storage yet.</Alert>
-            ) : (
-              
+
+        {isLoading ? (
+          <div className="text-center py-5">
+            <Spinner animation="border" />
+            <div className="mt-2 text-muted">Loading images…</div>
+          </div>
+        ) : isError ? (
+          <Alert variant="danger" className="d-flex justify-content-between align-items-center">
+            <div>
+              <div className="fw-bold">Failed to load image storage</div>
+              <div className="small">{error?.message || "Something went wrong."}</div>
+            </div>
+            <Button variant="outline-danger" onClick={() => refetch()} disabled={disabled}>
+              Try again
+            </Button>
+          </Alert>
+        ) : items.length === 0 ? (
+          <Alert variant="info">No images in storage yet.</Alert>
+        ) : (
+          <>
             <div className={`scrollable-container mb-0 ${styles.scrollableContainer}`}>
               <Row xs={2} md={3} lg={4} className="g-3">
                 {items.map((item) => {
@@ -118,18 +108,15 @@ export default function ImagePickerModal({ show, onHide, onPick, disabled = fals
                 })}
               </Row>
             </div>
-            )}
-          </Tab>
 
-          <Tab eventKey="upload" title="Upload">
-            <ImageUpload 
-              value={localFile} 
-              onChange={(urlOrFile) => setLocalFile(urlOrFile)}
-              disabled={disabled}
-              label='Upload from device'  
+            <TablePaginator
+              currentPage={page}
+              totalPages={totalPages}
+              onPageChange={setPage}
+              disabled={isFetching}   // optional — greys out controls while loading
             />
-          </Tab>
-        </Tabs>
+          </>
+        )}
       </Modal.Body>
 
       <Modal.Footer>
