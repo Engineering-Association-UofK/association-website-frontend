@@ -43,8 +43,15 @@ export const uploadService = {
       const response = await axios.post(CLOUDINARY_URL, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-      
-      return response.data.secure_url;
+
+      const dataToReturn = { 
+        secureUrl: response?.data?.secure_url, 
+        publicId: response?.data?.public_id
+      }
+
+      // console.log('ff', response, dataToReturn);
+
+      return dataToReturn;
     } catch (error) {
       console.error('Upload failed:', error);
       throw new Error('Image upload failed');

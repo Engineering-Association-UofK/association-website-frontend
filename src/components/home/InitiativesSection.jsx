@@ -1,30 +1,53 @@
 import React from 'react';
-import { Container, Row, Col, Card } from 'react-bootstrap';
-import { useLanguage } from '../../context/LanguageContext.jsx';
+import { Container, Row, Col } from 'react-bootstrap';
+import { useLanguage } from '../../context/LanguageContext';
+import { FaRocket, FaLightbulb, FaUsers } from 'react-icons/fa'; // Context-relevant icons
+import './InitiativesSection.css';
 
 const InitiativesSection = () => {
-    const { translations } = useLanguage();
+    const { translations, language } = useLanguage();
+    const isRtl = language === 'ar';
+
+    const icons = [FaRocket, FaLightbulb, FaUsers];
+    const initiativeKeys = ['initiative1', 'initiative2', 'initiative3'];
 
     return (
-        <section className="py-5 bg-light">
+        <section className={`initiatives-section ${isRtl ? 'rtl' : 'ltr'}`}>
             <Container>
-                <h2 className="text-center mb-5 text-primary fw-bold">{translations.home.initiatives.title}</h2>
-                <Row>
-                    {[1, 2, 3].map((item) => (
-                        <Col md={4} key={item} className="mb-4">
-                            <Card className="h-100 shadow-sm border-0 hover-card">
-                                <Card.Body className="text-center p-4">
-                                    <div className="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center mb-3" style={{ width: '60px', height: '60px' }}>
-                                        <span className="fs-3">{item}</span>
+                <div className="statistics-header">
+                    {/* <span className="pre-title">{translations.home.initiatives.badge || 'Current Projects'}</span> */}
+                    <h2 className="fw-bold">{translations.home.initiatives.title}</h2>
+                    <div className="title-underline" />
+                    <p></p>
+                    <p className="text-muted mx-auto">{translations.home.initiatives.subtitle}</p>
+                </div>
+                
+                <Row className="g-4">
+                    {initiativeKeys.map((itemKey, index) => {
+                        const Icon = icons[index];
+                        const data = translations.home.initiatives[itemKey];
+                        
+                        return (
+                            <Col lg={4} md={6} key={itemKey}>
+                                <div className="initiative-card">
+                                    <div className="card-top-accent" />
+                                    <div className="initiative-icon-box">
+                                        <Icon />
                                     </div>
-                                    <Card.Title className="fw-bold">Initiative {item}</Card.Title>
-                                    <Card.Text className="text-muted">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                    </Card.Text>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                    ))}
+                                    <div className="initiative-content">
+                                        <h4 className="fw-bold">{data.title}</h4>
+                                        <p>{data.desc}</p>
+                                    </div>
+                                    {/* <div className="initiative-footer">
+                                        <span className="explore-link">
+                                            {translations.home.initiatives.learnMore || 'Learn More'} 
+                                            <span className="arrow">→</span>
+                                        </span>
+                                    </div> */}
+                                </div>
+                            </Col>
+                        );
+                    })}
                 </Row>
             </Container>
         </section>

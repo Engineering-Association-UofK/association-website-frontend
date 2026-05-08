@@ -1,0 +1,145 @@
+.md-image-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.md-image-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  max-width: 500px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.md-image-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.md-image-panel-header h4 {
+  margin: 0;
+  color: #1f2937;
+  font-weight: 600;
+  font-size: 1.125rem;
+}
+
+.md-close-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #6b7280;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+}
+
+.md-close-btn:hover {
+  color: #374151;
+}
+
+.md-image-panel-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.5rem;
+}
+
+.md-image-panel-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.md-image-panel-section h5 {
+  margin: 0;
+  color: #374151;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.md-image-panel-section input,
+.md-image-panel-section select {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-family: inherit;
+}
+
+.md-image-panel-section input:focus,
+.md-image-panel-section select:focus {
+  outline: none;
+  border-color: #003366;
+  box-shadow: 0 0 0 0.2rem rgba(0, 51, 102, 0.1);
+}
+
+.md-image-panel-section input:disabled {
+  background: #f3f4f6;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.md-file-upload {
+  position: relative;
+}
+
+.md-file-upload input[type="file"] {
+  display: none;
+}
+
+.md-file-label {
+  display: block;
+  padding: 0.75rem;
+  background: white;
+  border: 2px dashed #d1d5db;
+  border-radius: 0.375rem;
+  text-align: center;
+  cursor: pointer;
+  color: #6b7280;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+}
+
+.md-file-label:hover {
+  border-color: #003366;
+  background: #f0f4f8;
+}
+
+.md-image-panel-divider {
+  text-align: center;
+  color: #d1d5db;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin: 0.5rem 0;
+}
+
+.md-image-panel-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 1rem;
+}
+
+.md-image-panel-actions button {
+  min-width: 100px;
+}

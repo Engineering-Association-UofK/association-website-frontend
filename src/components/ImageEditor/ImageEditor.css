@@ -1,0 +1,422 @@
+.image-editor {
+  --ie-primary: #0d6efd;
+  --ie-primary-hover: #0b5ed7;
+  --ie-primary-light: #e7f1ff;
+  --ie-primary-ring: rgba(13, 110, 253, 0.25);
+  --ie-surface: #ffffff;
+  --ie-surface-alt: #f0f4fa;
+  --ie-border: #c7d5ea;
+  --ie-text: #1e293b;
+  --ie-text-muted: #64748b;
+  --ie-radius: 12px;
+  --ie-shadow: 0 4px 24px rgba(13, 110, 253, 0.08);
+
+  padding: 2rem 0 3rem;
+  min-height: 70vh;
+}
+
+/* ---- Page title ---- */
+.ie-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--ie-primary);
+  margin-bottom: 0.25rem;
+}
+
+.ie-subtitle {
+  color: var(--ie-text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 2rem;
+}
+
+/* ---- Layout ---- */
+.ie-wrapper {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.ie-toolbar {
+  flex: 0 0 280px;
+  background: var(--ie-surface);
+  border: 1px solid var(--ie-border);
+  border-radius: var(--ie-radius);
+  box-shadow: var(--ie-shadow);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: sticky;
+  top: 80px;
+}
+
+.ie-canvas-area {
+  flex: 1;
+  background: var(--ie-surface);
+  border: 1px solid var(--ie-border);
+  border-radius: var(--ie-radius);
+  box-shadow: var(--ie-shadow);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 400px;
+}
+
+/* ---- Upload drop zone ---- */
+.ie-dropzone {
+  width: 100%;
+  border: 2px dashed var(--ie-primary);
+  border-radius: var(--ie-radius);
+  background: var(--ie-primary-light);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 3rem 2rem;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  text-align: center;
+  min-height: 300px;
+}
+
+.ie-dropzone:hover,
+.ie-dropzone.dragging {
+  background: #d4e6ff;
+  border-color: var(--ie-primary-hover);
+}
+
+.ie-dropzone-icon {
+  font-size: 3rem;
+  color: var(--ie-primary);
+}
+
+.ie-dropzone-text {
+  font-size: 1rem;
+  color: var(--ie-text-muted);
+}
+
+.ie-dropzone-text strong {
+  color: var(--ie-primary);
+  cursor: pointer;
+}
+
+/* ---- Toolbar sections ---- */
+.ie-section {
+  border-bottom: 1px solid var(--ie-border);
+  padding-bottom: 1rem;
+}
+
+.ie-section:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.ie-section-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ie-text-muted);
+  margin-bottom: 0.6rem;
+}
+
+/* ---- Buttons ---- */
+.ie-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+  font-family: inherit;
+}
+
+.ie-btn:active {
+  transform: scale(0.97);
+}
+
+.ie-btn-primary {
+  background: var(--ie-primary);
+  color: #fff;
+}
+
+.ie-btn-primary:hover {
+  background: var(--ie-primary-hover);
+  box-shadow: 0 2px 8px var(--ie-primary-ring);
+}
+
+.ie-btn-outline {
+  background: transparent;
+  color: var(--ie-primary);
+  border: 1.5px solid var(--ie-primary);
+}
+
+.ie-btn-outline:hover {
+  background: var(--ie-primary-light);
+}
+
+.ie-btn-danger {
+  background: #dc3545;
+  color: #fff;
+}
+
+.ie-btn-danger:hover {
+  background: #bb2d3b;
+}
+
+.ie-btn-sm {
+  padding: 0.35rem 0.7rem;
+  font-size: 0.8rem;
+}
+
+.ie-btn-block {
+  width: 100%;
+}
+
+.ie-btn-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.ie-btn-group .ie-btn {
+  flex: 1;
+}
+
+/* ---- Inputs ---- */
+.ie-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.ie-input-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ie-input-row label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ie-text);
+  min-width: 50px;
+}
+
+.ie-input {
+  flex: 1;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.85rem;
+  border: 1.5px solid var(--ie-border);
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  font-family: inherit;
+  background: var(--ie-surface);
+  color: var(--ie-text);
+}
+
+.ie-input:focus {
+  border-color: var(--ie-primary);
+  box-shadow: 0 0 0 3px var(--ie-primary-ring);
+}
+
+/* ---- Checkbox ---- */
+.ie-checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--ie-text);
+  cursor: pointer;
+}
+
+.ie-checkbox-row input[type="checkbox"] {
+  accent-color: var(--ie-primary);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+/* ---- Radio group ---- */
+.ie-radio-group {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.ie-radio-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--ie-text);
+  cursor: pointer;
+  padding: 0.35rem 0.75rem;
+  border: 1.5px solid var(--ie-border);
+  border-radius: 6px;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.ie-radio-label:hover {
+  border-color: var(--ie-primary);
+  background: var(--ie-primary-light);
+}
+
+.ie-radio-label input[type="radio"] {
+  display: none;
+}
+
+.ie-radio-label.selected {
+  border-color: var(--ie-primary);
+  background: var(--ie-primary);
+  color: #fff;
+}
+
+/* ---- Canvas display ---- */
+.ie-canvas-container {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  cursor: default;
+}
+
+.ie-canvas-container.crop-active {
+  cursor: move;
+}
+
+.ie-canvas-container canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  border: 1px solid var(--ie-border);
+}
+
+/* ---- Crop dimmer (darkens area outside crop) ---- */
+.ie-crop-dimmer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.ie-crop-dim-region {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+/* ---- Crop border ---- */
+.ie-crop-border {
+  position: absolute;
+  border: 2px dashed var(--ie-primary);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.ie-crop-border-inner {
+  width: 100%;
+  height: 100%;
+  /* Rule of thirds grid lines */
+  background:
+    linear-gradient(to right, transparent 33%, rgba(255, 255, 255, 0.3) 33%, rgba(255, 255, 255, 0.3) 33.5%, transparent 33.5%,
+      transparent 66%, rgba(255, 255, 255, 0.3) 66%, rgba(255, 255, 255, 0.3) 66.5%, transparent 66.5%),
+    linear-gradient(to bottom, transparent 33%, rgba(255, 255, 255, 0.3) 33%, rgba(255, 255, 255, 0.3) 33.5%, transparent 33.5%,
+      transparent 66%, rgba(255, 255, 255, 0.3) 66%, rgba(255, 255, 255, 0.3) 66.5%, transparent 66.5%);
+}
+
+/* ---- Crop handles ---- */
+.ie-crop-handle {
+  position: absolute;
+  background: #fff;
+  border: 2px solid var(--ie-primary);
+  border-radius: 50%;
+  z-index: 4;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+
+/* ---- Image info bar ---- */
+.ie-info-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.8rem;
+  color: var(--ie-text-muted);
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.ie-info-badge {
+  background: var(--ie-primary-light);
+  color: var(--ie-primary);
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+
+/* ---- Export bar ---- */
+.ie-export-bar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--ie-border);
+  flex-wrap: wrap;
+}
+
+/* ---- Crop active mode hint ---- */
+.ie-crop-hint {
+  background: var(--ie-primary-light);
+  color: var(--ie-primary);
+  border: 1px solid var(--ie-primary);
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: center;
+  animation: ie-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes ie-pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+  .ie-wrapper {
+    flex-direction: column-reverse;
+  }
+
+  .ie-toolbar {
+    flex: none;
+    width: 100%;
+    position: static;
+  }
+
+  .ie-export-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

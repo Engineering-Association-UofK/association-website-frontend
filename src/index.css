@@ -1,9 +1,37 @@
+@import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
-
 :root {
-  --primary-color: #0d6efd;
+  --primary-color: #22B2E6;
   --secondary-color: #6c757d;
   --fg-color-light: #fff;
+}
+
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
+.nav-pills .nav-link,
+.nav-pills .nav-link.active,
+.nav-pills .nav-item {
+    text-decoration: none !important;
+    border-bottom: 0 !important;
+    border-bottom-width: 0 !important;
+    border-bottom-style: none !important;
+    box-shadow: none !important;
+}
+
+.nav-pills .nav-link::after,
+.nav-pills .nav-link::before {
+    display: none !important;
+    content: none !important;
+    height: 0 !important;
+}
+
+.nav-pills .nav-link:hover,
+.nav-pills .nav-link:focus,
+.nav-pills .nav-link:active {
+    text-decoration: none !important;
+    border-bottom: none !important;
 }
 
 body {
@@ -13,7 +41,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #f8f9fa;
+  background-color: #fcfdfe;
 }
 
 h1,
@@ -67,7 +95,7 @@ h6 {
 }
 
 .nav-link.active {
-  color: #fff !important;
+  color: var(--primary-color) !important;
   font-weight: 700;
 }
 
@@ -90,3 +118,6 @@ h6 {
   left: auto;
   right: 0;
 }
+
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { scrollbar-width: none; }

@@ -37,3 +37,104 @@
 .read-the-docs {
   color: #888;
 }
+.scrollable-container {
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: calc(100dvh - 36px - 48px - 42px - 16px);
+  margin-bottom: -24px;
+}
+.scrollable-container::-webkit-scrollbar-thumb {
+  width: 8px;
+  background-color: grey;
+  border-radius: 4px;
+}
+
+/* Node Container Base */
+.node-container {
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  width: 240px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+/* Header Styles */
+.node-header {
+  padding: 8px 12px;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Body Styles */
+.node-body {
+  padding: 12px;
+}
+
+.small-caps {
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Arabic Preview with Multi-line Truncation */
+.arabic-preview {
+  font-size: 13px;
+  line-height: 1.4;
+  color: #2d3436;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Show 3 lines then ellipsis */
+  
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  height: 54px; /* Fix height to prevent node jumping */
+}
+
+/* Handle Styling */
+.custom-handle {
+  width: 8px !important;
+  height: 8px !important;
+  border: 2px solid white !important;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.1);
+}
+
+/* Selection States */
+.node-selected-primary { border-color: #0d6efd; box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25); }
+.node-selected-indigo { border-color: #6610f2; box-shadow: 0 0 0 3px rgba(102, 16, 242, 0.25); }
+.node-selected-warning { border-color: #ffc107; box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.25); }
+
+/* UI Elements */
+.variable-tag {
+  background: #f1f2f6;
+  color: #6610f2;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 12px;
+  border: 1px solid rgba(102, 16, 242, 0.1);
+}
+
+.action-key-display {
+  font-size: 11px;
+  font-weight: bold;
+  color: #856404;
+  background: #fff3cd;
+  padding: 6px;
+  border-radius: 4px;
+  text-align: center;
+  border: 1px dashed #ffeeba;
+}
+
+.node-badge-white {
+  background: white;
+  color: #0d6efd;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-weight: 900;
+  font-size: 8px;
+}

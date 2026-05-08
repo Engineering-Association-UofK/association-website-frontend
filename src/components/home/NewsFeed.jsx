@@ -1,106 +1,130 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Card, Spinner, Alert } from 'react-bootstrap';
-import {useLanguage} from "../../context/LanguageContext.jsx";
-import {Link} from "react-router-dom";
-import api from "../../utils/api.js";
+import React from 'react';
+import { Container, Row, Col, Card, Alert, Button } from 'react-bootstrap';
+import { useLanguage } from '../../context/LanguageContext.jsx';
+import { Link } from 'react-router-dom';
+import { useBlogs } from '../../features/blogs/hooks/useBlogs.js';
+import { NewsSkeleton } from './NewsSkeleton.jsx';
+import './NewsFeed.css';
 
-const NewsFeed = ({ start = 0, end = 3, card = true }) => {
+const NewsFeed = ({ start = 0, end = 3 }) => {
     const { translations, language } = useLanguage();
-    const [newsItems, setNewsItems] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const isRtl = language === 'ar';
+    const arrow = isRtl ? '←' : '→';
 
-    useEffect(() => {
-        const fetchNews = async () => {
-            try {
-                const response = await api.get('/blogs');
-                const publishedNews = response.data.filter(item => item.status === 'published');
-                setNewsItems(publishedNews.reverse().slice(start, end));
-            } catch (err) {
-                setError(err.response?.data?.message || err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
+    const { data: response, isLoading, error } = useBlogs('NEWS', 1, 10);
 
-        fetchNews();
-    }, []);
+    if (isLoading) {
+        return (
+            <section className="news-feed-section py-5 bg-light">
+                <Container>
+                    <div className="d-flex justify-content-between align-items-center mb-5">
+                        <h2 className="section-title fw-bold mb-0">{translations.home.news?.title || "Latest News"}</h2>
+                    </div>
+                    <NewsSkeleton />
+                </Container>
+            </section>
+        );
+    }
 
-    if (loading) return <div className="text-center py-5"><Spinner animation="border" variant="primary" /></div>;
-    if (error) return <Container className="py-3"><Alert variant="danger">Error loading news: {error}</Alert></Container>;
+    if (error) {
+        return (
+            <Container className="py-5">
+                <Alert variant="danger" className="rounded-4 border-0 shadow-sm">
+                    Failed to load news. Please try again later.
+                </Alert>
+            </Container>
+        );
+    }
+
+    const newsItems = response?.posts.slice(start, end) || [];
 
     return (
-        <section className="py-5">
+        <section className={`news-feed-section py-5 ${isRtl ? 'rtl' : 'ltr'}`}>
             <Container>
-                <h2 className="text-center mb-5 text-primary fw-bold">{translations.home.news.title}</h2>
+                <div className="d-flex justify-content-between align-items-end mb-5">
+                    <div>
+                        <h2 className="section-title fw-bold mb-2">
+                            {translations.home.news?.title || "Latest News"}
+                        </h2>
+                        <div className="title-underline"></div>
+                    </div>
+                    {/* View All Button (Desktop) */}
+                    <Button 
+                        as={Link} 
+                        to="/posts/news" 
+                        variant="primary"
+                        className="d-none d-md-inline-flex align-items-center gap-2 rounded-pill px-4 py-2 fw-semibold btn-view-all shadow-sm"
+                    >
+                        {translations.home.news?.viewAll || "View All"} <span>{arrow}</span>
+                    </Button>
+                </div>
 
-                <Row className="d-none d-md-flex">
+                {/* --- DESKTOP LAYOUT --- */}
+                <Row className="d-none d-md-flex g-4">
                     {newsItems.length > 0 ? (
                         newsItems.map((item) => (
-                            <Col md={4} key={item.id} className="mb-4">
-                                <Card className="h-100 shadow-sm border-0">
-                                    <div
-                                        className="bg-secondary"
-                                        style={{
-                                            height: '200px',
-                                            backgroundImage: item.imageLink ? `url(${item.imageLink})` : 'none',
-                                            backgroundSize: 'cover',
-                                            backgroundPosition: 'center',
-                                            backgroundColor: item.imageLink ? 'transparent' : '#6c757d'
-                                        }}
-                                    ></div>
-                                    <Card.Body>
-                                        <small className="text-muted d-block mb-2">
-                                            {new Date(item.updatedAt).toLocaleDateString()}
-                                        </small>
-                                        <Card.Title className="fw-bold">{item.title}</Card.Title>
-                                        <Card.Text className="text-muted text-truncate" style={{ maxHeight: '3em', overflow: 'hidden' }}>
-                                            {item.content}
+                            <Col md={4} key={item.id}>
+                                <Card className="news-card h-100 shadow-sm border-0 rounded-4 overflow-hidden text-decoration-none">
+                                    <div className="news-image-wrapper">
+                                        <div
+                                            className="news-image"
+                                            style={{ backgroundImage: `url(${item.image_url || '/placeholder-news.jpg'})` }}
+                                        />
+                                        <div className="news-date-badge shadow-sm">
+                                            {new Date(item.updated_at || item.created_at).toLocaleDateString(language === 'ar' ? 'ar-EG' : 'en-US', { day: 'numeric', month: 'short' })}
+                                        </div>
+                                    </div>
+                                    
+                                    <Card.Body className="d-flex flex-column p-4">
+                                        <Card.Title className="fw-bold mb-3 news-title">
+                                            {item.title}
+                                        </Card.Title>
+                                        <Card.Text className="text-muted mb-4 news-summary flex-grow-1">
+                                            {item.summary}
                                         </Card.Text>
-                                        <Link to={`blogs/${item.id}`} className="text-primary text-decoration-none fw-bold">
-                                            {translations.home.news.readMore} &rarr;
-                                        </Link>
+                                        
+                                        <div className="mt-auto pt-3 border-top">
+                                            <Link to={`/posts/news/${item.slug}`} className="read-more-link fw-bold d-inline-flex align-items-center gap-2">
+                                                {translations.home.news?.readMore || "Read More"} <span className="arrow-icon">{arrow}</span>
+                                            </Link>
+                                        </div>
                                     </Card.Body>
                                 </Card>
                             </Col>
                         ))
                     ) : (
-                        <Col className="text-center">
-                            <p className="text-muted">No news right now</p>
+                        <Col className="text-center py-5">
+                            <p className="text-muted fs-5 mb-0">No news right now.</p>
                         </Col>
                     )}
                 </Row>
 
+                {/* --- MOBILE LAYOUT --- */}
                 <div className="d-md-none d-flex flex-column gap-3">
                     {newsItems.length > 0 ? (
                         newsItems.map((item) => (
-                            <Card key={item.id} className="shadow-sm border-0 overflow-hidden">
-                                <Row className="g-0 align-items-center">
-                                    <Col xs={4}>
+                            <Card key={item.id} className="news-card-mobile shadow-sm border-0 rounded-4 overflow-hidden">
+                                <Row className="g-0 align-items-stretch h-100">
+                                    <Col xs={4} className="position-relative">
                                         <div 
-                                            style={{
-                                                height: '100%',
-                                                minHeight: '120px',
-                                                backgroundImage: item.imageLink ? `url(${item.imageLink})` : 'none',
-                                                backgroundSize: 'cover',
-                                                backgroundPosition: 'center',
-                                                backgroundColor: item.imageLink ? 'transparent' : '#6c757d'
-                                            }}
+                                            className="news-image-mobile h-100 w-100"
+                                            style={{ backgroundImage: `url(${item.image_url || '/placeholder-news.jpg'})` }}
                                         />
                                     </Col>
                                     <Col xs={8}>
-                                        <Card.Body className="py-2 pe-3 ps-2">
-                                            <small className="text-muted d-block mb-1" style={{fontSize: '0.8rem'}}>
-                                                {new Date(item.updatedAt).toLocaleDateString()}
+                                        <Card.Body className="p-3 d-flex flex-column h-100">
+                                            <small className="news-date-text fw-bold mb-2 text-uppercase">
+                                                {new Date(item.updated_at || item.created_at).toLocaleDateString(language === 'ar' ? 'ar-EG' : 'en-US')}
                                             </small>
-                                            <Card.Title className="fw-bold mb-1" style={{fontSize: '1rem'}}>
+                                            <Card.Title className="fw-bold mb-2 news-title-mobile">
                                                 {item.title}
                                             </Card.Title>
-                                            <Card.Text className="text-muted text-truncate mb-2" style={{ fontSize: '0.9rem' }}>
-                                                {item.content}
+                                            <Card.Text className="text-muted mb-3 news-summary-mobile flex-grow-1">
+                                                {item.summary}
                                             </Card.Text>
-                                            <Link to={`blogs/${item.id}`} className="text-primary text-decoration-none fw-bold small">
-                                                {translations.home.news.readMore} &rarr;
+                                            
+                                            <Link to={`/posts/news/${item.id}`} className="read-more-link fw-bold small mt-auto d-inline-flex align-items-center gap-1">
+                                                {translations.home.news?.readMore || "Read More"} <span className="arrow-icon">{arrow}</span>
                                             </Link>
                                         </Card.Body>
                                     </Col>
@@ -108,13 +132,21 @@ const NewsFeed = ({ start = 0, end = 3, card = true }) => {
                             </Card>
                         ))
                     ) : (
-                        <p className="text-center text-muted">No news right now</p>
+                        <p className="text-center text-muted py-4 mb-0">No news right now</p>
+                    )}
+                    
+                    {/* View All Button (Mobile) */}
+                    {newsItems.length > 0 && (
+                        <div className="text-center mt-3">
+                            <Button as={Link} to="/posts/news" variant="outline-primary" className="w-100 rounded-pill py-2 fw-semibold btn-view-all-mobile">
+                                {translations.home.news?.viewAll || "View All News"} {arrow}
+                            </Button>
+                        </div>
                     )}
                 </div>
             </Container>
         </section>
     );
-
 };
 
 export default NewsFeed;

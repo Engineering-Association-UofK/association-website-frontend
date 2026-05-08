@@ -1,25 +1,29 @@
 import apiClient from '../../../api/axiosClient';
 
-const ENDPOINT = '/admin';
+const ENDPOINT = '/v1/admin';
 
 export const adminUsersService = {
-  getAll: async () => {
-    return await apiClient.get(`${ENDPOINT}/get`);
+  getAll: async ({ page = 1, limit = 25 } = {}) => {
+    return await apiClient.get(`${ENDPOINT}?page=${page}&limit=${limit}`);
   },
 
-  getById: async (id) => {
-    return await apiClient.get(`${ENDPOINT}/get/${id}`);
+  addManager: async (id) => {
+    return await apiClient.post(`${ENDPOINT}/add-manager/${id}`);
+  },
+  
+  removeManager: async (id) => {
+    return await apiClient.post(`${ENDPOINT}/remove-manager/${id}`);
   },
 
-  create: async (data) => {
-    return await apiClient.post(`${ENDPOINT}/add`, data);
+  promote: async (user_id) => {
+    return await apiClient.post(`${ENDPOINT}/${user_id}`);
   },
 
   update: async (data) => {
-    return await apiClient.put(`${ENDPOINT}/update`, data);
+    return await apiClient.put(`${ENDPOINT}`, data);
   },
 
   delete: async (id) => {
-    return await apiClient.delete(`${ENDPOINT}/delete/${id}`);
+    return await apiClient.delete(`${ENDPOINT}/${id}`);
   },
 };

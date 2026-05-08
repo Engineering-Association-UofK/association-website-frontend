@@ -7,16 +7,18 @@ const LanguageContext = createContext();
 export const useLanguage = () => useContext(LanguageContext);
 
 export const LanguageProvider = ({ children }) => {
-    const [language, setLanguage] = useState('en');
-    const [translations, setTranslations] = useState(en);
+    const [language, setLanguage] = useState(() => {
+        return localStorage.getItem('language') || 'en';
+    });
+    const [translations, setTranslations] = useState(() => {
+        const lang = localStorage.getItem('language') || 'en';
+        return lang === 'ar' ? ar : en;
+    });
 
     useEffect(() => {
-        const savedLanguage = localStorage.getItem('language');
-        if (savedLanguage) {
-            setLanguage(savedLanguage);
-            setTranslations(savedLanguage === 'ar' ? ar : en);
-        }
-    }, []);
+        document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
+        document.documentElement.lang = language;
+    }, [language]);
 
     const switchLanguage = (lang) => {
         setLanguage(lang);
