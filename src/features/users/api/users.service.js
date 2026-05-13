@@ -12,14 +12,6 @@ export const usersService = {
     return await apiClient.get(`${ENDPOINT}/${id}`);
   },
 
-  // getByUsername: async (username) => {
-  //   return await apiClient.get(`${ENDPOINT}/username/${username}`);
-  // },
-
-  // makeManager: async ({id}) => {
-  //   return await apiClient.post(`${ENDPOINT}/add-manager/${id}`);
-  // },
-
   update: async (data) => {
     return await apiClient.put(`${ENDPOINT}`, data);
   },
@@ -27,21 +19,6 @@ export const usersService = {
   suspend: async ({ user_id, reason, duration }) => {
     return await apiClient.post(`${ENDPOINT}/suspend`, { user_id, reason, duration });
   },
-
-  // assignPasscodes: async () => {
-  //   return await apiClient.post(`${ENDPOINT}/assign-passcodes`);
-  // },
-  // assignPasscodes: () => {
-  //   return new EventSource(`${import.meta.env.VITE_API_BASE_URL}${ENDPOINT}/assign-passcodes`);
-  // }
-
-  // updateEmail: async (data) => {
-  //   return await apiClient.put(`${ENDPOINT}/update-email`, data);
-  // },
-
-  // delete: async (id) => {
-  //   return await apiClient.delete(`${ENDPOINT}/${id}`);
-  // },
 };
 
 export const assignPasscodesStream = async (onMessage, onError) => {

@@ -5,28 +5,21 @@ import { imageStorageService } from '../api/imageStorage.service';
 export const IMAGE_STORAGE_KEYS = {
   all: ['image storage items'],
   lists: () => [...IMAGE_STORAGE_KEYS.all, 'list'],
+  list: (page, limit) => [...IMAGE_STORAGE_KEYS.lists(), 'list', { page, limit }],
   detail: (id) => [...IMAGE_STORAGE_KEYS.all, 'detail', id],
 };
 
 // Hook for fetching all image storage items
-export const useImageStorageItems = () => {
+export const useImageStorageItems = (page = 1, limit = 25) => {
   return useQuery({
-    queryKey: IMAGE_STORAGE_KEYS.lists(),
-    queryFn: () => imageStorageService.getAll(),
+    queryKey: IMAGE_STORAGE_KEYS.list(page, limit),
+    queryFn: () => imageStorageService.getAll({ page, limit }),
 
     staleTime: 0, 
+    // Keep previous page data visible while the next page loads
+    placeholderData: (prev) => prev,
   });
 };
-
-// // Hook for fetching a single gallery image by keyword
-// export const useGalleryImage = (keyword) => {
-//   return useQuery({
-//     queryKey: ['gallery', 'keyword', keyword],
-//     queryFn: () => galleryService.getByKeyword(keyword),
-//     enabled: !!keyword,
-//     staleTime: 1000 * 60 * 60, // 1 hour cache
-//   });
-// };
 
 // Hook to CREATE a image storage item
 export const useCreateImageStorageItem = () => {
@@ -41,48 +34,6 @@ export const useCreateImageStorageItem = () => {
   });
 };
 
-// // Hook to PUBLISH an image to news
-// export const usePublishToNews = () => {
-//   const queryClient = useQueryClient();
-
-//   return useMutation({
-//     mutationFn: imageStorageService.publish,
-//     onSuccess: () => {
-//       // Invalidates cache so the list updates automatically without a refresh
-//       // queryClient.invalidateQueries(IMAGE_STORAGE_KEYS.lists());
-//       queryClient.invalidateQueries(['image storage items', 'list']);
-//     },
-//   });
-// };
-
-// // Hook to UPDATE a gallery item (made for keyword-based updates)
-// export const useUpdateGalleryImage = () => {
-//   const queryClient = useQueryClient();
-
-//   return useMutation({
-//     mutationFn: galleryService.update,
-//     onSuccess: (data, variables) => {
-//       // Invalidate the specific keyword query
-//       queryClient.invalidateQueries(['gallery', 'keyword', variables.keyword]);
-//       // Also invalidate list just in case
-//       queryClient.invalidateQueries(IMAGE_STORAGE_KEYS.lists());
-//     },
-//   });
-// };
-
-// Hook to DELETE a image storage item
-// export const useDeleteImageStorageItem = () => {
-//   const queryClient = useQueryClient();
-
-//   return useMutation({
-//     mutationFn: (id) => imageStorageService.delete(id),
-//     onSuccess: () => {
-//       // Refresh the list automatically
-//       queryClient.invalidateQueries(['image storage items', 'list']);
-//     },
-//   });
-// };
-
 // Hook to DELETE all unused image storage items
 export const useClearUnused = () => {
   const queryClient = useQueryClient();
@@ -95,15 +46,3 @@ export const useClearUnused = () => {
     },
   });
 };
-
-// export const useUnpublishFromNews = () => {
-//   const queryClient = useQueryClient();
-
-//   return useMutation({
-//     mutationFn: (id) => imageStorageService.unpublish(id),
-//     onSuccess: () => {
-//       // Refresh the list automatically
-//       queryClient.invalidateQueries(['image storage items', 'list']);
-//     },
-//   });
-// };

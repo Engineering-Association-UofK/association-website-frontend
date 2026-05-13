@@ -231,15 +231,32 @@
         
         "password":{
             "securityTab": "Security",
-            "securityTitle": "Security Settings",
-            "oldPassword": "Old Password",
-            "newPassword": "New Password",
-            "confirmPassword": "Confirm Password",
-            "updateBtn": "Update Password",
-            "updatingBtn": "Updating...",
-            "passwordMismatch": "New passwords do not match",
-            "updateSuccess": "Password updated successfully!",
-            "networkError": "Network error, please try again later"
+            "UniversityID":"University ID",
+            "editProfile":"Edit Profile",
+            "cancel":"Cancel",
+            "Gender":"Gender",
+            "accountTab":"account",
+            "crunt":"Current",
+            "ussernameedit":"enter new username",
+            "emailnew":"enter new email",
+            "enternewname":"Update Email Address",
+            "UpdateName":"Update Username",
+            "Updateuse": "Update Username",
+            "Updateemail": "Update Email",
+            "saving":"saving",
+            "save":"save",
+            "password":{
+                "securityTab": "Security",
+                "securityTitle": "Security Settings",
+                "oldPassword": "Old Password",
+                "newPassword": "New Password",
+                "confirmPassword": "Confirm Password",
+                "updateBtn": "Update Password",
+                "updatingBtn": "Updating...",
+                "passwordMismatch": "New passwords do not match",
+                "updateSuccess": "Password updated successfully!",
+                "networkError": "Network error, please try again later"
+            }
         }
     }
 }

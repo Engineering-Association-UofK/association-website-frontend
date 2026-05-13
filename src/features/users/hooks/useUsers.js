@@ -45,19 +45,6 @@ export const useSuspendUser = () => {
   });
 };
 
-// // Hook to Make an admin manager
-// export const useMakeAdminManager = () => {
-//   const queryClient = useQueryClient();
-
-//   return useMutation({
-//     mutationFn: usersService.makeManager,
-//     onSuccess: () => {
-//       // Invalidates cache so the list updates automatically without a refresh
-//       queryClient.invalidateQueries(USERS_KEYS.lists());
-//     },
-//   });
-// };
-
 // Hook to UPDATE a user
 export const useUpdateUser = () => {
   const queryClient = useQueryClient();
@@ -109,17 +96,4 @@ export const useAssignPasscodes = () => {
     error
   };
 };
-
-// // Hook to DELETE a user
-// export const useDeleteUser = () => {
-//   const queryClient = useQueryClient();
-
-//   return useMutation({
-//     mutationFn: (id) => usersService.delete(id),
-//     onSuccess: () => {
-//       // Refresh the list automatically
-//       queryClient.invalidateQueries(['users', 'list']);
-//     },
-//   });
-// };
 

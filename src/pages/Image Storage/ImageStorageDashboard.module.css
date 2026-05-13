@@ -19,3 +19,10 @@
 .dropBtn:hover {
     background-color: var(--bs-btn-hover-bg);
 }
+.tableWrapper {
+    height: calc(100dvh - 55px - 48px - 42px - 48px);
+}
+.gridWrapper {
+    height: calc(100dvh - 55px - 48px - 42px - 64px);
+    margin-bottom: 0;
+}

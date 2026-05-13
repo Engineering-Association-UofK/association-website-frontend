@@ -21,17 +21,6 @@ export const useAdminUsers = (page = 1, limit = 25) => {
   });
 };
 
-// // Hook for fetching a admin user by id
-// export const useAdminUser = (id) => {
-//   return useQuery({
-//     queryKey: ['adminUsers', 'detail', id],
-//     queryFn: () => adminUsersService.getById(id),
-
-//     enabled: !!id && id !== '0' && id !== 'new', 
-//     staleTime: 0,
-//   });
-// };
-
 // Hook to PROMOTE an admin user
 export const usePromoteUser = () => {
   const queryClient = useQueryClient();

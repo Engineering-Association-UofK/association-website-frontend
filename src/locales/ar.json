@@ -230,7 +230,6 @@
         "MarkAllAsRead":"تحديد الكل كمقروء",
         "Delete":"حدف",
         "MarkAsRead":"مقروء",
-
         "crunt":"الحالي",
         "password":{
             "securityTab": "الأمان",
@@ -243,7 +242,6 @@
             "passwordMismatch": "كلمات المرور الجديدة غير متطابقة",
             "updateSuccess": "تم تحديث كلمة المرور بنجاح!",
             "networkError": "حدث خطأ في الشبكة، حاول لاحقاً"
-
         }
     }
 }

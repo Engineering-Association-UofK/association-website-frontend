@@ -5,27 +5,18 @@ import { Table, Button, Container, Spinner, Alert,
 } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
 import { useImageStorageItems, useClearUnused } from '../../features/image storage/hooks/useImageStorage';
+import TablePaginator from '../../components/TablePaginator.jsx';
+import styles from './ImageStorageDashboard.module.css'
 
 const PLACEHOLDER_IMG = "https://placehold.co/600x400?text=No+Image";
+const PAGE_LIMIT = 20;
 
-// const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
-//   <div
-//     ref={ref}
-//     onClick={(e) => {
-//       e.preventDefault();
-//       onClick(e);
-//     }}
-//     style={{ cursor: "pointer", display: "inline-flex", alignItems: "center" }}
-//     className="text-dark p-0 border-0"
-//   >
-//     {children}
-//   </div>
-// ));
 
 const ImageStorageDashboard = () => {
   const navigate = useNavigate();
   
-  const { data: imageStorageItems, isLoading, isError, error, refetch } = useImageStorageItems();
+  const [page, setPage] = useState(1);
+  const { data, isLoading, isError, error, refetch, isFetching } = useImageStorageItems(page, PAGE_LIMIT);
   // const { mutate: publishToNews, isPending: isPublishing, error: publishError } = usePublishToNews();
   // const { mutate: unpublishToNews, isPending: isUnpublishing, error: unpublishError } = useUnpublishFromNews();
   const { mutate: clearUnused, isPending: isClearing, error: clearUnusedError } = useClearUnused();
@@ -37,6 +28,9 @@ const ImageStorageDashboard = () => {
   const [viewMode, setViewMode] = useState('list'); 
   const [selectedImageStorageItemId, setSelectedImageStorageItemId] = useState(null);
   const [alt, setAlt] = useState("");
+
+  const imageStorageItems = data?.images ?? [];
+  const totalPages = data?.Page ?? 1;
 
   // Handlers
   const handleOpenPublishModal = (id) => {
@@ -132,7 +126,7 @@ const ImageStorageDashboard = () => {
   }
 
   const ListView = () => (
-    <div className="table-wrapper">
+    <div className={`table-wrapper ${styles.tableWrapper}`}>
       <Table hover className='text-center'>
         <thead>
           <tr>
@@ -217,7 +211,7 @@ const ImageStorageDashboard = () => {
   );
 
   const GridView = () => (
-    <div className="scrollable-container">
+    <div className={`scrollable-container ${styles.gridWrapper}`}>
       <Row xs={1} md={2} lg={3} xl={4} className="g-4">
           {imageStorageItems?.map((item) => (
               <Col key={item.id}>
@@ -318,7 +312,12 @@ const ImageStorageDashboard = () => {
   return (
     <>
       <div className="d-flex justify-content-between mb-4">
-        <h4 className='table-title'>Images Storage</h4>
+        <h4 className='table-title'>
+          Images Storage
+          {isFetching && !isLoading && (
+            <Spinner animation="border" size="sm" variant="secondary" className="ms-2" />
+          )}
+        </h4>
         <div className="actions-wrapper">
           <OverlayTrigger
             overlay={<Tooltip>Add image</Tooltip>}
@@ -397,6 +396,13 @@ const ImageStorageDashboard = () => {
           </Container>
         ) : viewMode === 'list' ? <ListView /> : <GridView />
       }
+  
+      <TablePaginator
+        currentPage={page}
+        totalPages={totalPages}
+        onPageChange={setPage}
+        disabled={isFetching}   // optional — greys out controls while loading
+      />
 
       {/* <Modal show={showModal} onHide={handleCloseModal} centered>
         <Form  onSubmit={handleConfirm}>
