@@ -395,7 +395,7 @@ export const useNotifications = () => {
 
   const markOneAsRead = async (id) => {
     try {
-      await apiClient.get(`/v1/account/notifications/${id}`);
+      await apiClient.post(`/v1/account/notifications/${id}`);
       setNotifications((prev) =>
         prev.map((n) => (n.id === id ? { ...n, is_read: true } : n)),
       );

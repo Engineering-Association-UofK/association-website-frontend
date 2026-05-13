@@ -224,9 +224,11 @@
         "Prev":"Prev",
         "Next":"Next",
         "Marking":"Marking...",
+
         "MarkAllAsRead":"Mark all as read",
         "Delete":"Delete",
         "MarkAsRead":"MarkAsRead",
+        
         "password":{
             "securityTab": "Security",
             "UniversityID":"University ID",
@@ -256,4 +258,5 @@
                 "networkError": "Network error, please try again later"
             }
         }
-}}
+    }
+}
