@@ -7,7 +7,7 @@
 }
 
 .floating-bot-container {
-    z-index: 1050;
+    z-index: 100;
 }
 
 [dir="rtl"] .floating-bot-container {
