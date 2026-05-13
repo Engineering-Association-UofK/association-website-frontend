@@ -1,6 +1,6 @@
 import monitorClient from './monitorClient';
 
-const ENDPOINT = '/api/v1/health';
+const ENDPOINT = '/api/v1/admin/health';
 
 export const monitoringService = {
     getOverview: () => monitorClient.get(`${ENDPOINT}/overview`), // Returns { healthLevel, uptimeSeconds... }

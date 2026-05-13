@@ -111,7 +111,7 @@ const Issues = () => {
                                                 <span className="mx-2">•</span>
                                                 <i className="bi bi-calendar3 me-1"></i> {new Date(post.updated_at).toLocaleDateString()}
                                             </div>
-                                            <Link to={`/posts/issues/${post.slug}`} className="btn btn-outline-primary rounded-pill mt-auto align-self-start">
+                                            <Link to={`/posts/events/${post.slug}`} className="btn btn-outline-primary rounded-pill mt-auto align-self-start">
                                                 {language === 'en' ? 'Read More' : 'اقرأ المزيد'}
                                                 <i className={`bi bi-arrow-${language === 'en' ? 'right' : 'left'} ms-1`}></i>
                                             </Link>
