@@ -8,10 +8,9 @@ This is a **React-based frontend** for an Engineering Association website. It pr
 - Admin dashboard for managing content, users, bot commands, and images
 - AI-powered chat bot for visitor assistance
 - Markdown editor for rich content creation
-- Cloudinary integration for image uploads
 - System health monitoring dashboard
 
-The application uses **JWT authentication** with role-based access control (RBAC) and integrates with a backend API (Java Spring Boot assumed).
+The application uses **JWT authentication** with role-based access control (RBAC) and integrates with a backend API.
 
 ---
 
@@ -26,7 +25,6 @@ The application uses **JWT authentication** with role-based access control (RBAC
 | HTTP Client | Axios |
 | Markdown | React Markdown + custom editor |
 | Authentication | JWT (stored in localStorage/sessionStorage) |
-| Image Upload | Cloudinary (via backend signing) |
 | Icons | FontAwesome, Bootstrap Icons |
 | Styling | CSS Modules, Bootstrap, custom CSS |
 
@@ -38,7 +36,7 @@ The application uses **JWT authentication** with role-based access control (RBAC
 src/
 ├── api/                    # Core API configuration
 │   ├── axiosClient.js      # Axios instance with interceptors
-│   └── upload.service.js   # Cloudinary upload service
+│   └── upload.service.js   # Upload service
 │
 ├── components/             # Reusable UI components
 │   ├── AdminSidebar.jsx
@@ -124,7 +122,7 @@ src/
 ### 2. Blog Management
 - Full CRUD operations for blog posts
 - Markdown editor with live preview
-- Image upload (Cloudinary) with alt text
+- Image upload with alt text
 - Status: draft / published / archived
 - Public blog listing with search and featured post
 
@@ -141,36 +139,23 @@ src/
 - Visual tree structure via checkbox selection
 
 ### 5. Image Storage & Gallery
-- Upload images to Cloudinary
-- Store metadata in backend
+- Upload images & metadata to Backend
 - Publish/unpublish images to news section
 - Clear unused images
 - Image picker modal to reuse stored images
 
-### 6. Editable Content (Generics)
-- Admin-editable text sections (Hero, About, Mission, Vision, etc.)
-- Update via inline edit buttons
-- Multi-language support
-- Supports HTML in body content
-
-### 7. System Monitoring Dashboard
+### 6. System Monitoring Dashboard
 - Real-time system health (CPU, memory, disk)
 - Application uptime
 - Auto-refresh every 30 seconds
 - Visual indicators (success/warning/danger)
 
-### 8. Chat Bot (Floating Widget)
+### 7. Chat Bot (Floating Widget)
 - Contextual conversation with predefined commands
-- Appears automatically after 2 seconds for unauthenticated users
 - Supports RTL for Arabic
 - Options-based navigation
 
-### 9. Feedback Widget
-- Floating button for user feedback
-- Captures message + optional contact info
-- Sends to monitoring backend
-
-### 10. Multi-language Support
+### 8. Multi-language Support
 - English / Arabic (RTL support)
 - Language persisted in localStorage
 - All UI text from JSON files
@@ -225,14 +210,6 @@ const { mutate: createBlog } = useCreateBlog()
 apiClient.get('/public-endpoint', { skipAuth: true })
 ```
 
-### Image Upload Flow
-
-1. User selects a file → component stores as `File` object
-2. On form submit, `useFileUpload` hook calls `uploadService.uploadImage()`
-3. Backend signing endpoint (`/api/sign`) returns Cloudinary signature
-4. Image uploaded directly to Cloudinary
-5. Returns `{ secureUrl, publicId }` saved to database
-
 ### Authentication Context
 
 `AuthContext` provides:
@@ -251,14 +228,6 @@ Custom `MDEdit` component features:
 - Image insertion with width/alignment options
 - Uses `textarea` with selection manipulation
 
-### Bot Conversation Flow
-
-- Bot starts with `@root` command
-- Each response includes `nextKeywords` array
-- User clicks option buttons to navigate
-- Supports multi-language responses
-- `final` flag indicates conversation end
-
 ---
 
 ## Environment Variables
@@ -267,27 +236,21 @@ Create a `.env` file in the project root:
 
 ```env
 # Backend API (without /api suffix)
-VITE_API_BASE_URL_RAW=http://localhost:8080
+VITE_API_NEW_BASE_URL_RAW=http://localhost:8000
 
 # Monitoring service (separate backend)
 VITE_API_MONITOR_URL=http://localhost:8888
 
-# Cloudinary configuration
-VITE_CLOUDINARY_CLOUD_NAME=your_cloud_name
-VITE_CLOUDINARY_API_KEY=your_api_key
-VITE_CLOUDINARY_PRESET=your_upload_preset
 ```
-
-**Note:** The backend signing endpoint (`/api/sign`) must be implemented to return a signature.
 
 ---
 
 ## Getting Started
 
 ### Prerequisites
-- Node.js 20+ and npm
-- Backend API running (Java Spring Boot assumed)
-- Cloudinary account
+- Node.js 20+ and pnpm (recommended) or npm
+- Docker installed and running
+- Backend Compose container running
 
 ### Installation
 
@@ -297,23 +260,23 @@ git clone <repo-url>
 cd ea
 
 # Install dependencies
-npm install
+pnpm install
 
 # Create .env file with your configuration
 cp .env.example .env
 
 # Start development server
-npm run dev
+pnpm run dev
 ```
 
 ### Available Scripts
 
 | Command | Description |
 |---------|-------------|
-| `npm run dev` | Start Vite dev server |
-| `npm run build` | Production build |
-| `npm run preview` | Preview production build |
-| `npm run lint` | Run ESLint |
+| `pnpm dev` | Start Vite dev server |
+| `pnpm build` | Production build |
+| `pnpm preview` | Preview production build |
+| `pnpm lint` | Run ESLint |
 
 ---
 
@@ -366,20 +329,7 @@ const handleSubmit = async (e) => {
 
 ## API Endpoints Reference
 
-| Endpoint | Method | Description | Auth |
-|----------|--------|-------------|------|
-| `/admin/login` | POST | Admin login | No |
-| `/login` | POST | User login | No |
-| `/admin/send-code` | POST | Send verification code | No |
-| `/admin/verify` | POST | Verify 2FA code | No |
-| `/api/blogs` | GET/POST | List/Create blogs | No/Yes |
-| `/api/blogs/{id}` | GET/PUT/DELETE | Single blog operations | Yes |
-| `/api/gallery` | GET/POST | List/Create gallery items | No/Yes |
-| `/api/generics/get-batch` | POST | Fetch editable content | No |
-| `/api/bot/manage` | GET/POST | Bot command CRUD | Yes |
-| `/admin/get` | GET | List admin users | Yes |
-| `/api/sign` | POST | Cloudinary signature | Yes |
-| `/api/v1/health/*` | GET | System monitoring | Yes |
+Check our [OpenAPI documentation](https://api-sea-uofk.duckdns.org/swagger/index.html) for details.
 
 ---
 
@@ -389,11 +339,6 @@ const handleSubmit = async (e) => {
 - Your JWT token expired or is invalid
 - Check `localStorage` / `sessionStorage` for `sea-token`
 - Backend might be returning 401
-
-### Images not uploading
-- Verify Cloudinary env variables are set
-- Check that `/api/sign` endpoint returns a valid signature
-- Look for CORS errors in browser console
 
 ### React Query data not refreshing
 - Ensure `queryKey` matches between query and invalidation
@@ -416,4 +361,4 @@ const handleSubmit = async (e) => {
 
 ---
 
-**Need help?** Reach out to the original developer or check inline comments in the code. The project follows consistent patterns across all features, so you can use existing modules as templates for new ones.
+**Need help?** Reach out to the original developers or check inline comments in the code. The project follows consistent patterns across all features, so you can use existing modules as templates for new ones.

@@ -1,21 +1,3 @@
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-
-
 <div align="center">
 
 # 🏛️ Engineering Association — University of Khartoum
@@ -34,26 +16,28 @@ If you are developing a production application, we recommend using TypeScript wi
 ---
 
 ## 📋 Table of Contents
-
-- [Overview](#-overview)
-- [Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [Project Structure](#-project-structure)
-- [Getting Started](#-getting-started)
-- [Environment Variables](#-environment-variables)
-- [Available Scripts](#-available-scripts)
-- [Architecture & Key Patterns](#-architecture--key-patterns)
-- [API Reference](#-api-reference)
-- [Contributing](#-contributing)
-- [Troubleshooting](#-troubleshooting)
+- [🏛️ Engineering Association — University of Khartoum](#️-engineering-association--university-of-khartoum)
+    - [Frontend Web Application](#frontend-web-application)
+  - [📋 Table of Contents](#-table-of-contents)
+  - [🔭 Overview](#-overview)
+  - [✨ Features](#-features)
+  - [🛠️ Tech Stack](#️-tech-stack)
+  - [📁 Project Structure](#-project-structure)
+  - [🚀 Getting Started](#-getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
+  - [🔧 Environment Variables](#-environment-variables)
+  - [📜 Available Scripts](#-available-scripts)
+  - [🤝 Contributing](#-contributing)
+  - [📚 Resources](#-resources)
 
 ---
 
 ## 🔭 Overview
 
-This is the **React-based frontend** for the Engineering Association at the University of Khartoum. It serves as a bilingual (English 🇬🇧 / Arabic 🇸🇩) platform with full RTL support, providing both a public-facing website and a feature-rich admin dashboard.
+This is the **React-based frontend** for the Steering Engineering Association at the University of Khartoum. It serves as a bilingual (English 🇬🇧 / Arabic 🇸🇩) platform with full RTL support, providing both a public-facing website and a feature-rich admin dashboard.
 
-The application integrates with a **Java Spring Boot** backend API, uses **Cloudinary** for image management, and includes an AI-powered chat bot for visitor assistance.
+The application integrates with a **Go** backend API, uses **SeaweedFS** for image/documents management, and includes an options-tree-based **chat bot** for visitor assistance.
 
 ---
 
@@ -61,15 +45,14 @@ The application integrates with a **Java Spring Boot** backend API, uses **Cloud
 
 | Area | Highlights |
 |------|-----------|
-| **Public Pages** | Home, About, Blogs, Gallery with bilingual content |
-| **Authentication** | JWT-based login, two-step email verification, role-based access |
+| **Public Pages** | Home, About, Blogs, And Events with bilingual content |
+| **Authentication** | JWT-based login, email verification, role-based access |
 | **Blog Management** | Full CRUD with Markdown editor, live preview, image upload, draft/publish/archive status |
 | **Admin Dashboard** | Manage users, bot commands, images, and editable site content |
 | **Chat Bot** | Floating widget with options-based conversation tree, multi-language |
-| **Image Storage** | Cloudinary integration with metadata management and reusable image picker |
+| **Image Storage** | SeaweedFS integration with metadata management and reusable image picker |
 | **System Monitoring** | Real-time CPU, memory, disk usage with auto-refresh every 30 seconds |
 | **i18n & RTL** | Full English/Arabic support, direction auto-switching, JSON-based translations |
-| **Feedback Widget** | Floating feedback button for visitor messages |
 
 ---
 
@@ -84,7 +67,6 @@ The application integrates with a **Java Spring Boot** backend API, uses **Cloud
 | **Server State** | TanStack React Query 5 |
 | **HTTP Client** | Axios (with interceptors) |
 | **Markdown** | React Markdown + custom editor component |
-| **Image Uploads** | Cloudinary (via backend-signed upload) |
 | **Authentication** | JWT stored in `localStorage` / `sessionStorage` |
 | **Styling** | CSS Modules, Bootstrap, custom CSS |
 | **Linting** | ESLint |
@@ -192,8 +174,7 @@ Before you begin, make sure you have the following installed:
 
 - **Node.js** 20+
 - **pnpm** (recommended) or npm
-- A running instance of the **backend API** (Java Spring Boot)
-- A **Cloudinary** account for image uploads
+- A running instance of the **backend** Docker Compose container.
 
 ### Installation
 
@@ -225,16 +206,11 @@ Create a `.env` file in the project root based on `.env.example`:
 
 ```env
 # Primary backend API base URL (no trailing slash, no /api suffix)
-VITE_API_BASE_URL_RAW="http://localhost:8080"
-
-# Secondary/new backend API base URL
-VITE_API_NEW_BASE_URL_RAW="http://localhost:8081"
+VITE_API_NEW_BASE_URL_RAW="http://localhost:8000"
 
 # Monitoring service URL (separate backend)
 VITE_API_MONITOR_URL="http://localhost:8888"
 ```
-
-> **Note:** Cloudinary credentials (cloud name, API key, upload preset) are handled server-side via the `/api/sign` backend endpoint — do not expose them in the frontend `.env`.
 
 ---
 
@@ -249,138 +225,20 @@ VITE_API_MONITOR_URL="http://localhost:8888"
 
 ---
 
-## 🏗️ Architecture & Key Patterns
-
-### Authentication Flow
-
-- Login submits credentials → receives JWT token
-- **Two-step verification**: admin login sends a code to email → user verifies the code
-- Token is stored in `localStorage` (if "Remember Me" is checked) or `sessionStorage`
-- `AuthContext` exposes: `user`, `login()`, `logout()`, `register()`, `changePassword()`, `sendCode()`, `verifyCode()`, and `isAuthenticated`
-- `ProtectedRoute` checks roles before rendering admin pages
-
-### Data Fetching with React Query
-
-All API calls are wrapped in custom hooks following a consistent service → hook pattern:
-
-```js
-// 1. Service layer (src/features/blogs/blogs.service.js)
-export const blogService = {
-  getAll: () => apiClient.get('/api/blogs'),
-  create:  (data) => apiClient.post('/api/blogs', data),
-  update:  (id, data) => apiClient.put(`/api/blogs/${id}`, data),
-  delete:  (id) => apiClient.delete(`/api/blogs/${id}`),
-}
-
-// 2. Query hooks (src/features/blogs/useBlogs.js)
-export const useBlogs = () =>
-  useQuery({ queryKey: ['blogs'], queryFn: blogService.getAll })
-
-export const useCreateBlog = () => {
-  const qc = useQueryClient()
-  return useMutation({
-    mutationFn: blogService.create,
-    onSuccess: () => qc.invalidateQueries(['blogs']),
-  })
-}
-
-// 3. Usage in components
-const { data: blogs, isLoading } = useBlogs()
-const { mutate: createBlog } = useCreateBlog()
-```
-
-### Axios Client
-
-`src/api/axiosClient.js` is the single HTTP entry point:
-
-- Automatically attaches the JWT token from storage to every request
-- Handles `401` responses by clearing auth state and redirecting to login
-- Returns `response.data` directly — no need to unwrap `.data.data`
-
-```js
-// Bypass auth for public endpoints
-apiClient.get('/public-endpoint', { skipAuth: true })
-```
-
-### Image Upload Flow
-
-1. User selects a file → stored as a `File` object in state
-2. On form submit, `useFileUpload` calls `uploadService.uploadImage()`
-3. The hook hits the backend `/api/sign` endpoint to get a Cloudinary signature
-4. File is uploaded directly to Cloudinary from the browser
-5. The returned `{ secureUrl, publicId }` is saved to the database via the backend
-
-### Multi-language / RTL
-
-- `LanguageContext` stores the active language (`en` or `ar`) in `localStorage`
-- Switching to Arabic sets `document.dir = 'rtl'` automatically
-- All UI strings are sourced from `src/locales/en.json` and `src/locales/ar.json`
-
-### Chat Bot
-
-- Conversation tree starts at the `@root` command
-- Each command has a `keyword`, `response`, `nextKeywords`, and a `final` flag
-- User navigates by clicking option buttons — no free-text input needed
-- Bot auto-appears after **2 seconds** for unauthenticated visitors
-- Fully supports RTL and multi-language responses
-
----
-
-## 📡 API Reference
-
-| Endpoint | Method | Description | Auth Required |
-|----------|--------|-------------|:---:|
-| `/admin/login` | POST | Admin login | ❌ |
-| `/login` | POST | User login | ❌ |
-| `/admin/send-code` | POST | Send 2FA verification code | ❌ |
-| `/admin/verify` | POST | Verify 2FA code | ❌ |
-| `/api/blogs` | GET | List all blogs | ❌ |
-| `/api/blogs` | POST | Create a blog post | ✅ |
-| `/api/blogs/{id}` | GET / PUT / DELETE | Single blog operations | ✅ |
-| `/api/gallery` | GET | List gallery items | ❌ |
-| `/api/gallery` | POST | Add gallery item | ✅ |
-| `/api/generics/get-batch` | POST | Fetch editable content sections | ❌ |
-| `/api/bot/manage` | GET / POST | Bot command CRUD | ✅ |
-| `/admin/get` | GET | List admin users | ✅ |
-| `/api/sign` | POST | Generate Cloudinary upload signature | ✅ |
-| `/api/v1/health/*` | GET | System monitoring endpoints | ✅ |
-
----
-
 ## 🤝 Contributing
 
-Contributions are welcome! Please read the detailed **[Contribution Guide](./contribution-guid.md)** before submitting a PR.
+Contributions are welcome! Please read the detailed **[Contribution Guide](./contribution-guide.md)** before submitting a PR.
 
 **Quick summary:**
 
 1. Fork the repository and create a feature branch (`git checkout -b feature/my-feature`)
 2. Follow the established patterns: services → hooks → pages
 3. Keep API logic in service files, not inside components
-4. Use React Query for all server state; use local state only for UI
-5. Use Bootstrap components + CSS Modules for styling; avoid inline styles
-6. Write clear commit messages
-7. Open a pull request with a description of what changed and why
+4. Use Bootstrap components + CSS Modules for styling; avoid inline styles
+5. Write clear commit messages
+6. Open a pull request with a description of what changed and why
 
-For adding a new feature module (e.g., "Events"), see the step-by-step guide in [`contribution-guid.md`](./contribution-guid.md).
-
----
-
-## 🔍 Troubleshooting
-
-**`Unauthorized! Redirecting to login...`**
-> Your JWT has expired or is missing. Check `localStorage` / `sessionStorage` for the `sea-token` key. Ensure the backend is returning a valid token on login.
-
-**Images not uploading**
-> Verify that the backend `/api/sign` endpoint is running and returning a valid Cloudinary signature. Also check your browser console for CORS errors.
-
-**React Query data not refreshing after mutation**
-> Make sure the `queryKey` in `invalidateQueries()` exactly matches the one used in `useQuery()`. Call `refetch()` manually as a last resort.
-
-**RTL layout looks broken**
-> Check that `LanguageContext` is correctly setting `document.dir = 'rtl'` for Arabic. Use Bootstrap's built-in RTL utilities and `[dir="rtl"]` CSS selectors for custom overrides.
-
-**`pnpm dev` fails on first run**
-> Ensure your `.env` file exists and all three variables are set. The app will throw on startup if `VITE_API_BASE_URL_RAW` is missing.
+For adding a new feature module (e.g., "Events"), see the step-by-step guide in [`contribution-guide.md`](./contribution-guide.md).
 
 ---
 
@@ -390,7 +248,6 @@ For adding a new feature module (e.g., "Events"), see the step-by-step guide in 
 - [Vite Documentation](https://vitejs.dev)
 - [React Bootstrap](https://react-bootstrap.netlify.app)
 - [TanStack React Query](https://tanstack.com/query/latest)
-- [Cloudinary Upload API](https://cloudinary.com/documentation/upload_images)
 - [React Markdown](https://github.com/remarkjs/react-markdown)
 - [React Router DOM](https://reactrouter.com)
 
@@ -398,6 +255,6 @@ For adding a new feature module (e.g., "Events"), see the step-by-step guide in 
 
 <div align="center">
 
-Made with ❤️ by the **Engineering Association — University of Khartoum**
+By the **Steering Engineering Association — University of Khartoum**
 
 </div>
