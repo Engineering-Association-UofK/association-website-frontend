@@ -191,6 +191,9 @@ const NavigationBar = () => {
             </Nav.Link>
             {renderDesktopDropdown(translations.navbar.about, aboutItems, 'about')}
             {renderDesktopDropdown(translations.navbar.blogs, postsItems, 'posts')}
+            <Nav.Link as={NavLink} to="/events" end className="fw-medium text-dark">
+              {translations.navbar.events}
+            </Nav.Link>
             {isAdmin && (
               <Nav.Link as={NavLink} to="/admin" className="fw-medium text-dark">
                 {translations.navbar.admin}
@@ -260,6 +263,9 @@ const NavigationBar = () => {
                 </Nav.Link>
                 <MobileCollapsibleSection title={translations.navbar.about} items={aboutItems} />
                 <MobileCollapsibleSection title={translations.navbar.blogs} items={postsItems} />
+                <Nav.Link as={NavLink} to="/events" end className="fw-medium text-dark fs-5" onClick={handleClose}>
+                  {translations.navbar.events}
+                </Nav.Link>
                 {isAdmin && (
                   <Nav.Link as={NavLink} to="/admin" className="fw-medium text-dark fs-5" onClick={handleClose}>
                     {translations.navbar.admin}

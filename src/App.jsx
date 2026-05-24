@@ -41,6 +41,7 @@ import ScrollToTopButton from "./components/ScrollToTopButton.jsx";
 import AdminBotEditor from "./pages/bot/AdminBotEditor.jsx";
 import PostsEntry from "./pages/Posts/PostsEntry.jsx";
 import PostsDashboard from "./pages/Posts/PostsDashboard.jsx";
+import Events from "./pages/Events/Events.jsx";
 
 
 function App() {
@@ -59,6 +60,7 @@ function App() {
               <Route path="/about/association" element={<AssociationAbout />} />
               <Route path="/about/organization-structure" element={<OrganizationStructureAbout />} />
               <Route path="/about/council-of-thirty" element={<ThirtiethCouncilAbout />} />
+              <Route path="/events" element={<Events />} />
               <Route path="/posts/announcements" element={<Blogs />} />
               <Route path="/posts/donations" element={<Donation />} />
               <Route path="/posts/issues" element={<Issues />} />
