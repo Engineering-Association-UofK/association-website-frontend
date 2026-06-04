@@ -48,6 +48,7 @@ import CategoryView from './pages/forms/CategoryView'; // Make sure this is here
 import ApplicationView from './pages/forms/ApplicationView';
 import AnalysisGallery from './pages/forms/AnalysisGallery';
 import FormAnalysisView from './pages/forms/FormAnalysisView';
+import Events from "./pages/Events/Events.jsx";
 
 
 function App() {
@@ -69,6 +70,8 @@ function App() {
               <Route path="/about/association" element={<AssociationAbout />} />
               <Route path="/about/organization-structure" element={<OrganizationStructureAbout />} />
               <Route path="/about/council-of-thirty" element={<ThirtiethCouncilAbout />} />
+              <Route path="/events" element={<Events />} />
+              <Route path="/posts/announcements" element={<Blogs />} />
               <Route path="/posts/donations" element={<Donation />} />
               <Route path="/posts/announcements" element={<Blogs />} />
               <Route path="/posts/issues" element={<Issues />} />

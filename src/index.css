@@ -6,6 +6,12 @@
   --fg-color-light: #fff;
 }
 
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+    position: relative;
+}
+
 .text-primary {
   color: var(--primary-color) !important;
 }

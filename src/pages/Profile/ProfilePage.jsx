@@ -987,7 +987,7 @@ function NotificationsPanel() {
     // total,
     markingRead,
     markAllAsRead,
-    // markOneAsRead,
+    markOneAsRead,
     deleteNotification,
     refresh
   } = useNotifications();
@@ -1091,7 +1091,7 @@ function NotificationsPanel() {
 
                 {/* Actions */}
                 <div className="flex items-center gap-3 mt-2">
-                  {/* {!notif.is_read && (
+                  {!notif.is_read && (
                     <button
                       onClick={() => {
                         markOneAsRead(notif.id);
@@ -1101,7 +1101,7 @@ function NotificationsPanel() {
                     >
                       {t.MarkAsRead}
                     </button>
-                  )} */}
+                  )}
                   <button
                     onClick={() => {
                       deleteNotification(notif.id);
