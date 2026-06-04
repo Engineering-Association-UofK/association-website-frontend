@@ -70,6 +70,14 @@ const AdminSidebar = () => {
               <div>Bot</div>
             </NavLink>
           </li>
+          {/* NEW FORMS SECTION */}
+          <li className="nav-item"> 
+            <NavLink to="/admin/forms" className="nav-link">
+              <div>Forms</div>
+              <i className="bi pe-none bi-file-earmark-text me-2"></i>
+            </NavLink>
+          </li>
+          
         </ul> 
         <hr></hr> 
         <div className="d-flex align-items-center justify-content-between">
@@ -115,7 +123,6 @@ const AdminSidebar = () => {
         </div>
       </div>
     </>
-    
   )
 }
 

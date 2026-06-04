@@ -36,11 +36,18 @@ import { CONFIG } from "./config";
 import ProfilePage from "./pages/Profile/ProfilePage.jsx";
 import UsersDashboard from './pages/Users/UsersDashboard.jsx';
 import UsersEntry from "./pages/Users/UsersEntry.jsx";
+import FormsGallery from './pages/forms/FormsGallery';
+import FormsDashboard from './pages/forms/FormsDashboard.jsx';
+import FormEntry from './pages/forms/FormEntry.jsx';
 import ScrollToTop from "./components/ScrollToTop";
 import ScrollToTopButton from "./components/ScrollToTopButton.jsx";
 import AdminBotEditor from "./pages/bot/AdminBotEditor.jsx";
 import PostsEntry from "./pages/Posts/PostsEntry.jsx";
 import PostsDashboard from "./pages/Posts/PostsDashboard.jsx";
+import CategoryView from './pages/forms/CategoryView'; // Make sure this is here!
+import ApplicationView from './pages/forms/ApplicationView';
+import AnalysisGallery from './pages/forms/AnalysisGallery';
+import FormAnalysisView from './pages/forms/FormAnalysisView';
 import Events from "./pages/Events/Events.jsx";
 
 
@@ -57,12 +64,16 @@ function App() {
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/" element={<Home />} />
               {/* Add other public routes here */}
+              <Route path="/forms" element={<FormsGallery />} />
+              <Route path="/apply/:formId" element={<ApplicationView />} />
+              <Route path="/forms/category/:categoryId" element={<CategoryView />} />
               <Route path="/about/association" element={<AssociationAbout />} />
               <Route path="/about/organization-structure" element={<OrganizationStructureAbout />} />
               <Route path="/about/council-of-thirty" element={<ThirtiethCouncilAbout />} />
               <Route path="/events" element={<Events />} />
               <Route path="/posts/announcements" element={<Blogs />} />
               <Route path="/posts/donations" element={<Donation />} />
+              <Route path="/posts/announcements" element={<Blogs />} />
               <Route path="/posts/issues" element={<Issues />} />
               <Route path="/posts/news" element={<News />} />
               <Route path="/posts/:type/:slug" element={<Post />} /> { /* view posts */}
@@ -81,19 +92,15 @@ function App() {
             {/* ADMIN ROUTES (Protected)
                 - Only users with role 'admin' can enter */}
             {/* Admin Routes wrapped in StandaloneLayout so they have the Back button */}
-            {/* <Route element={<StandaloneLayout />} > */}
             <Route
               element={<ProtectedRoute allowedRoles={CONFIG.ADMIN_ROLES} />}
-               
             >
+               
               <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<Navigate to="dashboard" replace />} />
                   <Route path="dashboard" element={<Dashboard />} />
                   <Route path="posts" element={<PostsDashboard />} />
                   <Route path="posts/:id" element={<PostsEntry />} />
-                  {/* <Route path="gallery" element={<GalleryDashboard />} />
-                  <Route path="gallery/:id" element={<GalleryEntry />} /> */}
-
                   <Route element={<ProtectedRoute allowedRoles={["sys:super_admin", "sys:admin_manager"]} />}>
                     <Route path="admin-users" element={<AdminUsersDashboard />} />
                     <Route path="admin-users/:id" element={<AdminUsersEntry />} />
@@ -112,6 +119,11 @@ function App() {
                   />
                 <Route path="bot" element={<AdminBotEditor />} />
                 <Route path="*" element={<Navigate to="/admin/dashboard" />} />
+                <Route path="forms" element={<FormsDashboard />} />
+                  <Route path="forms/create" element={<FormEntry />} />
+                  <Route path="forms/edit/:id" element={<FormEntry />} />
+                <Route path="forms/analysis" element={<AnalysisGallery />} />
+                <Route path="forms/analysis/:id" element={<FormAnalysisView />} />
               </Route>
             </Route>
             {/* </Route> */}

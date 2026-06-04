@@ -1,5 +1,4 @@
 export const CONFIG = { // DON'T CHANGE THE FALLBACK URL
-    API_BASE_URL: (import.meta.env.VITE_API_BASE_URL_RAW || 'http://localhost:8000')+'/api',
     API_NEW_BASE_URL: (import.meta.env.VITE_API_NEW_BASE_URL_RAW || 'http://localhost:8000')+'/api',
     API_BASE_URL_RAW: import.meta.env.VITE_API_BASE_URL_RAW || 'http://localhost:8000',
     API_MONITOR_URL: import.meta.env.VITE_API_MONITOR_URL || 'http://localhost:8888',
