@@ -1,3 +1,4 @@
+import React from 'react';
 import Pagination from 'react-bootstrap/Pagination';
 
 /**
@@ -17,29 +18,35 @@ const TablePaginator = ({ currentPage, totalPages, onPageChange, disabled = fals
     onPageChange(newPage);
   };
 
-  // Show up to 5 page numbers centered around the current page
   const start = Math.max(1, currentPage - 2);
   const end   = Math.min(totalPages, start + 4);
 
   const items = [];
 
+  // Previous Page Button
   items.push(
     <Pagination.Prev
       key="prev"
       onClick={() => handleClick(currentPage - 1)}
       disabled={disabled || currentPage === 1}
-    />
+    >
+      <i className="bi bi-chevron-left"></i>
+    </Pagination.Prev>
   );
 
+  // First Page + Ellipsis
   if (start > 1) {
     items.push(
       <Pagination.Item key={1} onClick={() => handleClick(1)} disabled={disabled}>
         1
       </Pagination.Item>
     );
-    if (start > 2) items.push(<Pagination.Ellipsis key="start-ellipsis" disabled />);
+    if (start > 2) {
+      items.push(<Pagination.Ellipsis key="start-ellipsis" disabled className="px-1" />);
+    }
   }
 
+  // Numbered Pages
   for (let p = start; p <= end; p++) {
     items.push(
       <Pagination.Item
@@ -53,8 +60,11 @@ const TablePaginator = ({ currentPage, totalPages, onPageChange, disabled = fals
     );
   }
 
+  // Last Page + Ellipsis
   if (end < totalPages) {
-    if (end < totalPages - 1) items.push(<Pagination.Ellipsis key="end-ellipsis" disabled />);
+    if (end < totalPages - 1) {
+      items.push(<Pagination.Ellipsis key="end-ellipsis" disabled className="px-1" />);
+    }
     items.push(
       <Pagination.Item key={totalPages} onClick={() => handleClick(totalPages)} disabled={disabled}>
         {totalPages}
@@ -62,17 +72,22 @@ const TablePaginator = ({ currentPage, totalPages, onPageChange, disabled = fals
     );
   }
 
+  // Next Page Button
   items.push(
     <Pagination.Next
       key="next"
       onClick={() => handleClick(currentPage + 1)}
       disabled={disabled || currentPage === totalPages}
-    />
+    >
+      <i className="bi bi-chevron-right"></i>
+    </Pagination.Next>
   );
 
   return (
-    <div className="d-flex justify-content-center mt-3">
-      <Pagination size="sm">{items}</Pagination>
+    <div className="custom-pagination-container d-flex justify-content-center align-items-center py-3 mt-2">
+      <Pagination size="sm" className="mb-0 gap-1">
+        {items}
+      </Pagination>
     </div>
   );
 };
