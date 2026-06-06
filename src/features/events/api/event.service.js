@@ -31,31 +31,73 @@ export const eventService = {
 
     // Admin endpoints
 
+    getAdminEvent: (id) => {
+        return apiClient.get(`${ADMIN_ENDPOINT}/${id}`)
+    },
+
     getEventParticipants: (id) => {
         return apiClient.get(`${ADMIN_ENDPOINT}/${id}/participants`)
     },
+
+    updateEventParticipants: (id, data) => {
+        return apiClient.put(`${ADMIN_ENDPOINT}/${id}/participants`, data);
+    },
     
     create: (data) => {
-        return apiClient.post(`${ADMIN_ENDPOINT}`, { data });
+        return apiClient.post(`${ADMIN_ENDPOINT}`, data);
     },
 
     update: (data) => {
-        return apiClient.post(`${ADMIN_ENDPOINT}`, { data });
+        return apiClient.put(`${ADMIN_ENDPOINT}`, data);
     },
 
     delete: (id) => {
         return apiClient.delete(`${ADMIN_ENDPOINT}/${id}`);
-    },
+    }
+};
 
-    generateCerts: (data) => {
-        return apiClient.get(`${ADMIN_ENDPOINT}/generate-certs`, { data });
-    },
+export const processFetchStream = async (endpoint, data, onMessage) => {
+    const baseURL = apiClient.defaults.baseURL || CONFIG.API_NEW_BASE_URL;
+    const token = localStorage.getItem('sea-token') || sessionStorage.getItem('sea-token');
 
-    sendFinishEmails: (data) => {
-        return apiClient.get(`${ADMIN_ENDPOINT}/send-finish-emails`, { data });
-    },
+    const response = await fetch(`${baseURL}${endpoint}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token ? `Bearer ${token}` : ''
+        },
+        body: JSON.stringify(data)
+    });
 
-    sendEmails: (data) => {
-        return apiClient.get(`${ADMIN_ENDPOINT}/send-emails`, { data })
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder('utf-8');
+    let buffer = '';
+
+    while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop();
+        
+        for (const line of lines) {
+            const trimmedLine = line.trim();
+            // Match 'data:' regardless of whether there is a space following it
+            if (trimmedLine.startsWith('data:')) {
+                // Remove 'data:' and then trim any remaining whitespace
+                const message = trimmedLine.substring(5).trim();
+                if (message) {
+                    onMessage(message); 
+                }
+            }
+        }
+    }
+
+    if (buffer.trim().startsWith('data:')) {
+        const message = buffer.trim().substring(5).trim();
+        if (message) onMessage(message);
     }
 };

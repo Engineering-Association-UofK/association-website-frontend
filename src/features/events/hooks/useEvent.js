@@ -46,13 +46,31 @@ export const useApply = (id, eventID = 0) => {
 
 // Admin endpoints
 
+export const useAdminEvent = (id) => {
+    return useQuery({
+        queryKey: ['event admin', id],
+        queryFn: () => eventService.getAdminEvent(id),
+        enabled: !!id,
+    });
+}
+
 export const useGetParticipants = (id) => {
     return useQuery({
-        queryKey: ['participants'],
+        queryKey: ['participants', id],
         queryFn: () => eventService.getEventParticipants(id),
         refetchOnWindowFocus: false,
     });
 }
+
+export const useUpdateParticipants = (eventId) => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (data) => eventService.updateEventParticipants(eventId, data),
+        onSuccess: () => {
+            queryClient.invalidateQueries(['participants', eventId]);
+        },
+    });
+};
 
 export const useCreateEvent = () => {
     const queryClient = useQueryClient();
