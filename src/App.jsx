@@ -48,6 +48,7 @@ import CategoryView from './pages/forms/CategoryView'; // Make sure this is here
 import Events from "./pages/Events/Events.jsx";
 import EventsDashboard from "./pages/Admin/Events/EventsDashboard.jsx";
 import EventsEntry from "./pages/Admin/Events/EventsEntry.jsx";
+import AdminRoleGuard from "./components/AdminRoleGuard.jsx";
 
 
 function App() {
@@ -91,36 +92,46 @@ function App() {
             {/* ADMIN ROUTES (Protected)
                 - Only users with role 'admin' can enter */}
             {/* Admin Routes wrapped in StandaloneLayout so they have the Back button */}
-            <Route
-              element={<ProtectedRoute allowedRoles={CONFIG.ADMIN_ROLES} />}
-            >
-               
+            <Route element={<ProtectedRoute allowedRoles={CONFIG.ADMIN_ROLES} />}>
               <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<Navigate to="dashboard" replace />} />
-                  <Route path="dashboard" element={<Dashboard />} />
-                  <Route path="posts" element={<PostsDashboard />} />
-                  <Route path="posts/:id" element={<PostsEntry />} />
-                  <Route element={<ProtectedRoute allowedRoles={["sys:super_admin", "sys:admin_manager"]} />}>
-                    <Route path="admin-users" element={<AdminUsersDashboard />} />
-                    <Route path="admin-users/:id" element={<AdminUsersEntry />} />
-                  </Route>
-                  <Route path="users" element={<UsersDashboard />} />
-                  <Route path="users/:id" element={<UsersEntry />} />\
-                  <Route
-                    path="image-storage"
-                    element={<ImageStorageDashboard />}
-                  />
-                  <Route path="events" element={<EventsDashboard />} />
-                  <Route path="events/:id" element={<EventsEntry />} />
-                <Route path="bot" element={<AdminBotEditor />} />
+                
+                {/* Dashboard: Open to all admins */}
+                <Route path="dashboard" element={<Dashboard />} />
+                
+                {/* Content: Posts */}
+                <Route path="posts" element={<AdminRoleGuard allowedRoles={["content:blog_manager"]}><PostsDashboard /></AdminRoleGuard>} />
+                <Route path="posts/:id" element={<AdminRoleGuard allowedRoles={["content:blog_manager"]}><PostsEntry /></AdminRoleGuard>} />
+                
+                {/* Content: Media Storage */}
+                <Route path="image-storage" element={<AdminRoleGuard allowedRoles={["content:editor"]}><ImageStorageDashboard /></AdminRoleGuard>} />
+                
+                {/* Operations: Events */}
+                <Route path="events" element={<AdminRoleGuard allowedRoles={["content:event_manager"]}><EventsDashboard /></AdminRoleGuard>} />
+                <Route path="events/:id" element={<AdminRoleGuard allowedRoles={["content:event_manager"]}><EventsEntry /></AdminRoleGuard>} />
+                
+                {/* Operations: Forms */}
+                <Route path="forms" element={<AdminRoleGuard allowedRoles={["content:form_manager"]}><FormsDashboard /></AdminRoleGuard>} />
+                <Route path="forms/create" element={<AdminRoleGuard allowedRoles={["content:form_manager"]}><FormEntry /></AdminRoleGuard>} />
+                <Route path="forms/edit/:id" element={<AdminRoleGuard allowedRoles={["content:form_manager"]}><FormEntry /></AdminRoleGuard>} />
+                <Route path="forms/analysis" element={<AdminRoleGuard allowedRoles={["content:form_manager"]}><AnalysisGallery /></AdminRoleGuard>} />
+                <Route path="forms/analysis/:id" element={<AdminRoleGuard allowedRoles={["content:form_manager"]}><FormAnalysisView /></AdminRoleGuard>} />
+                
+                {/* Operations: Bot */}
+                <Route path="bot" element={<AdminRoleGuard allowedRoles={["content:editor"]}><AdminBotEditor /></AdminRoleGuard>} />
+                
+                {/* Accounts: Admin Users */}
+                <Route path="admin-users" element={<AdminRoleGuard allowedRoles={["sys:admin_manager"]}><AdminUsersDashboard /></AdminRoleGuard>} />
+                <Route path="admin-users/:id" element={<AdminRoleGuard allowedRoles={["sys:admin_manager"]}><AdminUsersEntry /></AdminRoleGuard>} />
+                
+                {/* Accounts: Platform Users */}
+                <Route path="users" element={<AdminRoleGuard allowedRoles={["sys:user_manager"]}><UsersDashboard /></AdminRoleGuard>} />
+                <Route path="users/:id" element={<AdminRoleGuard allowedRoles={["sys:user_manager"]}><UsersEntry /></AdminRoleGuard>} />
+                
                 <Route path="*" element={<Navigate to="/admin/dashboard" />} />
-                <Route path="forms" element={<FormsDashboard />} />
-                  <Route path="forms/create" element={<FormEntry />} />
-                  <Route path="forms/edit/:id" element={<FormEntry />} />
-                <Route path="forms/analysis" element={<AnalysisGallery />} />
-                <Route path="forms/analysis/:id" element={<FormAnalysisView />} />
               </Route>
             </Route>
+
             {/* </Route> */}
             {/* STUDENT ROUTES (Future) */}
             {/* 
