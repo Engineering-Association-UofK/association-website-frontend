@@ -1,43 +1,28 @@
+/* ==========================================================================
+   1. Core Framework Imports & CSS Variables
+   ========================================================================== */
 @import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
 :root {
   --primary-color: #22B2E6;
   --secondary-color: #6c757d;
   --fg-color-light: #fff;
 }
 
+/* ==========================================================================
+   2. Robust Mobile Layout Containment
+   ========================================================================== */
 html, body {
-    max-width: 100%;
-    overflow-x: hidden;
-    position: relative;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  position: relative;
+  box-sizing: border-box;
 }
 
-.text-primary {
-  color: var(--primary-color) !important;
-}
-
-.nav-pills .nav-link,
-.nav-pills .nav-link.active,
-.nav-pills .nav-item {
-    text-decoration: none !important;
-    border-bottom: 0 !important;
-    border-bottom-width: 0 !important;
-    border-bottom-style: none !important;
-    box-shadow: none !important;
-}
-
-.nav-pills .nav-link::after,
-.nav-pills .nav-link::before {
-    display: none !important;
-    content: none !important;
-    height: 0 !important;
-}
-
-.nav-pills .nav-link:hover,
-.nav-pills .nav-link:focus,
-.nav-pills .nav-link:active {
-    text-decoration: none !important;
-    border-bottom: none !important;
+*, *::before, *::after {
+  box-sizing: inherit;
 }
 
 body {
@@ -48,43 +33,24 @@ body {
   display: flex;
   flex-direction: column;
   background-color: #fcfdfe;
+  color: #212529;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-weight: 700;
+/* ==========================================================================
+   3. Scoped Layout Navigation & Active States
+   ========================================================================== */
+
+/* Universal Link Base Utility */
+.text-primary {
+  color: var(--primary-color) !important;
 }
 
-.text-shadow {
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-.hover-card {
-  transition: all 0.3s ease-in-out;
-}
-
-.hover-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175) !important;
-}
-
-.hover-scale {
-  transition: transform 0.2s;
-}
-
-.hover-scale:hover {
-  transform: scale(1.05);
-}
-
-.nav-link {
+.app-navbar .nav-link {
   position: relative;
+  transition: color 0.25s ease-in-out;
 }
 
-.nav-link::after {
+.app-navbar .nav-link::after {
   content: '';
   position: absolute;
   width: 0;
@@ -95,17 +61,78 @@ h6 {
   transition: width 0.3s ease-in-out;
 }
 
-.nav-link:hover::after,
-.nav-link.active::after {
+.app-navbar .nav-link:hover::after,
+.app-navbar .nav-link.active::after {
   width: 100%;
 }
 
-.nav-link.active {
+.app-navbar .nav-link.active {
   color: var(--primary-color) !important;
   font-weight: 700;
 }
 
-/* RTL Support */
+.nav-pills .nav-link,
+.nav-pills .nav-link.active,
+.nav-pills .nav-item {
+  text-decoration: none !important;
+  border-bottom: 0 !important;
+  border-bottom-width: 0 !important;
+  border-bottom-style: none !important;
+  box-shadow: none !important;
+}
+
+.nav-pills .nav-link::after,
+.nav-pills .nav-link::before {
+  display: none !important;
+  content: none !important;
+  height: 0 !important;
+}
+
+.nav-pills .nav-link:hover,
+.nav-pills .nav-link:focus,
+.nav-pills .nav-link:active {
+  text-decoration: none !important;
+  border-bottom: none !important;
+}
+
+/* ==========================================================================
+   4. Typography & Utility Classes
+   ========================================================================== */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+}
+
+.text-shadow {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+.hover-card {
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.hover-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, .12) !important;
+}
+
+.hover-scale {
+  transition: transform 0.2s ease-in-out;
+}
+
+.hover-scale:hover {
+  transform: scale(1.04);
+}
+
+.scrollbar-hide {
+  scrollbar-width: none; /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar { 
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* ==========================================================================
+   5. RTL Alignment Helpers
+   ========================================================================== */
 [dir="rtl"] {
   text-align: right;
 }
@@ -120,10 +147,36 @@ h6 {
   margin-right: 0 !important;
 }
 
-[dir="rtl"] .nav-link::after {
+[dir="rtl"] .app-navbar .nav-link::after {
   left: auto;
   right: 0;
 }
 
-.scrollbar-hide::-webkit-scrollbar { display: none; }
-.scrollbar-hide { scrollbar-width: none; }
+/* ==========================================================================
+   6. React-Bootstrap Tabs & Modal Navigation Consistency Core
+   ========================================================================== */
+
+.nav-tabs .nav-item .nav-link,
+.nav-tabs .nav-link {
+  color: #495057 !important; /* high-contrast dark gray for unselected tabs */
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s ease-in-out;
+  background: transparent !important;
+}
+
+/* Hover state for unselected tabs */
+.nav-tabs .nav-item .nav-link:hover,
+.nav-tabs .nav-link:hover {
+  color: var(--primary-color) !important;
+  border-color: #e9ecef #e9ecef #dee2e6 !important;
+}
+
+.nav-tabs .nav-item .nav-link.active,
+.nav-tabs .nav-link.active,
+.modal-body .nav-tabs .nav-link.active {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  background-color: var(--primary-color) !important;
+  border-color: #dee2e6 #dee2e6 #ffffff !important;
+}
