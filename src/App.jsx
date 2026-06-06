@@ -9,7 +9,7 @@ import Home from "./pages/Home/Home";
 import AssociationAbout from "./pages/About/association/About.jsx";
 import OrganizationStructureAbout from "./pages/About/organizationStructure/About.jsx";
 import ThirtiethCouncilAbout from "./pages/About/CouncilOfThirty/About.jsx";
-import AdminLayout from "./pages/Admin/AdminLayout";
+import AdminLayout from "./layouts/AdminLayout.jsx";
 import Blogs from "./pages/Blogs/blog/Blogs.jsx";
 import Donation from "./pages/Blogs/donation/Donation.jsx";
 import Issues from "./pages/Blogs/issues/Issues.jsx";
@@ -25,30 +25,29 @@ import LoginForm from "./components/LoginForm.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import PublicOnlyRoute from "./components/PublicOnlyRoute.jsx";
-import AdminUsersDashboard from "./pages/Admin Users/AdminUsersDashboard.jsx";
-import AdminUsersEntry from "./pages/Admin Users/AdminUsersEntry.jsx";
-import AdminProfile from "./pages/Admin Profile/AdminProfile.jsx";
-import ChangePassword from "./pages/Admin/ChangePassword.jsx";
-import Dashboard from "./pages/Dashboard/Dashboard.jsx";
-import ImageStorageDashboard from "./pages/Image Storage/ImageStorageDashboard.jsx";
-import ImageStorageEntry from "./pages/Image Storage/ImageStorageEntry.jsx";
+import AdminUsersDashboard from "./pages/Admin/Admin Users/AdminUsersDashboard.jsx";
+import AdminUsersEntry from "./pages/Admin/Admin Users/AdminUsersDashboard.jsx";
+import Dashboard from "./pages/Admin/Dashboard/Dashboard.jsx";
+import ImageStorageDashboard from "./pages/Admin/Image Storage/ImageStorageDashboard.jsx";
 import { CONFIG } from "./config";
 import ProfilePage from "./pages/Profile/ProfilePage.jsx";
-import UsersDashboard from './pages/Users/UsersDashboard.jsx';
-import UsersEntry from "./pages/Users/UsersEntry.jsx";
-import FormsGallery from './pages/forms/FormsGallery';
-import FormsDashboard from './pages/forms/FormsDashboard.jsx';
+import UsersDashboard from './pages/Admin/Users/UsersDashboard.jsx';
+import UsersEntry from "./pages/Admin/Users/UsersEntry.jsx";
 import FormEntry from './pages/forms/FormEntry.jsx';
+import FormsDashboard from './pages/forms/FormsDashboard.jsx';
+import FormsGallery from './pages/forms/FormsGallery';
 import ScrollToTop from "./components/ScrollToTop";
 import ScrollToTopButton from "./components/ScrollToTopButton.jsx";
-import AdminBotEditor from "./pages/bot/AdminBotEditor.jsx";
-import PostsEntry from "./pages/Posts/PostsEntry.jsx";
-import PostsDashboard from "./pages/Posts/PostsDashboard.jsx";
-import CategoryView from './pages/forms/CategoryView'; // Make sure this is here!
-import ApplicationView from './pages/forms/ApplicationView';
-import AnalysisGallery from './pages/forms/AnalysisGallery';
+import AdminBotEditor from "./pages/Admin/bot/AdminBotEditor.jsx";
+import PostsEntry from "./pages/Admin/Posts/PostsEntry.jsx";
+import PostsDashboard from "./pages/Admin/Posts/PostsDashboard.jsx";
 import FormAnalysisView from './pages/forms/FormAnalysisView';
+import AnalysisGallery from './pages/forms/AnalysisGallery';
+import ApplicationView from './pages/forms/ApplicationView';
+import CategoryView from './pages/forms/CategoryView'; // Make sure this is here!
 import Events from "./pages/Events/Events.jsx";
+import EventsDashboard from "./pages/Admin/Events/EventsDashboard.jsx";
+import EventsEntry from "./pages/Admin/Events/EventsEntry.jsx";
 
 
 function App() {
@@ -106,17 +105,13 @@ function App() {
                     <Route path="admin-users/:id" element={<AdminUsersEntry />} />
                   </Route>
                   <Route path="users" element={<UsersDashboard />} />
-                  <Route path="users/:id" element={<UsersEntry />} />
-                  <Route path="admin-profile" element={<AdminProfile />} />
-                  <Route path="change-password" element={<ChangePassword />} />
+                  <Route path="users/:id" element={<UsersEntry />} />\
                   <Route
                     path="image-storage"
                     element={<ImageStorageDashboard />}
                   />
-                  <Route
-                    path="image-storage/:id"
-                    element={<ImageStorageEntry />}
-                  />
+                  <Route path="events" element={<EventsDashboard />} />
+                  <Route path="events/:id" element={<EventsEntry />} />
                 <Route path="bot" element={<AdminBotEditor />} />
                 <Route path="*" element={<Navigate to="/admin/dashboard" />} />
                 <Route path="forms" element={<FormsDashboard />} />
