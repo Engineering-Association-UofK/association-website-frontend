@@ -5,207 +5,193 @@ import { formatBytes, formatUptime, getVariant, getHealthVariant } from '../../.
 import './Dashboard.css'
 
 const Dashboard = () => {
+    const { data: rawPayload, isLoading, isError, error, refetch } = useMonitoring();
 
-    const { data, isLoading, isError, error, refetch } = useMonitoring();
+    const data = rawPayload?.data ? rawPayload.data : rawPayload;
 
-    // Destructure data (Safety checks included)
     const overview = data?.overview || {};
     const system = data?.system || {};
     const app = data?.app || {};
 
+    const safePercentage = (value) => {
+        if (value === undefined || value === null) return 0;
+        const num = typeof value === 'string' ? parseFloat(value) : value;
+        
+        const finalNum = num <= 1 ? num * 100 : num;
+        
+        return isNaN(finalNum) ? 0 : finalNum;
+    };
+
+    const cpuPercent = safePercentage(system.cpu?.usedPercent);
+    const ramPercent = safePercentage(system.ram?.usedPercent);
+    const diskPercent = safePercentage(system.disk?.usedPercent);
+
+    const isHealthy = overview.status && overview.status.toLowerCase() === 'healthy';
+
     return (
-        <>
-            <div className="d-flex justify-content-between mb-4">
-                <h4 className='table-title'>System Health Dashboard</h4>
-                <div className="actions-wrapper">
-                    <Button 
-                        variant="outline-primary" 
-                        size="sm"
-                        onClick={() => refetch()}
-                    >
-                        <i className="bi pe-none bi-arrow-clockwise"></i>
-                    </Button>
+        <Container fluid className="px-1 py-2">
+            {/* Action Header */}
+            <div className="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h4 className="dashboard-title fw-bold m-0">System Control Desk</h4>
+                    <p className="text-muted small m-0">Real-time status monitoring and hardware diagnostics.</p>
                 </div>
+                <Button 
+                    variant="white" 
+                    className="border shadow-sm rounded-3 p-2 bg-white"
+                    onClick={() => refetch()}
+                >
+                    <i className="bi bi-arrow-clockwise text-secondary fs-5"></i>
+                </Button>
             </div>
-            {
-                // Loading State
-                isLoading ? (
-                    <Container className="text-center mt-5">
-                        <Spinner animation="border" role="status" variant="primary">
-                        <span className="visually-hidden">Loading...</span>
-                        </Spinner>
-                    </Container>
-                ) : isError ? (
-                    <Container className="mt-5">
-                        <Alert variant="danger">
-                        <h4>Failed to load system stats.</h4>
-                        <p>{error?.message || 'Something went wrong.'}</p>
-                        <Button variant="outline-danger" onClick={() => refetch()}>
-                            Try Again
-                        </Button>
-                        </Alert>
-                    </Container>
-                ) : (
-                    <Container className="scrollable-container px-0">
-                        {/* --- ROW 1: OVERVIEW & APP STATUS --- */}
-                        <Row className="mb-4">
-                            {/* 1. Health Overview */}
-                            <Col md={6} lg={4} className="mb-3">
-                                <Card className={`h-100 border-${getHealthVariant(overview.healthLevel)} border-2 shadow-sm`}>
-                                    <Card.Body className="text-center d-flex flex-column justify-content-start">
-                                        <h6 className="text-muted text-uppercase mb-2">Overall Health</h6>
-                                        <h2 className={`text-${getHealthVariant(overview.healthLevel)} fw-bold text-uppercase`}>
-                                            {overview.healthLevel || 'Unknown'}
-                                        </h2>
-                                        <div className="mt-3 small text-muted">
-                                            Last Updated: <br />
-                                            {new Date(overview.lastUpdated).toLocaleString()}
-                                        </div>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
 
-                            {/* 2. Uptime Counter */}
-                            <Col md={6} lg={4} className="mb-3">
-                                <Card className="h-100 shadow-sm border-0">
-                                    <Card.Body className="text-center d-flex flex-column justify-content-start">
-                                        <h6 className="text-muted text-uppercase mb-2">System Uptime</h6>
-                                        <div className="display-6 fw-normal text-dark">
-                                            <i className="bi bi-clock-history me-2 text-primary"></i>
-                                            {formatUptime(overview.uptimeSeconds)}
-                                        </div>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
+            {isLoading && (
+                <div className="d-flex flex-column justify-content-center align-items-center my-5 py-5">
+                    <Spinner animation="border" variant="primary" className="mb-3" />
+                    <span className="text-muted small fw-medium">Polling cluster state metrics...</span>
+                </div>
+            )}
 
-                            {/* 3. App Specific Status */}
-                            <Col md={12} lg={4} className="mb-3">
-                                <Card className="h-100 shadow-sm border-0">
-                                    <Card.Header className="text-muted bg-white fw-bold">Application Status</Card.Header>
-                                    <Card.Body>
-                                        <div className="d-flex justify-content-between align-items-center mb-3">
-                                            <span>Status</span>
-                                            <Badge bg={app.status === 'UP' ? 'success' : 'danger'} className="px-3 py-2">
-                                                {app.status}
-                                            </Badge>
-                                        </div>
-                                        <div className="mb-2">
-                                            <div className="d-flex justify-content-between small mb-1">
-                                                <span>App CPU</span>
-                                                <span>{app.cpuPercent.toFixed(1)}%</span>
-                                            </div>
-                                            <ProgressBar now={app.cpuPercent} variant="info" style={{ height: '6px' }} />
-                                        </div>
+            {isError && (
+                <Alert variant="danger" className="border-0 rounded-4 shadow-sm p-4">
+                    <div className="d-flex">
+                        <i className="bi bi-exclamation-triangle-fill fs-3 me-3"></i>
+                        <div>
+                            <h6 className="fw-bold">Failed to connect to monitor agent</h6>
+                            <p className="small mb-2">{error?.message || "The backend metric engine did not respond."}</p>
+                            <Button variant="danger" size="sm" onClick={() => refetch()} className="rounded-pill px-3">Retry Hook</Button>
+                        </div>
+                    </div>
+                </Alert>
+            )}
+
+            {!isLoading && !isError && data && (
+                <>
+                    {/* Operational Status Panel */}
+                    <div className="status-hero-banner p-4 mb-4 shadow-sm d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+                        <div className="d-flex align-items-center">
+                            <div className={`icon-badge me-3 ${isHealthy ? 'bg-success text-white' : 'bg-warning text-dark'}`}>
+                                <i className={`bi ${isHealthy ? 'bi-shield-check-fill' : 'bi-shield-exclamation'}`}></i>
+                            </div>
+                            <div>
+                                <div className="text-muted small text-uppercase fw-bold tracking-wider" style={{ fontSize: '0.75rem', letterSpacing: '1px' }}>Engine Core Status</div>
+                                <h4 className="fw-bold mb-0 text-white d-flex align-items-center gap-2">
+                                    {overview.status ? overview.status.toUpperCase() : "UNKNOWN"}
+                                    <Badge bg={getHealthVariant(overview.status || 'unknown')} className="fs-6 rounded-pill px-2 py-1">Node Operational</Badge>
+                                </h4>
+                            </div>
+                        </div>
+                        <div className="border-start border-secondary ps-4 d-none d-md-block">
+                            <div className="text-muted small text-uppercase fw-bold tracking-wider" style={{ fontSize: '0.75rem', letterSpacing: '1px' }}>Engine Uptime Tracker</div>
+                            <span className="font-monospace fw-bold text-white-50">
+                                {app.uptime ? formatUptime(app.uptime) : '0s'}
+                            </span>
+                        </div>
+                    </div>
+
+                    <h6 className="text-muted text-uppercase fw-bold tracking-wider mb-3 px-1" style={{ fontSize: '0.75rem', letterSpacing: '1px' }}>Cluster Diagnostics</h6>
+
+                    {/* Main Hardware Performance Row */}
+                    <Row className="g-4 mb-4">
+                        {/* CPU Card */}
+                        <Col xs={12} md={4}>
+                            <Card className="dashboard-card h-100 border-0">
+                                <Card.Body className="p-4 d-flex flex-column">
+                                    <div className="d-flex align-items-center justify-content-between mb-4">
                                         <div>
-                                            <div className="d-flex justify-content-between small mb-1">
-                                                <span>App Memory</span>
-                                                <span>{app.memoryUsedMB} MB</span>
-                                            </div>
-                                            {/* Assuming max app memory is generic, visually representing used */}
-                                            <ProgressBar now={app.memoryUsedMB > 1000 ? 100 : (app.memoryUsedMB / 10)} variant="info" style={{ height: '6px' }} />
+                                            <span className="text-muted small fw-semibold d-block">Compute Unit</span>
+                                            <h6 className="fw-bold text-dark m-0">Processor Load</h6>
                                         </div>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-                        </Row>
-
-                        {/* --- ROW 2: SYSTEM RESOURCES --- */}
-                        <h5 className="mb-3">Server Resources</h5>
-                        <Row>
-                            {/* 1. CPU Load */}
-                            <Col md={6} lg={4} className="mb-3">
-                                <Card className="shadow-sm border-0 h-100">
-                                    <Card.Body>
-                                        <div className="d-flex align-items-center mb-3">
-                                            <div className="bg-primary bg-opacity-10 p-3 rounded-circle me-2">
-                                                <i className="bi bi-cpu text-primary fs-4"></i>
-                                            </div>
-                                            <h5 className="text-muted m-0">CPU Load</h5>
+                                        <div className="icon-badge badge-primary-soft">
+                                            <i className="bi bi-cpu"></i>
                                         </div>
-
-                                        <h5 className="ms-auto mb-0 text-end">{(system.cpu?.loadPercent * 100).toFixed(0)}%</h5>
+                                    </div>
+                                    
+                                    <div className="mt-auto">
+                                        <div className="d-flex align-items-baseline justify-content-between mb-2">
+                                            <h3 className="fw-bold mb-0">{cpuPercent.toFixed(0)}<span className="fs-6 text-muted fw-normal">%</span></h3>
+                                            <span className="text-muted small font-monospace">{system.cpu?.cores || '?'} Cores Active</span>
+                                        </div>
                                         <ProgressBar 
-                                            now={system.cpu?.loadPercent * 100} 
-                                            variant={getVariant(system.cpu?.loadPercent * 100)}  
+                                            now={cpuPercent} 
+                                            variant={getVariant(cpuPercent)} 
+                                            className="custom-progress"
                                         />
-                                        <div className="d-flex align-items-center justify-content-between mt-3">
-                                            <div className="text-muted">Cores</div>
-                                            <div className="fw-bold">{system.cpu?.cores}</div>
-                                        </div>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
+                                    </div>
+                                </Card.Body>
+                            </Card>
+                        </Col>
 
-                            {/* 2. Memory Usage */}
-                            <Col md={6} lg={4} className="mb-3">
-                                <Card className="shadow-sm border-0 h-100">
-                                    <Card.Body>
-                                        <div className="d-flex align-items-center mb-3">
-                                            <div className="bg-success bg-opacity-10 p-3 rounded-circle me-2">
-                                                <i className="bi bi-memory text-success fs-4"></i>
-                                            </div>
-                                            <h5 className="text-muted m-0">Memory</h5>
+                        {/* Memory Card */}
+                        <Col xs={12} md={4}>
+                            <Card className="dashboard-card h-100 border-0">
+                                <Card.Body className="p-4 d-flex flex-column">
+                                    <div className="d-flex align-items-center justify-content-between mb-4">
+                                        <div>
+                                            <span className="text-muted small fw-semibold d-block">Volatile Space</span>
+                                            <h6 className="fw-bold text-dark m-0">System RAM</h6>
                                         </div>
-                                        
-                                        <h5 className="ms-auto mb-0 text-end">{(system.memory?.usedPercent * 100).toFixed(0)}%</h5>
-                                        <ProgressBar>
-                                            <ProgressBar 
-                                                now={system.memory?.usedPercent * 100} 
-                                                variant={getVariant(system.memory?.usedPercent * 100)} 
-                                                label="RAM"
-                                            />
-                                        </ProgressBar>
-                                        <div className="d-flex align-items-center justify-content-between mt-3">
-                                            <div className="text-muted">Total</div>
-                                            <div className="fw-bold">{formatBytes(system.memory?.totalBytes)}</div>
+                                        <div className="icon-badge badge-info-soft">
+                                            <i className="bi bi-memory"></i>
                                         </div>
-                                        <div className="d-flex align-items-center justify-content-between mt-1">
-                                            <div className="text-muted">Used</div>
-                                            <div className="fw-bold">{formatBytes(system.memory?.usedBytes)}</div>
+                                    </div>
+                                    
+                                    <div className="mt-auto">
+                                        <div className="d-flex align-items-baseline justify-content-between mb-2">
+                                            <h3 className="fw-bold mb-0">{ramPercent.toFixed(0)}<span className="fs-6 text-muted fw-normal">%</span></h3>
+                                            <span className="text-muted small font-monospace">
+                                                {formatBytes(system.ram?.usedBytes)} / {formatBytes(system.ram?.totalBytes)}
+                                            </span>
                                         </div>
-                                        <div className="d-flex align-items-center justify-content-between mt-1">
-                                            <div className="text-muted">Swap</div>
-                                            <div className="fw-bold">{(system.memory?.swapUsedPercent * 100).toFixed(0)}%</div>
-                                        </div>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-
-                            {/* 3. Disk Usage */}
-                            <Col md={6} lg={4} className="mb-3">
-                                <Card className="shadow-sm border-0 h-100">
-                                    <Card.Body>
-                                        <div className="d-flex align-items-center mb-3">
-                                            <div className="bg-warning bg-opacity-10 p-3 rounded-circle me-2">
-                                                <i className="bi bi-hdd text-warning fs-4"></i>
-                                            </div>
-                                            <div>
-                                                <h5 className="text-muted m-0">Disk Storage</h5>
-                                            </div>
-                                        </div>
-
-                                        <h5 className="ms-auto mb-0 text-end">{(system.disk?.usedPercent * 100).toFixed(0)}%</h5>
                                         <ProgressBar 
-                                            now={system.disk?.usedPercent * 100} 
-                                            variant={getVariant(system.disk?.usedPercent * 100)} 
+                                            now={ramPercent} 
+                                            variant={getVariant(ramPercent)} 
+                                            className="custom-progress"
                                         />
-                                        <div className="d-flex align-items-center justify-content-between mt-3">
-                                            <div className="text-muted">Total</div>
-                                            <div className="fw-bold">{formatBytes(system.disk?.totalBytes)}</div>
+                                    </div>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+
+                        {/* Disk Space Card */}
+                        <Col xs={12} md={4}>
+                            <Card className="dashboard-card h-100 border-0">
+                                <Card.Body className="p-4 d-flex flex-column">
+                                    <div className="d-flex align-items-center justify-content-between mb-4">
+                                        <div>
+                                            <span className="text-muted small fw-semibold d-block">Persistent Storage</span>
+                                            <h6 className="fw-bold text-dark m-0">Disk Capacity</h6>
                                         </div>
-                                        <div className="d-flex align-items-center justify-content-between mt-1">
-                                            <div className="text-muted">Used</div>
-                                            <div className="fw-bold">{formatBytes(system.disk?.usedBytes)}</div>
+                                        <div className="icon-badge badge-warning-soft">
+                                            <i className="bi bi-hdd-rack"></i>
                                         </div>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-                        </Row>
-                    </Container>
-                )
-            }
-        </>
+                                    </div>
+                                    
+                                    <div className="mt-auto">
+                                        <div className="d-flex align-items-baseline justify-content-between mb-2">
+                                            <h3 className="fw-bold mb-0">{diskPercent.toFixed(0)}<span className="fs-6 text-muted fw-normal">%</span></h3>
+                                            <span className="text-muted small font-monospace">
+                                                {formatBytes(system.disk?.usedBytes)} used
+                                            </span>
+                                        </div>
+                                        <ProgressBar 
+                                            now={diskPercent} 
+                                            variant={getVariant(diskPercent)} 
+                                            className="custom-progress"
+                                        />
+                                        <div className="d-flex justify-content-between text-muted mt-2" style={{ fontSize: '0.75rem' }}>
+                                            <span>Total Node Disk Allocation:</span>
+                                            <span className="fw-bold">{formatBytes(system.disk?.totalBytes)}</span>
+                                        </div>
+                                    </div>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    </Row>
+                </>
+            )}
+        </Container>
     );
 }
 
-export default Dashboard
+export default Dashboard;
