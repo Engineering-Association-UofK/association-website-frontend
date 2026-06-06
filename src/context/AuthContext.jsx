@@ -34,17 +34,17 @@ export const AuthProvider = ({ children }) => {
     setLoading(true);
     try {
       const data = await authService.login({ username, password });
-      console.log('context ', data);
+      // console.log('context ', data);
       // Handle "Account not verified" special case
       if (!data.token) {
-        console.log("cont", data.user_id ?? null);
+        // console.log("cont", data.user_id ?? null);
         
         return { success: false, status: 'verification_needed', user_id: data.user_id ?? null };
       }
 
       const token = data?.token || data;
       const decodedToken = parseJwt(token)
-      console.log('token', parseJwt(token));
+      // console.log('token', parseJwt(token));
       
       // Handle Storage Choice
       const storage = rememberMe ? localStorage : sessionStorage;

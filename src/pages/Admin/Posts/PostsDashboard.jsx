@@ -6,9 +6,9 @@ import {
 import {
   useAdminBlogs,
   useDeletePost,
-} from '../../features/admin posts/hooks/useAdminBlogs.js';
-import { POST_TYPES } from '../../features/admin posts/api/adminBlogs.service';
-import TablePaginator from '../../components/TablePaginator.jsx';
+} from '../../../features/admin posts/hooks/useAdminBlogs.js';
+import { POST_TYPES } from '../../../features/admin posts/api/adminBlogs.service.js';
+import TablePaginator from '../../../components/TablePaginator.jsx';
 import { useNavigate } from "react-router-dom";
 import styles from './Posts.module.css'
 

@@ -8,11 +8,11 @@ import {
   Spinner,
   Alert,
 }  from 'react-bootstrap';
-import { useAdminBlog, useCreatePost, useUpdatePost } from '../../features/admin posts/hooks/useAdminBlogs';
-import { POST_TYPES } from '../../features/admin posts/api/adminBlogs.service';
-import MDEdit from '../../components/markdown/MDEdit';
-import ImageUpload2 from '../../components/ImageUpload2';
-import { useFileUpload } from '../../hooks/useFileUpload';
+import { useAdminBlog, useCreatePost, useUpdatePost } from '../../../features/admin posts/hooks/useAdminBlogs';
+import { POST_TYPES } from '../../../features/admin posts/api/adminBlogs.service';
+import MDEdit from '../../../components/markdown/MDEdit';
+import ImageUpload2 from '../../../components/ImageUpload2';
+import { useFileUpload } from '../../../hooks/useFileUpload';
  
 const EMPTY_FORM = {
   title:        '',

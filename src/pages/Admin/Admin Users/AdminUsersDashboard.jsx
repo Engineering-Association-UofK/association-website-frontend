@@ -9,11 +9,11 @@ import Form from 'react-bootstrap/Form';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { useNavigate } from "react-router-dom";
-import { useAdminUsers, useDeleteAdminUser, useAddAdminManager, useRemoveAdminManager } from '../../features/admin users/hooks/useAdminUsers';
-import {useAuth} from "../../context/AuthContext";
-import { displayRole } from '../../utils/roles';
+import { useAdminUsers, useDeleteAdminUser, useAddAdminManager, useRemoveAdminManager } from '../../../features/admin users/hooks/useAdminUsers.js';
+import {useAuth} from "../../../context/AuthContext.jsx";
+import { displayRole } from '../../../utils/roles.js';
 import styles from './AdminUsers.module.css'
-import TablePaginator from '../../components/TablePaginator.jsx';
+import TablePaginator from '../../../components/TablePaginator.jsx';
 
 const PAGE_LIMIT = 25;
 

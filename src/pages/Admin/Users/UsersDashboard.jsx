@@ -7,12 +7,12 @@ import Alert from 'react-bootstrap/Alert';
 import Modal from 'react-bootstrap/Modal';
 import Badge from 'react-bootstrap/Badge';
 import { useNavigate } from "react-router-dom";
-import { useUsers, useSuspendUser, useAssignPasscodes } from '../../features/users/hooks/useUsers';
-import { usePromoteUser, useAddAdminManager } from '../../features/admin users/hooks/useAdminUsers';
-import { displayRole } from '../../utils/roles';
-import { displayDepartment } from '../../utils/departments';
+import { useUsers, useSuspendUser, useAssignPasscodes } from '../../../features/users/hooks/useUsers';
+import { usePromoteUser, useAddAdminManager } from '../../../features/admin users/hooks/useAdminUsers';
+import { displayRole } from '../../../utils/roles';
+import { displayDepartment } from '../../../utils/departments';
 import styles from './Users.module.css'
-import TablePaginator from '../../components/TablePaginator.jsx';
+import TablePaginator from '../../../components/TablePaginator.jsx';
 
 const PAGE_LIMIT = 25;
 

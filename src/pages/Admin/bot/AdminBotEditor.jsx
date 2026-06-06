@@ -17,7 +17,7 @@ import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
 
 // Hooks & Sub-components
-import { useBotGraph, useUpdateBotGraph, useResetBot } from '../../features/bot/hooks/useBot';
+import { useBotGraph, useUpdateBotGraph, useResetBot } from '../../../features/bot/hooks/useBot';
 import BotHeader from './components/BotHeader';
 import NodeLibrary from './components/NodeLibrary';
 import PropertiesEditor from './components/PropertiesEditor';

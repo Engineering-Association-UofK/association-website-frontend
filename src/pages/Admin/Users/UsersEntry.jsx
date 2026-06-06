@@ -7,11 +7,11 @@ import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner';
 import Alert from 'react-bootstrap/Alert';
 import Badge from 'react-bootstrap/Badge';
-import { useUser, useUpdateUser } from '../../features/users/hooks/useUsers';
-import { roles } from '../../utils/roles';
+import { useUser, useUpdateUser } from '../../../features/users/hooks/useUsers';
+import { roles } from '../../../utils/roles';
 import styles from'./Users.module.css'
-import { DEPARTMENTS } from '../../utils/departments';
-import { displayRole } from '../../utils/roles';
+import { DEPARTMENTS } from '../../../utils/departments';
+import { displayRole } from '../../../utils/roles';
 
 const EMPTY_FORM = {
   uni_id:     '',

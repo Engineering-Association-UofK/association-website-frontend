@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Row, Col, Card, ProgressBar, Badge, Spinner, Alert, Button } from 'react-bootstrap';
-import { useMonitoring } from '../../features/monitoring/hooks/useMonitoring';
-import { formatBytes, formatUptime, getVariant, getHealthVariant } from '../../utils/formatters';
+import { useMonitoring } from '../../../features/monitoring/hooks/useMonitoring';
+import { formatBytes, formatUptime, getVariant, getHealthVariant } from '../../../utils/formatters';
 import './Dashboard.css'
 
 const Dashboard = () => {
