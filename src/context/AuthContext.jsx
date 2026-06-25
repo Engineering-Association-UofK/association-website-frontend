@@ -124,6 +124,8 @@ export const AuthProvider = ({ children }) => {
   const hasRole = (...roles) =>
     user?.roles?.some((r) => roles.includes(r)) ?? false;
 
+  const loggedIn = user != undefined;
+
   return (
     <AuthContext.Provider 
       value={{ 

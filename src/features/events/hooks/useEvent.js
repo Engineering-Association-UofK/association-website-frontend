@@ -20,10 +20,18 @@ export const useEvent = (id) => {
 
 // Application endpoints
 
-export const useGetStatus = (page = 1, limit = 10, eventID = 0) => {
+export const useGetAllStatus = (page = 1, limit = 10) => {
     return useQuery({
-        queryKey: ['status', page, eventID],
-        queryFn: () => eventService.getStatus(page, limit, eventID),
+        queryKey: ['all-status', page],
+        queryFn: () => eventService.getAllStatus(page, limit),
+        enabled: !!eventID,
+    });
+}
+
+export const useGetStatus = (eventID) => {
+    return useQuery({
+        queryKey: ['status', eventID],
+        queryFn: () => eventService.getStatus(eventID),
         enabled: !!eventID,
     });
 }
@@ -54,13 +62,13 @@ export const useAdminEvent = (id) => {
     });
 }
 
-export const useGetParticipants = (id) => {
+export const useGetParticipants = (id, page = 1, limit = 25) => {
     return useQuery({
-        queryKey: ['participants', id],
-        queryFn: () => eventService.getEventParticipants(id),
+        queryKey: ['participants', id, page, limit],
+        queryFn: () => eventService.getEventParticipants(id, page, limit),
         refetchOnWindowFocus: false,
     });
-}
+};
 
 export const useUpdateParticipants = (eventId) => {
     const queryClient = useQueryClient();
@@ -110,5 +118,16 @@ export const useSendFinishEmails = () => {
 export const useSendEmails = () => {
     return useMutation({
         mutationFn: (data) => eventService.sendEmails(data),
+    });
+}
+
+export const useLinkForm = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (data) => eventService.linkForm(data),
+        onSuccess: (_, variables) => {
+            queryClient.invalidateQueries(['event admin', String(variables.event_id)]);
+            queryClient.invalidateQueries(['events']);
+        },
     });
 }

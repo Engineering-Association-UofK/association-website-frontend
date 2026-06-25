@@ -22,16 +22,17 @@ const EventDetailsOverlay = ({ eventId, show, onHide }) => {
     
     // API Hooks
     const { data: event, isLoading: isEventLoading, error: eventError } = useEvent(eventId);
-    // Fetch status. Ensure your useGetStatus hook has `enabled: !!eventId && !!user` if possible, 
-    // but React Query will handle it gracefully if you added the enabled flag as suggested.
-    const { data: statusData, isLoading: isStatusLoading } = useGetStatus(1, 10, eventId);
+
+    const { loggedIn } = useAuth();
+    const { data: statusData, isLoading: isStatusLoading } = true ? useGetStatus(eventId) : { data: undefined, isLoading: false };
+
     
     const { mutate: applyToEvent, isPending: isApplying } = useApply();
     const { mutate: cancelApplication, isPending: isCanceling } = useCancelApplication();
 
-    // Determine current application status
-    const currentApplication = statusData?.applications?.[0];
-    const participationStatus = currentApplication?.status; // PENDING, ACCEPTED, REJECTED, COMPLETED, or undefined
+    // // Determine current application status
+    // const currentApplication = statusData?.applications?.[0];
+    const participationStatus = statusData?.status; // PENDING, ACCEPTED, REJECTED, COMPLETED, or undefined
 
     const handleApply = () => {
         setFeedback({ type: '', message: '' });
@@ -47,13 +48,12 @@ const EventDetailsOverlay = ({ eventId, show, onHide }) => {
                 const data = response.data || response; 
                 
                 if (data.form_required && data.form_id) {
-                    navigate(`/form/${data.form_id}`);
+                    navigate(`/apply/${data.form_id}`);
                 } else {
                     setFeedback({ 
                         type: 'success', 
                         message: language === 'en' ? 'Successfully joined the event!' : 'تم الانضمام للفعالية بنجاح!' 
                     });
-                    // Force refresh the status query so the UI updates to "PENDING/ACCEPTED" immediately
                     queryClient.invalidateQueries(['status', 1, eventId]);
                 }
             },

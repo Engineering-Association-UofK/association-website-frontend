@@ -27,7 +27,7 @@ const Events = () => {
     const [hasMore, setHasMore] = useState(true);
     const [selectedEventId, setSelectedEventId] = useState(null);
 
-    const { data, isLoading, error, isFetching } = useEvents(page, 9);
+    const { data, isLoading, error, isFetching } = useEvents(page, 10);
 
     useEffect(() => {
         if (data?.events) {

@@ -3,7 +3,7 @@ import { Row, Col, Form, Card, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useCollaborators } from '../../../../features/admin collaborators/hooks/useCollaborators';
 
-const EventDetailsForm = ({ formData, setFormData, outcomes, setOutcomes, components, setComponents, onShowPicker }) => {
+const EventDetailsForm = ({ formData, setFormData, outcomes, setOutcomes, components, setComponents, onShowPicker, onShowFormSelector, isEditMode }) => {
     const navigate = useNavigate();
     const { data: collabData } = useCollaborators(1, 100);
 
@@ -88,10 +88,21 @@ const EventDetailsForm = ({ formData, setFormData, outcomes, setOutcomes, compon
                     
                     {formData.form_application && (
                         <div className="ms-4 mt-2">
-                            {formData.form_id > 0 ? (
-                                <Button variant="outline-primary" size="sm" className="rounded-pill" onClick={() => navigate(`/admin/forms/edit/${formData.form_id}`)}><i className="bi bi-file-text me-1"></i> Inspect Form</Button>
+                            {!isEditMode ? (
+                                <p className="text-muted small mb-0"><i className="bi bi-info-circle me-1"></i> Please save the event first before linking an application form.</p>
+                            ) : formData.form_id > 0 ? (
+                                <div className="d-flex gap-2">
+                                    <Button variant="outline-primary" size="sm" className="rounded-pill" onClick={() => navigate(`/admin/forms/edit/${formData.form_id}`)}>
+                                        <i className="bi bi-file-text me-1"></i> Inspect Form
+                                    </Button>
+                                    <Button variant="outline-warning" size="sm" className="rounded-pill text-dark fw-bold" onClick={onShowFormSelector}>
+                                        <i className="bi bi-arrow-left-right me-1"></i> Change Form
+                                    </Button>
+                                </div>
                             ) : (
-                                <Button variant="outline-warning" size="sm" className="rounded-pill text-dark fw-bold" onClick={() => navigate(`/admin/forms`)}><i className="bi bi-exclamation-triangle me-1"></i> Attach Form</Button>
+                                <Button variant="outline-warning" size="sm" className="rounded-pill text-dark fw-bold" onClick={onShowFormSelector}>
+                                    <i className="bi bi-exclamation-triangle me-1"></i> Attach Form
+                                </Button>
                             )}
                         </div>
                     )}

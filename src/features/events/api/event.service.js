@@ -17,8 +17,12 @@ export const eventService = {
 
     // Application endpoints
 
-    getStatus: (page, limit, eventID = 0) => {
-        return apiClient.get(`${USER_ENDPOINT}/status`, { params: { page, limit, eventID } });
+    getAllStatus: (page, limit) => {
+        return apiClient.get(`${USER_ENDPOINT}/all-status`, { params: { page, limit } });
+    },
+
+    getStatus: (event_id) => {
+        return apiClient.get(`${USER_ENDPOINT}/status/${event_id}`);
     },
     
     cancel: (id) => {
@@ -35,8 +39,8 @@ export const eventService = {
         return apiClient.get(`${ADMIN_ENDPOINT}/${id}`)
     },
 
-    getEventParticipants: (id) => {
-        return apiClient.get(`${ADMIN_ENDPOINT}/${id}/participants`)
+    getEventParticipants: (id, page = 1, limit = 25) => {
+        return apiClient.get(`${ADMIN_ENDPOINT}/${id}/participants?page=${page}&limit=${limit}`);
     },
 
     updateEventParticipants: (id, data) => {
@@ -53,6 +57,10 @@ export const eventService = {
 
     delete: (id) => {
         return apiClient.delete(`${ADMIN_ENDPOINT}/${id}`);
+    },
+
+    linkForm: (data) => {
+        return apiClient.post(`${ADMIN_ENDPOINT}/link-form`, data);
     }
 };
 

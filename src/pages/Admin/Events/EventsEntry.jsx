@@ -4,17 +4,15 @@ import { Container, Button, Spinner, Alert, Tabs, Tab, Badge } from 'react-boots
 import { 
     useAdminEvent, useCreateEvent, useUpdateEvent, useGetParticipants, useUpdateParticipants 
 } from '../../../features/events/hooks/useEvent';
-import { useAdminTasks } from '../../../context/AdminTaskContext'; // The SSE Context
+import { useAdminTasks } from '../../../context/AdminTaskContext';
 import ImagePickerModal from '../../../components/ImagePickerModal';
 
-// Sub-components
 import EventDetailsForm from './components/EventDetailsForm';
 import ParticipantsTable from './components/ParticipantsTable';
 import CollaboratorsDrawer from './components/CollaboratorsDrawer';
-import { CONFIG } from '../../../config';
-import { processFetchStream, eventService } from '../../../features/events/api/event.service';
+import FormSelectorModal from './components/FormSelectorModal';
+import { processFetchStream } from '../../../features/events/api/event.service';
 
-// Time Utilities
 const formatToInputTime = (iso) => iso ? new Date(new Date(iso).getTime() - (new Date(iso).getTimezoneOffset() * 60000)).toISOString().slice(0, 16) : '';
 const formatToGoTime = (local) => local ? new Date(local).toISOString() : '';
 
@@ -24,32 +22,33 @@ const EventsEntry = () => {
     const isEditMode = id && id !== '0';
     const { startTask } = useAdminTasks();
 
-    // API Hooks
+    const [page, setPage] = useState(1);
+    const limit = 25;
+
     const { data: fetchedEvent, isLoading: isEventFetching, isError: eventFetchError } = useAdminEvent(isEditMode ? id : null);
-    const { data: participantPayload, isLoading: isParticipantsLoading } = useGetParticipants(isEditMode ? id : null);
+    const { data: participantPayload, isLoading: isParticipantsLoading } = useGetParticipants(isEditMode ? id : null, page, limit);
     
     const createEventMutation = useCreateEvent();
     const updateEventMutation = useUpdateEvent();
     const updateParticipantsMutation = useUpdateParticipants(id);
     const isEventSaving = createEventMutation.isPending || updateEventMutation.isPending;
 
-    // UI & Navigation States
     const [activeTab, setActiveTab] = useState('details');
     const [feedback, setFeedback] = useState({ type: '', message: '' });
     const [showImagePicker, setShowImagePicker] = useState(false);
     const [showCollabDrawer, setShowCollabDrawer] = useState(false);
+    const [showFormSelector, setShowFormSelector] = useState(false);
 
-    // Form Data States
     const [outcomes, setOutcomes] = useState(['']);
     const [components, setComponents] = useState([]);
     const [participantRows, setParticipantRows] = useState([]);
+    const [totalPages, setTotalPages] = useState(1);
     const [formData, setFormData] = useState({
         name: '', description: '', event_type: 'WORKSHOP', form_application: true,
         form_id: 0, max_participants: 0, participants_count: 0, presenter_id: '',
         start_date: '', end_date: '', wallpaper_id: 0, wallpaper_url: ''
     });
 
-    // Populate Data on Load
     useEffect(() => {
         if (isEditMode && fetchedEvent) {
             setFormData({
@@ -67,7 +66,12 @@ const EventsEntry = () => {
     }, [isEditMode, fetchedEvent]);
 
     useEffect(() => {
-        const pool = participantPayload?.[0]?.participants || participantPayload?.participants || [];
+        const payload = participantPayload?.data || participantPayload;
+        const pool = payload?.participants || [];
+        const total = payload?.total || 0;
+        
+        setTotalPages(Math.ceil(total / limit) || 1);
+
         if (pool) {
             setParticipantRows(pool.map(p => ({
                 id: p.registration_id || p.id, user_id: p.user_id, name_en: p.name_en, name_ar: p.name_ar,
@@ -77,7 +81,6 @@ const EventsEntry = () => {
         }
     }, [participantPayload]);
 
-    // Submissions
     const handleEventSubmit = () => {
         setFeedback({ type: '', message: '' });
         const payload = {
@@ -115,32 +118,19 @@ const EventsEntry = () => {
 
         updateParticipantsMutation.mutate(payload, {
             onSuccess: () => setFeedback({ type: 'success', message: 'Grades saved.' }),
-            onError: (err) => setFeedback({ type: 'danger', message: 'Matrix update failed.' })
+            onError: () => setFeedback({ type: 'danger', message: 'Matrix update failed.' })
         });
     };
 
-    // SSE Task Triggers
     const handleGenerateCertificates = () => {
-        const payload = {
-            certificate_type: "participation",
-            certificate_version: "v0.1",
-            event_id: Number(id)
-        };
-        
-        // Pass the service method directly
+        const payload = { certificate_type: "participation", certificate_version: "v0.1", event_id: Number(id) };
         startTask(`/v1/admin/event/generate-certs`, `certs-${id}`, `Generate Certs: ${formData.name}`, processFetchStream, payload);
-        
         setFeedback({ type: 'info', message: 'Certificate generation launched in background tasks.' });
     };
 
     const handleSendFinishEmails = () => {
-        const payload = {
-            event_id: Number(id)
-        };
-        
-        // same, pass the service method directly
+        const payload = { event_id: Number(id) };
         startTask(`/v1/admin/event/send-finish-emails`, `emails-${id}`, `Send Emails: ${formData.name}`, processFetchStream, payload);
-        
         setFeedback({ type: 'info', message: 'Email dispatch launched in background tasks.' });
     };
 
@@ -148,7 +138,6 @@ const EventsEntry = () => {
 
     return (
         <Container fluid className="d-flex flex-column p-0">
-            {/* Sticky Centralized Control Bar */}
             <div className="sticky-top bg-white border-bottom p-3 mb-3 z-3 d-flex flex-wrap gap-2 justify-content-between align-items-center shadow-sm" style={{ top: 0 }}>
                 <div className="d-flex align-items-center">
                     <Button variant="light" size="sm" className="me-3 rounded-circle shadow-sm" onClick={() => navigate('/admin/events')}>
@@ -187,7 +176,7 @@ const EventsEntry = () => {
                 {isEditMode && (
                     <Tabs activeKey={activeTab} onSelect={(k) => setActiveTab(k)} className="mb-3 custom-picker-tabs">
                         <Tab eventKey="details" title="Structural Configuration" />
-                        <Tab eventKey="participants" title={<>Participant Pool <Badge bg="secondary" className="ms-1">{participantRows.length}</Badge></>} />
+                        <Tab eventKey="participants" title={<>Participant Pool <Badge bg="secondary" className="ms-1">{participantPayload?.total || participantRows.length}</Badge></>} />
                     </Tabs>
                 )}
 
@@ -201,21 +190,24 @@ const EventsEntry = () => {
                                 outcomes={outcomes} setOutcomes={setOutcomes}
                                 components={components} setComponents={setComponents}
                                 onShowPicker={() => setShowImagePicker(true)}
+                                onShowFormSelector={() => setShowFormSelector(true)}
+                                isEditMode={isEditMode}
                             />
                         )}
                         {isEditMode && activeTab === 'participants' && (
                             <ParticipantsTable 
                                 rows={participantRows} setRows={setParticipantRows}
                                 components={components} isLoading={isParticipantsLoading}
+                                page={page} setPage={setPage} totalPages={totalPages}
                             />
                         )}
                     </div>
                 )}
             </div>
 
-            {/* Modals & Drawers */}
             <ImagePickerModal show={showImagePicker} onHide={() => setShowImagePicker(false)} onSelect={(id, url) => setFormData(prev => ({ ...prev, wallpaper_id: id, wallpaper_url: url }))} />
             <CollaboratorsDrawer show={showCollabDrawer} onHide={() => setShowCollabDrawer(false)} />
+            <FormSelectorModal show={showFormSelector} onHide={() => setShowFormSelector(false)} eventId={id} onSelect={(formId) => setFormData(prev => ({ ...prev, form_id: formId }))} />
         </Container>
     );
 };
