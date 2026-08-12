@@ -70,7 +70,15 @@ const Events = () => {
                     <Col md={6} lg={4} key={event.id}>
                         <Card className="h-100 shadow-sm border-0 event-card d-flex flex-column">
                             {/* Card Graphic/Header */}
-                            <div className="event-card-graphic d-flex flex-column justify-content-between p-3">
+                            <div 
+                                className="event-card-graphic d-flex flex-column justify-content-between p-3"
+                                style={{
+                                    backgroundImage: `url(${event.wallpaper})`,
+                                    backgroundSize: 'cover',
+                                    backgroundPosition: 'center',
+                                    minHeight: '160px' // Ensures height if no content expands it
+                                }}
+                            >
                                 <div className="d-flex justify-content-between align-items-start">
                                     <Badge bg="light" text="dark" className="rounded-pill px-3 py-2 fw-bold shadow-sm text-uppercase" style={{ fontSize: '0.75rem' }}>
                                         {event.event_type}
