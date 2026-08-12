@@ -3,8 +3,7 @@ name: Deploy to Oracle Cloud
 on:
   push:
     branches: [ "main" ]
-  # pull_request:
-  #   branches: [ "main" ]
+    tags: [ "v*" ] # Triggers on tags like v1.0, v1.0.0, etc.
 
 jobs:
   build-and-deploy:
@@ -14,6 +13,36 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Configure Target Environment & Secrets
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            echo "--- Deploying to PRODUCTION ---"
+            echo "DEPLOY_PATH=/var/www/production" >> $GITHUB_ENV
+            echo "HOST=${{ secrets.PRODUCTION_HOST }}" >> $GITHUB_ENV
+            echo "USERNAME=${{ secrets.PRODUCTION_HOST_USERNAME }}" >> $GITHUB_ENV
+
+            echo "SSH_KEY<<EOF" >> $GITHUB_ENV
+            echo "${{ secrets.PRODUCTION_HOST_SSH_PRIVATE_KEY }}" >> $GITHUB_ENV
+            echo "EOF" >> $GITHUB_ENV
+
+            echo "ENV_CONTENT<<EOF" >> $GITHUB_ENV
+            echo "${{ secrets.PRO_ENV_FILE }}" >> $GITHUB_ENV
+            echo "EOF" >> $GITHUB_ENV
+          else
+            echo "--- Deploying to DEVELOPMENT ---"
+            echo "DEPLOY_PATH=/var/www/development" >> $GITHUB_ENV
+            echo "HOST=${{ secrets.DEVELOPMENT_HOST }}" >> $GITHUB_ENV
+            echo "USERNAME=${{ secrets.DEVELOPMENT_HOST_USERNAME }}" >> $GITHUB_ENV
+
+            echo "SSH_KEY<<EOF" >> $GITHUB_ENV
+            echo "${{ secrets.DEVELOPMENT_HOST_SSH_PRIVATE_KEY }}" >> $GITHUB_ENV
+            echo "EOF" >> $GITHUB_ENV
+
+            echo "ENV_CONTENT<<EOF" >> $GITHUB_ENV
+            echo "${{ secrets.DEV_ENV_FILE }}" >> $GITHUB_ENV
+            echo "EOF" >> $GITHUB_ENV
+          fi
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -22,9 +51,9 @@ jobs:
 
       - name: Create .env file
         run: |
-          echo "${{ secrets.ENV_FILE }}" > .env
+          echo "$ENV_CONTENT" > .env
 
-      - name: install pnpm
+      - name: Install pnpm
         run: |
           npm install -g pnpm
 
@@ -36,18 +65,18 @@ jobs:
       - name: Copy files to Server
         uses: appleboy/scp-action@master
         with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
+          host: ${{ env.HOST }}
+          username: ${{ env.USERNAME }}
+          key: ${{ env.SSH_KEY }}
           source: "dist/*"
-          target: "/var/www/development"
+          target: ${{ env.DEPLOY_PATH }}
           strip_components: 1
 
       - name: Fix Permissions
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
+          host: ${{ env.HOST }}
+          username: ${{ env.USERNAME }}
+          key: ${{ env.SSH_KEY }}
           script: |
-            chmod -R 755 /var/www/website
+            chmod -R 755 ${{ env.DEPLOY_PATH }}
