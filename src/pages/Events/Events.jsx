@@ -3,6 +3,7 @@ import { Container, Row, Col, Card, Spinner, Button, Badge } from 'react-bootstr
 import { useLanguage } from '../../context/LanguageContext';
 import { useEvents } from '../../features/events/hooks/useEvent'; 
 import EventDetailsOverlay from './EventDetailsOverlay'; // <-- Import the new component
+import { useSearchParams } from 'react-router-dom';
 import "./Events.css";
 
 // --- Skeleton Loader for Event Cards ---
@@ -25,20 +26,30 @@ const Events = () => {
     const [page, setPage] = useState(1);
     const [allEvents, setAllEvents] = useState([]);
     const [hasMore, setHasMore] = useState(true);
+    const [searchParams, setSearchParams] = useSearchParams();
     const [selectedEventId, setSelectedEventId] = useState(null);
 
     const { data, isLoading, error, isFetching } = useEvents(page, 10);
 
     useEffect(() => {
+        const eventIdFromUrl = searchParams.get('eventId');
+        if (eventIdFromUrl) {
+            setSelectedEventId(eventIdFromUrl);
+        }
         if (data?.events) {
             if (page === 1) setAllEvents(data.events);
             else setAllEvents(prev => [...prev, ...data.events]);
             setHasMore(page < data.pages);
         }
-    }, [data, page]);
+    }, [data, page, searchParams]);
 
     const loadMore = () => {
         if (hasMore && !isFetching) setPage(prev => prev + 1);
+    };
+
+    const handleCloseOverlay = () => {
+        setSelectedEventId(null);
+        setSearchParams({}, { replace: true });
     };
 
     if ((isLoading || error) && page === 1 && allEvents.length === 0) {
@@ -152,12 +163,12 @@ const Events = () => {
                     </Button>
                 </div>
             )}
-
+            
             {/* Render Overlay */}
             <EventDetailsOverlay 
                 eventId={selectedEventId} 
                 show={!!selectedEventId} 
-                onHide={() => setSelectedEventId(null)} 
+                onHide={handleCloseOverlay} 
             />
         </Container>
     );
