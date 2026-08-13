@@ -8,7 +8,7 @@ const CollaboratorsDrawer = ({ show, onHide }) => {
     const deleteCollab = useDeleteCollaborator();
 
     const [isAdding, setIsAdding] = useState(false);
-    const [newCollab, setNewCollab] = useState({ name_ar: '', name_en: '', email: '', file: null });
+    const [newCollab, setNewCollab] = useState({ name_ar: '', name_en: '', title_en: '', title_ar: '', email: '', signature_file: null });
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -17,7 +17,7 @@ const CollaboratorsDrawer = ({ show, onHide }) => {
         
         createCollab.mutate(fData, {
             onSuccess: () => {
-                setNewCollab({ name_ar: '', name_en: '', email: '', file: null });
+                setNewCollab({ name_ar: '', name_en: '', title_en: '', title_ar: '', email: '', signature_file: null });
                 setIsAdding(false);
             }
         });
@@ -40,8 +40,10 @@ const CollaboratorsDrawer = ({ show, onHide }) => {
                         <Form onSubmit={handleSubmit} className="bg-light p-3 rounded border">
                             <Form.Control size="sm" className="mb-2" type="text" placeholder="English Name *" value={newCollab.name_en} onChange={(e) => setNewCollab({...newCollab, name_en: e.target.value})} required />
                             <Form.Control size="sm" className="mb-2" type="text" placeholder="Arabic Name *" value={newCollab.name_ar} onChange={(e) => setNewCollab({...newCollab, name_ar: e.target.value})} required />
+                            <Form.Control size="sm" className="mb-2" type="text" placeholder="English Title *" value={newCollab.title_en} onChange={(e) => setNewCollab({...newCollab, title_en: e.target.value})} required />
+                            <Form.Control size="sm" className="mb-2" type="text" placeholder="Arabic Title *" value={newCollab.title_ar} onChange={(e) => setNewCollab({...newCollab, title_ar: e.target.value})} required />
                             <Form.Control size="sm" className="mb-2" type="email" placeholder="Email (Optional)" value={newCollab.email} onChange={(e) => setNewCollab({...newCollab, email: e.target.value})} />
-                            <Form.Control size="sm" className="mb-2" type="file" accept="image/*" onChange={(e) => setNewCollab({...newCollab, file: e.target.files[0]})} required />
+                            <Form.Control size="sm" className="mb-2" type="file" accept="image/*" onChange={(e) => setNewCollab({...newCollab, signature_file: e.target.files[0]})} required />
                             <Button variant="success" size="sm" type="submit" className="w-100 fw-bold" disabled={createCollab.isPending}>
                                 {createCollab.isPending ? <Spinner size="sm"/> : 'Save'}
                             </Button>
