@@ -65,6 +65,17 @@ const Events = () => {
             </div>
 
             {/* Event Grid */}
+            {allEvents.length === 0 ? 
+            <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignment: 'center',
+                minHeight: '100hv'
+            }}>
+                <h1>
+                    {language === 'en' ? "No Events at the moment." : "لا توجد فعاليات في الوقت الحالي."}
+                </h1>
+            </div> : 
             <Row className="g-4">
                 {allEvents.map((event) => (
                     <Col md={6} lg={4} key={event.id}>
@@ -122,6 +133,7 @@ const Events = () => {
                     <>{[...Array(3)].map((_, i) => <SkeletonCard key={`fetch-skeleton-${i}`} />)}</>
                 )}
             </Row>
+            }
 
             {/* Load More Area */}
             {hasMore && (
