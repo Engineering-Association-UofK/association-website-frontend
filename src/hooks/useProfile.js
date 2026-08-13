@@ -37,11 +37,18 @@ export const useCertificates = () => {
     setLoading(true);
     try {
       const response = await apiClient.get("/v1/account/certificates");
-      setCertificates(response.data || response);
+      console.log("Certificates Raw API Response:", response);
+      const certsData = 
+        response?.data?.certificates || 
+        response?.certificates || 
+        [];
+
+      setCertificates(certsData);
       setError(null);
     } catch (err) {
       console.error("Certificates Fetch Error:", err);
-      setError("Network Error");
+      setError(err.response?.data?.message || "Failed to load certificates.");
+      setCertificates([]);
     } finally {
       setLoading(false);
     }
@@ -51,12 +58,7 @@ export const useCertificates = () => {
     fetchCertificates();
   }, []);
 
-  return {
-    certificates,
-    loading,
-    error,
-    refreshCertificates: fetchCertificates,
-  };
+  return { certificates, loading, error, refreshCertificates: fetchCertificates };
 };
 
 export const useUpdatePassword = () => {
@@ -433,4 +435,35 @@ export const useNotifications = () => {
     deleteNotification,
     refresh: () => fetchNotifications(page),
   };
+};
+
+export const useDownloadCertificate = () => {
+  const [downloadingHash, setDownloadingHash] = useState(null);
+
+  const downloadCertificate = async (hash) => {
+    setDownloadingHash(hash);
+    try {
+      const response = await apiClient.get(`/v1/cert/download/${hash}`, {
+        responseType: "blob",
+      });
+
+      // Create a blob URL and trigger download
+      const blob = new Blob([response.data], { type: "application/zip" });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `certificate-${hash.substring(0, 8)}.zip`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("Failed to download certificate:", err);
+      alert("Failed to download certificate. Please try again.");
+    } finally {
+      setDownloadingHash(null);
+    }
+  };
+
+  return { downloadCertificate, downloadingHash };
 };
