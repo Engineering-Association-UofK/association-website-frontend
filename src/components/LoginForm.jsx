@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap';
+import { Container, Row, Col, Card, Form, Button, Alert, InputGroup } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from "../context/LanguageContext.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
@@ -13,6 +13,7 @@ const LoginForm = () => {
     const [password, setPassword] = useState('');
     const [rememberMe, setRememberMe] = useState(false);
     const [error, setError] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     
     const [isVerifying, setIsVerifying] = useState(false);
     const [pendingUserId, setPendingUserId] = useState(null);
@@ -142,6 +143,19 @@ const LoginForm = () => {
                         background-color: #22B2E6;
                         border-color: #22B2E6;
                     }
+                    .password-toggle-btn {
+                        border-color: transparent;
+                        background-color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important;
+                        --bs-btn-hover-border-color: transparent !important;
+                        --bs-btn-active-color: var(--bs-btn-active-bg); !important;
+                        --bs-btn-active-border-color: transparent !important;
+                        border-radius: 0 0.75rem 0.75rem 0;
+                        padding: 0.6rem 0.9rem;
+                        font-size: 0.95rem;
+                    }
+                    .password-toggle-btn:hover {
+                        color: #22B2E6;
+                    }
                 `}
             </style>
 
@@ -231,14 +245,24 @@ const LoginForm = () => {
                                             <Form.Label className="small fw-medium text-secondary">
                                                 {translations.login.password}
                                             </Form.Label>
-                                            <Form.Control 
-                                                type="password" 
-                                                placeholder={translations.login.password} 
-                                                value={password}
-                                                onChange={(e) => setPassword(e.target.value)}
-                                                required 
-                                                className="border-light bg-light"
-                                            />
+                                            <InputGroup>
+                                                <Form.Control 
+                                                    type={showPassword ? 'text' : 'password'}
+                                                    placeholder={translations.login.password} 
+                                                    value={password}
+                                                    onChange={(e) => setPassword(e.target.value)}
+                                                    required 
+                                                    className="border-light bg-light"
+                                                />
+                                                <Button
+                                                    variant="outline-secondary"
+                                                    className="password-toggle-btn"
+                                                    onClick={() => setShowPassword(!showPassword)}
+                                                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                                                >
+                                                    <i className={`bi ${showPassword ? 'bi-eye-slash' : 'bi-eye'}`}></i>
+                                                </Button>
+                                            </InputGroup>
                                         </Form.Group>
 
                                         <div className="d-flex justify-content-between align-items-center mb-3">
