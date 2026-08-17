@@ -49,6 +49,8 @@ import Events from "./pages/Events/Events.jsx";
 import EventsDashboard from "./pages/Admin/Events/EventsDashboard.jsx";
 import EventsEntry from "./pages/Admin/Events/EventsEntry.jsx";
 import AdminRoleGuard from "./components/AdminRoleGuard.jsx";
+import VerifyCertificate from "./components/verification/VerifyCertificate.jsx";
+import VerifyDocument from "./components/verification/VerifyDocument.jsx";
 
 
 function App() {
@@ -77,6 +79,8 @@ function App() {
               <Route path="/posts/issues" element={<Issues />} />
               <Route path="/posts/news" element={<News />} />
               <Route path="/posts/:type/:slug" element={<Post />} /> { /* view posts */}
+              <Route path="/cert/verify/:hash" element={<VerifyCertificate />} />
+              <Route path="/doc/verify/:hash" element={<VerifyDocument />} />
             </Route>
 
             {/* GUEST ONLY ROUTES (Login/Register) 
