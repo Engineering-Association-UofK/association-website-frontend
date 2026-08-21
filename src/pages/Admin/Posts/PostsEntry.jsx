@@ -13,6 +13,7 @@ import { POST_TYPES } from '../../../features/admin posts/api/adminBlogs.service
 import MDEdit from '../../../components/markdown/MDEdit';
 import ImageUpload2 from '../../../components/ImageUpload2';
 import { useFileUpload } from '../../../hooks/useFileUpload';
+import TextEditor from '../../../components/TextEditor/TextEditor';
  
 const EMPTY_FORM = {
   title:        '',
@@ -268,13 +269,17 @@ const BlogsEntry = () => {
         {/* Content — Markdown editor */}
         <Form.Group className="mb-3">
           <Form.Label>Content <span className="text-danger">*</span></Form.Label>
-          <MDEdit
+          <TextEditor
+            value={formData.content}
+            onChange={handleChange}
+          />
+          {/* <MDEdit
             name="content"
             value={formData.content}
             onChange={handleChange}
             placeholder="Write your post content in Markdown..."
             disabled={isPending}
-          />
+          /> */}
         </Form.Group>
  
       </div>
