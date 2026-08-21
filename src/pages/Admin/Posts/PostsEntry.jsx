@@ -271,7 +271,7 @@ const BlogsEntry = () => {
           <Form.Label>Content <span className="text-danger">*</span></Form.Label>
           <TextEditor
             value={formData.content}
-            onChange={handleChange}
+            onChange={(val) => setFormData((prev) => ({ ...prev, content: val }))}
           />
           {/* <MDEdit
             name="content"
