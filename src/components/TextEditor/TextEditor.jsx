@@ -19,6 +19,40 @@ const EnterKey = Extension.create({
   },
 });
 
+const AutoDirection = Extension.create({
+  name: "autoDirection",
+
+  addGlobalAttributes() {
+    return [
+      {
+        types: [
+          "paragraph",
+          "heading",
+          "blockquote",
+          "codeBlock",
+          "listItem",
+        ],
+
+        attributes: {
+          dir: {
+            default: "auto",
+
+            renderHTML: () => ({
+              dir: "auto",
+            }),
+
+            parseHTML: (element) => {
+              return {
+                dir: element.getAttribute("dir") || "auto",
+              };
+            },
+          },
+        },
+      },
+    ];
+  },
+});
+
 export default function TextEditor({
   value = "",
   onChange,
@@ -39,6 +73,7 @@ export default function TextEditor({
       }),
 
       EnterKey,
+      AutoDirection,
     ],
 
     content: value,
@@ -363,6 +398,7 @@ export default function TextEditor({
             outline: none;
             min-height: 300px;
             line-height: 1.6;
+            unicode-bidi: plaintext;
           }
 
           .ProseMirror p {
