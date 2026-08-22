@@ -48,6 +48,7 @@ const ImagePickerModal = ({ show, onHide, onSelect }) => {
 
     const handleUploadSubmit = (e) => {
         e.preventDefault();
+        e.stopPropagation();
         if (!formData.file || !formData.file_name.trim()) return;
         
         const finalAltText = formData.alt_text.trim() || altPlaceholder;
@@ -63,13 +64,14 @@ const ImagePickerModal = ({ show, onHide, onSelect }) => {
                     const newAsset = res?.data ?? res;
                     
                     if (newAsset && newAsset.id !== undefined) {
-                        onSelect(newAsset.id, newAsset.url);
+                        // onSelect(newAsset.id, newAsset.url);
                         
                         // Clean states
                         setFormData({ file: null, file_name: "", alt_text: "" });
                         setAltPlaceholder("Describe the image...");
                         setActiveTab('gallery');
-                        onHide();
+                        setPage(1);
+                        // onHide();
                     } else {
                         setActiveTab('gallery');
                         setPage(1);
