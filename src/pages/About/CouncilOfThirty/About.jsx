@@ -17,7 +17,7 @@ const ThirtiethCouncilAbout = () => {
 
     const sortedMembers = data ? [...data].sort((a, b) => a.display_order - b.display_order) : [];
 
-    const MemberCard = ({ member, variant = 'default' }) => {
+const MemberCard = ({ member, variant = 'default' }) => {
         let cardClass = 'member-card';
         if (variant === 'large') cardClass += ' card-large';
         else if (variant === 'small') cardClass += ' card-small';
@@ -26,16 +26,29 @@ const ThirtiethCouncilAbout = () => {
         return (
             <div className={cardClass}>
                 <img
-                    src={member.profile_pic || `https://ui-avatars.com/api/?background=0d6efd&color=fff&name=${encodeURIComponent(language === 'en' ? member.name_en.charAt(0) : member.name_ar.charAt(0))}`}
+                    src={member.profile_pic || `https://ui-avatars.com/api/?background=0d6efd&color=fff&name=${encodeURIComponent(language === 'en' ? member.name_en?.charAt(0) : member.name_ar?.charAt(0))}`}
                     alt={language === 'en' ? member.name_en : member.name_ar}
                     className="member-img"
                 />
                 <div className="member-info">
                     <h3 className="member-name">
-                        {language === 'en' ? member.name_en : member.name_ar}
+                        {language === 'en' ? member.name_en.split(" ").slice(0, 2).join(" ") : member.name_ar.split(" ").slice(0, 2).join(" ")}
                     </h3>
                     <p className="member-role">{member.role}</p>
                     <p className="member-bio">{member.bio}</p>
+
+                    {member.link && (
+                        <a
+                            href={member.link.startsWith('http') ? member.link : `https://${member.link}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="member-connect-btn"
+                            title={language === 'en' ? 'Connect' : 'تواصل'}
+                        >
+                            <i className="bi bi-box-arrow-up-right me-1"></i>
+                            {language === 'en' ? 'Connect' : 'تواصل'}
+                        </a>
+                    )}
                 </div>
             </div>
         );
@@ -50,11 +63,23 @@ const ThirtiethCouncilAbout = () => {
             />
             <div className="member-list-info">
                 <h4 className="member-list-name">
-                    {language === 'en' ? member.name_en : member.name_ar}
+                    {language === 'en' ? member.name_en.split(" ").slice(0, 2).join(" ") : member.name_ar.split(" ").slice(0, 2).join(" ")}
                 </h4>
                 <p className="member-list-role">{member.role}</p>
                 <p className="member-list-bio">{member.bio}</p>
             </div>
+            {member.link && (
+                <a
+                    href={member.link.startsWith('http') ? member.link : `https://${member.link}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="member-connect-btn"
+                    title={language === 'en' ? 'Connect' : 'تواصل'}
+                >
+                    <i className="bi bi-box-arrow-up-right me-1"></i>
+                    {language === 'en' ? 'Connect' : 'تواصل'}
+                </a>
+            )}
         </div>
     );
 
