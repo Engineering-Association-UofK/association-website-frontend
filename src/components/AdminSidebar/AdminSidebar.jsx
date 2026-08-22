@@ -55,6 +55,12 @@ const AdminSidebar = ({ onNavigate }) => {
 
                     <li className="nav-item text-muted small fw-bold px-3 py-2 mt-3 text-uppercase letter-spacing-1">Accounts</li>
                     <li className="nav-item">
+                        <NavLink to="/admin/teams" className="nav-link text-dark rounded-3" onClick={handleLinkClick}>
+                            <i className="bi bi-person-badge-fill me-3 fs-5"></i>
+                            <span className="fw-medium">Team Council</span>
+                        </NavLink>
+                    </li>
+                    <li className="nav-item">
                         <NavLink to="/admin/admin-users" className="nav-link text-dark rounded-3" onClick={handleLinkClick}>
                             <i className="bi bi-shield-lock me-3 fs-5"></i>
                             <span className="fw-medium">Admin Users</span>

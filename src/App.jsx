@@ -51,6 +51,7 @@ import EventsEntry from "./pages/Admin/Events/EventsEntry.jsx";
 import AdminRoleGuard from "./components/AdminRoleGuard.jsx";
 import VerifyCertificate from "./components/verification/VerifyCertificate.jsx";
 import VerifyDocument from "./components/verification/VerifyDocument.jsx";
+import TeamsDashboard from "./pages/Admin/Teams/TeamsDashboard.jsx";
 
 
 function App() {
@@ -131,6 +132,9 @@ function App() {
                 {/* Accounts: Platform Users */}
                 <Route path="users" element={<AdminRoleGuard allowedRoles={["sys:user_manager"]}><UsersDashboard /></AdminRoleGuard>} />
                 <Route path="users/:id" element={<AdminRoleGuard allowedRoles={["sys:user_manager"]}><UsersEntry /></AdminRoleGuard>} />
+
+                {/* TEAMS: Council members */}
+                <Route path="teams" element={<AdminRoleGuard allowedRoles={["content:editor"]}><TeamsDashboard /></AdminRoleGuard>} />
                 
                 <Route path="*" element={<Navigate to="/admin/dashboard" />} />
               </Route>
