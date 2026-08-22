@@ -52,6 +52,7 @@ import AdminRoleGuard from "./components/AdminRoleGuard.jsx";
 import VerifyCertificate from "./components/verification/VerifyCertificate.jsx";
 import VerifyDocument from "./components/verification/VerifyDocument.jsx";
 import TeamsDashboard from "./pages/Admin/Teams/TeamsDashboard.jsx";
+import PasscodeLookup from "./pages/Admin/passcode/PasscodeLookup.jsx";
 
 
 function App() {
@@ -99,10 +100,10 @@ function App() {
             {/* Admin Routes wrapped in StandaloneLayout so they have the Back button */}
             <Route element={<ProtectedRoute allowedRoles={CONFIG.ADMIN_ROLES} />}>
               <Route path="/admin" element={<AdminLayout />}>
-                <Route index element={<Navigate to="dashboard" replace />} />
+                {/* <Route index element={<Navigate to="dashboard" replace />} /> */}
                 
                 {/* Dashboard: Open to all admins */}
-                <Route path="dashboard" element={<Dashboard />} />
+                {/* <Route path="dashboard" element={<Dashboard />} /> */}
                 
                 {/* Content: Posts */}
                 <Route path="posts" element={<AdminRoleGuard allowedRoles={["content:blog_manager"]}><PostsDashboard /></AdminRoleGuard>} />
@@ -135,6 +136,9 @@ function App() {
 
                 {/* TEAMS: Council members */}
                 <Route path="teams" element={<AdminRoleGuard allowedRoles={["content:editor"]}><TeamsDashboard /></AdminRoleGuard>} />
+
+                {/* USERS: Passcode lookup */}
+                <Route path="passcode" element={<AdminRoleGuard allowedRoles={["sys:user_manager"]}><PasscodeLookup /></AdminRoleGuard>} />
                 
                 <Route path="*" element={<Navigate to="/admin/dashboard" />} />
               </Route>

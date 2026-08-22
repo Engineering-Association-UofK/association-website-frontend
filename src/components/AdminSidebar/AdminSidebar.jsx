@@ -72,6 +72,12 @@ const AdminSidebar = ({ onNavigate }) => {
                             <span className="fw-medium">Platform Users</span>
                         </NavLink>
                     </li>
+                    <li className="nav-item">
+                        <NavLink to="/admin/passcode" className="nav-link text-dark rounded-3" onClick={handleLinkClick}>
+                            <i className="bi bi-person-badge-fill me-3 fs-5"></i>
+                            <span className="fw-medium">Passcodes</span>
+                        </NavLink>
+                    </li>
                 </ul>
             </div>
 
