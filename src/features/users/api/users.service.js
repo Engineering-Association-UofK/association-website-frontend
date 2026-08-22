@@ -12,6 +12,14 @@ export const usersService = {
     return await apiClient.get(`${ENDPOINT}/${id}`);
   },
 
+  getTempPasscode: async (id) => {
+    return await apiClient.get(`${ENDPOINT}/passcode/${id}`);
+  },
+
+  createTempUser: async (id, options = {}) => {
+    return await apiClient.post(`${ENDPOINT}/passcode/create/${id}`, options);
+  },
+
   update: async (data) => {
     return await apiClient.put(`${ENDPOINT}`, data);
   },
