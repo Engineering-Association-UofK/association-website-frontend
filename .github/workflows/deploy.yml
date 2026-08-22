@@ -18,12 +18,6 @@ jobs:
           if [[ "${{ github.ref }}" == refs/tags/* ]]; then
             echo "--- Deploying to PRODUCTION ---"
             echo "DEPLOY_PATH=/var/www/production" >> $GITHUB_ENV
-            echo "HOST=${{ secrets.PRODUCTION_HOST }}" >> $GITHUB_ENV
-            echo "USERNAME=${{ secrets.PRODUCTION_HOST_USERNAME }}" >> $GITHUB_ENV
-
-            echo "SSH_KEY<<EOF" >> $GITHUB_ENV
-            echo "${{ secrets.PRODUCTION_HOST_SSH_PRIVATE_KEY }}" >> $GITHUB_ENV
-            echo "EOF" >> $GITHUB_ENV
 
             echo "ENV_CONTENT<<EOF" >> $GITHUB_ENV
             echo "${{ secrets.PRO_ENV_FILE }}" >> $GITHUB_ENV
@@ -31,12 +25,6 @@ jobs:
           else
             echo "--- Deploying to DEVELOPMENT ---"
             echo "DEPLOY_PATH=/var/www/development" >> $GITHUB_ENV
-            echo "HOST=${{ secrets.DEVELOPMENT_HOST }}" >> $GITHUB_ENV
-            echo "USERNAME=${{ secrets.DEVELOPMENT_HOST_USERNAME }}" >> $GITHUB_ENV
-
-            echo "SSH_KEY<<EOF" >> $GITHUB_ENV
-            echo "${{ secrets.DEVELOPMENT_HOST_SSH_PRIVATE_KEY }}" >> $GITHUB_ENV
-            echo "EOF" >> $GITHUB_ENV
 
             echo "ENV_CONTENT<<EOF" >> $GITHUB_ENV
             echo "${{ secrets.DEV_ENV_FILE }}" >> $GITHUB_ENV
@@ -65,9 +53,9 @@ jobs:
       - name: Copy files to Server
         uses: appleboy/scp-action@master
         with:
-          host: ${{ env.HOST }}
-          username: ${{ env.USERNAME }}
-          key: ${{ env.SSH_KEY }}
+          host: ${{ secrets.DEVELOPMENT_HOST }}
+          username: ${{ secrets.DEVELOPMENT_HOST_USERNAME }}
+          key: ${{ secrets.DEVELOPMENT_HOST_SSH_PRIVATE_KEY }}
           source: "dist/*"
           target: ${{ env.DEPLOY_PATH }}
           strip_components: 1
@@ -75,8 +63,8 @@ jobs:
       - name: Fix Permissions
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ env.HOST }}
-          username: ${{ env.USERNAME }}
-          key: ${{ env.SSH_KEY }}
+          host: ${{ secrets.DEVELOPMENT_HOST }}
+          username: ${{ secrets.DEVELOPMENT_HOST_USERNAME }}
+          key: ${{ secrets.DEVELOPMENT_HOST_SSH_PRIVATE_KEY }}
           script: |
             chmod -R 755 ${{ env.DEPLOY_PATH }}
