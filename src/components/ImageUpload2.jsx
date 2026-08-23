@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Form, Button, Image } from 'react-bootstrap';
-import ImagePickerModal from "./ImagePickerModal/ImagePickerModal";
+// import ImagePickerModal from "./ImagePickerModal/ImagePickerModal";
+import ImagePickerModal from "./ImagePickerModal";
 
 const ImageUpload2 = ({ value, onChange, label = "Cover Image", disabled = false }) => {
 
@@ -88,14 +89,22 @@ const ImageUpload2 = ({ value, onChange, label = "Cover Image", disabled = false
             </div>
         )}    
       
-        <ImagePickerModal
+        {/* <ImagePickerModal
             show={showPicker}
             onHide={() => setShowPicker(false)}
             disabled={disabled}
             onPick={(val) => {
                 console.log("val", val);
-            // val is File | string
-            onChange(val);
+                // val is File | string
+                onChange(val);
+            }}
+        /> */}
+      
+        <ImagePickerModal
+            show={showPicker}
+            onHide={() => setShowPicker(false)}
+            onSelect={(id, url) => {
+                onChange({ url, publicId: id });
             }}
         />
     </Form.Group>
