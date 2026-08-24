@@ -26,7 +26,7 @@ import { AuthProvider } from "./context/AuthContext.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import PublicOnlyRoute from "./components/PublicOnlyRoute.jsx";
 import AdminUsersDashboard from "./pages/Admin/Admin Users/AdminUsersDashboard.jsx";
-import AdminUsersEntry from "./pages/Admin/Admin Users/AdminUsersDashboard.jsx";
+import AdminUsersEntry from "./pages/Admin/Admin Users/AdminUsersEntry.jsx";
 import Dashboard from "./pages/Admin/Dashboard/Dashboard.jsx";
 import ImageStorageDashboard from "./pages/Admin/Image Storage/ImageStorageDashboard.jsx";
 import { CONFIG } from "./config";
