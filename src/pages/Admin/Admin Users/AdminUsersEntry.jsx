@@ -6,8 +6,8 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner';
 import Alert from 'react-bootstrap/Alert';
-import { useUpdateAdminUser } from '../../features/admin users/hooks/useAdminUsers';
-import { roles } from '../../utils/roles';
+import { useUpdateAdminUser } from '../../../features/admin users/hooks/useAdminUsers';
+import { roles } from '../../../utils/roles';
 import styles from './AdminUsers.module.css'
 
 const AdminUsersEntry = () => {
