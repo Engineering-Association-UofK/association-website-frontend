@@ -46,7 +46,7 @@ const TeamsDashboard = () => {
       });
     } else {
       setSelectedId(null);
-      setFormData({ ...EMPTY_FORM, display_order: teams.length });
+      setFormData({ ...EMPTY_FORM, display_order: teams.length + 1 });
     }
     setShowFormModal(true);
   };
@@ -60,7 +60,7 @@ const TeamsDashboard = () => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === 'checkbox' ? checked : (type === 'number' ? Number(value) : value)
     }));
   };
 
@@ -236,7 +236,7 @@ const TeamsDashboard = () => {
               <Col md={4}>
                 <Form.Group>
                   <Form.Label>Display Order</Form.Label>
-                  <Form.Control type="number" name="display_order" value={formData.display_order+1} onChange={handleFormChange} required disabled={isSaving} />
+                  <Form.Control type="number" name="display_order" value={formData.display_order} onChange={handleFormChange} required disabled={isSaving} />
                 </Form.Group>
               </Col>
             </Row>
