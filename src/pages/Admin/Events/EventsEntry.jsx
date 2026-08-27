@@ -12,6 +12,7 @@ import ParticipantsTable from './components/ParticipantsTable';
 import CollaboratorsDrawer from './components/CollaboratorsDrawer';
 import FormSelectorModal from './components/FormSelectorModal';
 import { processFetchStream } from '../../../features/events/api/event.service';
+import styles from './Events.module.css'
 
 const formatToInputTime = (iso) => iso ? new Date(new Date(iso).getTime() - (new Date(iso).getTimezoneOffset() * 60000)).toISOString().slice(0, 16) : '';
 const formatToGoTime = (local) => local ? new Date(local).toISOString() : '';
@@ -138,12 +139,22 @@ const EventsEntry = () => {
 
     return (
         <Container fluid className="d-flex flex-column p-0">
-            <div className="sticky-top bg-white border-bottom p-3 mb-3 z-3 d-flex flex-wrap gap-2 justify-content-between align-items-center shadow-sm" style={{ top: 0 }}>
+            {/* <div className="sticky-top bg-white border-bottom p-3 mb-3 z-3 d-flex flex-wrap gap-2 justify-content-between align-items-center shadow-sm" style={{ top: 0 }}> */}
+            <div className="mb-4 z-3 d-flex flex-wrap gap-2 justify-content-between align-items-center" style={{ top: 0 }}>
                 <div className="d-flex align-items-center">
-                    <Button variant="light" size="sm" className="me-3 rounded-circle shadow-sm" onClick={() => navigate('/admin/events')}>
+                    {/* <Button variant="light" size="sm" className="me-3 rounded-circle shadow-sm" onClick={() => navigate('/admin/events')}>
                         <i className="bi bi-arrow-left"></i>
+                    </Button> */}
+                    <Button
+                        className="me-2"
+                        variant="outline-secondary"
+                        size="sm"
+                        onClick={() => navigate('/admin/events')}
+                        // disabled={isPending}
+                    >
+                    <i className="bi bi-arrow-left"></i>
                     </Button>
-                    <h5 className="mb-0 fw-bold text-truncate" style={{ maxWidth: '300px' }}>{isEditMode ? formData.name : 'New Event Architecture'}</h5>
+                    <h4 className="mb-0 fw-bold text-truncate" style={{ maxWidth: '300px' }}>{isEditMode ? formData.name : 'New Event Architecture'}</h4>
                 </div>
                 
                 <div className="d-flex gap-2 flex-wrap">
@@ -170,40 +181,46 @@ const EventsEntry = () => {
                 </div>
             </div>
 
-            <div className="px-3 px-md-4">
-                {feedback.message && <Alert variant={feedback.type} dismissible onClose={() => setFeedback({ type: '', message: '' })} className="shadow-sm border-0">{feedback.message}</Alert>}
 
-                {isEditMode && (
-                    <Tabs activeKey={activeTab} onSelect={(k) => setActiveTab(k)} className="mb-3 custom-picker-tabs">
-                        <Tab eventKey="details" title="Structural Configuration" />
-                        <Tab eventKey="participants" title={<>Participant Pool <Badge bg="secondary" className="ms-1">{participantPayload?.total || participantRows.length}</Badge></>} />
-                    </Tabs>
-                )}
+            {/* <div className="scrollable-container"> */}
+                {/* <div className="px-3 px-md-4"> */}
+                <div className="">
+                    {feedback.message && <Alert variant={feedback.type} dismissible onClose={() => setFeedback({ type: '', message: '' })} className="shadow-sm border-0">{feedback.message}</Alert>}
 
-                {isEventFetching ? (
-                    <div className="text-center p-5"><Spinner animation="border" variant="primary" /></div>
-                ) : (
-                    <div className="workspace-content pb-5">
-                        {(!isEditMode || activeTab === 'details') && (
-                            <EventDetailsForm 
-                                formData={formData} setFormData={setFormData}
-                                outcomes={outcomes} setOutcomes={setOutcomes}
-                                components={components} setComponents={setComponents}
-                                onShowPicker={() => setShowImagePicker(true)}
-                                onShowFormSelector={() => setShowFormSelector(true)}
-                                isEditMode={isEditMode}
-                            />
-                        )}
-                        {isEditMode && activeTab === 'participants' && (
-                            <ParticipantsTable 
-                                rows={participantRows} setRows={setParticipantRows}
-                                components={components} isLoading={isParticipantsLoading}
-                                page={page} setPage={setPage} totalPages={totalPages}
-                            />
-                        )}
-                    </div>
-                )}
-            </div>
+                    {isEditMode && (
+                        <Tabs activeKey={activeTab} onSelect={(k) => setActiveTab(k)} className="mb-3 custom-picker-tabs">
+                            <Tab eventKey="details" title="Structural Configuration" />
+                            <Tab eventKey="participants" title={<>Participant Pool <Badge bg="secondary" className="ms-1">{participantPayload?.total || participantRows.length}</Badge></>} />
+                        </Tabs>
+                    )}
+
+                    {isEventFetching ? (
+                        <div className="text-center p-5"><Spinner animation="border" variant="primary" /></div>
+                    ) : (
+                        <div className={`scrollable-container + ${styles.scrollableContainer}`}>
+                            <div className="workspace-content pb-5">
+                                {(!isEditMode || activeTab === 'details') && (
+                                    <EventDetailsForm 
+                                        formData={formData} setFormData={setFormData}
+                                        outcomes={outcomes} setOutcomes={setOutcomes}
+                                        components={components} setComponents={setComponents}
+                                        onShowPicker={() => setShowImagePicker(true)}
+                                        onShowFormSelector={() => setShowFormSelector(true)}
+                                        isEditMode={isEditMode}
+                                    />
+                                )}
+                                {isEditMode && activeTab === 'participants' && (
+                                    <ParticipantsTable 
+                                        rows={participantRows} setRows={setParticipantRows}
+                                        components={components} isLoading={isParticipantsLoading}
+                                        page={page} setPage={setPage} totalPages={totalPages}
+                                    />
+                                )}
+                            </div>
+                        </div>
+                    )}
+                </div>
+            {/* </div> */}
 
             <ImagePickerModal show={showImagePicker} onHide={() => setShowImagePicker(false)} onSelect={(id, url) => setFormData(prev => ({ ...prev, wallpaper_id: id, wallpaper_url: url }))} />
             <CollaboratorsDrawer show={showCollabDrawer} onHide={() => setShowCollabDrawer(false)} />

@@ -39,7 +39,7 @@
   overflow-x: hidden;
   overflow-y: auto;
   height: calc(100vh - 142px); /* Fallback rule */
-  height: calc(100dvh - 142px); 
+  height: calc(100dvh - 157px); 
   margin-bottom: -24px;
 }
 
