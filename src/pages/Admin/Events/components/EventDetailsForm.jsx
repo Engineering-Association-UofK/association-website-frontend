@@ -20,7 +20,7 @@ const EventDetailsForm = ({ formData, setFormData, outcomes, setOutcomes, compon
         <div className="mx-auto w-100 d-flex flex-column" style={{ maxWidth: '800px' }}>
             
             {/* 1. Identity & Media */}
-            <Card className="border-0 shadow-sm mb-3 rounded-3 bg-white">
+            <Card className="border-0 w-100 shadow-sm mb-3 rounded-3 bg-white">
                 <Card.Body className="p-3">
                     <h6 className="fw-bold mb-3 text-primary border-bottom pb-2">Identity & Media</h6>
                     
@@ -53,7 +53,7 @@ const EventDetailsForm = ({ formData, setFormData, outcomes, setOutcomes, compon
             </Card>
 
             {/* 2. Expected Outcomes */}
-            <Card className="border-0 shadow-sm mb-3 rounded-3 bg-white">
+            <Card className="border-0 w-100 shadow-sm mb-3 rounded-3 bg-white">
                 <Card.Body className="p-3">
                     <div className="d-flex justify-content-between align-items-center mb-2 border-bottom pb-2">
                         <h6 className="fw-bold text-primary mb-0">Learning Outcomes</h6>
@@ -81,7 +81,7 @@ const EventDetailsForm = ({ formData, setFormData, outcomes, setOutcomes, compon
             </Card>
 
             {/* 3. Application Form Intercept */}
-            <Card className="border-0 shadow-sm mb-3 rounded-3 bg-white">
+            <Card className="border-0 w-100 shadow-sm mb-3 rounded-3 bg-white">
                 <Card.Body className="p-3">
                     <h6 className="fw-bold mb-3 text-primary border-bottom pb-2">Application Form Intercept</h6>
                     <Form.Check type="switch" id="form_application" name="form_application" label={<span className="fw-bold small">Require prerequisite forms</span>} checked={formData.form_application} onChange={handleChange} className="mb-2" />
@@ -110,7 +110,7 @@ const EventDetailsForm = ({ formData, setFormData, outcomes, setOutcomes, compon
             </Card>
 
             {/* 4. Logistics */}
-            <Card className="border-0 shadow-sm mb-3 rounded-3 bg-white">
+            <Card className="border-0 w-100 shadow-sm mb-3 rounded-3 bg-white">
                 <Card.Body className="p-3">
                     <h6 className="fw-bold mb-3 text-primary border-bottom pb-2">Logistics</h6>
                     <Row className="g-2 mb-3">
@@ -155,7 +155,7 @@ const EventDetailsForm = ({ formData, setFormData, outcomes, setOutcomes, compon
             </Card>
 
             {/* 5. Grading Metrics */}
-            <Card className="border-0 shadow-sm mb-3 rounded-3 bg-white">
+            <Card className="border-0 w-100 shadow-sm mb-3 rounded-3 bg-white">
                 <Card.Body className="p-3">
                     <div className="d-flex justify-content-between align-items-center mb-3 border-bottom pb-2">
                         <h6 className="fw-bold text-primary mb-0">Grading Metrics</h6>
