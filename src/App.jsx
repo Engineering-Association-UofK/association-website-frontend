@@ -53,6 +53,8 @@ import VerifyCertificate from "./components/verification/VerifyCertificate.jsx";
 import VerifyDocument from "./components/verification/VerifyDocument.jsx";
 import TeamsDashboard from "./pages/Admin/Teams/TeamsDashboard.jsx";
 import PasscodeLookup from "./pages/Admin/passcode/PasscodeLookup.jsx";
+import InitialRegister from "./pages/auth/InitialRegister.jsx";
+import RegistrationFlow from "./pages/auth/RegistrationFlow.jsx";
 
 
 function App() {
@@ -91,7 +93,8 @@ function App() {
             <Route element={<StandaloneLayout />}>
               <Route element={<PublicOnlyRoute />}>
                 <Route path="/login" element={<LoginForm />} />
-                <Route path="/register" element={<RegisterForm />} />
+                <Route path="/register" element={<InitialRegister />} />
+                <Route path="/register/:code" element={<RegistrationFlow />} />
               </Route>
             </Route>
 
