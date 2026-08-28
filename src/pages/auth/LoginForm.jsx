@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Form, Button, Alert, InputGroup } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import { useLanguage } from "../context/LanguageContext.jsx";
-import { useAuth } from "../context/AuthContext.jsx";
+import { useLanguage } from "../../context/LanguageContext.jsx";
+import { useAuth } from "../../context/AuthContext.jsx";
 
 const LoginForm = () => {
     const { translations } = useLanguage();
@@ -264,6 +264,12 @@ const LoginForm = () => {
                                                 </Button>
                                             </InputGroup>
                                         </Form.Group>
+                                        
+                                        <div className="text-center mb-4">
+                                            <Link to="/forgot-password" className="text-decoration-none small text-secondary">
+                                            Forgot Password?
+                                            </Link>
+                                        </div>
 
                                         <div className="d-flex justify-content-between align-items-center mb-3">
                                             <Form.Check 

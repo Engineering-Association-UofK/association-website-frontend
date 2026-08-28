@@ -21,7 +21,6 @@ import MainLayout from "./layouts/MainLayout";
 import StandaloneLayout from "./layouts/StandaloneLayout";
 import "./App.css";
 import RegisterForm from "./components/RegisterForm.jsx";
-import LoginForm from "./components/LoginForm.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import PublicOnlyRoute from "./components/PublicOnlyRoute.jsx";
@@ -55,6 +54,8 @@ import TeamsDashboard from "./pages/Admin/Teams/TeamsDashboard.jsx";
 import PasscodeLookup from "./pages/Admin/passcode/PasscodeLookup.jsx";
 import InitialRegister from "./pages/auth/InitialRegister.jsx";
 import RegistrationFlow from "./pages/auth/RegistrationFlow.jsx";
+import LoginForm from "./pages/auth/LoginForm.jsx";
+import ForgotPassword from "./pages/auth/ForgotPassword.jsx";
 
 
 function App() {
@@ -95,6 +96,7 @@ function App() {
                 <Route path="/login" element={<LoginForm />} />
                 <Route path="/register" element={<InitialRegister />} />
                 <Route path="/register/:code" element={<RegistrationFlow />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
               </Route>
             </Route>
 
