@@ -14,7 +14,7 @@ const Statistics = () => {
   const sectionRef = useRef(null);
 
   const targets = {
-    students: 2500, workshops: 48, events: 32, partners: 15, projects: 24, volunteers: 120,
+    students: 1900, workshops: 30, events: 10, partners: 15, projects: 24, volunteers: 260,
   };
 
   const statsConfig = [
