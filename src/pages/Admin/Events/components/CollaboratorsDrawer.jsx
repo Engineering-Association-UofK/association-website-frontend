@@ -81,7 +81,7 @@ const CollaboratorsDrawer = ({ show, onHide }) => {
                                     <div className="fw-bold text-truncate" style={{ fontSize: '0.85rem' }}>{c.name_en}</div>
                                     <div className="text-muted text-truncate" style={{ fontSize: '0.75rem' }}>{c.name_ar}</div>
                                 </div>
-                                <Button variant="link" className="text-danger p-1" onClick={() => deleteCollab.mutate(c.id)}><i className="bi bi-trash"></i></Button>
+                                {/* <Button variant="link" className="text-danger p-1" onClick={() => deleteCollab.mutate(c.id)}><i className="bi bi-trash"></i></Button> */}
                             </div>
                         ))
                         
