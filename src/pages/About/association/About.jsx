@@ -32,6 +32,9 @@ const AssociationAbout = () => {
                     </div>
                 </section>
 
+                <p style={{height: '2px', width: '100%', backgroundColor:'gray'}}></p>
+                <div style={{height: '30px'}}></div>
+
                 {/* 2nd section */}
                 <section className="objectives-section mb-5">
                     <h2 className="text-center fw-bold mb-5 text-primary">
@@ -67,6 +70,9 @@ const AssociationAbout = () => {
                     </Row>
                 </section>
 
+                <p style={{height: '2px', width: '100%', backgroundColor:'gray'}}></p>
+                <div style={{height: '50px'}}></div>
+
                 {/* 3rd section */}
                 <section className="trustee-section mb-5">
                     <h2 className="text-center fw-bold mb-5 text-primary">
@@ -75,15 +81,15 @@ const AssociationAbout = () => {
                     <Row className="g-4 trustee-cards-container">
                         {content.cards.map((card, idx) => (
                             <Col md={6} lg={3} key={idx}>
-                                <Card className="trustee-card h-100 shadow-sm border-0 text-center">
+                                <Card className="trustee-card h-100 shadow-sm border-0 text-center" style={{padding: '4px'}}>
                                     <Card.Body className="p-4">
                                         <div className="mb-3">
                                             <i className={`${card.icon} fs-1 text-primary`}></i>
                                         </div>
-                                        <Card.Title className="fw-bold text-primary">
+                                        <Card.Title className="fw-bold text-primary" style={{fontSize: '1.3em'}}>
                                             {card.title}
                                         </Card.Title>
-                                        <Card.Text className="text-muted">
+                                        <Card.Text className="text-muted"  style={{fontSize: '0.8em'}}>
                                             {card.text}
                                         </Card.Text>
                                     </Card.Body>
