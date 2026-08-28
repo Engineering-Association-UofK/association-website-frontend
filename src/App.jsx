@@ -20,7 +20,6 @@ import Post from "./pages/Blogs/post/Post.jsx";
 import MainLayout from "./layouts/MainLayout";
 import StandaloneLayout from "./layouts/StandaloneLayout";
 import "./App.css";
-import RegisterForm from "./components/RegisterForm.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import PublicOnlyRoute from "./components/PublicOnlyRoute.jsx";
