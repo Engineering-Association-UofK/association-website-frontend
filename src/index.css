@@ -1,4 +1,84 @@
 /* ==========================================================================
+   0. DIN Next LT Arabic Font Declarations
+   ========================================================================== */
+
+/* Ultra Light (100) */
+@font-face {
+  font-family: 'DINNextLTArabic';
+  src: url('/fonts/ArbFONTS-DINNextLTArabic-UltraLight-1.ttf') format('truetype'),
+       url('/fonts/ArbFONTS-DINNextLTArabic-UltraLight-2.ttf') format('truetype'),
+       url('/fonts/ArbFONTS-DINNextLTArabic-UltraLight-3.ttf') format('truetype'),
+       url('/fonts/ArbFONTS-DINNextLTArabic-UltraLight-4.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Light (300) */
+@font-face {
+  font-family: 'DINNextLTArabic';
+  src: url('/fonts/ArbFONTS-DINNEXTLTARABIC-LIGHT-1.ttf') format('truetype'),
+       url('/fonts/ArbFONTS-DINNEXTLTARABIC-LIGHT-2-2.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Regular / Medium (400 - 500) */
+@font-face {
+  font-family: 'DINNextLTArabic';
+  src: url('/fonts/ArbFONTS-DINNextLTArabic-Regular-2.ttf') format('truetype'),
+       url('/fonts/ArbFONTS-DINNextLTArabic-Regular-3.ttf') format('truetype'),
+       url('/fonts/ArbFONTS-DINNextLTArabic-Regular-4.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DINNextLTArabic';
+  src: url('/fonts/ArbFONTS-DINNextLTArabic-Medium-2.ttf') format('truetype'),
+       url('/fonts/ArbFONTS-DINNextLTArabic-Medium-3.ttf') format('truetype'),
+       url('/fonts/ArbFONTS-DINNextLTArabic-Medium-4.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Bold (700) */
+@font-face {
+  font-family: 'DINNextLTArabic';
+  src: url('/fonts/ArbFONTS-DINNextLTArabic-Bold-2.ttf') format('truetype'),
+       url('/fonts/ArbFONTS-DINNextLTArabic-Bold-3.ttf') format('truetype'),
+       url('/fonts/ArbFONTS-DINNextLTArabic-Bold-4.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Heavy (800) */
+@font-face {
+  font-family: 'DINNextLTArabic';
+  src: url('/fonts/ArbFONTS-DINNextLTArabic-Heavy-1.ttf') format('truetype'),
+       url('/fonts/ArbFONTS-DINNextLTArabic-Heavy2-1.ttf') format('truetype'),
+       url('/fonts/ArbFONTS-DINNextLTArabic-Heavy2-2.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Black (900) */
+@font-face {
+  font-family: 'DINNextLTArabic';
+  src: url('/fonts/ArbFONTS-DINNextLTArabic-Black-2.ttf') format('truetype'),
+       url('/fonts/ArbFONTS-DINNextLTArabic-Black-3.ttf') format('truetype'),
+       url('/fonts/ArbFONTS-DINNextLTArabic-Black-4.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ==========================================================================
    1. Core Framework Imports & CSS Variables
    ========================================================================== */
 @import "tailwindcss";
@@ -8,6 +88,23 @@
   --primary-color: #22B2E6;
   --secondary-color: #6c757d;
   --fg-color-light: #fff;
+}
+
+/* Configure body for auto-fallback in RTL layout */
+body {
+  font-family: 'Montserrat', 'DINNextLTArabic', sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #fcfdfe;
+  color: #212529;
+}
+
+[dir="rtl"] body,
+[dir="rtl"] {
+  font-family: 'DINNextLTArabic', 'Montserrat', sans-serif;
 }
 
 /* ==========================================================================
