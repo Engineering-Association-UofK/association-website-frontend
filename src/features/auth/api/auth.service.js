@@ -10,28 +10,26 @@ export const authService = {
     // console.log('login ', response);
     return response; // Expecting { token }
   },
-
-  register: async (userData) => {
-    // userData = { name, email, password }
-    const response = await apiClient.post(`${ENDPOINT}/register`, userData, { skipAuth: true });
-    return response;
+  
+  // Check current registration step
+  checkRegistration: async (regCode) => {
+    return await apiClient.post(`${ENDPOINT}/register/check`, {
+      reg_code: regCode,
+    });
   },
 
-  sendVerificationCode: async (user_id) => {
-    return await apiClient.post(`${ENDPOINT}/send-verification-code`, { user_id }, { skipAuth: true });
+  // Submit any registration step (0, 1, 2, 3, or 5)
+  doRegistrationStep: async (step, data) => {
+    return await apiClient.post(`${ENDPOINT}/register/step`, {
+      step: Number(step),
+      data: data,
+    });
   },
 
-  verifyCode: async ({ user_id, code }) => {
-    return await apiClient.post(`${ENDPOINT}/verify`, { user_id, code }, { skipAuth: true });
+  // Send password reset email
+  forgotPassword: async (payload) => {
+    return await apiClient.post(`${ENDPOINT}/forgot-password`, payload);
   },
-
-  // verifyAdmin: async ({ name, code }) => {
-  //   return await apiClient.post('/admin/verify', { name, code }, { skipAuth: true });
-  // },
-
-  // changePassword: async ({ oldPassword, newPassword, confirmPassword }) => {
-  //   return await apiClient.put(`${ENDPOINT}/update-password`, { oldPassword, newPassword, confirmPassword });
-  // },
 
   logout: async () => {
     // Optional: Call backend to invalidate session if needed
