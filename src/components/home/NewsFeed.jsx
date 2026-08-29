@@ -123,7 +123,7 @@ const NewsFeed = ({ start = 0, end = 3 }) => {
                                                 {item.summary}
                                             </Card.Text>
                                             
-                                            <Link to={`/posts/news/${item.id}`} className="read-more-link fw-bold small mt-auto d-inline-flex align-items-center gap-1">
+                                            <Link to={`/posts/news/${item.slug}`} className="read-more-link fw-bold small mt-auto d-inline-flex align-items-center gap-1">
                                                 {translations.home.news?.readMore || "Read More"} <span className="arrow-icon">{arrow}</span>
                                             </Link>
                                         </Card.Body>
