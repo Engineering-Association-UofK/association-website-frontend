@@ -3,6 +3,7 @@ import {
   Routes,
   Route,
   Navigate,
+  useLocation
 } from "react-router-dom";
 import { LanguageProvider } from "./context/LanguageContext";
 import Home from "./pages/Home/Home";
@@ -56,6 +57,20 @@ import RegistrationFlow from "./pages/auth/RegistrationFlow.jsx";
 import LoginForm from "./pages/auth/LoginForm.jsx";
 import ForgotPassword from "./pages/auth/ForgotPassword.jsx";
 
+import React, { useEffect } from 'react';
+import ReactGA from 'react-ga4';
+
+ReactGA.initialize('G-S8J4CN53DH');
+
+const AnalyticsTracker = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    ReactGA.send({ hitType: "pageview", page: location.pathname + location.search });
+  }, [location]);
+
+  return null; 
+};
 
 function App() {
   return (
@@ -63,6 +78,7 @@ function App() {
       <LanguageProvider>
         <Router>
           <ScrollToTop />
+          <AnalyticsTracker />
           <Routes>
             {/* PUBLIC ROUTES (Accessible by everyone) */}
             {/* Main Layout containing NavBar and Footer */}
