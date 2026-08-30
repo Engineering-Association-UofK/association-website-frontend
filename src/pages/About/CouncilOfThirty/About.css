@@ -431,4 +431,59 @@
         height: 0.65rem;
         width: 75%;
     }
-}skeleton-img
+}
+
+.member-connect-btn {
+    display: inline-block;
+    margin-top: 0.75rem;
+    padding: 0.4rem 1.2rem;
+    background-color: #0d6efd;
+    color: #fff;
+    border-radius: 2rem;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    border: none;
+    cursor: pointer;
+}
+
+.member-connect-btn:hover {
+    background-color: #0b5ed7;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(13, 110, 253, 0.3);
+}
+
+.member-connect-btn:active {
+    transform: translateY(0);
+}
+
+.member-connect-btn i {
+    font-size: 0.8rem;
+    vertical-align: middle;
+}
+
+/* List item alignment */
+.member-list-item .member-connect-btn {
+    align-self: center;
+    margin-top: 0;
+    flex-shrink: 0;
+}
+
+/* Small screens */
+@media (max-width: 768px) {
+    .member-connect-btn {
+        padding: 0.3rem 1rem;
+        font-size: 0.75rem;
+    }
+    .member-connect-btn i {
+        font-size: 0.7rem;
+    }
+}
+
+/* Optional: RTL support – flip icon if needed */
+[dir="rtl"] .member-connect-btn i {
+    margin-right: 0.25rem;
+    margin-left: 0;
+}

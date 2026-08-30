@@ -45,7 +45,6 @@ const ThirtiethCouncilAbout = () => {
                             className="member-connect-btn"
                             title={language === 'en' ? 'Connect' : 'تواصل'}
                         >
-                            <i className="bi bi-box-arrow-up-right me-1"></i>
                             {language === 'en' ? 'Connect' : 'تواصل'}
                         </a>
                     )}
@@ -76,7 +75,6 @@ const ThirtiethCouncilAbout = () => {
                     className="member-connect-btn"
                     title={language === 'en' ? 'Connect' : 'تواصل'}
                 >
-                    <i className="bi bi-box-arrow-up-right me-1"></i>
                     {language === 'en' ? 'Connect' : 'تواصل'}
                 </a>
             )}
