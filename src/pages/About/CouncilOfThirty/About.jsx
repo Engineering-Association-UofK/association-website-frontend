@@ -17,7 +17,7 @@ const ThirtiethCouncilAbout = () => {
 
     const sortedMembers = data ? [...data].sort((a, b) => a.display_order - b.display_order) : [];
 
-const MemberCard = ({ member, variant = 'default' }) => {
+    const MemberCard = ({ member, variant = 'default' }) => {
         let cardClass = 'member-card';
         if (variant === 'large') cardClass += ' card-large';
         else if (variant === 'small') cardClass += ' card-small';
@@ -93,7 +93,6 @@ const MemberCard = ({ member, variant = 'default' }) => {
                             <div className="skeleton-text">
                                 <div className="skeleton-title skeleton-title-large"></div>
                                 <div className="skeleton-subtitle"></div>
-                                <div className="skeleton-line"></div>
                                 <div className="skeleton-line"></div>
                             </div>
                         </div>
