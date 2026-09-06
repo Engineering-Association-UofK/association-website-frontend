@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://sea.uofk.com/sitemap.xml
