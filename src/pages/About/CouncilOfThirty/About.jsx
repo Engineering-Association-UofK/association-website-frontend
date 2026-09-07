@@ -23,63 +23,73 @@ const ThirtiethCouncilAbout = () => {
         else if (variant === 'small') cardClass += ' card-small';
         else if (variant === 'medium') cardClass += ' medium-size';
 
-        return (
-            <div className={cardClass}>
-                <img
-                    src={member.profile_pic || `https://ui-avatars.com/api/?background=0d6efd&color=fff&name=${encodeURIComponent(language === 'en' ? member.name_en?.charAt(0) : member.name_ar?.charAt(0))}`}
-                    alt={language === 'en' ? member.name_en : member.name_ar}
-                    className="member-img"
-                />
-                <div className="member-info">
-                    <h3 className="member-name">
-                        {language === 'en' ? member.name_en.split(" ").slice(0, 2).join(" ") : member.name_ar.split(" ").slice(0, 2).join(" ")}
-                    </h3>
-                    <p className="member-role">{member.role}</p>
-                    <p className="member-bio">{member.bio}</p>
-
-                    {member.link && (
-                        <a
-                            href={member.link.startsWith('http') ? member.link : `https://${member.link}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="member-connect-btn"
-                            title={language === 'en' ? 'Connect' : 'تواصل'}
-                        >
-                            {language === 'en' ? 'Connect' : 'تواصل'}
-                        </a>
-                    )}
+        return member.link ?
+            (
+                <a href={member.link} target="_blank" rel="noopener noreferrer" className={cardClass} style={{ textDecoration: 'none', color: 'inherit'}}>
+                        <img
+                            src={member.profile_pic || `https://ui-avatars.com/api/?background=0d6efd&color=fff&name=${encodeURIComponent(language === 'en' ? member.name_en?.charAt(0) : member.name_ar?.charAt(0))}`}
+                            alt={language === 'en' ? member.name_en : member.name_ar}
+                            className="member-img"
+                        />
+                        <div className="member-info">
+                            <h3 className="member-name">
+                                {language === 'en' ? member.name_en.split(" ").slice(0, 2).join(" ") : member.name_ar.split(" ").slice(0, 2).join(" ")}
+                            </h3>
+                            <p className="member-role">{member.role}</p>
+                            <p className="member-bio">{member.bio}</p>
+                        </div>
+                </a>
+            ) : (
+                <div className={cardClass}>
+                    <img
+                        src={member.profile_pic || `https://ui-avatars.com/api/?background=0d6efd&color=fff&name=${encodeURIComponent(language === 'en' ? member.name_en?.charAt(0) : member.name_ar?.charAt(0))}`}
+                        alt={language === 'en' ? member.name_en : member.name_ar}
+                        className="member-img"
+                    />
+                    <div className="member-info">
+                        <h3 className="member-name">
+                            {language === 'en' ? member.name_en.split(" ").slice(0, 2).join(" ") : member.name_ar.split(" ").slice(0, 2).join(" ")}
+                        </h3>
+                        <p className="member-role">{member.role}</p>
+                        <p className="member-bio">{member.bio}</p>
+                    </div>
                 </div>
-            </div>
-        );
+            )
     };
 
-    const MemberListItem = ({ member }) => (
-        <div className="member-list-item">
-            <img
-                src={member.profile_pic || `https://ui-avatars.com/api/?background=0d6efd&color=fff&name=${encodeURIComponent(language === 'en' ? member.name_en.charAt(0) : member.name_ar.charAt(0))}`}
-                alt={language === 'en' ? member.name_en : member.name_ar}
-                className="member-list-img"
-            />
-            <div className="member-list-info">
-                <h4 className="member-list-name">
-                    {language === 'en' ? member.name_en.split(" ").slice(0, 2).join(" ") : member.name_ar.split(" ").slice(0, 2).join(" ")}
-                </h4>
-                <p className="member-list-role">{member.role}</p>
-                <p className="member-list-bio">{member.bio}</p>
+    const MemberListItem = ({ member }) => {
+        return member.link ? (
+            <a href={member.link} target="_blank" className="member-list-item" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit'}}>
+                    <img
+                        src={member.profile_pic || `https://ui-avatars.com/api/?background=0d6efd&color=fff&name=${encodeURIComponent(language === 'en' ? member.name_en.charAt(0) : member.name_ar.charAt(0))}`}
+                        alt={language === 'en' ? member.name_en : member.name_ar}
+                        className="member-list-img"
+                    />
+                    <div className="member-list-info">
+                        <h4 className="member-list-name">
+                            {language === 'en' ? member.name_en.split(" ").slice(0, 2).join(" ") : member.name_ar.split(" ").slice(0, 2).join(" ")}
+                        </h4>
+                        <p className="member-list-role">{member.role}</p>
+                        <p className="member-list-bio">{member.bio}</p>
+                    </div>
+            </a>
+        ) : (
+            <div className="member-list-item">
+                <img
+                    src={member.profile_pic || `https://ui-avatars.com/api/?background=0d6efd&color=fff&name=${encodeURIComponent(language === 'en' ? member.name_en.charAt(0) : member.name_ar.charAt(0))}`}
+                    alt={language === 'en' ? member.name_en : member.name_ar}
+                    className="member-list-img"
+                />
+                <div className="member-list-info">
+                    <h4 className="member-list-name">
+                        {language === 'en' ? member.name_en.split(" ").slice(0, 2).join(" ") : member.name_ar.split(" ").slice(0, 2).join(" ")}
+                    </h4>
+                    <p className="member-list-role">{member.role}</p>
+                    <p className="member-list-bio">{member.bio}</p>
+                </div>
             </div>
-            {member.link && (
-                <a
-                    href={member.link.startsWith('http') ? member.link : `https://${member.link}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="member-connect-btn"
-                    title={language === 'en' ? 'Connect' : 'تواصل'}
-                >
-                    {language === 'en' ? 'Connect' : 'تواصل'}
-                </a>
-            )}
-        </div>
-    );
+        )
+    }
 
     const SkeletonLoader = () => {
         if (isDesktop) {

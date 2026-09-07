@@ -229,6 +229,7 @@
 
 .member-list-bio {
     font-size: 0.8rem;
+    margin-bottom: 0 !important;
     color: #b3bac1;
     line-height: 1.4;
     display: -webkit-box;
