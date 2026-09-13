@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { certificatesService } from '../api/Certificates.service';
+import { certificatesService } from '../api/certificates.service';
 
 const CERTIFICATE_KEYS = {
   all:        ['certificates'],
